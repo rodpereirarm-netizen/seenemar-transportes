@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useApp } from '../lib/app';
-import { supabase } from '../lib/supabase';
+import { supabase, traduzirErro } from '../lib/supabase';
 import { PAPEIS, relativo } from '../lib/format';
 import type { Notificacao } from '../lib/types';
+import { Campo, Modal, toast } from './ui';
 import {
   IcBarras, IcCheck, IcDoc, IcEngrenagem, IcEquipe, IcEscudo, IcLista, IcMenu, IcPainel, IcSino,
 } from './Icones';
@@ -12,6 +13,7 @@ export default function Layout() {
   const { eu, pode, sair } = useApp();
   const [aberta, setAberta] = useState(false);
   const [pendentes, setPendentes] = useState(0);
+  const [trocarSenha, setTrocarSenha] = useState(false);
   const loc = useLocation();
 
   useEffect(() => setAberta(false), [loc.pathname]);
@@ -55,7 +57,10 @@ export default function Layout() {
           <strong>{eu?.nome ?? '—'}</strong>
           <div className="perfil">Perfil: {eu ? PAPEIS[eu.papel].rotulo : '—'}</div>
           <div className="perfil xs">Toda ação é registrada na auditoria</div>
-          <button onClick={sair}>Sair</button>
+          <div style={{ display: 'flex', gap: 8 }}>
+            <button onClick={() => setTrocarSenha(true)}>Alterar senha</button>
+            <button onClick={sair}>Sair</button>
+          </div>
         </div>
       </aside>
       {aberta && <div className="modal-fundo" style={{ zIndex: 35 }} onClick={() => setAberta(false)} />}
@@ -76,7 +81,51 @@ export default function Layout() {
         </div>
         <Outlet />
       </main>
+      {trocarSenha && <AlterarSenha onFechar={() => setTrocarSenha(false)} />}
     </div>
+  );
+}
+
+function AlterarSenha({ onFechar }: { onFechar: () => void }) {
+  const [senha, setSenha] = useState('');
+  const [senha2, setSenha2] = useState('');
+  const [erro, setErro] = useState<string | null>(null);
+  const [salvando, setSalvando] = useState(false);
+
+  async function salvar() {
+    setErro(null);
+    if (senha.length < 8) return setErro('Use uma senha com pelo menos 8 caracteres.');
+    if (senha !== senha2) return setErro('As senhas não conferem.');
+    setSalvando(true);
+    const { error } = await supabase.auth.updateUser({ password: senha });
+    setSalvando(false);
+    if (error) return setErro(traduzirErro(error.message));
+    toast('Senha alterada. Use a nova senha no próximo acesso.');
+    onFechar();
+  }
+
+  return (
+    <Modal
+      titulo="Alterar minha senha"
+      onFechar={onFechar}
+      rodape={
+        <>
+          <button className="btn" onClick={onFechar}>Cancelar</button>
+          <button className="btn primario" disabled={salvando} onClick={salvar}>{salvando ? 'Salvando…' : 'Salvar nova senha'}</button>
+        </>
+      }
+    >
+      <div className="pilha">
+        <p className="small muted" style={{ margin: 0 }}>Recomendado no primeiro acesso com senha provisória. A senha deve ter pelo menos 8 caracteres.</p>
+        <Campo rotulo="Nova senha">
+          <input className="input" type="password" autoComplete="new-password" value={senha} onChange={(e) => setSenha(e.target.value)} />
+        </Campo>
+        <Campo rotulo="Confirme a nova senha" erro={erro}>
+          <input className="input" type="password" autoComplete="new-password" value={senha2}
+            onChange={(e) => setSenha2(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && salvar()} />
+        </Campo>
+      </div>
+    </Modal>
   );
 }
 

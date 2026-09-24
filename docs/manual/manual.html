@@ -112,7 +112,8 @@
   <h2>Histórico de versões</h2>
   <table>
     <thead><tr><th style="width:18mm">Versão</th><th style="width:28mm">Data</th><th>Descrição</th><th style="width:48mm">Responsável</th></tr></thead>
-    <tbody><tr><td>1.0</td><td>24/09/2026</td><td>Versão inicial: implantação do sistema com as 17 demandas da planilha de andamento do GT.</td><td>Administração do sistema</td></tr></tbody>
+    <tbody><tr><td>1.0</td><td>24/09/2026</td><td>Versão inicial: implantação do sistema com as 17 demandas da planilha de andamento do GT.</td><td>Administração do sistema</td></tr>
+    <tr><td>1.1</td><td>24/09/2026</td><td>Inclusão da função “Alterar senha” (Capítulo 4.4).</td><td>Administração do sistema</td></tr></tbody>
   </table>
   <div class="caixa info"><b class="t">Sobre as imagens</b><p>As figuras são capturas reais do sistema. Alguns dados (datas de envio, andamentos e documentos) foram incluídos apenas para ilustrar as funcionalidades e podem não corresponder à situação atual das contratações. Os números em vermelho nas imagens correspondem às legendas logo abaixo de cada figura.</p></div>
 
@@ -278,7 +279,7 @@
   <li>Volte à tela de acesso e entre com e-mail e senha. A conta é vinculada automaticamente ao seu perfil no GT.</li>
 </ol>
 <figure class="pequena"><img src="img/02-primeiro-acesso.jpg"><figcaption>Formulário de primeiro acesso.</figcaption></figure>
-<div class="caixa dica"><b class="t">Acesso criado pelo administrador</b><p>Se o administrador já criou a sua conta e enviou uma senha provisória, não use “Primeiro acesso”: entre diretamente com o e-mail e a senha recebidos.</p></div>
+<div class="caixa dica"><b class="t">Acesso criado pelo administrador</b><p>Se o administrador já criou a sua conta e enviou uma senha provisória, não use “Primeiro acesso”: entre diretamente com o e-mail e a senha recebidos e, em seguida, troque a senha em <strong>Alterar senha</strong> (Capítulo 4.4).</p></div>
 <h2><span class="n">4.2</span>Entrar</h2>
 <ol class="passos">
   <li>Informe e-mail e senha e clique em <strong>Entrar</strong>.</li>
@@ -290,7 +291,14 @@
   <li>Abra o e-mail recebido e clique no link. O sistema abre a tela <strong>Definir nova senha</strong>.</li>
   <li>Digite e confirme a nova senha e clique em <strong>Salvar senha</strong>.</li>
 </ol>
-<h2><span class="n">4.4</span>Sair</h2>
+<h2><span class="n">4.4</span>Alterar a senha</h2>
+<ol class="passos">
+  <li>No rodapé do menu lateral, clique em <strong>Alterar senha</strong>.</li>
+  <li>Digite a nova senha (mínimo de 8 caracteres), repita-a em <strong>Confirme a nova senha</strong> e clique em <strong>Salvar nova senha</strong>.</li>
+  <li>Use a nova senha a partir do próximo acesso.</li>
+</ol>
+<div class="caixa dica"><b class="t">Senha provisória</b><p>Quem recebeu uma senha provisória do administrador deve trocá-la no primeiro acesso.</p></div>
+<h2><span class="n">4.5</span>Sair</h2>
 <p>Clique em <strong>Sair</strong>, no rodapé do menu lateral. Em computadores compartilhados, sempre saia ao terminar.</p>
 
 <!-- ======================= 5 ======================= -->
@@ -300,7 +308,7 @@
 <ol class="leg">
   <li><strong>Menu lateral</strong> — Painel, Contratações, Minhas pendências (com o total de atividades abertas), Atas de registro, Relatórios e Equipe do GT. Os itens <strong>Auditoria</strong> e <strong>Manutenção</strong> aparecem apenas para os perfis autorizados.</li>
   <li><strong>Sininho</strong> — notificações, com o número de avisos não lidos.</li>
-  <li><strong>Usuário</strong> — nome, perfil de acesso e botão <strong>Sair</strong>.</li>
+  <li><strong>Usuário</strong> — nome, perfil de acesso e os botões <strong>Alterar senha</strong> e <strong>Sair</strong>.</li>
   <li><strong>Atalhos de relatórios</strong> — report semanal, mensal e por período.</li>
   <li><strong>Filtros</strong> da página.</li>
 </ol>
@@ -568,7 +576,7 @@
 </ol>
 <div class="caixa atencao"><b class="t">Enquanto o envio de e-mails não estiver configurado</b>
 <p>O primeiro acesso depende do e-mail de confirmação. Se ele não chegar, o administrador cria a conta diretamente no painel do Supabase:</p>
-<ol style="margin-bottom:0"><li>No projeto <strong>gt-propag-contratacoes</strong>, vá em <strong>Authentication › Users › Add user › Create new user</strong>.</li><li>Informe o mesmo e-mail cadastrado no sistema e uma senha provisória, e deixe <strong>Auto Confirm User</strong> marcado.</li><li>Envie o endereço do sistema e a senha provisória ao integrante por canal seguro.</li></ol></div>
+<ol style="margin-bottom:0"><li>No projeto <strong>gt-propag-contratacoes</strong>, vá em <strong>Authentication › Users › Add user › Create new user</strong>.</li><li>Informe o mesmo e-mail cadastrado no sistema e uma senha provisória, e deixe <strong>Auto Confirm User</strong> marcado.</li><li>Envie o endereço do sistema e a senha provisória ao integrante por canal seguro, orientando-o a trocá-la em <strong>Alterar senha</strong> no primeiro acesso.</li></ol></div>
 <div class="caixa info"><b class="t">Proteções</b><p>O sistema não permite ficar sem administrador ativo nem que o administrador desative a própria conta. E-mails não cadastrados não conseguem criar conta.</p></div>
 <h2><span class="n">15.2</span>Listas suspensas</h2>
 <figure class="media"><img src="img/34-manutencao-listas.jpg"><figcaption>Listas suspensas do painel.</figcaption></figure>
