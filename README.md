@@ -103,6 +103,10 @@ npm run build          # typecheck + build de produção
 
 ---
 
+## Manual do usuário
+
+`docs/manual/Manual_do_Usuario_GT_PROPAG.pdf` — manual ilustrado (49 páginas) com acesso, perfis, painel, cadastro, checklist e prazos legais, pendências, relatórios, auditoria e manutenção. Fonte em `docs/manual/manual.html` e `capa.html`, capturas em `docs/manual/img/`.
+
 ## Estrutura
 
 ```

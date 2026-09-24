@@ -1,0 +1,694 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Manual do Usuário · Sistema de Controle de Contratações · GT PROPAG</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #16284d; --navy2: #1e3564; --gold: #c8962f; --gold-ink: #8a5f0d; --gold-soft: #f7e9c9;
+    --paper: #faf8f3; --line: #e2dccf; --ink: #1b2236; --muted: #5f5a4e;
+    --red: #b3372b; --red-soft: #fbe2de; --green: #2c7a4d; --green-soft: #ddefe3; --blue: #22407e; --blue-soft: #e1e8f5;
+    --gray: #5f5c55; --gray-soft: #eceae4; --purple: #5a3f98; --purple-soft: #ebe4f7;
+  }
+  @page { size: A4; margin: 24mm 18mm 20mm 18mm; }
+  * { box-sizing: border-box; }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body { font-family: Inter, system-ui, sans-serif; font-size: 10pt; line-height: 1.55; color: var(--ink); margin: 0; }
+  h1, h2, h3 { color: var(--navy); break-after: avoid; }
+  h1 { font-family: 'Source Serif 4', Georgia, serif; font-size: 24pt; line-height: 1.15; margin: 0 0 3mm; break-before: page; }
+  h1 .num { display: block; font-family: Inter, sans-serif; font-size: 9pt; letter-spacing: .16em; color: var(--gold-ink); font-weight: 700; margin-bottom: 2mm; text-transform: uppercase; }
+  h1 + .lead { font-size: 11pt; color: var(--muted); margin: 0 0 6mm; padding-bottom: 5mm; border-bottom: 1.2pt solid var(--gold); }
+  h2 { font-size: 13.5pt; margin: 7mm 0 2.5mm; }
+  h2 .n { color: var(--gold-ink); margin-right: 1.5mm; }
+  h3 { font-size: 11pt; margin: 5mm 0 2mm; }
+  p { margin: 0 0 3mm; }
+  ul, ol { margin: 0 0 3mm; padding-left: 6mm; }
+  li { margin-bottom: 1.2mm; }
+  strong { color: var(--navy); }
+    code, .k { font-family: 'SFMono-Regular', Consolas, monospace; font-size: 8.8pt; background: var(--gray-soft); padding: .3mm 1.3mm; border-radius: 1mm; }
+
+  /* figuras */
+  body { counter-reset: fig tab; }
+  figure { margin: 4mm 0 4mm; break-inside: avoid; }
+  figure img { display: block; width: 100%; max-height: 118mm; object-fit: contain; object-position: left top; border: .6pt solid var(--line); border-radius: 1.8mm; background: #f3f0e9; }
+  figure.media img { max-height: 92mm; }
+  figure.pequena img { width: 72%; }
+  figcaption { counter-increment: fig; font-size: 8.6pt; color: var(--muted); margin-top: 2mm; }
+  figcaption::before { content: "Figura " counter(fig) " — "; font-weight: 700; color: var(--navy); }
+  ol.leg { list-style: none; counter-reset: leg; padding: 3mm 4mm; margin: 0 0 4mm; background: var(--paper); border: .6pt solid var(--line); border-radius: 1.8mm; break-inside: avoid; }
+  ol.leg li { counter-increment: leg; position: relative; padding-left: 8mm; margin-bottom: 1.6mm; }
+  ol.leg li:last-child { margin-bottom: 0; }
+  ol.leg li::before { content: counter(leg); position: absolute; left: 0; top: .2mm; width: 5mm; height: 5mm; border-radius: 50%; background: var(--red); color: #fff; font-size: 7.5pt; font-weight: 700; display: grid; place-items: center; }
+
+  /* passo a passo */
+  ol.passos { list-style: none; counter-reset: p; padding: 0; margin: 0 0 4mm; }
+  ol.passos > li { counter-increment: p; position: relative; padding: 0 0 0 10mm; margin-bottom: 2.4mm; min-height: 6.5mm; }
+  ol.passos > li::before { content: counter(p); position: absolute; left: 0; top: -.4mm; width: 6.5mm; height: 6.5mm; border-radius: 1.4mm; background: var(--navy); color: #fff; font-weight: 700; font-size: 8.5pt; display: grid; place-items: center; }
+
+  /* caixas */
+  .caixa { border-radius: 1.8mm; padding: 3.2mm 4mm 3.2mm 4mm; margin: 3mm 0 4mm; break-inside: avoid; border-left: 1.4mm solid; }
+  .caixa b.t { display: block; font-size: 8.5pt; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 1mm; }
+  .caixa p:last-child, .caixa ul:last-child { margin-bottom: 0; }
+  .info { background: var(--blue-soft); border-color: var(--blue); } .info b.t { color: var(--blue); }
+  .atencao { background: var(--gold-soft); border-color: var(--gold); } .atencao b.t { color: var(--gold-ink); }
+  .importante { background: var(--red-soft); border-color: var(--red); } .importante b.t { color: var(--red); }
+  .dica { background: var(--green-soft); border-color: var(--green); } .dica b.t { color: var(--green); }
+
+  /* tabelas */
+  table { width: 100%; border-collapse: collapse; margin: 2mm 0 4mm; font-size: 8.8pt; break-inside: auto; }
+  thead { display: table-header-group; }
+  tr { break-inside: avoid; }
+  th { background: var(--navy); color: #fff; text-align: left; font-weight: 600; padding: 2mm 2.4mm; font-size: 8.2pt; letter-spacing: .02em; }
+  td { padding: 1.8mm 2.4mm; border-bottom: .5pt solid var(--line); vertical-align: top; }
+  tbody tr:nth-child(even) td { background: var(--paper); }
+  td.c, th.c { text-align: center; }
+  .sim { color: var(--green); font-weight: 700; }
+  .nao { color: #b9b2a3; }
+  .parcial { color: var(--gold-ink); font-weight: 700; }
+  table.matriz td.c { font-size: 10pt; }
+
+  .selo { display: inline-block; padding: .4mm 2.4mm; border-radius: 10mm; font-size: 8pt; font-weight: 600; white-space: nowrap; }
+  .s-azul { background: var(--blue-soft); color: var(--blue); } .s-ouro { background: var(--gold-soft); color: var(--gold-ink); }
+  .s-verde { background: var(--green-soft); color: var(--green); } .s-vermelho { background: var(--red-soft); color: var(--red); }
+  .s-cinza { background: var(--gray-soft); color: var(--gray); } .s-roxo { background: var(--purple-soft); color: var(--purple); }
+
+  /* sumário e controle */
+  .pagina-inicial h1 { break-before: auto; }
+  .toc { margin-top: 4mm; }
+  .toc div, .toc a.lk { display: flex; color: inherit; text-decoration: none; align-items: baseline; gap: 2mm; padding: 1.5mm 0; border-bottom: .5pt dotted #cfc8b8; font-size: 10pt; }
+  .toc div.sub { padding-left: 8mm; font-size: 9pt; color: var(--muted); border-bottom: none; padding-top: .6mm; padding-bottom: .6mm; }
+  .toc .n { width: 9mm; color: var(--gold-ink); font-weight: 700; }
+  .toc .t { flex: 1; }
+  .toc .pg { font-weight: 600; color: var(--navy); min-width: 8mm; text-align: right; }
+  .ficha td:first-child { width: 42mm; font-weight: 600; color: var(--navy); }
+
+  .etapas-fig { display: grid; grid-template-columns: repeat(5, 1fr); gap: 2mm; margin: 3mm 0 4mm; break-inside: avoid; }
+  .etapas-fig div { border: .6pt solid var(--line); border-radius: 1.6mm; padding: 2.5mm; background: var(--paper); font-size: 8pt; line-height: 1.35; }
+  .etapas-fig div b { display: block; color: var(--gold-ink); font-size: 7.2pt; letter-spacing: .1em; }
+  .etapas-fig div strong { display: block; font-size: 9pt; margin: .8mm 0 1mm; }
+  .etapas-fig div.crit { border-color: #e7b3ab; }
+  .etapas-fig .p { color: var(--red); font-weight: 600; }
+  .duas { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; }
+  .glossario dt { font-weight: 700; color: var(--navy); margin-top: 2mm; }
+  .glossario dd { margin: 0 0 1mm 0; }
+</style>
+</head>
+<body>
+
+<!-- ======================= CONTROLE E SUMÁRIO ======================= -->
+<section class="pagina-inicial">
+  <h1><span class="num">Documento</span>Controle do documento</h1>
+  <table class="ficha">
+    <tbody>
+      <tr><td>Título</td><td>Manual do Usuário — Sistema de Controle de Contratações do GT PROPAG</td></tr>
+      <tr><td>Grupo de trabalho</td><td>GT PROPAG – Compras Públicas (SEDES · SECTI · FAETEC · PRODERJ)</td></tr>
+      <tr><td>Endereço do sistema</td><td><strong>https://gt-propag-faetec.netlify.app</strong></td></tr>
+      <tr><td>Público</td><td>Integrantes do GT (15), coordenação, conformidade, pontos focais e administrador do sistema</td></tr>
+      <tr><td>Base normativa do fluxo</td><td>Lei nº 14.133/2021 · Decreto Estadual nº 48.816/2023 · Decreto nº 48.821/2023 (art. 2º) · Decreto nº 48.843/2023 · IN PRODERJ/PRE nº 05/2024 (art. 4º) · Enunciado 27 PGE-RJ</td></tr>
+      <tr><td>Classificação</td><td>Uso interno</td></tr>
+    </tbody>
+  </table>
+  <h2>Histórico de versões</h2>
+  <table>
+    <thead><tr><th style="width:18mm">Versão</th><th style="width:28mm">Data</th><th>Descrição</th><th style="width:48mm">Responsável</th></tr></thead>
+    <tbody><tr><td>1.0</td><td>24/09/2026</td><td>Versão inicial: implantação do sistema com as 17 demandas da planilha de andamento do GT.</td><td>Administração do sistema</td></tr></tbody>
+  </table>
+  <div class="caixa info"><b class="t">Sobre as imagens</b><p>As figuras são capturas reais do sistema. Alguns dados (datas de envio, andamentos e documentos) foram incluídos apenas para ilustrar as funcionalidades e podem não corresponder à situação atual das contratações. Os números em vermelho nas imagens correspondem às legendas logo abaixo de cada figura.</p></div>
+
+  <h1 style="break-before: page"><span class="num">Conteúdo</span>Sumário</h1>
+  <div class="toc">
+    <a class="lk" href="#c01"><span class="n">1</span><span class="t">Apresentação</span><span class="pg" data-c="c01"></span></a>
+    <a class="lk" href="#c02"><span class="n">2</span><span class="t">Conceitos do fluxo de contratação</span><span class="pg" data-c="c02"></span></a>
+    <a class="lk" href="#c03"><span class="n">3</span><span class="t">Perfis de acesso e responsabilidades</span><span class="pg" data-c="c03"></span></a>
+    <a class="lk" href="#c04"><span class="n">4</span><span class="t">Acesso ao sistema</span><span class="pg" data-c="c04"></span></a>
+    <a class="lk" href="#c05"><span class="n">5</span><span class="t">Navegação e notificações</span><span class="pg" data-c="c05"></span></a>
+    <a class="lk" href="#c06"><span class="n">6</span><span class="t">Painel de contratações</span><span class="pg" data-c="c06"></span></a>
+    <a class="lk" href="#c07"><span class="n">7</span><span class="t">Carteira de contratações e planilha de andamento</span><span class="pg" data-c="c07"></span></a>
+    <a class="lk" href="#c08"><span class="n">8</span><span class="t">Cadastrar uma nova contratação</span><span class="pg" data-c="c08"></span></a>
+    <a class="lk" href="#c09"><span class="n">9</span><span class="t">Acompanhar uma contratação</span><span class="pg" data-c="c09"></span></a>
+    <div class="sub"><span class="n"></span><span class="t">9.3 Registrar a data de envio e controlar o prazo legal</span></div>
+    <a class="lk" href="#c10"><span class="n">10</span><span class="t">Minhas pendências e pendências da equipe</span><span class="pg" data-c="c10"></span></a>
+    <a class="lk" href="#c11"><span class="n">11</span><span class="t">Atas de registro de preços</span><span class="pg" data-c="c11"></span></a>
+    <a class="lk" href="#c12"><span class="n">12</span><span class="t">Relatórios</span><span class="pg" data-c="c12"></span></a>
+    <a class="lk" href="#c13"><span class="n">13</span><span class="t">Equipe do GT</span><span class="pg" data-c="c13"></span></a>
+    <a class="lk" href="#c14"><span class="n">14</span><span class="t">Auditoria</span><span class="pg" data-c="c14"></span></a>
+    <a class="lk" href="#c15"><span class="n">15</span><span class="t">Manutenção (administrador)</span><span class="pg" data-c="c15"></span></a>
+    <a class="lk" href="#c16"><span class="n">16</span><span class="t">Rotina recomendada por perfil</span><span class="pg" data-c="c16"></span></a>
+    <a class="lk" href="#c17"><span class="n">17</span><span class="t">Dúvidas frequentes</span><span class="pg" data-c="c17"></span></a>
+    <a class="lk" href="#c18"><span class="n">A</span><span class="t">Anexo A — As 32 atividades do fluxo</span><span class="pg" data-c="c18"></span></a>
+    <a class="lk" href="#c19"><span class="n">B</span><span class="t">Anexo B — Glossário</span><span class="pg" data-c="c19"></span></a>
+  </div>
+</section>
+
+<!-- ======================= 1 ======================= -->
+<h1 id="c01"><span class="num">Capítulo 1</span>Apresentação</h1>
+<p class="lead">O que é o sistema, para que serve e quem o utiliza.</p>
+<p>O <strong>Sistema de Controle de Contratações</strong> automatiza o fluxo de contratações acompanhado pelo <strong>GT PROPAG – Compras Públicas</strong>, formado por 15 integrantes de quatro órgãos: SEDES, SECTI, FAETEC e PRODERJ. Ele substitui a planilha de andamento como fonte oficial de acompanhamento e reúne, em um só lugar:</p>
+<ul>
+  <li><strong>O fluxo de contratação completo</strong> — 3 macroprocessos, 5 etapas e 32 atividades, gerados automaticamente para cada demanda conforme a modalidade;</li>
+  <li><strong>Os prazos legais</strong> que não podem atrasar — Comunicação à SEPLAG (15 dias corridos), Análise técnica do PRODERJ (20 dias úteis, prorrogáveis por mais 20) e Análise da CGE (15 dias corridos), contados automaticamente a partir da data de envio;</li>
+  <li><strong>Os papéis e responsabilidades</strong> — quem responde por cada etapa e cada atividade, com perfis de acesso por função;</li>
+  <li><strong>O acompanhamento</strong> — painel geral, pendências por integrante, relatórios semanais e mensais, documentos anexados e trilha de auditoria de todas as alterações.</li>
+</ul>
+<h2><span class="n">1.1</span>Como acessar</h2>
+<p>O sistema funciona pelo navegador (Microsoft Edge, Google Chrome ou Mozilla Firefox atualizados), sem necessidade de instalação:</p>
+<p style="font-size:12pt"><strong>https://gt-propag-faetec.netlify.app</strong></p>
+<p>O acesso é restrito: somente integrantes cadastrados pelo administrador conseguem criar conta e entrar. O procedimento está no Capítulo 4.</p>
+<h2><span class="n">1.2</span>Princípios de uso</h2>
+<ul>
+  <li><strong>O sistema é a fonte oficial.</strong> Registre andamentos, datas e documentos no sistema, não em planilhas paralelas.</li>
+  <li><strong>Sem data de envio, não há prazo.</strong> A contagem dos prazos da SEPLAG, do PRODERJ e da CGE só começa quando a data de envio é registrada na atividade.</li>
+  <li><strong>Toda ação é registrada.</strong> Cada inclusão, alteração ou exclusão fica gravada na auditoria com autor, data, hora e os valores anteriores e novos.</li>
+  <li><strong>Cada um vê o que precisa e altera o que lhe cabe.</strong> As permissões seguem o papel de cada integrante no GT (Capítulo 3).</li>
+</ul>
+
+<!-- ======================= 2 ======================= -->
+<h1 id="c02"><span class="num">Capítulo 2</span>Conceitos do fluxo de contratação</h1>
+<p class="lead">Etapas, modalidades, situações e cores usadas em todo o sistema.</p>
+<h2><span class="n">2.1</span>Macroprocessos e etapas</h2>
+<p>O fluxo de contratação do GT está organizado em <strong>3 macroprocessos</strong> e <strong>5 etapas</strong>, que somam <strong>32 atividades</strong> (lista completa no Anexo A):</p>
+<div class="etapas-fig">
+  <div><b>ETAPA I</b><strong>Planejamento da contratação</strong>7 atividades<br>FAETEC/DGI · GT · VPA<br><span style="color:var(--gold-ink)">● PCA/PEDTIC a confirmar</span></div>
+  <div><b>ETAPA II</b><strong>Adesão à ARP</strong>6 atividades<br>GT · Div. Planejamento · DGI<br><span style="color:var(--gold-ink)">● Gate: ata válida</span></div>
+  <div class="crit"><b>ETAPA III</b><strong>Comunicações e análises</strong>3 atividades<br>FAETEC<br><span class="p">● SEPLAG 15 corridos · PRODERJ 20 úteis (+20)</span></div>
+  <div><b>ETAPA IV</b><strong>Pesquisa de preços</strong>7 atividades<br>FAETEC (100%)<br><span style="color:var(--gold-ink)">● Sem ponto focal nomeado</span></div>
+  <div class="crit"><b>ETAPA V</b><strong>Formalização e publicidade</strong>9 atividades<br>FAETEC (100%)<br><span class="p">● CGE 15 corridos</span></div>
+</div>
+<table>
+  <thead><tr><th>Macroprocesso</th><th>Etapas</th><th>Atividades</th><th>Base legal</th></tr></thead>
+  <tbody>
+    <tr><td><strong>1 · Fase preparatória</strong> — Planejamento da contratação</td><td>I</td><td class="c">7</td><td>Decreto 48.816/2023 · IN PRODERJ/PRE 05/2024</td></tr>
+    <tr><td><strong>2 · Seleção e precificação da solução</strong></td><td>II, III, IV</td><td class="c">16</td><td>Decretos 48.821/2023 e 48.843/2023 · IN PRODERJ/PRE 05/2024 · Enunciado 27 PGE-RJ</td></tr>
+    <tr><td><strong>3 · Fase contratual</strong> — Formalização e publicidade do contrato</td><td>V</td><td class="c">9</td><td>Decreto 48.821/2023 · Lei 14.133/2021 (PNCP)</td></tr>
+  </tbody>
+</table>
+<h2><span class="n">2.2</span>Prazos legais monitorados</h2>
+<table>
+  <thead><tr><th>Atividade</th><th>Etapa</th><th>Prazo</th><th>Início da contagem</th><th>Base</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Comunicação à SEPLAG</strong></td><td>III</td><td><span class="selo s-vermelho">15 dias corridos</span></td><td>Data de envio registrada</td><td>Decreto 48.821/2023, art. 2º</td></tr>
+    <tr><td><strong>Análise técnica do PRODERJ (TIC)</strong></td><td>III</td><td><span class="selo s-vermelho">20 dias úteis (+20)</span></td><td>Data de envio registrada</td><td>IN PRODERJ/PRE 05/2024, art. 4º</td></tr>
+    <tr><td><strong>Análise da CGE</strong></td><td>V</td><td><span class="selo s-vermelho">15 dias corridos</span></td><td>Data de envio registrada</td><td>Decreto 48.821/2023</td></tr>
+  </tbody>
+</table>
+<div class="caixa info"><b class="t">Como o sistema conta os prazos</b>
+<p>Segue o art. 183 da Lei nº 14.133/2021: exclui o dia do envio, inclui o dia do vencimento e, se o vencimento cair em sábado, domingo ou feriado, prorroga para o primeiro dia útil seguinte. Nos prazos em dias úteis, fins de semana e feriados cadastrados em Manutenção não são contados. Exemplo: envio à SEPLAG em 01/10/2026 vence em 16/10/2026; envio ao PRODERJ em 01/10/2026 vence em 03/11/2026 (12/10, 28/10 e 02/11 não contam).</p></div>
+<h2><span class="n">2.3</span>Modalidades (enquadramento)</h2>
+<p>A modalidade define quais etapas entram no checklist da contratação. Ao trocar a modalidade, o sistema ajusta o checklist automaticamente.</p>
+<table>
+  <thead><tr><th>Modalidade</th><th>Quando usar</th><th>Etapas geradas</th><th class="c">Atividades</th></tr></thead>
+  <tbody>
+    <tr><td><span class="selo s-azul">Adesão à ARP</span></td><td>Carona em ata de registro de preços de outro órgão</td><td>I, II, III, IV, V</td><td class="c">32</td></tr>
+    <tr><td><span class="selo s-roxo">Participante de RP</span></td><td>FAETEC participa da ata (ex.: PRODERJ) e usa o ETP do gerenciador — a atividade “Elaboração do ETP” já nasce concluída</td><td>I, III, IV, V</td><td class="c">26</td></tr>
+    <tr><td><span class="selo s-cinza">Dispensa</span></td><td>Art. 75 da Lei 14.133/2021</td><td>I, III, IV, V</td><td class="c">26</td></tr>
+    <tr><td><span class="selo s-cinza">Inexigibilidade</span></td><td>Art. 74 da Lei 14.133/2021</td><td>I, III, IV, V</td><td class="c">26</td></tr>
+    <tr><td><span class="selo s-verde">Licitação própria</span></td><td>Fase externa ainda não mapeada no fluxo do GT</td><td>I, III, IV, V</td><td class="c">26</td></tr>
+    <tr><td><span class="selo s-ouro">A definir</span></td><td>Enquadramento ainda em aberto (ex.: sem ata compatível)</td><td>I</td><td class="c">7</td></tr>
+  </tbody>
+</table>
+<h2><span class="n">2.4</span>Situação da contratação</h2>
+<p>A situação resume o estado da demanda e aparece em todas as listas. Ela é escolhida em lista suspensa (as opções podem ser ajustadas pelo administrador):</p>
+<p><span class="selo s-azul">Em instrução</span> <span class="selo s-ouro">Em andamento</span> <span class="selo s-cinza">Aguardando</span> <span class="selo s-vermelho">Devolvida</span> <span class="selo s-vermelho">Divergência</span> <span class="selo s-vermelho">Sem justificativa</span> <span class="selo s-cinza">Suspensa</span> <span class="selo s-verde">Concluída</span> <span class="selo s-cinza">Cancelada</span></p>
+<h2><span class="n">2.5</span>Status das atividades</h2>
+<table>
+  <thead><tr><th style="width:44mm">Status</th><th>Significado</th></tr></thead>
+  <tbody>
+    <tr><td><span class="selo s-cinza">Pendente</span></td><td>Ainda não iniciada.</td></tr>
+    <tr><td><span class="selo s-ouro">Em andamento</span></td><td>Em execução pelo responsável. O sistema registra a data de início.</td></tr>
+    <tr><td><span class="selo s-azul">Aguardando terceiros</span></td><td>Enviada a outro órgão ou área (SEPLAG, PRODERJ, CGE, área técnica) e aguardando retorno.</td></tr>
+    <tr><td><span class="selo s-vermelho">Devolvida</span></td><td>Retornou com pendências. O responsável geral da contratação é notificado.</td></tr>
+    <tr><td><span class="selo s-verde">Concluída</span></td><td>Finalizada. O sistema registra a data de conclusão.</td></tr>
+    <tr><td><span class="selo s-cinza">Não se aplica</span></td><td>Não é necessária nesta contratação.</td></tr>
+  </tbody>
+</table>
+<h2><span class="n">2.6</span>Situação dos prazos</h2>
+<p><span class="selo s-verde">No prazo</span> mais de 3 dias até o vencimento · <span class="selo s-ouro">Vence em breve</span> 3 dias ou menos · <span class="selo s-vermelho">Vencido</span> prazo ultrapassado · <span class="selo s-cinza">Contagem não iniciada</span> prazo legal sem data de envio · <span class="selo s-verde">Cumprido</span> / <span class="selo s-vermelho">Cumprido com atraso</span> para atividades concluídas.</p>
+
+<!-- ======================= 3 ======================= -->
+<h1 id="c03"><span class="num">Capítulo 3</span>Perfis de acesso e responsabilidades</h1>
+<p class="lead">Cada integrante recebe um perfil de acesso de acordo com sua função no GT.</p>
+<h2><span class="n">3.1</span>Composição do GT</h2>
+<table>
+  <thead><tr><th>Frente</th><th>Função no GT</th><th>Integrantes</th><th>Perfil de acesso</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Frente I</strong></td><td>Coordenação, aprovação e conformidade</td><td>Karina Ferrarez (SEDES), Vinicius Murat (FAETEC), Cristiane Vaz dos Santos Aguiar (SECTI) · Elias Conceição Magalhães (SEDES)</td><td>Coordenação · Conformidade (Elias)</td></tr>
+    <tr><td><strong>Frente II</strong></td><td>Pesquisa e elaboração de artefatos</td><td>Andressa, Allana, Taina (SEDES) · Thamyres, Pascoal (SECTI) · Mara, Thailane, Marco (PRODERJ)</td><td>Elaboração de artefatos</td></tr>
+    <tr><td><strong>Frente III</strong></td><td>Pontos focais e lançamento nos sistemas</td><td>Jhonatan Silva Santos, Gibson Cruz da Silva, Luene F. C. d'Ávila (FAETEC)</td><td>Ponto focal FAETEC</td></tr>
+  </tbody>
+</table>
+<h2><span class="n">3.2</span>O que cada perfil pode fazer</h2>
+<table class="matriz">
+  <thead><tr><th>Ação</th><th class="c">Admin</th><th class="c">Coorde&shy;nação</th><th class="c">Confor&shy;midade</th><th class="c">Elabo&shy;ração</th><th class="c">Ponto focal</th><th class="c">Consulta</th></tr></thead>
+  <tbody>
+    <tr><td>Ver painel, contratações, pendências, relatórios e equipe</td><td class="c sim">✓</td><td class="c sim">✓</td><td class="c sim">✓</td><td class="c sim">✓</td><td class="c sim">✓</td><td class="c sim">✓</td></tr>
+    <tr><td>Cadastrar nova contratação</td><td class="c sim">✓</td><td class="c sim">✓</td><td class="c nao">—</td><td class="c nao">—</td><td class="c nao">—</td><td class="c nao">—</td></tr>
+    <tr><td>Editar dados e colunas do painel da contratação</td><td class="c sim">✓</td><td class="c sim">✓</td><td class="c sim">✓</td><td class="c parcial">◐¹</td><td class="c sim">✓</td><td class="c nao">—</td></tr>
+    <tr><td>Alterar a modalidade (regera o checklist)</td><td class="c sim">✓</td><td class="c sim">✓</td><td class="c nao">—</td><td class="c nao">—</td><td class="c nao">—</td><td class="c nao">—</td></tr>
+    <tr><td>Designar responsável geral e responsáveis por etapa</td><td class="c sim">✓</td><td class="c sim">✓</td><td class="c nao">—</td><td class="c nao">—</td><td class="c nao">—</td><td class="c nao">—</td></tr>
+    <tr><td>Atualizar atividades (status, responsável, datas)</td><td class="c sim">✓</td><td class="c sim">✓</td><td class="c sim">✓</td><td class="c parcial">◐²</td><td class="c parcial">◐³</td><td class="c nao">—</td></tr>
+    <tr><td>Registrar andamentos e anexar documentos</td><td class="c sim">✓</td><td class="c sim">✓</td><td class="c sim">✓</td><td class="c sim">✓</td><td class="c sim">✓</td><td class="c nao">—</td></tr>
+    <tr><td>Cadastrar e editar atas de registro de preços</td><td class="c sim">✓</td><td class="c sim">✓</td><td class="c sim">✓</td><td class="c sim">✓</td><td class="c sim">✓</td><td class="c nao">—</td></tr>
+    <tr><td>Ver a auditoria</td><td class="c sim">✓</td><td class="c sim">✓</td><td class="c sim">✓</td><td class="c nao">—</td><td class="c nao">—</td><td class="c nao">—</td></tr>
+    <tr><td>Excluir contratação ou ata</td><td class="c sim">✓</td><td class="c nao">—</td><td class="c nao">—</td><td class="c nao">—</td><td class="c nao">—</td><td class="c nao">—</td></tr>
+    <tr><td>Manutenção: integrantes, listas, prazos, feriados, modalidades</td><td class="c sim">✓</td><td class="c nao">—</td><td class="c nao">—</td><td class="c nao">—</td><td class="c nao">—</td><td class="c nao">—</td></tr>
+  </tbody>
+</table>
+<p style="font-size:8.6pt;color:var(--muted)">¹ Somente nas contratações em que atua (responsável geral, responsável de etapa ou de alguma atividade). ² Atividades das Etapas I e II e as atribuídas a si. ³ Atividades das Etapas III a V e as atribuídas a si.</p>
+<div class="caixa info"><b class="t">Segurança</b><p>As permissões são aplicadas diretamente no banco de dados. Mesmo que um botão apareça, a operação é recusada se o perfil não tiver permissão, com a mensagem “Seu perfil de acesso não permite esta operação”.</p></div>
+
+<!-- ======================= 4 ======================= -->
+<h1 id="c04"><span class="num">Capítulo 4</span>Acesso ao sistema</h1>
+<p class="lead">Primeiro acesso, entrada, recuperação de senha e saída.</p>
+<figure class="media"><img src="img/01-login.jpg"><figcaption>Tela de acesso ao sistema.</figcaption></figure>
+<ol class="leg">
+  <li><strong>E-mail institucional</strong> — o mesmo cadastrado pelo administrador.</li>
+  <li><strong>Senha</strong> pessoal (mínimo de 8 caracteres).</li>
+  <li><strong>Entrar</strong> — acessa o sistema.</li>
+  <li><strong>Primeiro acesso</strong> — cria a sua senha na primeira vez.</li>
+  <li><strong>Esqueci a senha</strong> — envia um link de redefinição para o seu e-mail.</li>
+</ol>
+<h2><span class="n">4.1</span>Primeiro acesso</h2>
+<div class="caixa atencao"><b class="t">Antes de começar</b><p>O seu e-mail precisa estar cadastrado pelo administrador em <strong>Manutenção › Integrantes</strong>. E-mails não cadastrados recebem a mensagem “E-mail não cadastrado como integrante ativo do GT. Solicite acesso ao administrador.”</p></div>
+<ol class="passos">
+  <li>Abra <strong>https://gt-propag-faetec.netlify.app</strong> e clique em <strong>Primeiro acesso</strong>.</li>
+  <li>Informe o <strong>e-mail institucional</strong>, crie uma <strong>senha</strong> (mínimo de 8 caracteres) e repita-a em <strong>Confirme a senha</strong>.</li>
+  <li>Clique em <strong>Criar acesso</strong>.</li>
+  <li>Abra o e-mail de confirmação enviado pelo sistema e clique no link.</li>
+  <li>Volte à tela de acesso e entre com e-mail e senha. A conta é vinculada automaticamente ao seu perfil no GT.</li>
+</ol>
+<figure class="pequena"><img src="img/02-primeiro-acesso.jpg"><figcaption>Formulário de primeiro acesso.</figcaption></figure>
+<div class="caixa dica"><b class="t">Acesso criado pelo administrador</b><p>Se o administrador já criou a sua conta e enviou uma senha provisória, não use “Primeiro acesso”: entre diretamente com o e-mail e a senha recebidos.</p></div>
+<h2><span class="n">4.2</span>Entrar</h2>
+<ol class="passos">
+  <li>Informe e-mail e senha e clique em <strong>Entrar</strong>.</li>
+  <li>O sistema abre o <strong>Painel de contratações</strong>. O seu nome e perfil aparecem no rodapé do menu lateral.</li>
+</ol>
+<h2><span class="n">4.3</span>Esqueci a senha</h2>
+<ol class="passos">
+  <li>Na tela de acesso, clique em <strong>Esqueci a senha</strong>, informe o e-mail e clique em <strong>Enviar link</strong>.</li>
+  <li>Abra o e-mail recebido e clique no link. O sistema abre a tela <strong>Definir nova senha</strong>.</li>
+  <li>Digite e confirme a nova senha e clique em <strong>Salvar senha</strong>.</li>
+</ol>
+<h2><span class="n">4.4</span>Sair</h2>
+<p>Clique em <strong>Sair</strong>, no rodapé do menu lateral. Em computadores compartilhados, sempre saia ao terminar.</p>
+
+<!-- ======================= 5 ======================= -->
+<h1 id="c05"><span class="num">Capítulo 5</span>Navegação e notificações</h1>
+<p class="lead">Estrutura das telas, menu lateral e avisos do sininho.</p>
+<figure><img src="img/03-layout.jpg"><figcaption>Estrutura geral da tela.</figcaption></figure>
+<ol class="leg">
+  <li><strong>Menu lateral</strong> — Painel, Contratações, Minhas pendências (com o total de atividades abertas), Atas de registro, Relatórios e Equipe do GT. Os itens <strong>Auditoria</strong> e <strong>Manutenção</strong> aparecem apenas para os perfis autorizados.</li>
+  <li><strong>Sininho</strong> — notificações, com o número de avisos não lidos.</li>
+  <li><strong>Usuário</strong> — nome, perfil de acesso e botão <strong>Sair</strong>.</li>
+  <li><strong>Atalhos de relatórios</strong> — report semanal, mensal e por período.</li>
+  <li><strong>Filtros</strong> da página.</li>
+</ol>
+<h2><span class="n">5.1</span>Notificações</h2>
+<p>O sistema avisa automaticamente quando:</p>
+<ul>
+  <li>você é designado <strong>responsável por uma etapa</strong> ou <strong>por uma atividade</strong>;</li>
+  <li>alguém registra um <strong>andamento</strong> em uma contratação sob a sua coordenação (responsável geral);</li>
+  <li>uma atividade de contratação sob a sua coordenação é <strong>devolvida</strong>.</li>
+</ul>
+<figure class="pequena"><img src="img/08-notificacoes.jpg"><figcaption>Painel de notificações.</figcaption></figure>
+<ol class="leg">
+  <li><strong>Marcar todas como lidas.</strong></li>
+  <li>Clique em uma notificação para abrir a contratação correspondente. Os avisos não lidos aparecem com fundo destacado.</li>
+</ol>
+<div class="caixa info"><b class="t">Atualização</b><p>As notificações são atualizadas a cada minuto e sempre que você muda de página.</p></div>
+
+<!-- ======================= 6 ======================= -->
+<h1 id="c06"><span class="num">Capítulo 6</span>Painel de contratações</h1>
+<p class="lead">Visão geral de tudo o que está acontecendo na carteira do GT.</p>
+<p>O Painel é a tela inicial. Use os filtros <strong>Modalidade</strong>, <strong>Etapa</strong> e <strong>Responsável</strong> no topo para recortar todos os indicadores de uma vez.</p>
+<figure><img src="img/04-painel-indicadores.jpg"><figcaption>Indicadores e caminho crítico.</figcaption></figure>
+<ol class="leg">
+  <li><strong>Demandas em carteira</strong> — contratações ativas (exceto concluídas e canceladas) e a etapa em que se encontram.</li>
+  <li><strong>Valor estimado informado</strong> — soma dos valores e quantas demandas já têm valor.</li>
+  <li><strong>Sem justificativa da área</strong> — demandas que ainda bloqueiam a elaboração do DOD.</li>
+  <li><strong>Prazos legais em contagem</strong> — atividades com data de envio registrada e quantos prazos já venceram.</li>
+  <li><strong>Caminho crítico</strong> — quantidade de demandas em cada etapa, com os prazos críticos (vermelho) e os pontos de atenção (dourado). Clique em uma etapa para ver a lista filtrada.</li>
+</ol>
+<figure class="media"><img src="img/05-painel-andamento.jpg"><figcaption>Andamento da Etapa I e distribuição por modalidade.</figcaption></figure>
+<p><strong>Etapa I · andamento das atividades</strong> mostra, para toda a carteira, quantas demandas já concluíram (azul) ou estão executando (dourado) cada artefato do planejamento: justificativa, DOD, definição da via, manifestação do TI, ETP e TR/Mapa de riscos. <strong>Por modalidade</strong> mostra o enquadramento da carteira.</p>
+<figure class="media"><img src="img/06-painel-prazos.jpg"><figcaption>Prazos legais e prazos vencidos.</figcaption></figure>
+<p>A tabela de prazos (1) lista primeiro os vencidos e depois os prazos legais em contagem, com dias restantes e situação. Clique em uma linha para abrir a contratação. À direita, o quadro lembra os três prazos legais monitorados e a regra de contagem.</p>
+<figure class="media"><img src="img/07-painel-acao.jpg"><figcaption>Contratações que pedem ação, pendências por responsável e qualidade do registro.</figcaption></figure>
+<ul>
+  <li><strong>Contratações que pedem ação</strong> — prioriza prazos vencidos, divergências e devoluções, depois demandas em andamento ou aguardando, pelo valor.</li>
+  <li><strong>Pendências por responsável</strong> — quem está com a atividade atual de cada contratação e quantas estão <strong>sem responsável definido</strong>.</li>
+  <li><strong>Qualidade do registro</strong> — lacunas que impedem o controle: sem datas de andamento, sem processo SEI, sem valor, sem responsável geral e divergências a validar.</li>
+</ul>
+
+<!-- ======================= 7 ======================= -->
+<h1 id="c07"><span class="num">Capítulo 7</span>Carteira de contratações e planilha de andamento</h1>
+<p class="lead">Localizar demandas, filtrar, editar em lote e exportar para Excel.</p>
+<figure><img src="img/09-contratacoes-lista.jpg"><figcaption>Lista de contratações.</figcaption></figure>
+<ol class="leg">
+  <li><strong>Buscar</strong> por objeto, número SEI, número da ata ou número de controle.</li>
+  <li><strong>Filtros</strong> por modalidade, etapa, responsável e situação.</li>
+  <li><strong>Atalhos</strong> com contagem: em andamento, aguardando, devolvidas, divergências, sem justificativa, sem responsável, prazo vencido e concluídas/canceladas.</li>
+  <li><strong>Visões</strong>: Lista ou Planilha de andamento (edição rápida).</li>
+  <li><strong>Exportar Excel</strong> — gera a planilha com todas as colunas do painel, respeitando os filtros aplicados.</li>
+  <li><strong>Nova contratação</strong> (Coordenação e Administrador).</li>
+  <li>Cada linha mostra modalidade, progresso na etapa atual, via/ata, atividade atual com responsável, valor e situação. Clique na linha para abrir a contratação.</li>
+</ol>
+<h2><span class="n">7.1</span>Planilha de andamento (edição rápida)</h2>
+<p>A visão <strong>Planilha de andamento</strong> reproduz as colunas da planilha do GT (processo antigo e novo, modalidade, DOD, ata de registro de preços, manifestação do TI, documentos da fase preparatória, valor global, último andamento, observação e situação), com <strong>listas suspensas</strong> nos campos padronizados.</p>
+<figure><img src="img/10-planilha.jpg"><figcaption>Planilha de andamento editável.</figcaption></figure>
+<ol class="leg">
+  <li><strong>Status</strong> em lista suspensa (ex.: DOD Elaborado, Em Elaboração, Em Análise).</li>
+  <li><strong>Observação</strong> em texto livre.</li>
+  <li><strong>Modalidade</strong> — só Coordenação e Administrador alteram. A troca ajusta o checklist.</li>
+</ol>
+<div class="caixa dica"><b class="t">Salvamento automático</b><p>Cada campo é salvo ao sair dele (tecla Tab ou clique fora). A célula fica amarela enquanto salva e verde quando conclui. Cada alteração é registrada na auditoria.</p></div>
+
+<!-- ======================= 8 ======================= -->
+<h1 id="c08"><span class="num">Capítulo 8</span>Cadastrar uma nova contratação</h1>
+<p class="lead">Perfis Coordenação e Administrador. O cadastro gera o checklist, os prazos e avisa os responsáveis.</p>
+<ol class="passos">
+  <li>Em <strong>Contratações</strong>, clique em <strong>+ Nova contratação</strong>.</li>
+  <li>Preencha os cinco blocos: Identificação, Planejamento e PCA, Enquadramento, Responsáveis e Documentos.</li>
+  <li>Confira o resumo à direita e clique em <strong>Criar contratação</strong>.</li>
+</ol>
+<figure><img src="img/11-nova-identificacao.jpg"><figcaption>Nova contratação — identificação e resumo.</figcaption></figure>
+<ol class="leg">
+  <li><strong>Passos</strong> — clique para ir direto a cada bloco.</li>
+  <li><strong>Objeto</strong> (obrigatório), no padrão “Contratação de [objeto], visando atender às necessidades da FAETEC”.</li>
+  <li><strong>Nome curto</strong> — como a demanda aparece nas listas (ex.: “Chromebooks”). É sugerido a partir do objeto.</li>
+  <li><strong>Justificativa da área técnica recebida?</strong> (obrigatório). Se “Ainda não”, a demanda entra como <span class="selo s-vermelho">Sem justificativa</span>.</li>
+  <li><strong>Resumo</strong> — quantas atividades serão geradas por etapa na modalidade escolhida e quais prazos legais serão monitorados.</li>
+  <li><strong>Criar contratação</strong>. Abaixo do botão, o sistema lista os campos obrigatórios que faltam.</li>
+</ol>
+<p>No bloco <strong>Planejamento e PCA</strong>, informe se a demanda consta no PCA/PEDTIC (obrigatório), o item, o ID SIGA, o valor estimado, a origem da estimativa e a data-meta.</p>
+<figure class="media"><img src="img/12-nova-enquadramento.jpg"><figcaption>Enquadramento e ata de registro de preços.</figcaption></figure>
+<ol class="leg">
+  <li><strong>Modalidade</strong> — define as etapas do checklist (Capítulo 2.3).</li>
+  <li><strong>Ata de registro de preços</strong> — busque no catálogo ou clique em <strong>Cadastrar nova ata</strong>. Se nenhuma ata servir, marque “Nenhuma ata compatível encontrada”.</li>
+</ol>
+<figure class="media"><img src="img/13-nova-responsaveis.jpg"><figcaption>Responsáveis.</figcaption></figure>
+<ol class="leg">
+  <li><strong>Responsável geral</strong> (Coordenação, obrigatório) e <strong>prioridade</strong>.</li>
+  <li><strong>Responsável por etapa</strong> — será atribuído a todas as atividades da etapa e receberá um aviso. As Etapas IV e V aparecem em vermelho enquanto não houver ponto focal designado.</li>
+</ol>
+<figure class="media"><img src="img/14-nova-documentos.jpg"><figcaption>Documentos iniciais.</figcaption></figure>
+<ol class="leg">
+  <li><strong>Anexos</strong> — arraste ou clique para anexar PDF, Word ou Excel (até 50 MB cada) e escolha o tipo de cada documento.</li>
+  <li><strong>Link da pasta</strong> (Drive ou SEI) e <strong>observação inicial</strong>, que vira o primeiro andamento da linha do tempo.</li>
+</ol>
+<div class="caixa info"><b class="t">Ao criar, o sistema</b>
+<ul><li>atribui o próximo número de controle;</li><li>gera as atividades do checklist conforme a modalidade;</li><li>atribui os responsáveis por etapa e envia os avisos;</li><li>registra a criação na auditoria;</li><li>inclui a demanda no painel e nos relatórios.</li></ul></div>
+<div class="caixa dica"><b class="t">Salvar rascunho</b><p>Use <strong>Salvar rascunho</strong> (exige apenas o objeto) para completar o cadastro depois. Rascunhos aparecem na lista com o selo “Rascunho” e não entram nos indicadores do painel.</p></div>
+
+<!-- ======================= 9 ======================= -->
+<h1 id="c09"><span class="num">Capítulo 9</span>Acompanhar uma contratação</h1>
+<p class="lead">Checklist das atividades, prazos legais, responsáveis, andamentos, documentos e histórico.</p>
+<figure><img src="img/15-detalhe-topo.jpg"><figcaption>Página da contratação.</figcaption></figure>
+<ol class="leg">
+  <li><strong>Identificação</strong> — número, modalidade, situação e prioridade.</li>
+  <li><strong>Exportar ficha</strong> — Excel com o checklist e os andamentos. <strong>Excluir</strong> aparece só para o Administrador.</li>
+  <li><strong>Alertas</strong> — prazos vencidos, divergência a validar e falta de justificativa.</li>
+  <li><strong>Resumo</strong> — etapa atual e progresso, atividade atual e responsável, próximo prazo e valor estimado.</li>
+  <li><strong>Abas</strong> — Checklist do fluxo, Dados e painel, Andamentos, Documentos e Histórico (auditoria).</li>
+</ol>
+<h2><span class="n">9.1</span>Checklist do fluxo</h2>
+<p>As atividades aparecem agrupadas por etapa. Clique no cabeçalho de uma etapa para recolher ou expandir.</p>
+<figure class="media"><img src="img/17-checklist-etapa1.jpg"><figcaption>Etapa I no checklist.</figcaption></figure>
+<ol class="leg">
+  <li><strong>Progresso da etapa</strong> — atividades concluídas sobre o total.</li>
+  <li><strong>Prazo interno</strong> — para atividades sem prazo legal, informe uma data-meta. O sistema mostra os dias restantes e passa a cobrar o prazo nas pendências e no painel.</li>
+</ol>
+<h2><span class="n">9.2</span>Atualizar uma atividade</h2>
+<ol class="passos">
+  <li>No checklist, altere o <strong>Status</strong> na lista suspensa. O sistema registra automaticamente a data de início (Em andamento/Aguardando) ou de conclusão (Concluída) e cria um registro na linha do tempo.</li>
+  <li>Altere o <strong>Responsável</strong>, se necessário. O novo responsável recebe um aviso.</li>
+  <li>Para registrar observações, datas ou anexos da atividade, clique no <strong>lápis</strong> ao final da linha.</li>
+</ol>
+<h2><span class="n">9.3</span>Registrar a data de envio e controlar o prazo legal</h2>
+<p>Este é o procedimento mais importante do sistema. Os prazos da SEPLAG, do PRODERJ e da CGE só são controlados depois que a data de envio é registrada.</p>
+<figure><img src="img/16-checklist-prazos.jpg"><figcaption>Etapa III com prazos legais em contagem.</figcaption></figure>
+<ol class="leg">
+  <li><strong>Responsável da etapa</strong> (Coordenação/Administrador) — atribui o integrante a todas as atividades abertas da etapa.</li>
+  <li><strong>Status</strong> — ao enviar ao órgão, use <span class="selo s-azul">Aguardando terceiros</span>.</li>
+  <li><strong>Responsável</strong> pela atividade.</li>
+  <li><strong>Envio</strong> — informe a data em que o processo foi enviado. O sistema calcula o <strong>vencimento</strong> e mostra os dias restantes. A caixa fica verde (no prazo), dourada (vence em até 3 dias) ou vermelha (vencido).</li>
+  <li><strong>Prorrogado (+20)</strong> — no PRODERJ, marque quando houver prorrogação. O vencimento passa a considerar 40 dias úteis.</li>
+  <li><strong>Lápis</strong> — observações e anexos da atividade (por exemplo, o ofício ou o e-mail de envio).</li>
+</ol>
+<ol class="passos">
+  <li>Abra a contratação e localize a atividade (<em>Comunicação à SEPLAG</em>, <em>Análise técnica do PRODERJ (TIC)</em> ou <em>Análise da CGE</em>).</li>
+  <li>No campo <strong>Envio</strong>, informe a data de envio. O vencimento aparece imediatamente.</li>
+  <li>Mude o status para <strong>Aguardando terceiros</strong>.</li>
+  <li>Anexe o comprovante de envio pelo lápis ou pela aba Documentos.</li>
+  <li>Quando o órgão responder, mude o status para <strong>Concluída</strong>. O sistema registra se o prazo foi cumprido ou cumprido com atraso.</li>
+</ol>
+<div class="caixa importante"><b class="t">Atenção</b><p>Registre a data de envio no mesmo dia em que o processo for enviado. Sem ela, a atividade fica como “Contagem não iniciada” e o prazo não aparece nos alertas, nas pendências nem nos relatórios.</p></div>
+<h2><span class="n">9.4</span>Detalhes da atividade</h2>
+<figure class="pequena"><img src="img/18-modal-atividade.jpg"><figcaption>Janela de detalhes da atividade (lápis).</figcaption></figure>
+<p>Na janela de detalhes você registra a data de início, o prazo interno, a data de conclusão (quando concluída) e a observação ou pendência (o que falta, com quem está, próximo passo), e anexa documentos à atividade. A base legal e os pontos de atenção da atividade aparecem no topo.</p>
+<h2><span class="n">9.5</span>Dados e painel</h2>
+<figure><img src="img/19-detalhe-dados.jpg"><figcaption>Aba Dados e painel — situação e responsabilidade.</figcaption></figure>
+<p>A aba reúne todos os dados cadastrais: situação, prioridade, responsável geral, divergência a validar, identificação, PCA, valor, modalidade, ata e as <strong>colunas do painel</strong> da planilha do GT.</p>
+<figure class="media"><img src="img/20-detalhe-painel-planilha.jpg"><figcaption>Colunas do painel de andamento com listas suspensas.</figcaption></figure>
+<ol class="passos">
+  <li>Altere os campos desejados. O rodapé mostra quantos campos foram alterados.</li>
+  <li>Clique em <strong>Salvar alterações</strong> ou em <strong>Descartar</strong>.</li>
+</ol>
+<div class="caixa atencao"><b class="t">Troca de modalidade</b><p>Ao salvar uma nova modalidade, o checklist é ajustado: etapas novas são criadas, e atividades de etapas que deixaram de se aplicar são removidas (se nunca foram tocadas) ou marcadas como “Não se aplica”.</p></div>
+<h2><span class="n">9.6</span>Andamentos</h2>
+<figure class="media"><img src="img/21-andamentos.jpg"><figcaption>Linha do tempo e registro de andamento.</figcaption></figure>
+<ol class="leg">
+  <li><strong>Linha do tempo</strong> — andamentos registrados pela equipe e registros automáticos (mudanças de status e envios). Desmarque “Mostrar registros automáticos” para ver só os andamentos manuais.</li>
+  <li><strong>Registrar andamento</strong> — escolha o tipo (andamento, envio/tramitação, devolução ou divergência), a atividade relacionada (opcional) e descreva o que aconteceu, com quem está e o próximo passo.</li>
+</ol>
+<p>O andamento registrado passa a ser o <strong>último andamento</strong> da contratação no painel e na planilha, e o responsável geral é notificado.</p>
+<h2><span class="n">9.7</span>Documentos</h2>
+<figure class="media"><img src="img/22-documentos.jpg"><figcaption>Documentos da contratação.</figcaption></figure>
+<ol class="leg">
+  <li><strong>Baixar</strong> — o arquivo é aberto por um link temporário e seguro.</li>
+  <li><strong>Anexar</strong> — escolha o tipo de documento e, se quiser, a atividade relacionada. Arraste os arquivos ou clique na área. Formatos aceitos: PDF, DOC, DOCX, XLS e XLSX, com até 50 MB por arquivo.</li>
+</ol>
+<p>Quem enviou o documento, a Coordenação e o Administrador podem removê-lo (lixeira). A remoção fica registrada na auditoria.</p>
+<h2><span class="n">9.8</span>Histórico (auditoria da contratação)</h2>
+<figure class="media"><img src="img/23-historico.jpg"><figcaption>Histórico de alterações da contratação.</figcaption></figure>
+<p>Disponível para Administrador, Coordenação e Conformidade. Mostra todas as alterações da contratação e de suas atividades, andamentos, responsáveis e documentos. Clique em <strong>Detalhes</strong> para ver o valor anterior e o novo de cada campo.</p>
+<h2><span class="n">9.9</span>Encerrar ou excluir</h2>
+<p>Para encerrar uma demanda, altere a situação para <strong>Concluída</strong> ou <strong>Cancelada</strong>. A exclusão (Administrador) apaga o checklist, os andamentos e os documentos, e deve ser usada apenas para registros criados por engano. Os dados excluídos permanecem na auditoria.</p>
+
+<!-- ======================= 10 ======================= -->
+<h1 id="c10"><span class="num">Capítulo 10</span>Minhas pendências e pendências da equipe</h1>
+<p class="lead">Tudo o que está com cada integrante: atividades, prazos, status e pendências.</p>
+<figure><img src="img/24-minhas-pendencias.jpg"><figcaption>Minhas pendências (exemplo de um ponto focal).</figcaption></figure>
+<ol class="leg">
+  <li><strong>Indicadores</strong> — atividades abertas, prazos vencidos, vencimentos em até 5 dias, aguardando terceiros e contratações sob a sua coordenação.</li>
+  <li><strong>Filtros</strong> — abertas, vencidas, próximos 5 dias, concluídas e todas. A lista é ordenada pelo prazo mais próximo.</li>
+  <li><strong>Status</strong> — atualize a atividade diretamente na lista.</li>
+  <li><strong>Contratações sob coordenação</strong> — demandas em que você é o responsável geral.</li>
+</ol>
+<p>Use a lista suspensa no topo para ver as pendências de outro integrante e <strong>Exportar</strong> para gerar a lista em Excel.</p>
+<h2><span class="n">10.1</span>Visão da equipe</h2>
+<figure class="media"><img src="img/25-pendencias-equipe.jpg"><figcaption>Pendências da equipe.</figcaption></figure>
+<p>Clique em <strong>Visão da equipe</strong> para ver a carga de todos os integrantes: abertas, em curso, vencidas, a vencer em até 5 dias, concluídas e contratações envolvidas. O indicador <strong>Atividades abertas sem responsável</strong> mostra o que ainda precisa ser designado. Clique em um integrante para abrir as pendências dele.</p>
+
+<!-- ======================= 11 ======================= -->
+<h1 id="c11"><span class="num">Capítulo 11</span>Atas de registro de preços</h1>
+<p class="lead">Catálogo das atas pesquisadas pelo GT para adesão ou participação.</p>
+<figure class="media"><img src="img/26-atas.jpg"><figcaption>Catálogo de atas.</figcaption></figure>
+<ol class="leg">
+  <li><strong>Cadastrar ata</strong> (perfis operacionais).</li>
+  <li><strong>Busca</strong> por número, órgão gerenciador, objeto ou fornecedor.</li>
+  <li>Cada ata mostra o uso pela FAETEC (adesão ou participante), a vigência e as contratações vinculadas.</li>
+</ol>
+<p>A cor da vigência indica: <span class="selo s-verde">Vigente</span>, <span class="selo s-ouro">Vence em até 60 dias</span>, <span class="selo s-vermelho">Vencida</span> ou <span class="selo s-cinza">Vigência não informada</span>.</p>
+<figure class="pequena"><img src="img/27-atas-form.jpg"><figcaption>Cadastro de ata.</figcaption></figure>
+<div class="caixa atencao"><b class="t">Gate da Etapa II</b><p>Sem ata válida com adesão possível, o fluxo de ARP é interrompido. Mantenha a vigência e a situação das atas atualizadas.</p></div>
+
+<!-- ======================= 12 ======================= -->
+<h1 id="c12"><span class="num">Capítulo 12</span>Relatórios</h1>
+<p class="lead">Reports semanal, mensal e por período, carteira, prazos e pendências, com filtros e exportação.</p>
+<figure><img src="img/28-relatorios.jpg"><figcaption>Relatórios.</figcaption></figure>
+<ol class="leg">
+  <li><strong>Tipo de relatório</strong>: Report do período, Carteira, Prazos e Pendências por integrante.</li>
+  <li><strong>Filtros</strong>: período (semana anterior, mês corrente ou personalizado), modalidade, etapa, situação, responsável e órgão do responsável.</li>
+  <li><strong>Exportar Excel</strong> — planilha com uma aba para cada seção do relatório.</li>
+  <li><strong>Imprimir / PDF</strong> — versão para impressão, sem menus. Para gerar PDF, escolha “Salvar como PDF” na janela de impressão.</li>
+</ol>
+<table>
+  <thead><tr><th style="width:44mm">Relatório</th><th>Conteúdo</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Report do período</strong></td><td>Novas contratações, atividades concluídas, envios com prazo legal, prazos vencidos no período, andamentos registrados, prazos dos próximos 7 dias e posição da carteira. <em>Semanal</em> = semana anterior (segunda a domingo); <em>mensal</em> = mês corrente.</td></tr>
+    <tr><td><strong>Carteira</strong></td><td>Posição de todas as demandas, com totais por situação e por etapa e o valor estimado.</td></tr>
+    <tr><td><strong>Prazos</strong></td><td>Todas as atividades com prazo legal ou interno, filtráveis pela situação do prazo (vencido, vence em breve, no prazo, contagem não iniciada, cumprido).</td></tr>
+    <tr><td><strong>Pendências por integrante</strong></td><td>Atividades abertas, vencidas e a vencer de cada integrante, com o detalhamento individual.</td></tr>
+  </tbody>
+</table>
+
+<!-- ======================= 13 ======================= -->
+<h1 id="c13"><span class="num">Capítulo 13</span>Equipe do GT</h1>
+<p class="lead">Quem faz o quê no fluxo, formato de trabalho e carga atual.</p>
+<figure class="media"><img src="img/29-equipe.jpg"><figcaption>Composição do GT por frente.</figcaption></figure>
+<p>A tela mostra os integrantes por frente, com órgão, função, modelo de trabalho (presencial ou híbrido) e atividades abertas. Clique em um integrante para ver as pendências dele.</p>
+<figure class="media"><img src="img/30-equipe-matriz.jpg"><figcaption>Matriz “Quem faz o quê no fluxo de contratação”.</figcaption></figure>
+<p>Legenda da matriz: <strong>E</strong> executa · <strong>A</strong> coordena, aprova e verifica a conformidade · <strong>C</strong> apoia (consulta) · <strong>L</strong> lança nos sistemas. Ao lado ficam a <strong>carga atual</strong> por integrante (em vermelho, os vencidos) e o resumo dos <strong>perfis de acesso</strong>.</p>
+
+<!-- ======================= 14 ======================= -->
+<h1 id="c14"><span class="num">Capítulo 14</span>Auditoria</h1>
+<p class="lead">Quem alterou, quando e o quê. Disponível para Administrador, Coordenação e Conformidade.</p>
+<figure><img src="img/31-auditoria.jpg"><figcaption>Trilha de auditoria com o detalhe de uma alteração.</figcaption></figure>
+<ol class="leg">
+  <li><strong>Filtros</strong> — período (padrão: últimos 30 dias), usuário, tipo de registro e operação (inclusão, alteração ou exclusão).</li>
+  <li><strong>Exportar Excel</strong> — até 10.000 registros, com os valores anteriores e novos.</li>
+  <li><strong>Detalhe</strong> — clique em uma linha para ver campo a campo o valor <em>antes</em> (vermelho) e <em>depois</em> (verde).</li>
+</ol>
+<div class="caixa info"><b class="t">Registro imutável</b><p>Os registros são gravados pelo próprio banco de dados a cada alteração, e nenhum usuário, nem mesmo o administrador, consegue editá-los ou apagá-los pelo sistema. A auditoria cobre contratações, atividades, responsáveis, andamentos, documentos, atas, integrantes e todas as configurações.</p></div>
+
+<!-- ======================= 15 ======================= -->
+<h1 id="c15"><span class="num">Capítulo 15</span>Manutenção (administrador)</h1>
+<p class="lead">Integrantes e perfis, listas suspensas, áreas, feriados, atividades, prazos e modalidades.</p>
+<figure><img src="img/32-manutencao-integrantes.jpg"><figcaption>Manutenção — integrantes e perfis.</figcaption></figure>
+<ol class="leg">
+  <li><strong>Abas</strong> da manutenção.</li>
+  <li><strong>Novo integrante.</strong></li>
+  <li><strong>E-mail e situação do acesso</strong>: “conta ativa”, “aguardando primeiro acesso” ou “sem e-mail” (não pode acessar).</li>
+  <li><strong>Editar</strong> o cadastro e o perfil.</li>
+</ol>
+<h2><span class="n">15.1</span>Cadastrar integrante e liberar o acesso</h2>
+<figure class="pequena"><img src="img/33-integrante-editar.jpg"><figcaption>Cadastro do integrante e perfil de acesso.</figcaption></figure>
+<ol class="leg">
+  <li><strong>E-mail institucional</strong> — é o que libera o acesso e vincula a conta ao integrante.</li>
+  <li><strong>Perfil de acesso</strong> — Administrador, Coordenação, Conformidade, Elaboração de artefatos, Ponto focal FAETEC ou Consulta (Capítulo 3).</li>
+  <li><strong>Ativo</strong> — desmarque para cortar o acesso imediatamente, sem apagar o histórico.</li>
+</ol>
+<ol class="passos">
+  <li>Clique em <strong>Novo integrante</strong> (ou <strong>Editar</strong>, para os integrantes já cadastrados).</li>
+  <li>Preencha nome, e-mail institucional, órgão, frente, modelo de trabalho e função, e escolha o perfil de acesso.</li>
+  <li>Clique em <strong>Salvar</strong>. O integrante aparece como “aguardando primeiro acesso”.</li>
+  <li>Oriente o integrante a entrar em <strong>Primeiro acesso</strong> com esse e-mail (Capítulo 4.1).</li>
+</ol>
+<div class="caixa atencao"><b class="t">Enquanto o envio de e-mails não estiver configurado</b>
+<p>O primeiro acesso depende do e-mail de confirmação. Se ele não chegar, o administrador cria a conta diretamente no painel do Supabase:</p>
+<ol style="margin-bottom:0"><li>No projeto <strong>gt-propag-contratacoes</strong>, vá em <strong>Authentication › Users › Add user › Create new user</strong>.</li><li>Informe o mesmo e-mail cadastrado no sistema e uma senha provisória, e deixe <strong>Auto Confirm User</strong> marcado.</li><li>Envie o endereço do sistema e a senha provisória ao integrante por canal seguro.</li></ol></div>
+<div class="caixa info"><b class="t">Proteções</b><p>O sistema não permite ficar sem administrador ativo nem que o administrador desative a própria conta. E-mails não cadastrados não conseguem criar conta.</p></div>
+<h2><span class="n">15.2</span>Listas suspensas</h2>
+<figure class="media"><img src="img/34-manutencao-listas.jpg"><figcaption>Listas suspensas do painel.</figcaption></figure>
+<p>Escolha a lista (situação da contratação, status do DOD, da ata, da manifestação do TI, da fase preparatória, origem da estimativa ou tipo de documento). Para cada opção é possível alterar a ordem e a cor do selo e ativar ou desativar a opção. Para incluir, use <strong>Nova opção</strong>. Para retirar uma opção sem perder o histórico, desmarque <strong>Ativo</strong>.</p>
+<h2><span class="n">15.3</span>Atividades e prazos</h2>
+<figure class="pequena"><img src="img/35-manutencao-prazo.jpg"><figcaption>Edição de uma atividade do modelo (prazo legal).</figcaption></figure>
+<p>Define o modelo das 32 atividades: etapa, ordem, nome, prazo legal (dias corridos ou úteis, quantidade e prorrogação), ponto de atenção, base legal, gate e se a atividade está ativa. <strong>As alterações valem para novas contratações e trocas de modalidade.</strong> Checklists já gerados não mudam.</p>
+<h2><span class="n">15.4</span>Modalidades</h2>
+<figure class="media"><img src="img/36-manutencao-modalidades.jpg"><figcaption>Etapas geradas por modalidade.</figcaption></figure>
+<p>Marque quais etapas cada modalidade gera. A Etapa I é obrigatória em todas. A coluna “Atividades” mostra o total resultante.</p>
+<h2><span class="n">15.5</span>Feriados e áreas demandantes</h2>
+<figure class="media"><img src="img/37-manutencao-feriados.jpg"><figcaption>Feriados e pontos facultativos.</figcaption></figure>
+<p>Os feriados são usados na contagem de dias úteis e na prorrogação de vencimentos. A carga inicial traz os feriados nacionais, estaduais (RJ) e municipais (Rio de Janeiro) de 2026 e 2027, além de pontos facultativos (Carnaval, Corpus Christi e Dia do Servidor). <strong>Mantenha a lista atualizada a cada ano</strong> e remova os pontos facultativos que não se aplicarem. Na aba <strong>Áreas demandantes</strong>, cadastre e ajuste as diretorias e setores que originam as demandas.</p>
+
+<!-- ======================= 16 ======================= -->
+<h1 id="c16"><span class="num">Capítulo 16</span>Rotina recomendada por perfil</h1>
+<p class="lead">Boas práticas para manter o controle dos prazos e a qualidade do registro.</p>
+<table>
+  <thead><tr><th style="width:36mm">Perfil</th><th>Diariamente</th><th>Semanalmente</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Todos</strong></td><td>Abrir <strong>Minhas pendências</strong> e tratar primeiro os vencidos e os que vencem em até 5 dias. Ler as notificações.</td><td>Conferir se todas as atividades em andamento têm observação atualizada.</td></tr>
+    <tr><td><strong>Coordenação</strong></td><td>Verificar no Painel as <strong>contratações que pedem ação</strong> e os <strong>prazos legais</strong>. Designar responsáveis para as demandas “sem responsável”.</td><td>Gerar o <strong>Report semanal</strong> e revisar a <strong>Visão da equipe</strong> (carga e vencidos). Validar divergências.</td></tr>
+    <tr><td><strong>Conformidade</strong></td><td>Validar artefatos concluídos e registrar divergências na contratação.</td><td>Revisar a auditoria das alterações relevantes.</td></tr>
+    <tr><td><strong>Elaboração (Frente II)</strong></td><td>Atualizar o status das atividades das Etapas I e II e anexar os artefatos (DOD, ETP, TR, Mapa de Riscos).</td><td>Atualizar o catálogo de <strong>atas</strong> (vigência e situação).</td></tr>
+    <tr><td><strong>Ponto focal (Frente III)</strong></td><td>Registrar <strong>no mesmo dia</strong> as datas de envio à SEPLAG, ao PRODERJ e à CGE. Lançar processo SEI, ID SIGA e valores.</td><td>Conferir o relatório de <strong>Prazos</strong> e cobrar os órgãos antes do vencimento.</td></tr>
+    <tr><td><strong>Administrador</strong></td><td>Liberar o acesso de novos integrantes.</td><td>Revisar a <strong>Qualidade do registro</strong> no painel e as listas suspensas. Atualizar os feriados anualmente.</td></tr>
+  </tbody>
+</table>
+
+<!-- ======================= 17 ======================= -->
+<h1 id="c17"><span class="num">Capítulo 17</span>Dúvidas frequentes</h1>
+<p class="lead">Situações comuns e como resolvê-las.</p>
+<table>
+  <thead><tr><th style="width:62mm">Situação</th><th>O que fazer</th></tr></thead>
+  <tbody>
+    <tr><td>“E-mail não cadastrado como integrante ativo do GT”</td><td>O administrador precisa cadastrar o seu e-mail em Manutenção › Integrantes (ou reativar o cadastro).</td></tr>
+    <tr><td>O e-mail de confirmação ou de redefinição de senha não chegou</td><td>Verifique a caixa de spam. Se não houver, peça ao administrador para criar ou redefinir o acesso (Capítulo 15.1).</td></tr>
+    <tr><td>“Acesso não liberado” depois do login</td><td>A conta existe, mas o integrante está inativo ou com outro e-mail cadastrado. Procure o administrador.</td></tr>
+    <tr><td>“Seu perfil de acesso não permite esta operação”</td><td>A ação não faz parte do seu perfil (Capítulo 3). Peça a quem tem a permissão ou ao administrador.</td></tr>
+    <tr><td>O prazo legal não aparece</td><td>Falta registrar a <strong>data de envio</strong> na atividade (Capítulo 9.3).</td></tr>
+    <tr><td>O vencimento caiu em data diferente da esperada</td><td>O sistema prorroga vencimentos em fim de semana ou feriado e desconta feriados nos dias úteis. Confira a lista de feriados em Manutenção.</td></tr>
+    <tr><td>A Etapa II não aparece no checklist</td><td>A modalidade não prevê a Etapa II (Dispensa, Inexigibilidade, Participante de RP, Licitação própria ou A definir).</td></tr>
+    <tr><td>Troquei a modalidade e sumiram atividades</td><td>Atividades de etapas que deixaram de se aplicar e nunca foram tocadas são removidas. As que tinham registro ficam como “Não se aplica”. Voltar à modalidade anterior as recria ou reativa.</td></tr>
+    <tr><td>Não consigo anexar um arquivo</td><td>Formatos aceitos: PDF, DOC, DOCX, XLS e XLSX, com até 50 MB cada.</td></tr>
+    <tr><td>Quero desfazer uma alteração</td><td>Consulte o valor anterior no Histórico (auditoria) e altere o campo novamente. A correção também fica registrada.</td></tr>
+  </tbody>
+</table>
+
+<!-- ======================= ANEXO A ======================= -->
+<h1 id="c18"><span class="num">Anexo A</span>As 32 atividades do fluxo</h1>
+<p class="lead">Modelo do caminho crítico aplicado a cada contratação.</p>
+<table>
+  <thead><tr><th style="width:18mm">Etapa</th><th style="width:8mm">Nº</th><th>Atividade</th><th>Prazo / atenção</th></tr></thead>
+  <tbody>
+    <tr><td rowspan="7"><strong>I</strong><br>Planejamento</td><td>1</td><td>Identificação da demanda</td><td></td></tr>
+    <tr><td>2</td><td>Inclusão no PCA / PEDTIC</td><td>Se ausente do PEDTIC: justificativa técnica e revisão extraordinária</td></tr>
+    <tr><td>3</td><td>Elaboração do DOD</td><td></td></tr>
+    <tr><td>4</td><td>Elaboração do ETP</td><td>Reaproveitado do gerenciador em Participante de RP</td></tr>
+    <tr><td>5</td><td>Elaboração do TR</td><td></td></tr>
+    <tr><td>6</td><td>Mapa de Riscos</td><td></td></tr>
+    <tr><td>7</td><td>Aprovação e autorização (VPA)</td><td></td></tr>
+    <tr><td rowspan="6"><strong>II</strong><br>Adesão à ARP</td><td>1</td><td>Anuência do órgão gerenciador</td><td></td></tr>
+    <tr><td>2</td><td>Anuência do fornecedor</td><td></td></tr>
+    <tr><td>3</td><td>Verificação de ata válida</td><td><span class="selo s-ouro">Gate</span> sem ata válida, o fluxo de ARP é interrompido</td></tr>
+    <tr><td>4</td><td>Inserção dos documentos da ARP</td><td></td></tr>
+    <tr><td>5</td><td>Compatibilidade do objeto</td><td></td></tr>
+    <tr><td>6</td><td>Justificativa de vantajosidade</td><td>Enunciado 27 PGE-RJ</td></tr>
+    <tr><td rowspan="3"><strong>III</strong><br>Comunicações e análises</td><td>1</td><td>Comunicação à SEPLAG</td><td><span class="selo s-vermelho">15 dias corridos</span></td></tr>
+    <tr><td>2</td><td>Análise técnica do PRODERJ (TIC)</td><td><span class="selo s-vermelho">20 dias úteis (+20)</span></td></tr>
+    <tr><td>3</td><td>Registro no Contratos.gov.br</td><td></td></tr>
+    <tr><td rowspan="7"><strong>IV</strong><br>Pesquisa de preços</td><td>1</td><td>Pesquisa de preços no SIGA</td><td>Sem ponto focal nomeado</td></tr>
+    <tr><td>2</td><td>Relatório Analítico (RAPP)</td><td></td></tr>
+    <tr><td>3</td><td>Ateste do setor técnico</td><td></td></tr>
+    <tr><td>4</td><td>Checklist PGE</td><td>Enunciado 27 PGE-RJ</td></tr>
+    <tr><td>5</td><td>Aprovação da pesquisa (SIGA)</td><td></td></tr>
+    <tr><td>6</td><td>Disponibilidade orçamentária</td><td></td></tr>
+    <tr><td>7</td><td>Declaração do ordenador de despesas</td><td></td></tr>
+    <tr><td rowspan="9"><strong>V</strong><br>Formalização e publicidade</td><td>1</td><td>Documentos de habilitação</td><td>Sem ponto focal nomeado</td></tr>
+    <tr><td>2</td><td>Minuta do contrato</td><td></td></tr>
+    <tr><td>3</td><td>Análise jurídica</td><td></td></tr>
+    <tr><td>4</td><td>Nota de auditoria (UCI)</td><td></td></tr>
+    <tr><td>5</td><td>Análise da CGE</td><td><span class="selo s-vermelho">15 dias corridos</span></td></tr>
+    <tr><td>6</td><td>Empenho</td><td></td></tr>
+    <tr><td>7</td><td>Assinatura do contrato</td><td></td></tr>
+    <tr><td>8</td><td>Publicação (D.O. / PNCP)</td><td>Lei 14.133/2021</td></tr>
+    <tr><td>9</td><td>Cadastro e-TCE (SIGFIS)</td><td></td></tr>
+  </tbody>
+</table>
+<p style="font-size:8.6pt;color:var(--muted)">Exposição legal mínima: 15 + 20 (+20) + 15 dias em 3 gates que não podem atrasar.</p>
+
+<!-- ======================= ANEXO B ======================= -->
+<h1 id="c19"><span class="num">Anexo B</span>Glossário</h1>
+<p class="lead">Siglas e termos usados no sistema.</p>
+<div class="duas">
+<dl class="glossario">
+  <dt>ARP</dt><dd>Ata de Registro de Preços.</dd>
+  <dt>Adesão (carona)</dt><dd>Uso, pela FAETEC, de ata gerenciada por outro órgão.</dd>
+  <dt>CGE</dt><dd>Controladoria Geral do Estado.</dd>
+  <dt>Checklist</dt><dd>Conjunto das atividades geradas para a contratação conforme a modalidade.</dd>
+  <dt>DGI</dt><dd>Unidade da FAETEC que abriga a Divisão de TI e participa da Etapa I.</dd>
+  <dt>DOD</dt><dd>Documento de Oficialização da Demanda.</dd>
+  <dt>e-TCE / SIGFIS</dt><dd>Sistema de fiscalização do Tribunal de Contas do Estado.</dd>
+  <dt>ETP</dt><dd>Estudo Técnico Preliminar.</dd>
+  <dt>Gate</dt><dd>Ponto de controle que interrompe o fluxo se não for atendido.</dd>
+  <dt>GT PROPAG</dt><dd>Grupo de Trabalho de Compras Públicas.</dd>
+</dl>
+<dl class="glossario">
+  <dt>PCA / PEDTIC</dt><dd>Plano de Contratações Anual / Plano Estratégico de TIC.</dd>
+  <dt>Participante de RP</dt><dd>FAETEC participa do registro de preços desde a origem.</dd>
+  <dt>PNCP</dt><dd>Portal Nacional de Contratações Públicas.</dd>
+  <dt>PRODERJ</dt><dd>Centro de Tecnologia de Informação e Comunicação do Estado do RJ.</dd>
+  <dt>RAPP</dt><dd>Relatório Analítico de Pesquisa de Preços.</dd>
+  <dt>Responsável geral</dt><dd>Integrante da coordenação que responde pela contratação.</dd>
+  <dt>SEI</dt><dd>Sistema Eletrônico de Informações (processos).</dd>
+  <dt>SEPLAG</dt><dd>Secretaria de Estado de Planejamento e Gestão.</dd>
+  <dt>SIGA</dt><dd>Sistema Integrado de Gestão de Aquisições.</dd>
+  <dt>TR</dt><dd>Termo de Referência.</dd>
+  <dt>UCI</dt><dd>Unidade de Controle Interno.</dd>
+  <dt>VPA</dt><dd>Instância da FAETEC que aprova e autoriza a contratação ao fim da Etapa I.</dd>
+</dl>
+</div>
+</body>
+</html>
