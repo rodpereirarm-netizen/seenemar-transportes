@@ -69,6 +69,7 @@ As permissões são garantidas por **Row Level Security** no Postgres (`supabase
    2. `…02_regras.sql` — prazos, checklist, notificações, auditoria e views
    3. `…03_seguranca.sql` — RLS por perfil e bucket `documentos` (privado, 50 MB, PDF/Word/Excel)
    4. `…04_carga_inicial.sql` — etapas, 32 atividades, 15 integrantes, listas, feriados, atas e as 17 demandas da planilha
+   5. `…05_endurecimento_funcoes.sql` — retira da API o acesso direto às funções internas (Security Advisor)
 3. **Defina o e-mail do administrador** (SQL Editor):
    ```sql
    update public.integrantes set email = 'seu.email@orgao.rj.gov.br'
