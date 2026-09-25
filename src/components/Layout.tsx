@@ -5,6 +5,7 @@ import { supabase, traduzirErro } from '../lib/supabase';
 import { PAPEIS, relativo } from '../lib/format';
 import type { Notificacao } from '../lib/types';
 import { Campo, Modal, toast } from './ui';
+import { InputSenha } from './InputSenha';
 import {
   IcBarras, IcCheck, IcDoc, IcEngrenagem, IcEquipe, IcEscudo, IcLista, IcMenu, IcPainel, IcSino,
 } from './Icones';
@@ -118,10 +119,10 @@ function AlterarSenha({ onFechar }: { onFechar: () => void }) {
       <div className="pilha">
         <p className="small muted" style={{ margin: 0 }}>Recomendado no primeiro acesso com senha provisória. A senha deve ter pelo menos 8 caracteres.</p>
         <Campo rotulo="Nova senha">
-          <input className="input" type="password" autoComplete="new-password" value={senha} onChange={(e) => setSenha(e.target.value)} />
+          <InputSenha autoComplete="new-password" value={senha} onChange={(e) => setSenha(e.target.value)} />
         </Campo>
         <Campo rotulo="Confirme a nova senha" erro={erro}>
-          <input className="input" type="password" autoComplete="new-password" value={senha2}
+          <InputSenha autoComplete="new-password" value={senha2}
             onChange={(e) => setSenha2(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && salvar()} />
         </Campo>
       </div>

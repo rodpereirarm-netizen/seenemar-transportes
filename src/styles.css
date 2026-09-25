@@ -224,6 +224,15 @@ table.planilha { border-collapse: separate; border-spacing: 0; font-size: 12.5px
 .input:focus { outline: 2px solid rgba(22, 40, 77, 0.18); border-color: var(--navy); }
 .input:disabled, .input[readonly] { background: var(--gray-soft); color: var(--muted); }
 .input.invalido { border-color: var(--red); }
+.senha-campo { position: relative; }
+.senha-campo .input { width: 100%; padding-right: 42px; }
+.senha-campo .input::-ms-reveal, .senha-campo .input::-ms-clear { display: none; }
+.senha-olho {
+  position: absolute; right: 6px; top: 50%; transform: translateY(-50%); display: grid; place-items: center;
+  width: 32px; height: 32px; border: 0; border-radius: 6px; background: none; color: var(--muted); cursor: pointer;
+}
+.senha-olho:hover { color: var(--navy); background: var(--gray-soft); }
+.senha-olho:focus-visible { outline: 2px solid rgba(22, 40, 77, 0.35); outline-offset: 1px; }
 textarea.input { resize: vertical; min-height: 72px; }
 select.input { appearance: none; background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%), linear-gradient(135deg, var(--muted) 50%, transparent 50%); background-position: calc(100% - 16px) 55%, calc(100% - 11px) 55%; background-size: 5px 5px; background-repeat: no-repeat; padding-right: 30px; }
 .form-grid { display: grid; gap: 14px 16px; grid-template-columns: repeat(12, minmax(0, 1fr)); }

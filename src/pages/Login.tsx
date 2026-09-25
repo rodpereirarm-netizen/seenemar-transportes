@@ -1,6 +1,7 @@
 import { useEffect, useState, type FormEvent } from 'react';
 import { supabase, traduzirErro } from '../lib/supabase';
 import { useApp } from '../lib/app';
+import { InputSenha } from '../components/InputSenha';
 import { Campo } from '../components/ui';
 
 type Modo = 'entrar' | 'primeiro' | 'esqueci' | 'nova-senha';
@@ -110,8 +111,8 @@ export default function Login({ semVinculo }: { semVinculo?: boolean }) {
               )}
               {modo !== 'esqueci' && (
                 <Campo rotulo={modo === 'entrar' ? 'Senha' : 'Nova senha'}>
-                  <input
-                    className="input" type="password" required
+                  <InputSenha
+                    required
                     autoComplete={modo === 'entrar' ? 'current-password' : 'new-password'}
                     value={senha} onChange={(e) => setSenha(e.target.value)}
                   />
@@ -119,7 +120,7 @@ export default function Login({ semVinculo }: { semVinculo?: boolean }) {
               )}
               {(modo === 'primeiro' || modo === 'nova-senha') && (
                 <Campo rotulo="Confirme a senha">
-                  <input className="input" type="password" required autoComplete="new-password" value={senha2} onChange={(e) => setSenha2(e.target.value)} />
+                  <InputSenha required autoComplete="new-password" value={senha2} onChange={(e) => setSenha2(e.target.value)} />
                 </Campo>
               )}
               {msg && <div className={`aviso ${msg.ok ? 'ok' : 'erro'}`}>{msg.t}</div>}

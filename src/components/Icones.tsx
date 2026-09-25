@@ -26,3 +26,5 @@ export const IcNota = base(<><path d="M4 5h16v11H8l-4 4z" /></>);
 export const IcRelogio = base(<><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></>);
 export const IcSeta = base(<path d="m9 6 6 6-6 6" />);
 export const IcImprimir = base(<><path d="M6 9V3h12v6M6 18H4v-7h16v7h-2" /><rect x="6" y="14" width="12" height="7" /></>);
+export const IcOlho = base(<><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z" /><circle cx="12" cy="12" r="3" /></>);
+export const IcOlhoFechado = base(<><path d="M10.6 5.1A10.4 10.4 0 0 1 12 5c6.4 0 10 7 10 7a17.6 17.6 0 0 1-3.2 4.2M6.6 6.6A17.4 17.4 0 0 0 2 12s3.6 7 10 7a9.7 9.7 0 0 0 5.4-1.6" /><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2M3 3l18 18" /></>);
