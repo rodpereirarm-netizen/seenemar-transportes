@@ -88,6 +88,12 @@ body.pt .sidebar { top:34px; height:calc(100vh - 34px); }
 .pt-comp { padding:18px; display:flex; flex-direction:column; gap:12px; overflow-y:auto; }
 .pt-comp label.rot { font-size:12px; font-weight:600; color:var(--muted); display:block; margin-bottom:4px; }
 .pt-comp textarea, .pt-comp select { width:100%; border:1px solid var(--line-2); border-radius:8px; padding:8px 10px; background:#fff; }
+.pt-tip { position:fixed; z-index:95; max-width:320px; background:var(--navy); color:#fff; font-size:12.5px; line-height:1.45; padding:8px 11px; border-radius:8px; box-shadow:0 10px 24px rgba(0,0,0,.25); pointer-events:none; white-space:pre-line; }
+.pt-tip b { color:var(--gold); }
+.pt-ponto, .pt-fatia, .pt-seg, .pt-alvo { cursor:help; outline:none; }
+.pt-seg:hover, .pt-seg:focus { filter:brightness(1.25); } .pt-fatia:hover, .pt-fatia:focus { stroke-width:30; }
+.pt-alvo:hover, .pt-alvo:focus { background:var(--paper); border-radius:6px; }
+.pt-ponto:hover, .pt-ponto:focus { fill:rgba(22,40,77,.12); }
 .pt-cont { background:var(--red); color:#fff; font-size:10.5px; font-weight:700; min-width:18px; height:18px; border-radius:9px; display:inline-grid; place-items:center; padding:0 5px; }
 /* importação */
 .pt-diff td { font-size:12.5px; } .pt-antes { color:var(--red); text-decoration:line-through; } .pt-depois { color:var(--green); font-weight:600; }
@@ -332,27 +338,38 @@ function vAgenda() {
 let verDemoEvol = false;
 const DEMO_SEMANAS = [['03/08', 4, [3, 1, 0, 0, 0]], ['10/08', 6, [4, 2, 0, 0, 0]], ['17/08', 5, [3, 1, 1, 0, 0]], ['24/08', 9, [5, 2, 1, 1, 0]], ['31/08', 7, [4, 1, 1, 1, 0]], ['07/09', 11, [5, 2, 2, 1, 1]], ['14/09', 10, [4, 2, 2, 1, 1]], ['21/09', 13, [5, 3, 2, 2, 1]]];
 const COR_ET = ['#16284d', '#2a4478', '#c8962f', '#8a5f0d', '#6f8fc4'];
-function donut(fatias, total, rotulo) {
+const fmtN = (v, d = 1) => Number(v).toLocaleString('pt-BR', { maximumFractionDigits: d });
+const pct = (v, tot) => fmtN(v / tot * 100) + '%';
+const tip = (...l) => `data-tip="${esc(l.filter(Boolean).join('\n'))}" tabindex="0"`;
+function donut(fatias, total, rotulo, unid) {
   let ac = 0; const R = 70, Cc = 2 * Math.PI * R;
-  const arcos = fatias.map(([, v, cor]) => { const l = v / total * Cc; const s = `<circle r="${R}" cx="90" cy="90" fill="none" stroke="${cor}" stroke-width="26" stroke-dasharray="${l} ${Cc - l}" stroke-dashoffset="${-ac}" transform="rotate(-90 90 90)"></circle>`; ac += l; return s; }).join('');
-  return `<div style="display:flex;gap:20px;align-items:center;flex-wrap:wrap"><svg viewBox="0 0 180 180" width="170" height="170" role="img" aria-label="${esc(rotulo)}">${arcos}<text x="90" y="86" text-anchor="middle" font-family="Source Serif 4, Georgia, serif" font-weight="700" font-size="28" fill="#16284d">${total}</text><text x="90" y="106" text-anchor="middle" font-size="11" fill="#6e6758">${esc(rotulo)}</text></svg>
-    <div>${fatias.map(([n, v, cor]) => `<div style="margin:6px 0;font-size:13px"><i style="display:inline-block;width:11px;height:11px;border-radius:2px;background:${cor};margin-right:7px"></i><b>${v}</b> ${esc(n)} <span class="muted">(${(v / total * 100).toLocaleString('pt-BR', { maximumFractionDigits: 1 })}%)</span></div>`).join('')}</div></div>`;
+  const dica = (n, v) => tip(`${v} ${unid} ${n}`, `${pct(v, total)} do total de ${total} ${unid}`);
+  const arcos = fatias.map(([n, v, cor]) => { const l = v / total * Cc; const s = `<circle class="pt-fatia" r="${R}" cx="90" cy="90" fill="none" stroke="${cor}" stroke-width="26" stroke-dasharray="${l} ${Cc - l}" stroke-dashoffset="${-ac}" transform="rotate(-90 90 90)" ${dica(n, v)}></circle>`; ac += l; return s; }).join('');
+  return `<div style="display:flex;gap:20px;align-items:center;flex-wrap:wrap"><svg viewBox="0 0 180 180" width="170" height="170" role="img" aria-label="${esc(rotulo)}">${arcos}<text x="90" y="86" text-anchor="middle" font-family="Source Serif 4, Georgia, serif" font-weight="700" font-size="28" fill="#16284d" pointer-events="none">${total}</text><text x="90" y="106" text-anchor="middle" font-size="11" fill="#6e6758" pointer-events="none">${esc(rotulo)}</text></svg>
+    <div>${fatias.map(([n, v, cor]) => `<div class="pt-alvo" style="margin:6px 0;font-size:13px" ${dica(n, v)}><i style="display:inline-block;width:11px;height:11px;border-radius:2px;background:${cor};margin-right:7px"></i><b>${v}</b> ${esc(n)} <span class="muted">(${pct(v, total)})</span></div>`).join('')}</div></div>`;
 }
-function hbar(rot, partes, total, dir) { return `<div class="pt-hbar"><span>${rot}</span><div class="trilho">${partes.map(([v, cor]) => `<i style="width:${v / total * 100}%;background:${cor}"></i>`).join('')}</div><span class="right muted">${dir}</span></div>`; }
-function colunas(serie, alt = 160, empilhado = false) {
+function hbar(rot, partes, total, dir, dica = '') { return `<div class="pt-hbar pt-alvo" ${dica}><span>${rot}</span><div class="trilho">${partes.map(([v, cor]) => `<i style="width:${v / total * 100}%;background:${cor}"></i>`).join('')}</div><span class="right muted">${dir}</span></div>`; }
+function colunas(serie, alt = 160, empilhado = false, eixo = 'quantidade de atividades concluídas') {
   const max = Math.max(...serie.map((s) => empilhado ? s[2].reduce((a, b) => a + b, 0) : s[1]), 1);
-  return `<div style="display:flex;align-items:flex-end;gap:10px;height:${alt}px;border-bottom:1px solid var(--line-2);padding-top:18px">${serie.map((s) => {
-    const barras = empilhado ? s[2].map((v, k) => `<i style="display:block;height:${v / max * (alt - 30)}px;background:${COR_ET[k]}"></i>`).reverse().join('') : `<i style="display:block;height:${s[1] / max * (alt - 30)}px;background:${s[3] || 'var(--navy)'}"></i>`;
-    return `<div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%"><span class="xs muted">${empilhado ? s[2].reduce((a, b) => a + b, 0) : s[1]}</span><div style="width:100%;max-width:44px;border-radius:4px 4px 0 0;overflow:hidden">${barras}</div></div>`;
+  const ET = ['I · Planejamento', 'II · Adesão à ARP', 'III · Comunicações', 'IV · Pesquisa de preços', 'V · Formalização'];
+  return `<div class="xs muted" style="margin-bottom:2px">Eixo vertical: ${eixo}</div><div style="display:flex;align-items:flex-end;gap:10px;height:${alt}px;border-bottom:1px solid var(--line-2);padding-top:18px">${serie.map((s, i) => {
+    const tot = empilhado ? s[2].reduce((a, b) => a + b, 0) : s[1];
+    const ant = i > 0 ? (empilhado ? serie[i - 1][2].reduce((a, b) => a + b, 0) : serie[i - 1][1]) : null;
+    const varr = ant == null ? '' : `${tot - ant >= 0 ? '+' : ''}${tot - ant} em relação à semana anterior (${ant})`;
+    const barras = empilhado
+      ? s[2].map((v, k) => v ? `<i class="pt-seg" style="display:block;height:${v / max * (alt - 30)}px;background:${COR_ET[k]}" ${tip(`Semana de ${s[0]} · Etapa ${ET[k]}`, `${v} atividade(s) concluída(s) nesta etapa`, `${pct(v, tot)} das ${tot} concluídas na semana`)}></i>` : '').reverse().join('')
+      : `<i class="pt-seg" style="display:block;height:${s[1] / max * (alt - 30)}px;background:${s[3] || 'var(--navy)'}" ${tip(`Semana de ${s[0]}`, `${s[1]} atividades concluídas na semana`, varr)}></i>`;
+    return `<div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%"><span class="xs muted">${tot}</span><div style="width:100%;max-width:44px;border-radius:4px 4px 0 0;overflow:hidden">${barras}</div></div>`;
   }).join('')}</div><div style="display:flex;gap:10px;padding-top:4px">${serie.map((s) => `<span style="flex:1;text-align:center" class="xs muted">${s[0]}</span>`).join('')}</div>`;
 }
-function linha(series, rotulos, alt = 180, maxY) {
-  const W = 560, H = alt, pl = 36, pb = 22, pt = 12; const n = rotulos.length;
+function linha(series, rotulos, alt = 180, maxY, eixo = 'atividades') {
+  const W = 560, H = alt, pl = 44, pb = 22, pt = 12; const n = rotulos.length;
   const my = maxY || Math.max(...series.flatMap((s) => s.pts.filter((v) => v != null)));
   const x = (i) => pl + i * (W - pl - 10) / (n - 1), y = (v) => pt + (H - pt - pb) * (1 - v / my);
   const grade = [0, .25, .5, .75, 1].map((f) => `<line x1="${pl}" x2="${W - 10}" y1="${y(my * f)}" y2="${y(my * f)}" stroke="#ece6da"></line><text x="${pl - 6}" y="${y(my * f) + 4}" font-size="10" text-anchor="end" fill="#6e6758">${Math.round(my * f)}</text>`).join('');
-  const ls = series.map((s) => { const p = s.pts.map((v, i) => v == null ? null : `${x(i)},${y(v)}`).filter(Boolean).join(' '); return `<polyline points="${p}" fill="none" stroke="${s.cor}" stroke-width="2.5" ${s.trac ? 'stroke-dasharray="6 5"' : ''}></polyline>${s.pts.map((v, i) => v == null ? '' : `<circle cx="${x(i)}" cy="${y(v)}" r="3" fill="${s.cor}"></circle>`).join('')}`; }).join('');
-  return `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img">${grade}${ls}${rotulos.map((r, i) => `<text x="${x(i)}" y="${H - 5}" font-size="10" text-anchor="middle" fill="#6e6758">${r}</text>`).join('')}</svg>
+  const ls = series.map((s) => { const p = s.pts.map((v, i) => v == null ? null : `${x(i)},${y(v)}`).filter(Boolean).join(' ');
+    return `<polyline points="${p}" fill="none" stroke="${s.cor}" stroke-width="2.5" ${s.trac ? 'stroke-dasharray="6 5"' : ''} pointer-events="none"></polyline>${s.pts.map((v, i) => v == null || (s.pular && s.pular(i)) ? '' : `<circle cx="${x(i)}" cy="${y(v)}" r="3.5" fill="${s.cor}" pointer-events="none"></circle><circle class="pt-ponto" cx="${x(i)}" cy="${y(v)}" r="11" fill="transparent" ${tip(...s.dica(v, i, rotulos[i]))}></circle>`).join('')}`; }).join('');
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" style="overflow:visible">${grade}<text x="12" y="${(H - pb) / 2}" font-size="10" fill="#6e6758" text-anchor="middle" transform="rotate(-90 12 ${(H - pb) / 2})">${esc(eixo)}</text>${ls}${rotulos.map((r, i) => `<text x="${x(i)}" y="${H - 5}" font-size="10" text-anchor="middle" fill="#6e6758">${r}</text>`).join('')}</svg>
     <div class="pt-legenda">${series.map((s) => `<span><i style="background:${s.cor}"></i>${esc(s.nome)}</span>`).join('')}</div>`;
 }
 function vEvolucao() {
@@ -369,12 +386,12 @@ function vEvolucao() {
     <div class="card kpi"><div class="small muted">Semanas de histórico</div><div style="font:700 30px var(--serif);color:var(--navy)">1</div><div class="small muted">desde 24/09/2026</div></div>
   </div>
   <div class="pt-graficos">
-    <div class="card"><h2>Atividades por situação</h2><p class="small muted">Checklist completo das ${cs.length} contratações</p>${donut(st, TOT, 'atividades')}</div>
-    <div class="card"><h2>Demandas por situação</h2><p class="small muted">Situação registrada em cada contratação</p>${donut(sit, cs.length, 'demandas')}</div>
-    <div class="card"><h2>Andamento por etapa</h2><p class="small muted">Concluídas sobre o total de atividades previstas em cada etapa</p>${et.map(([n, r, t, c]) => hbar(`${['I', 'II', 'III', 'IV', 'V'][n - 1]} · ${r}`, [[c, '#16284d']], t, `${c} de ${t}`)).join('')}</div>
-    <div class="card"><h2>Demandas por modalidade</h2><p class="small muted">Define o tamanho do checklist (32, 26 ou 7 atividades)</p>${mod.map(([r, v]) => hbar(r, [[v, r === 'A definir' ? '#c8962f' : '#16284d']], cs.length, `${v} de ${cs.length}`)).join('')}</div>
+    <div class="card"><h2>Atividades por situação</h2><p class="small muted">Checklist completo das ${cs.length} contratações</p>${donut(st, TOT, 'atividades', 'atividades')}</div>
+    <div class="card"><h2>Demandas por situação</h2><p class="small muted">Situação registrada em cada contratação</p>${donut(sit, cs.length, 'demandas', 'demandas')}</div>
+    <div class="card"><h2>Andamento por etapa</h2><p class="small muted">Concluídas sobre o total de atividades previstas em cada etapa</p>${et.map(([n, r, t, c]) => hbar(`${['I', 'II', 'III', 'IV', 'V'][n - 1]} · ${r}`, [[c, '#16284d']], t, `${c} de ${t}`, tip(`Etapa ${['I', 'II', 'III', 'IV', 'V'][n - 1]} · ${r}`, `${c} de ${t} atividades concluídas (${pct(c, t)})`, `${t - c} atividades ainda não concluídas`))).join('')}</div>
+    <div class="card"><h2>Demandas por modalidade</h2><p class="small muted">Define o tamanho do checklist (32, 26 ou 7 atividades)</p>${mod.map(([r, v]) => hbar(r, [[v, r === 'A definir' ? '#c8962f' : '#16284d']], cs.length, `${v} de ${cs.length}`, tip(r, `${v} de ${cs.length} demandas (${pct(v, cs.length)})`, `Checklist de ${{ 'Adesão à ARP': 32, 'Participante de RP': 26, 'Dispensa': 26, 'A definir': 7 }[r]} atividades por demanda`))).join('')}</div>
     <div class="card largo"><h2>Progresso por contratação</h2><p class="small muted">Percentual de evolução: atividades concluídas sobre o total do checklist de cada contratação</p>
-      <div class="pt-colunas2">${cs.map((c) => `<div style="break-inside:avoid">${hbar(`${n2(c.n)} · ${esc(c.titulo)}`, [[c.ativ_conc, '#16284d']], c.ativ_total, `<b>${Math.round(c.ativ_conc / c.ativ_total * 100)}%</b> · ${c.ativ_conc}/${c.ativ_total}`)}</div>`).join('')}</div></div>
+      <div class="pt-colunas2">${cs.map((c) => `<div style="break-inside:avoid">${hbar(`${n2(c.n)} · ${esc(c.titulo)}`, [[c.ativ_conc, '#16284d']], c.ativ_total, `<b>${Math.round(c.ativ_conc / c.ativ_total * 100)}%</b> · ${c.ativ_conc}/${c.ativ_total}`, tip(`${n2(c.n)} · ${c.titulo}`, `Evolução: ${pct(c.ativ_conc, c.ativ_total)} (${c.ativ_conc} de ${c.ativ_total} atividades concluídas)`, `Modalidade: ${c.modalidade} · atividade atual: ${c.atual}`))}</div>`).join('')}</div></div>
   </div>`;
   // série temporal
   let tempo;
@@ -394,17 +411,24 @@ function vEvolucao() {
     const semanas = Math.ceil(pend[pend.length - 1] / media);
     tempo = `<div class="pt-demo card" style="padding:14px">${demoFaixa}
       <div class="pt-kpis">
-        <div class="card kpi"><div class="small muted">Média das últimas 4 semanas</div><div style="font:700 28px var(--serif);color:var(--navy)">${media.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}</div><div class="small muted">atividades concluídas por semana</div></div>
-        <div class="card kpi"><div class="small muted">Tendência</div><div style="font:700 28px var(--serif);color:${inc >= 0 ? 'var(--green)' : 'var(--red)'}">${inc >= 0 ? '▲' : '▼'} ${inc.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}</div><div class="small muted">atividades/semana, por semana</div></div>
-        <div class="card kpi"><div class="small muted">Concluídas no período</div><div style="font:700 28px var(--serif);color:var(--navy)">${acumulada[acumulada.length - 1]}</div><div class="small muted">em 8 semanas</div></div>
-        <div class="card kpi"><div class="small muted">Previsão no ritmo médio</div><div style="font:700 28px var(--serif);color:var(--gold-ink)">${semanas} sem.</div><div class="small muted">para concluir as ${pend[pend.length - 1]} pendentes</div></div>
+        <div class="card kpi pt-alvo" ${tip('Média das últimas 4 semanas', `(${ult4.join(' + ')}) ÷ 4 = ${fmtN(media)} atividades concluídas por semana`)}><div class="small muted">Média das últimas 4 semanas</div><div style="font:700 28px var(--serif);color:var(--navy)">${media.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}</div><div class="small muted">atividades concluídas por semana</div></div>
+        <div class="card kpi pt-alvo" ${tip('Tendência (quantidade, não percentual)', `A cada semana, o número de atividades concluídas cresce em média ${fmtN(inc)} atividade(s)`, 'Inclinação da reta de tendência calculada sobre as 8 semanas')}><div class="small muted">Tendência</div><div style="font:700 28px var(--serif);color:${inc >= 0 ? 'var(--green)' : 'var(--red)'}">${inc >= 0 ? '▲' : '▼'} ${inc.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}</div><div class="small muted">atividades a mais por semana, a cada semana</div></div>
+        <div class="card kpi pt-alvo" ${tip('Concluídas no período', `${acumulada[acumulada.length - 1]} atividades concluídas nas 8 semanas`, `${pct(acumulada[acumulada.length - 1], TOT)} das ${TOT} atividades do checklist`)}><div class="small muted">Concluídas no período</div><div style="font:700 28px var(--serif);color:var(--navy)">${acumulada[acumulada.length - 1]}</div><div class="small muted">em 8 semanas</div></div>
+        <div class="card kpi pt-alvo" ${tip('Previsão no ritmo médio', `${pend[pend.length - 1]} pendentes ÷ ${fmtN(media)} por semana ≈ ${semanas} semanas`, 'Estimativa; não considera mudanças de ritmo')}><div class="small muted">Previsão no ritmo médio</div><div style="font:700 28px var(--serif);color:var(--gold-ink)">${semanas} sem.</div><div class="small muted">para concluir as ${pend[pend.length - 1]} pendentes</div></div>
       </div>
       <div class="pt-graficos">
-        <div class="card"><h2>Concluídas por semana</h2><p class="small muted">Atividades concluídas em cada semana</p>${colunas(DEMO_SEMANAS)}</div>
-        <div class="card"><h2>Tendência e projeção</h2><p class="small muted">Média móvel de 4 semanas e projeção linear das próximas 4</p>${linha([{ nome: 'Concluídas', cor: '#16284d', pts: [...ys, null, null, null, null] }, { nome: 'Média móvel (4 sem.)', cor: '#c8962f', pts: [...mm, null, null, null, null] }, { nome: 'Projeção', cor: '#8a5f0d', trac: true, pts: [...ys.map((v, i) => i === ys.length - 1 ? v : null), ...proj] }], rotP)}</div>
-        <div class="card"><h2>Curva acumulada de conclusão</h2><p class="small muted">Total concluído ao fim de cada semana</p>${linha([{ nome: 'Concluídas (acumulado)', cor: '#16284d', pts: acumulada }], rot)}</div>
-        <div class="card"><h2>Burn-down das atividades pendentes</h2><p class="small muted">Pendentes ao fim de cada semana e projeção no ritmo da tendência</p>${linha([{ nome: 'Pendentes', cor: '#b3372b', pts: [...pend, null, null, null, null] }, { nome: 'Projeção', cor: '#b3372b', trac: true, pts: pendProj }], rotP, TOT)}</div>
-        <div class="card largo"><h2>Concluídas por semana, por etapa</h2><p class="small muted">Onde o avanço acontece a cada semana</p>${colunas(DEMO_SEMANAS, 180, true)}<div class="pt-legenda">${['I · Planejamento', 'II · Adesão', 'III · Comunicações', 'IV · Pesquisa de preços', 'V · Formalização'].map((r, k) => `<span><i style="background:${COR_ET[k]}"></i>${r}</span>`).join('')}</div></div>
+        <div class="card"><h2>Concluídas por semana</h2><p class="small muted">Quantidade de atividades concluídas em cada semana</p>${colunas(DEMO_SEMANAS)}</div>
+        <div class="card"><h2>Tendência e projeção</h2><p class="small muted">Quantidade de atividades concluídas por semana, média móvel de 4 semanas e projeção linear das próximas 4 (estimativa)</p>${linha([
+          { nome: 'Concluídas na semana', cor: '#16284d', pts: [...ys, null, null, null, null], dica: (v, i, r) => [`Semana de ${r} · registrado`, `${v} atividades concluídas na semana`] },
+          { nome: 'Média móvel (4 semanas)', cor: '#c8962f', pts: [...mm, null, null, null, null], dica: (v, i, r) => [`Semana de ${r} · média móvel`, `${fmtN(v)} atividades por semana`, `Média das 4 semanas encerradas em ${r} (${ys.slice(i - 3, i + 1).join(' + ')}) ÷ 4`] },
+          { nome: 'Projeção (estimativa)', cor: '#8a5f0d', trac: true, pts: [...ys.map((v, i) => i === ys.length - 1 ? v : null), ...proj], pular: (i) => i === ys.length - 1, dica: (v, i, r) => [`Semana ${r} · projeção`, `${v} atividades concluídas previstas na semana`, `Estimativa pela reta de tendência (+${fmtN(inc)} por semana); não é dado registrado`] },
+        ], rotP, 180, null, 'atividades por semana')}</div>
+        <div class="card"><h2>Curva acumulada de conclusão</h2><p class="small muted">Quantidade total de atividades concluídas até o fim de cada semana</p>${linha([{ nome: 'Concluídas (acumulado)', cor: '#16284d', pts: acumulada, dica: (v, i, r) => [`Até a semana de ${r}`, `${v} atividades concluídas no total`, `${pct(v, TOT)} das ${TOT} atividades do checklist`, `+${ys[i]} na semana`] }], rot, 180, null, 'atividades (acumulado)')}</div>
+        <div class="card"><h2>Burn-down das atividades pendentes</h2><p class="small muted">Quantidade de atividades pendentes ao fim de cada semana e projeção no ritmo da tendência (estimativa)</p>${linha([
+          { nome: 'Pendentes', cor: '#b3372b', pts: [...pend, null, null, null, null], dica: (v, i, r) => [`Fim da semana de ${r} · registrado`, `${v} atividades pendentes`, `${pct(v, TOT)} das ${TOT} atividades do checklist`] },
+          { nome: 'Projeção (estimativa)', cor: '#b3372b', trac: true, pts: pendProj, pular: (i) => i <= pend.length - 1, dica: (v, i, r) => [`Semana ${r} · projeção`, `${v} atividades pendentes previstas`, `${pct(v, TOT)} das ${TOT}; estimativa no ritmo da tendência, não é dado registrado`] },
+        ], rotP, 180, TOT, 'atividades pendentes')}</div>
+        <div class="card largo"><h2>Concluídas por semana, por etapa</h2><p class="small muted">Quantidade de atividades concluídas em cada semana, separada por etapa</p>${colunas(DEMO_SEMANAS, 180, true)}<div class="pt-legenda">${['I · Planejamento', 'II · Adesão', 'III · Comunicações', 'IV · Pesquisa de preços', 'V · Formalização'].map((r, k) => `<span><i style="background:${COR_ET[k]}"></i>${r}</span>`).join('')}</div></div>
       </div></div>`;
   }
   return `${TOPBAR}<div class="cabecalho"><div><div class="eyebrow">Indicadores de desempenho ${NOVO}</div><h1>Evolução</h1><p class="muted">Situação atual da carteira e evolução semanal das atividades, com média, tendência e projeção.</p></div></div>
@@ -515,6 +539,14 @@ $('#fecharParecer').onclick = () => $('#gaveta').classList.remove('aberta');
 $('#baixarParecer').onclick = () => baixar('parecer_melhorias_gt_propag.txt', textoParecer(), 'text/plain;charset=utf-8');
 $('#copiarParecer').onclick = async () => { try { await navigator.clipboard.writeText(textoParecer()); $('#parecerMsg').textContent = 'Parecer copiado.'; } catch (e) { $('#parecerMsg').textContent = 'Não foi possível copiar; use “Baixar parecer”.'; } };
 contador();
+(() => {
+  const d = document.createElement('div'); d.className = 'pt-tip'; d.hidden = true; document.body.appendChild(d);
+  const mostrar = (el, x, y) => { const l = el.dataset.tip.split('\n'); d.innerHTML = `<b>${esc(l[0])}</b>` + (l.length > 1 ? '\n' + l.slice(1).map(esc).join('\n') : ''); d.hidden = false; const r = d.getBoundingClientRect(); d.style.left = Math.min(x + 14, innerWidth - r.width - 8) + 'px'; d.style.top = (y + 16 + r.height > innerHeight ? y - r.height - 10 : y + 16) + 'px'; };
+  document.addEventListener('mousemove', (e) => { const el = e.target.closest && e.target.closest('[data-tip]'); if (el) mostrar(el, e.clientX, e.clientY); else d.hidden = true; });
+  document.addEventListener('focusin', (e) => { const el = e.target.closest && e.target.closest('[data-tip]'); if (el) { const r = el.getBoundingClientRect(); mostrar(el, r.left + r.width / 2, r.bottom); } });
+  document.addEventListener('focusout', () => (d.hidden = true));
+  document.addEventListener('scroll', () => (d.hidden = true), true);
+})();
 render();
 </script>
 </body>
