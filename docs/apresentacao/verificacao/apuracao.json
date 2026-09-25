@@ -1,0 +1,867 @@
+{
+ "total_linhas": 20,
+ "numeracao_sequencial": true,
+ "por_modalidade": {
+  "adesao_arp": [
+   1,
+   2,
+   7,
+   10,
+   13,
+   14
+  ],
+  "participante_rp": [
+   3,
+   6
+  ],
+  "dispensa": [
+   5
+  ],
+  "a_definir": [
+   4,
+   8,
+   9,
+   11,
+   12,
+   15,
+   16,
+   17,
+   18,
+   19,
+   20
+  ]
+ },
+ "atividades_total": 347,
+ "prazos_legais_total": 27,
+ "dod": {
+  "Elaborado": [
+   1,
+   2,
+   3,
+   5,
+   6,
+   7,
+   10
+  ],
+  "Em Elaboração": [
+   4
+  ],
+  "EM ANÁLISE": [
+   8,
+   13,
+   16,
+   17,
+   19,
+   20
+  ],
+  "Aguardando Justificativa": [
+   9,
+   11,
+   12,
+   14,
+   15,
+   18
+  ]
+ },
+ "ata": {
+  "SIM": [
+   1,
+   2,
+   7,
+   10,
+   13,
+   14
+  ],
+  "PARTICIPE": [
+   3,
+   6
+  ],
+  "NÃO": [
+   4,
+   5,
+   8
+  ],
+  "(vazio)": [
+   9,
+   11,
+   12,
+   15,
+   16,
+   17,
+   18,
+   19,
+   20
+  ]
+ },
+ "ti": {
+  "SIM": [
+   1,
+   2,
+   3,
+   6,
+   10
+  ],
+  "NÃO": [
+   4,
+   5,
+   7,
+   8,
+   9,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19,
+   20
+  ]
+ },
+ "docs": {
+  "Elaborado": [
+   1,
+   2
+  ],
+  "Utilização do ETP do PRODERJ – FAETEC participante da Ata.": [
+   3,
+   6
+  ],
+  "(vazio)": [
+   4,
+   8,
+   9,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19,
+   20
+  ],
+  "Elaboração do ETP": [
+   5
+  ],
+  "Em elaboração": [
+   7
+  ],
+  "Elaborado ETP / Em elaboração do TR": [
+   10
+  ]
+ },
+ "sem_justificativa": [
+  9,
+  11,
+  12,
+  14,
+  15,
+  18
+ ],
+ "com_sei_novo": [
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10,
+  11,
+  12,
+  13,
+  15,
+  16,
+  17,
+  19
+ ],
+ "sem_sei_novo": [
+  14,
+  18,
+  20
+ ],
+ "com_valor": [
+  1,
+  2,
+  10
+ ],
+ "valor_total": 69681145.11,
+ "com_quantitativo": [
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  10,
+  13,
+  17,
+  19,
+  20
+ ],
+ "sei_ano_diferente_2026": [
+  [
+   13,
+   "SEI-260005/009052/2027"
+  ],
+  [
+   15,
+   "SEI-260005/009053/2028"
+  ],
+  [
+   16,
+   "SEI-260005/009054/2029"
+  ],
+  [
+   17,
+   "SEI-260005/008717/2025"
+  ]
+ ],
+ "comparacao": [
+  {
+   "n2": 1,
+   "titulo": "equipamentos de informática – Chromebooks",
+   "n1": 1,
+   "titulo1": "equipamentos de informática – Chromebooks"
+  },
+  {
+   "n2": 2,
+   "titulo": "licenciamento de softwares de edição e arquitetura/engenharia",
+   "n1": null,
+   "titulo1": null
+  },
+  {
+   "n2": 3,
+   "titulo": "telefonia VOIP",
+   "n1": 3,
+   "titulo1": "telefonia VOIP"
+  },
+  {
+   "n2": 4,
+   "titulo": "Serviço de instalação e fornecimento de Câmera de Segurança",
+   "n1": 4,
+   "titulo1": "Serviço de instalação e fornecimento de Câmera de Segurança"
+  },
+  {
+   "n2": 5,
+   "titulo": "Link de Internet (Links SDWAN)",
+   "n1": 0,
+   "titulo1": "Link de Internet"
+  },
+  {
+   "n2": 6,
+   "titulo": "Licenciamento de softwares da Microsoft",
+   "n1": 7,
+   "titulo1": "Licenciamento de softwares da Microsoft"
+  },
+  {
+   "n2": 7,
+   "titulo": "Licenças de software antivírus com tecnologia EDR",
+   "n1": 8,
+   "titulo1": "Licenças de software antivírus com tecnologia EDR"
+  },
+  {
+   "n2": 8,
+   "titulo": "Computadores basicos (5.500),notebook (2.260), monitor 22\"(7.640) e monitor 24\" (600)",
+   "n1": 9,
+   "titulo1": "Computadores basicos, avançados e monitor"
+  },
+  {
+   "n2": 9,
+   "titulo": "Computadores avançados",
+   "n1": 9,
+   "titulo1": "Computadores basicos, avançados e monitor"
+  },
+  {
+   "n2": 10,
+   "titulo": "Appliances para Backup",
+   "n1": 10,
+   "titulo1": "Appliances para Backup"
+  },
+  {
+   "n2": 11,
+   "titulo": "Switch top of Rack",
+   "n1": 11,
+   "titulo1": "Switch top of Rack"
+  },
+  {
+   "n2": 12,
+   "titulo": "Servidor Hiperconvergente",
+   "n1": 13,
+   "titulo1": "Servidor Hiperconvergente"
+  },
+  {
+   "n2": 13,
+   "titulo": "Rack 19U",
+   "n1": 14,
+   "titulo1": "Rack 19U"
+  },
+  {
+   "n2": 14,
+   "titulo": "Acess Point",
+   "n1": null,
+   "titulo1": null
+  },
+  {
+   "n2": 15,
+   "titulo": "Pontos Lógicos",
+   "n1": 15,
+   "titulo1": "Pontos Lógicos"
+  },
+  {
+   "n2": 16,
+   "titulo": "Telefonia movél (celular)",
+   "n1": 16,
+   "titulo1": "Telefonia movél (celular)"
+  },
+  {
+   "n2": 17,
+   "titulo": "Switch Core",
+   "n1": 17,
+   "titulo1": "Switch Core"
+  },
+  {
+   "n2": 18,
+   "titulo": "Switch de Acesso",
+   "n1": null,
+   "titulo1": null
+  },
+  {
+   "n2": 19,
+   "titulo": "Firewall Fortinet",
+   "n1": null,
+   "titulo1": null
+  },
+  {
+   "n2": 20,
+   "titulo": "Computador Quantico",
+   "n1": null,
+   "titulo1": null
+  }
+ ],
+ "somente_1a_carga": [
+  [
+   2,
+   "licenciamento de softwares de edição e arquitetura"
+  ],
+  [
+   5,
+   "Tela Interativa"
+  ],
+  [
+   12,
+   "Firewall"
+  ]
+ ],
+ "somente_2a_carga": [
+  [
+   2,
+   "licenciamento de softwares de edição e arquitetura/engenharia"
+  ],
+  [
+   14,
+   "Acess Point"
+  ],
+  [
+   18,
+   "Switch de Acesso"
+  ],
+  [
+   19,
+   "Firewall Fortinet"
+  ],
+  [
+   20,
+   "Computador Quantico"
+  ]
+ ],
+ "linhas": [
+  {
+   "n": 1,
+   "titulo": "equipamentos de informática – Chromebooks",
+   "objeto": "Contratação para aquisição de equipamentos de informática – Chromebooks, visando atender às necessidades da FAETEC",
+   "sei_antigo": "SEI-260005/007702/2026",
+   "sei_novo": "SEI-260005/008719/2026",
+   "dod": "Elaborado",
+   "dod_obs": "Pretende-se atender à demanda por meio de adesão à ARP nº 032/2026 – SEAD/MA (Governo do Maranhão).",
+   "quantitativo": "19.500 equipamentos",
+   "ata": "SIM",
+   "ata_obs": "Ata de Registro de Preços do Governo do Maranhão - SEAD /032/2026",
+   "ti": "SIM",
+   "ti_obs": "De Acordo",
+   "docs": "Elaborado",
+   "docs_obs": "Não consta ID SIGA cadastrado para esta especficicação",
+   "valor": 64818000.0,
+   "ultimo_andamento": "ENTREGUE PELO GT",
+   "observacao": "ENVIADO PARA ANÁLISE DO SETOR DE PLANEJAMENTO DA FAETEC (LUENE)18/09 - SEM RESPOSTA",
+   "modalidade": "adesao_arp",
+   "atividades": 32,
+   "prazos_legais": 3,
+   "tem_sei": true,
+   "sem_justificativa": false
+  },
+  {
+   "n": 2,
+   "titulo": "licenciamento de softwares de edição e arquitetura/engenharia",
+   "objeto": "Contratação de licenciamento de softwares de edição e arquitetura/engenharia, visando atender às necessidades da FAETEC",
+   "sei_antigo": "SEI-260005/007249/2026",
+   "sei_novo": "SEI-260005/008711/2026",
+   "dod": "Elaborado",
+   "dod_obs": "Pretende-se utilizar a ARP nº 147/2024 – CELIC/RS.",
+   "quantitativo": "AutoCAD : 16 /  Revit : 16 / Civil 3D : 16",
+   "ata": "SIM",
+   "ata_obs": "ATA DE REGISTRO DE PREÇOS - CELIC - RS  - ARP 1477/2024                   / 16 licenças",
+   "ti": "SIM",
+   "ti_obs": "De Acordo",
+   "docs": "Elaborado",
+   "docs_obs": "Não consta ID SIGA cadastrado para esta especficicação",
+   "valor": 1304100.0,
+   "ultimo_andamento": "Processo retornou ao GT com observações da Luene, para análise e ajustes necessários.",
+   "observacao": "REVISÃO DA JUSTIFICATIVA RECEBIDA EM 24/09",
+   "modalidade": "adesao_arp",
+   "atividades": 32,
+   "prazos_legais": 3,
+   "tem_sei": true,
+   "sem_justificativa": false
+  },
+  {
+   "n": 3,
+   "titulo": "telefonia VOIP",
+   "objeto": "Contratação de telefonia VOIP, visando atender às necessidades da FAETEC",
+   "sei_antigo": null,
+   "sei_novo": "SEI-260005/009055/2026",
+   "dod": "Elaborado",
+   "dod_obs": "Pretende-se participar da futura contratação vinculada ao Registro de Preços PE-RP nº 012/2024.",
+   "quantitativo": "Vão aderir o total da ATA -                  Serviço de Telefonia Ip e Nuvem contemplando licença/assinatura por usuário ou ramal, licença de softphone, aparelho IP POEe headset (ligações LOCA e LDN ilimitadas FIXO – FIXO e FIXO-MÓVEL) - 438\nLigações LDI (LDI-STFC-F/FM) Origem Fixo – Qualquer País/Região - 1.200\nDiscagem Direta Gratuita (DDG) Tridígio e 0800 contemplando licença/assinatura por usuário ou ramal, licença de softphone, aparelho IP POE e headset (ligações local e LDN ilimitada Fixo-Fixo e Móvel-Fixo) - 2\nServiços de Gravação de Chamadas - 2 \nContact Center em Nuvem -1",
+   "ata": "PARTICIPE",
+   "ata_obs": "REGISTRO DE PREÇOS – PE-RP Nº 012/2024",
+   "ti": "SIM",
+   "ti_obs": "De Acordo",
+   "docs": "Utilização do ETP do PRODERJ – FAETEC participante da Ata.",
+   "docs_obs": "-",
+   "valor": null,
+   "ultimo_andamento": "ENTREGUE PELO GT",
+   "observacao": "ENVIADO PARA ANÁLISE DO SETOR DE PLANEJAMENTO DA FAETEC (LUENE) 18/09 - SEM RESPOSTA",
+   "modalidade": "participante_rp",
+   "atividades": 26,
+   "prazos_legais": 3,
+   "tem_sei": true,
+   "sem_justificativa": false
+  },
+  {
+   "n": 4,
+   "titulo": "Serviço de instalação e fornecimento de Câmera de Segurança",
+   "objeto": "Contratação de Serviço de instalação e fornecimento de Câmera de Segurança, visando atender às necessidades da FAETEC",
+   "sei_antigo": null,
+   "sei_novo": "SEI-260005/008655/2026",
+   "dod": "Em Elaboração",
+   "dod_obs": "Não foi identificada, até o momento, Ata de Registro de Preços compatível com o objeto. Será realizada nova pesquisa de Atas.",
+   "quantitativo": "Necessária a atualização da justificativa, considerando a divergência entre a quantidade informada e a quantidade pretendida dentro da justificativa",
+   "ata": "NÃO",
+   "ata_obs": "Necessária pesquisa de Ata de Registro de Preços vigente e compatível com o objeto.",
+   "ti": "NÃO",
+   "ti_obs": null,
+   "docs": null,
+   "docs_obs": null,
+   "valor": null,
+   "ultimo_andamento": "Devolvido a área técnica para análise do quantitativo e dos itens a serem contratados",
+   "observacao": "AGUARDANDO REVISÃO DA JUSTIFICATIVA DESDE 24/09 (CARECE DE ELEMENTOS DA PRETENSA CONTRATAÇÃO)",
+   "modalidade": "a_definir",
+   "atividades": 7,
+   "prazos_legais": 0,
+   "tem_sei": true,
+   "sem_justificativa": false
+  },
+  {
+   "n": 5,
+   "titulo": "Link de Internet (Links SDWAN)",
+   "objeto": "Contratação de Link de Internet (Links SDWAN), visando atender às necessidades da FAETEC",
+   "sei_antigo": null,
+   "sei_novo": "SEI-260005/008620/2026",
+   "dod": "Elaborado",
+   "dod_obs": "-",
+   "quantitativo": "38 links de internet - SEM ESPECIFICAÇÃO DE MBPS",
+   "ata": "NÃO",
+   "ata_obs": "DISPENSA ART. 75 DA 14.133",
+   "ti": "NÃO",
+   "ti_obs": null,
+   "docs": "Elaboração do ETP",
+   "docs_obs": null,
+   "valor": null,
+   "ultimo_andamento": "Devolvido a área técnica para análise do quantitativo e dos itens a serem contratados",
+   "observacao": "AGUARDANDO REVISÃO DA JUSTIFICATIVA DESDE 23/09 (CARECE DE ELEMENTOS DA PRETENSA CONTRATAÇÃO)",
+   "modalidade": "dispensa",
+   "atividades": 26,
+   "prazos_legais": 3,
+   "tem_sei": true,
+   "sem_justificativa": false
+  },
+  {
+   "n": 6,
+   "titulo": "Licenciamento de softwares da Microsoft",
+   "objeto": "Contratação de Licenciamento de softwares da Microsoft , visando atender às necessidades da FAETEC",
+   "sei_antigo": null,
+   "sei_novo": "SEI-260005/008723/2026",
+   "dod": "Elaborado",
+   "dod_obs": "Pretende-se atender à demanda mediante participação no PERP 12/25 – Microsoft.",
+   "quantitativo": "1 Windows Server Datacenter 2 Core License – Microsoft, 48 licenças\n2 SQL Server Enterprise 2 Core License – Microsoft, 48 licenças\n3 System Center Datacenter Core ALng LSA 2L, 48 licenças\n4 Azure DevOps Server CAL ALng LSA User CAL, 10 licenças\n6 Microsoft 365, 600 licenças\n7 Power BI, 15 licenças",
+   "ata": "PARTICIPE",
+   "ata_obs": "PERP12/25- MICROSOFT",
+   "ti": "SIM",
+   "ti_obs": "Aguardando Análise e remanejamento do quantitativo pelo PRODERJ",
+   "docs": "Utilização do ETP do PRODERJ – FAETEC participante da Ata.",
+   "docs_obs": null,
+   "valor": null,
+   "ultimo_andamento": "DOD elaborado com base na justificativa enviada pela área técnica",
+   "observacao": "AGUARDANDO PUBLICAÇÃO DA ATA / DOD ENVIADO PARA ANÁLISE DO SETOR DE PLANEJAMENTO DA FAETEC (LUENE) 23/09",
+   "modalidade": "participante_rp",
+   "atividades": 26,
+   "prazos_legais": 3,
+   "tem_sei": true,
+   "sem_justificativa": false
+  },
+  {
+   "n": 7,
+   "titulo": "Licenças de software antivírus com tecnologia EDR",
+   "objeto": "Contratação de Licenças de software antivírus com tecnologia EDR, visando atender às necessidades da FAETEC",
+   "sei_antigo": null,
+   "sei_novo": "SEI-260005/009050/2026",
+   "dod": "Elaborado",
+   "dod_obs": "Pretende-se atender à demanda por adesão - ARP 02/2026 TJMA",
+   "quantitativo": "5.000 licenças",
+   "ata": "SIM",
+   "ata_obs": "ADESÃO - ARP 02/2026 TJMA",
+   "ti": "NÃO",
+   "ti_obs": "Aguardando manifestação e aprovação - Gibson",
+   "docs": "Em elaboração",
+   "docs_obs": null,
+   "valor": null,
+   "ultimo_andamento": "Justificativa aguardando o tempo da contratação para seguir com a elaboração dos documentos - ENVIADA A ÁREA TÉNCICA 24/09",
+   "observacao": "JUSTIFICATIVA RECEBIDA EM 18/09",
+   "modalidade": "adesao_arp",
+   "atividades": 32,
+   "prazos_legais": 3,
+   "tem_sei": true,
+   "sem_justificativa": false
+  },
+  {
+   "n": 8,
+   "titulo": "Computadores basicos (5.500),notebook (2.260), monitor 22\"(7.640) e monitor 24\" (600)",
+   "objeto": "Contratação de Computadores basicos (5.500),notebook (2.260), monitor 22\"(7.640) e monitor 24\" (600), visando atender às necessidades da FAETEC",
+   "sei_antigo": null,
+   "sei_novo": "SEI-260005/008722/2026",
+   "dod": "EM ANÁLISE",
+   "dod_obs": "Não foi identificada, até o momento, Ata de Registro de Preços compatível com o objeto. Será realizada nova pesquisa de Atas.",
+   "quantitativo": "Computadores basicos (5.500), computadores de alto desempenho\"(2.140) e monitor 22\" (600),",
+   "ata": "NÃO",
+   "ata_obs": "Necessária pesquisa de Ata de Registro de Preços vigente e compatível com o objeto.",
+   "ti": "NÃO",
+   "ti_obs": null,
+   "docs": null,
+   "docs_obs": null,
+   "valor": null,
+   "ultimo_andamento": null,
+   "observacao": "JUSTIFICATIVA RECEBIDA EM 18/09          JUSTIFICATIVA ALTERADA EM 24/09",
+   "modalidade": "a_definir",
+   "atividades": 7,
+   "prazos_legais": 0,
+   "tem_sei": true,
+   "sem_justificativa": false
+  },
+  {
+   "n": 9,
+   "titulo": "Computadores avançados",
+   "objeto": "Contratação de Computadores avançados, visando atender às necessidades da FAETEC",
+   "sei_antigo": null,
+   "sei_novo": "SEI-260005/008721/2026",
+   "dod": "Aguardando Justificativa",
+   "dod_obs": null,
+   "quantitativo": null,
+   "ata": null,
+   "ata_obs": null,
+   "ti": "NÃO",
+   "ti_obs": null,
+   "docs": null,
+   "docs_obs": null,
+   "valor": null,
+   "ultimo_andamento": null,
+   "observacao": "SEM JUSTIFICATIVA NO DRIVE ATÉ 24/09",
+   "modalidade": "a_definir",
+   "atividades": 7,
+   "prazos_legais": 0,
+   "tem_sei": true,
+   "sem_justificativa": true
+  },
+  {
+   "n": 10,
+   "titulo": "Appliances para Backup",
+   "objeto": "Contratação de Appliances para Backup, visando atender às necessidades da FAETEC",
+   "sei_antigo": "SEI-260005/008219/2026",
+   "sei_novo": "SEI-260005/008712/2026",
+   "dod": "Elaborado",
+   "dod_obs": "Pretende-se atender à demanda por adesão - PE-RP Nº 016/2024 PRODERJ",
+   "quantitativo": "dois appliances de backup",
+   "ata": "SIM",
+   "ata_obs": "ADESÃO - PE-RP Nº 016/2024 PRODERJ",
+   "ti": "SIM",
+   "ti_obs": "De Acordo",
+   "docs": "Elaborado ETP\nEm elaboração do TR",
+   "docs_obs": null,
+   "valor": 3559045.11,
+   "ultimo_andamento": "DOD elaborado com base na justificativa enviada pela área técnica",
+   "observacao": "JUSTIFICATIVA RECEBIDA EM 18/09",
+   "modalidade": "adesao_arp",
+   "atividades": 32,
+   "prazos_legais": 3,
+   "tem_sei": true,
+   "sem_justificativa": false
+  },
+  {
+   "n": 11,
+   "titulo": "Switch top of Rack",
+   "objeto": "Contratação de Switch top of Rack, visando atender às necessidades da FAETEC",
+   "sei_antigo": null,
+   "sei_novo": "SEI-260005/008710/2026",
+   "dod": "Aguardando Justificativa",
+   "dod_obs": null,
+   "quantitativo": null,
+   "ata": null,
+   "ata_obs": null,
+   "ti": "NÃO",
+   "ti_obs": null,
+   "docs": null,
+   "docs_obs": null,
+   "valor": null,
+   "ultimo_andamento": null,
+   "observacao": "SEM JUSTIFICATIVA NO DRIVE",
+   "modalidade": "a_definir",
+   "atividades": 7,
+   "prazos_legais": 0,
+   "tem_sei": true,
+   "sem_justificativa": true
+  },
+  {
+   "n": 12,
+   "titulo": "Servidor Hiperconvergente",
+   "objeto": "Contratação de Servidor Hiperconvergente, visando atender às necessidades da FAETEC",
+   "sei_antigo": null,
+   "sei_novo": "SEI-260005/008677/2026",
+   "dod": "Aguardando Justificativa",
+   "dod_obs": null,
+   "quantitativo": null,
+   "ata": null,
+   "ata_obs": null,
+   "ti": "NÃO",
+   "ti_obs": null,
+   "docs": null,
+   "docs_obs": null,
+   "valor": null,
+   "ultimo_andamento": null,
+   "observacao": "SEM JUSTIFICATIVA NO DRIVE",
+   "modalidade": "a_definir",
+   "atividades": 7,
+   "prazos_legais": 0,
+   "tem_sei": true,
+   "sem_justificativa": true
+  },
+  {
+   "n": 13,
+   "titulo": "Rack 19U",
+   "objeto": "Contratação de Rack 19U, visando atender às necessidades da FAETEC",
+   "sei_antigo": null,
+   "sei_novo": "SEI-260005/009052/2027",
+   "dod": "EM ANÁLISE",
+   "dod_obs": null,
+   "quantitativo": "173 racks",
+   "ata": "SIM",
+   "ata_obs": "ARP Nº 167/2025 - SEPLAG /MG",
+   "ti": "NÃO",
+   "ti_obs": null,
+   "docs": null,
+   "docs_obs": null,
+   "valor": null,
+   "ultimo_andamento": null,
+   "observacao": "JUSTIFICATIVA RECEBIDA 24/09",
+   "modalidade": "adesao_arp",
+   "atividades": 32,
+   "prazos_legais": 3,
+   "tem_sei": true,
+   "sem_justificativa": false
+  },
+  {
+   "n": 14,
+   "titulo": "Acess Point",
+   "objeto": "Contratação de Acess Point, visando atender às necessidades da FAETEC",
+   "sei_antigo": null,
+   "sei_novo": "Não há processso Informado",
+   "dod": "Aguardando Justificativa",
+   "dod_obs": null,
+   "quantitativo": null,
+   "ata": "SIM",
+   "ata_obs": "ARP Nº 167/2025 - SEPLAG /MG",
+   "ti": "NÃO",
+   "ti_obs": null,
+   "docs": null,
+   "docs_obs": null,
+   "valor": null,
+   "ultimo_andamento": null,
+   "observacao": "SEM JUSTIFICATIVA NO DRIVE",
+   "modalidade": "adesao_arp",
+   "atividades": 32,
+   "prazos_legais": 3,
+   "tem_sei": false,
+   "sem_justificativa": true
+  },
+  {
+   "n": 15,
+   "titulo": "Pontos Lógicos",
+   "objeto": "Contratação de Pontos Lógicos, visando atender às necessidades da FAETEC",
+   "sei_antigo": null,
+   "sei_novo": "SEI-260005/009053/2028",
+   "dod": "Aguardando Justificativa",
+   "dod_obs": null,
+   "quantitativo": null,
+   "ata": null,
+   "ata_obs": null,
+   "ti": "NÃO",
+   "ti_obs": null,
+   "docs": null,
+   "docs_obs": null,
+   "valor": null,
+   "ultimo_andamento": null,
+   "observacao": "SEM JUSTIFICATIVA NO DRIVE",
+   "modalidade": "a_definir",
+   "atividades": 7,
+   "prazos_legais": 0,
+   "tem_sei": true,
+   "sem_justificativa": true
+  },
+  {
+   "n": 16,
+   "titulo": "Telefonia movél (celular)",
+   "objeto": "Contratação de Telefonia movél (celular), visando atender às necessidades da FAETEC",
+   "sei_antigo": null,
+   "sei_novo": "SEI-260005/009054/2029",
+   "dod": "EM ANÁLISE",
+   "dod_obs": null,
+   "quantitativo": null,
+   "ata": null,
+   "ata_obs": null,
+   "ti": "NÃO",
+   "ti_obs": null,
+   "docs": null,
+   "docs_obs": null,
+   "valor": null,
+   "ultimo_andamento": null,
+   "observacao": "JUSTIFICATIVA RECEBIDA 24/09",
+   "modalidade": "a_definir",
+   "atividades": 7,
+   "prazos_legais": 0,
+   "tem_sei": true,
+   "sem_justificativa": false
+  },
+  {
+   "n": 17,
+   "titulo": "Switch Core",
+   "objeto": "Contratação de Switch Core, visando atender às necessidades da FAETEC",
+   "sei_antigo": null,
+   "sei_novo": "SEI-260005/008717/2025",
+   "dod": "EM ANÁLISE",
+   "dod_obs": null,
+   "quantitativo": "Não tem quatidade indentificada na justificativa",
+   "ata": null,
+   "ata_obs": null,
+   "ti": "NÃO",
+   "ti_obs": null,
+   "docs": null,
+   "docs_obs": null,
+   "valor": null,
+   "ultimo_andamento": null,
+   "observacao": "JUSTIFICATIVA RECEBIDA 24/09, SEM QUANTITATIVO INFORMADO",
+   "modalidade": "a_definir",
+   "atividades": 7,
+   "prazos_legais": 0,
+   "tem_sei": true,
+   "sem_justificativa": false
+  },
+  {
+   "n": 18,
+   "titulo": "Switch de Acesso",
+   "objeto": "Contratação de Switch de Acesso, visando atender às necessidades da FAETEC",
+   "sei_antigo": null,
+   "sei_novo": "Não há processso Informado",
+   "dod": "Aguardando Justificativa",
+   "dod_obs": null,
+   "quantitativo": null,
+   "ata": null,
+   "ata_obs": null,
+   "ti": "NÃO",
+   "ti_obs": null,
+   "docs": null,
+   "docs_obs": null,
+   "valor": null,
+   "ultimo_andamento": null,
+   "observacao": "SEM JUSTIFICATIVA NO DRIVE",
+   "modalidade": "a_definir",
+   "atividades": 7,
+   "prazos_legais": 0,
+   "tem_sei": false,
+   "sem_justificativa": true
+  },
+  {
+   "n": 19,
+   "titulo": "Firewall Fortinet",
+   "objeto": "Contratação de Firewall Fortinet, visando atender às necessidades da FAETEC",
+   "sei_antigo": null,
+   "sei_novo": "SEI-260005/008714/2026",
+   "dod": "EM ANÁLISE",
+   "dod_obs": null,
+   "quantitativo": "01 Firewall de Próxima Geração (NGFW) 02\n02 Conjunto de licenciamento de segurança para os NGFW 02\n03 Console de gerenciamento centralizado 02\n04 Console/plataforma de gerenciamento e centralização de logs 02\n05 Console de geração e gerenciamento de relatórios 02\n06 Serviço de treinamento e capacitação técnica 03",
+   "ata": null,
+   "ata_obs": null,
+   "ti": "NÃO",
+   "ti_obs": null,
+   "docs": null,
+   "docs_obs": null,
+   "valor": null,
+   "ultimo_andamento": null,
+   "observacao": "JUSTIFICATIVA RECEBIDA 24/09",
+   "modalidade": "a_definir",
+   "atividades": 7,
+   "prazos_legais": 0,
+   "tem_sei": true,
+   "sem_justificativa": false
+  },
+  {
+   "n": 20,
+   "titulo": "Computador Quantico",
+   "objeto": "Contratação de Computador Quantico, visando atender às necessidades da FAETEC",
+   "sei_antigo": null,
+   "sei_novo": "Não há processso Informado",
+   "dod": "EM ANÁLISE",
+   "dod_obs": "Não foi identificada, até o momento, Ata de Registro de Preços compatível com o objeto. Será realizada nova pesquisa de Atas.",
+   "quantitativo": "sem quantidade informada de forma clara na justificativa",
+   "ata": null,
+   "ata_obs": null,
+   "ti": "NÃO",
+   "ti_obs": null,
+   "docs": null,
+   "docs_obs": null,
+   "valor": null,
+   "ultimo_andamento": null,
+   "observacao": "JUSTIFICATIVA RECEBIDA EM 23/09    SEM QUANTITATIVO INFORMADO",
+   "modalidade": "a_definir",
+   "atividades": 7,
+   "prazos_legais": 0,
+   "tem_sei": false,
+   "sem_justificativa": false
+  }
+ ]
+}
