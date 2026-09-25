@@ -6,155 +6,117 @@
 <title>Protótipo de melhorias · GT PROPAG</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap" rel="stylesheet">
 <style>
-:root {
-  --navy:#16284d; --navy-2:#1e3564; --navy-3:#2a4478; --gold:#c8962f; --gold-ink:#8a5f0d; --gold-soft:#f7e9c9;
-  --bg:#f3f0e9; --card:#fff; --paper:#faf8f3; --line:#e6e0d4; --line-2:#d8d1c2; --ink:#1b2236; --ink-2:#3b4254; --muted:#6e6758;
-  --red:#b3372b; --red-soft:#fbe2de; --green:#2c7a4d; --green-soft:#ddefe3; --blue:#22407e; --blue-soft:#e1e8f5; --gray-soft:#eceae4;
-  --serif:'Source Serif 4', Georgia, serif; --sans:'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-}
-* { box-sizing:border-box; }
-html,body { margin:0; }
-body { background:var(--bg); color:var(--ink); font:14px/1.45 var(--sans); -webkit-font-smoothing:antialiased; }
-a { color:var(--navy); }
-button,input,select,textarea { font:inherit; color:inherit; }
-h1 { font:700 28px/1.15 var(--serif); color:var(--navy); margin:0; }
-h2 { font-size:16px; font-weight:600; color:var(--navy); margin:0; }
-.eyebrow { font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--gold-ink); }
-.muted { color:var(--muted); } .small { font-size:12px; } .red { color:var(--red); } .right { text-align:right; }
-/* faixa do protótipo */
-.proto { position:sticky; top:0; z-index:50; background:repeating-linear-gradient(135deg,#8a5f0d 0 14px,#96681a 14px 28px); color:#fff; font-size:12.5px; font-weight:600; padding:7px 16px; display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap; }
-.proto button { background:#fff; color:var(--navy); border:0; border-radius:6px; padding:5px 12px; font-weight:700; cursor:pointer; }
-/* estrutura */
-.app { display:grid; grid-template-columns:236px 1fr; min-height:calc(100vh - 34px); background:linear-gradient(to right,var(--navy) 236px,var(--bg) 236px); }
-.sidebar { background:var(--navy); color:#cfd6e6; padding:22px 14px 18px; display:flex; flex-direction:column; position:sticky; top:34px; height:calc(100vh - 34px); overflow-y:auto; }
-.brand { padding:0 8px 22px; } .brand .eyebrow { color:var(--gold); font-size:10px; }
-.brand .nome { font:700 20px var(--serif); color:#fff; margin-top:6px; } .brand .sub { font-size:11.5px; color:#9fabc6; }
-.nav { display:flex; flex-direction:column; gap:2px; }
-.nav a { display:flex; align-items:center; gap:10px; padding:9px 10px; border-radius:8px; color:#cfd6e6; text-decoration:none; font-size:13.5px; cursor:pointer; }
-.nav a:hover { background:rgba(255,255,255,.06); color:#fff; }
-.nav a.ativo { background:var(--navy-3); color:#fff; font-weight:600; }
-.nav .grupo { margin:16px 10px 6px; font-size:10px; letter-spacing:.14em; font-weight:700; color:#8190b3; }
-.tag-novo { margin-left:auto; background:var(--gold); color:var(--navy); font-size:9.5px; font-weight:800; letter-spacing:.06em; padding:2px 6px; border-radius:4px; }
-.badge { margin-left:auto; background:var(--red); color:#fff; font-size:10.5px; font-weight:700; min-width:18px; height:18px; border-radius:9px; display:grid; place-items:center; padding:0 5px; }
-.nav a .badge + .tag-novo { margin-left:6px; }
-.usuario { margin-top:auto; border-top:1px solid rgba(255,255,255,.1); padding:14px 8px 0; font-size:12px; }
-.usuario b { color:#fff; font-size:13px; display:block; }
-main { padding:26px 34px 60px; min-width:0; }
-.topo { display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--line-2); padding-bottom:14px; margin-bottom:22px; }
-.cabecalho { display:flex; justify-content:space-between; align-items:flex-end; gap:16px; margin-bottom:18px; flex-wrap:wrap; }
-.card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:18px; box-shadow:0 1px 2px rgba(22,40,77,.05); }
-.grid { display:grid; gap:14px; } .g4 { grid-template-columns:repeat(4,1fr); } .g2 { grid-template-columns:1fr 1fr; } .g-3-1 { grid-template-columns:2fr 1fr; }
-.kpi .v { font:700 30px var(--serif); color:var(--navy); margin:4px 0 2px; }
-.btn { display:inline-flex; align-items:center; gap:6px; border:1px solid var(--line-2); background:#fff; color:var(--navy); border-radius:8px; padding:8px 14px; font-weight:600; cursor:pointer; text-decoration:none; }
-.btn:hover { border-color:var(--navy); } .btn.primario { background:var(--navy); color:#fff; border-color:var(--navy); } .btn.pequeno { padding:5px 10px; font-size:12.5px; }
-.btn[disabled] { opacity:.45; cursor:not-allowed; }
-.voltar { display:inline-flex; align-items:center; gap:6px; background:none; border:0; padding:0; color:var(--navy); font-weight:600; cursor:pointer; margin-bottom:10px; font-size:13px; }
-.voltar:hover { text-decoration:underline; }
-.migalha { font-size:12.5px; color:var(--muted); margin-bottom:4px; }
-table { width:100%; border-collapse:collapse; }
-th { text-align:left; font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); font-weight:700; padding:8px 10px; border-bottom:1px solid var(--line); }
-td { padding:10px; border-bottom:1px solid var(--line); vertical-align:top; }
-tr.clicavel { cursor:pointer; } tr.clicavel:hover td { background:var(--paper); }
-.pill { display:inline-block; font-size:11.5px; font-weight:600; padding:2px 9px; border-radius:20px; background:var(--gray-soft); color:var(--ink-2); white-space:nowrap; }
-.pill.ouro { background:var(--gold-soft); color:var(--gold-ink); } .pill.vermelho { background:var(--red-soft); color:var(--red); }
-.pill.verde { background:var(--green-soft); color:var(--green); } .pill.azul { background:var(--blue-soft); color:var(--blue); }
-.demo { border:2px dashed var(--gold); border-radius:10px; position:relative; }
-.demo-faixa { background:var(--gold); color:var(--navy); font-size:10.5px; font-weight:800; letter-spacing:.1em; padding:4px 10px; border-radius:6px 6px 0 0; display:inline-block; }
-.aviso { background:var(--blue-soft); color:var(--blue); border-radius:8px; padding:10px 14px; font-size:13px; margin-bottom:14px; }
-.aviso.ouro { background:var(--gold-soft); color:var(--gold-ink); }
-.vazio { text-align:center; color:var(--muted); padding:34px 10px; }
-.abas { display:flex; gap:4px; border-bottom:1px solid var(--line-2); margin-bottom:16px; }
-.abas button { background:none; border:0; border-bottom:2px solid transparent; padding:9px 14px; font-weight:600; color:var(--muted); cursor:pointer; }
-.abas button.ativa { color:var(--navy); border-color:var(--gold); }
+/* ======== CSS do sistema (build atual, sem alterações) ======== */
+__CSS__
+</style>
+<style>
+/* ======== Acréscimos do protótipo (prefixo pt-) ======== */
+.pt-faixa { position:sticky; top:0; z-index:80; background:repeating-linear-gradient(135deg,#8a5f0d 0 14px,#96681a 14px 28px); color:#fff; font:600 12.5px/1.3 var(--sans); padding:7px 16px; display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap; }
+.pt-faixa button { background:#fff; color:var(--navy); border:0; border-radius:6px; padding:5px 12px; font-weight:700; cursor:pointer; }
+body.pt .sidebar { top:34px; height:calc(100vh - 34px); }
+.nav a .pt-novo { margin-left:auto; background:var(--gold); color:var(--navy); font-size:9.5px; font-weight:800; letter-spacing:.06em; padding:2px 6px; border-radius:4px; }
+.nav a .pt-badge { margin-left:auto; background:var(--red); color:#fff; font-size:10.5px; font-weight:700; min-width:18px; height:18px; border-radius:9px; display:inline-grid; place-items:center; padding:0 5px; }
+.nav a .pt-badge + .pt-novo { margin-left:6px; }
+#vista .abas { flex-wrap:wrap; }
+.pt-novo-sel { display:inline-block; background:var(--gold); color:var(--navy); font-size:9.5px; font-weight:800; letter-spacing:.06em; padding:2px 6px; border-radius:4px; vertical-align:middle; }
+.pt-voltar { display:inline-flex; align-items:center; gap:6px; background:none; border:0; padding:0; color:var(--navy); font-weight:600; cursor:pointer; margin:0 0 10px; font-size:13px; }
+.pt-voltar:hover { text-decoration:underline; }
+.pt-demo { border:2px dashed var(--gold) !important; }
+.pt-demo-faixa { background:var(--gold); color:var(--navy); font-size:10.5px; font-weight:800; letter-spacing:.1em; padding:4px 10px; border-radius:6px; display:inline-block; margin-bottom:8px; }
+.pt-aviso { background:var(--blue-soft); color:var(--blue); border-radius:8px; padding:10px 14px; font-size:13px; margin-bottom:14px; }
+.pt-aviso.ouro { background:var(--gold-soft); color:var(--gold-ink); }
+.pt-toast { position:fixed; bottom:18px; left:50%; transform:translateX(-50%); background:var(--navy); color:#fff; padding:9px 16px; border-radius:8px; font-size:13px; z-index:90; box-shadow:0 8px 20px rgba(0,0,0,.2); }
+.pt-pill { display:inline-block; font-size:11.5px; font-weight:600; padding:2px 9px; border-radius:20px; background:var(--gray-soft); color:var(--ink-2); white-space:nowrap; }
+.pt-pill.verde { background:var(--green-soft); color:var(--green); } .pt-pill.azul { background:var(--blue-soft); color:var(--blue); } .pt-pill.ouro { background:var(--gold-soft); color:var(--gold-ink); }
 /* ticker */
-.ticker { display:flex; align-items:stretch; background:var(--navy); color:#fff; border-radius:8px; overflow:hidden; margin-bottom:16px; height:38px; }
-.ticker .rot { background:var(--red); font-weight:800; font-size:11.5px; letter-spacing:.12em; padding:0 14px; display:flex; align-items:center; white-space:nowrap; }
-.ticker .janela { overflow:hidden; flex:1; position:relative; mask-image:linear-gradient(to right,transparent,#000 30px,#000 calc(100% - 30px),transparent); }
-.ticker .fita { display:flex; gap:42px; white-space:nowrap; position:absolute; top:0; height:38px; align-items:center; animation:rolar 60s linear infinite; padding-left:100%; }
-.ticker:hover .fita { animation-play-state:paused; }
-.ticker .fita a { color:#fff; text-decoration:none; font-size:13px; cursor:pointer; } .ticker .fita a b { color:var(--gold); margin-right:6px; }
-.ticker .fita a:hover { text-decoration:underline; }
-@keyframes rolar { from { transform:translateX(0); } to { transform:translateX(-100%); } }
-@media (prefers-reduced-motion: reduce) { .ticker .fita { animation:none; padding-left:14px; overflow-x:auto; } }
+.pt-ticker { display:flex; background:var(--navy); color:#fff; border-radius:8px; overflow:hidden; margin:0 0 16px; height:38px; }
+.pt-ticker .rot { background:var(--red); font-weight:800; font-size:11.5px; letter-spacing:.12em; padding:0 14px; display:flex; align-items:center; white-space:nowrap; }
+.pt-ticker .janela { overflow:hidden; flex:1; position:relative; mask-image:linear-gradient(to right,transparent,#000 30px,#000 calc(100% - 30px),transparent); }
+.pt-ticker .fita { display:flex; gap:42px; white-space:nowrap; position:absolute; top:0; height:38px; align-items:center; animation:pt-rolar 70s linear infinite; padding-left:100%; }
+.pt-ticker:hover .fita { animation-play-state:paused; }
+.pt-ticker .fita a { color:#fff; text-decoration:none; font-size:13px; cursor:pointer; } .pt-ticker .fita a b { color:var(--gold); margin-right:6px; }
+.pt-ticker .fita a:hover { text-decoration:underline; }
+@keyframes pt-rolar { from { transform:translateX(0); } to { transform:translateX(-100%); } }
+@media (prefers-reduced-motion: reduce) { .pt-ticker .fita { animation:none; padding-left:14px; } }
 /* gráficos */
-.barras { display:flex; align-items:flex-end; gap:10px; height:150px; padding:10px 4px 0; border-bottom:1px solid var(--line-2); }
-.barras .b { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; height:100%; gap:4px; font-size:11px; color:var(--muted); }
-.barras .b i { display:block; width:100%; max-width:42px; background:var(--navy); border-radius:4px 4px 0 0; }
-.barras .b i.proj { background:repeating-linear-gradient(45deg,var(--gold) 0 5px,#e0b45a 5px 10px); }
-.eixo { display:flex; gap:10px; padding:4px 4px 0; } .eixo span { flex:1; text-align:center; font-size:10.5px; color:var(--muted); }
+.pt-graficos { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
+.pt-graficos .largo { grid-column:1 / -1; }
+.pt-graficos > * { min-width:0; }
+.pt-colunas2 { columns:2; column-gap:28px; }
+.pt-legenda { display:flex; gap:14px; flex-wrap:wrap; font-size:12px; color:var(--muted); margin-top:8px; }
+.pt-legenda i { display:inline-block; width:10px; height:10px; border-radius:2px; margin-right:5px; vertical-align:-1px; }
+.pt-hbar { display:grid; grid-template-columns:190px 1fr 70px; gap:10px; align-items:center; font-size:12.5px; margin:6px 0; }
+.pt-hbar .trilho { height:12px; background:var(--gray-soft); border-radius:6px; overflow:hidden; display:flex; }
+.pt-hbar .trilho i { display:block; height:100%; }
+.pt-kpis { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:14px; }
 /* agenda */
-.cal { display:grid; grid-template-columns:repeat(7,1fr); border:1px solid var(--line); border-radius:8px; overflow:hidden; }
-.cal .dow { background:var(--paper); font-size:10.5px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); padding:7px; text-align:center; border-bottom:1px solid var(--line); }
-.cal .dia { min-height:96px; border-right:1px solid var(--line); border-bottom:1px solid var(--line); padding:6px; background:#fff; cursor:pointer; }
-.cal .dia.fora { background:#fbfaf7; color:#b5ae9f; } .cal .dia.hoje .num { background:var(--navy); color:#fff; border-radius:50%; }
-.cal .dia .num { display:inline-grid; place-items:center; width:24px; height:24px; font-size:12px; font-weight:600; }
-.ev { display:block; font-size:11px; border-radius:4px; padding:2px 5px; margin-top:3px; cursor:pointer; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; border-left:3px solid; }
-.ev.legal { background:var(--red-soft); border-color:var(--red); color:#7b241c; } .ev.meta { background:var(--blue-soft); border-color:var(--blue); color:var(--blue); }
-.ev.ata { background:var(--gold-soft); border-color:var(--gold); color:var(--gold-ink); }
-.ev:hover { filter:brightness(.95); }
-.lista-dia { display:flex; flex-direction:column; gap:8px; }
-.lista-dia .item { display:flex; gap:12px; align-items:center; padding:12px; border:1px solid var(--line); border-radius:8px; background:#fff; cursor:pointer; }
-.lista-dia .item:hover { border-color:var(--navy); }
+.pt-cal { display:grid; grid-template-columns:repeat(7,1fr); border:1px solid var(--line); border-radius:8px; overflow:hidden; }
+.pt-cal .dow { background:var(--paper); font-size:10.5px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); padding:7px; text-align:center; border-bottom:1px solid var(--line); }
+.pt-cal .dia { min-height:96px; border-right:1px solid var(--line); border-bottom:1px solid var(--line); padding:6px; background:#fff; cursor:pointer; min-width:0; }
+.pt-cal .dia.fora { background:#fbfaf7; color:#b5ae9f; } .pt-cal .dia.hoje .num { background:var(--navy); color:#fff; border-radius:50%; }
+.pt-cal .dia .num { display:inline-grid; place-items:center; width:24px; height:24px; font-size:12px; font-weight:600; }
+.pt-ev { display:block; font-size:11px; border-radius:4px; padding:2px 5px; margin-top:3px; cursor:pointer; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; border-left:3px solid; }
+.pt-ev.legal { background:var(--red-soft); border-color:var(--red); color:#7b241c; } .pt-ev.meta { background:var(--blue-soft); border-color:var(--blue); color:var(--blue); }
+.pt-ev.ata { background:var(--gold-soft); border-color:var(--gold); color:var(--gold-ink); }
+.pt-dia-lista { display:flex; flex-direction:column; gap:8px; }
+.pt-dia-lista .item { display:flex; gap:12px; align-items:center; padding:12px; border:1px solid var(--line); border-radius:8px; background:#fff; cursor:pointer; }
+.pt-dia-lista .item:hover { border-color:var(--navy); }
 /* mensagens */
-.msg-app { display:grid; grid-template-columns:300px 1fr; height:560px; background:#fff; border:1px solid var(--line); border-radius:10px; overflow:hidden; }
-.conversas { border-right:1px solid var(--line); overflow-y:auto; }
-.conversas .c { padding:12px 14px; border-bottom:1px solid var(--line); cursor:pointer; display:flex; gap:10px; }
-.conversas .c:hover, .conversas .c.ativa { background:var(--paper); }
-.av { width:34px; height:34px; border-radius:50%; background:var(--gold-soft); color:var(--gold-ink); display:grid; place-items:center; font-weight:700; font-size:12px; flex:none; }
-.thread { display:flex; flex-direction:column; min-width:0; }
-.thread .cab { padding:12px 16px; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; align-items:center; gap:10px; }
-.thread .corpo { flex:1; overflow-y:auto; padding:16px; display:flex; flex-direction:column; gap:10px; background:var(--paper); }
-.bolha { max-width:70%; padding:9px 13px; border-radius:12px; background:#fff; border:1px solid var(--line); font-size:13.5px; }
-.bolha.eu { align-self:flex-end; background:var(--navy); color:#fff; border-color:var(--navy); }
-.bolha .meta { font-size:10.5px; opacity:.7; margin-top:3px; }
-.thread form { display:flex; gap:8px; padding:12px; border-top:1px solid var(--line); }
-.thread input[type=text] { flex:1; border:1px solid var(--line-2); border-radius:8px; padding:9px 12px; }
+.pt-msg { display:grid; grid-template-columns:300px 1fr; height:560px; background:#fff; overflow:hidden; border-radius:0 0 10px 10px; }
+.pt-conversas { border-right:1px solid var(--line); overflow-y:auto; }
+.pt-conversas .c { padding:12px 14px; border-bottom:1px solid var(--line); cursor:pointer; display:flex; gap:10px; }
+.pt-conversas .c:hover, .pt-conversas .c.ativa { background:var(--paper); }
+.pt-av { width:34px; height:34px; border-radius:50%; background:var(--gold-soft); color:var(--gold-ink); display:grid; place-items:center; font-weight:700; font-size:12px; flex:none; }
+.pt-thread { display:flex; flex-direction:column; min-width:0; }
+.pt-thread .cab { padding:12px 16px; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; align-items:center; gap:10px; }
+.pt-thread .corpo { flex:1; overflow-y:auto; padding:16px; display:flex; flex-direction:column; gap:10px; background:var(--paper); }
+.pt-bolha { max-width:70%; padding:9px 13px; border-radius:12px; background:#fff; border:1px solid var(--line); font-size:13.5px; }
+.pt-bolha.eu { align-self:flex-end; background:var(--navy); color:#fff; border-color:var(--navy); }
+.pt-bolha .meta { font-size:10.5px; opacity:.7; margin-top:3px; }
+.pt-thread form { display:flex; gap:8px; padding:12px; border-top:1px solid var(--line); }
+.pt-thread input[type=text] { flex:1; border:1px solid var(--line-2); border-radius:8px; padding:9px 12px; }
+.pt-cont { background:var(--red); color:#fff; font-size:10.5px; font-weight:700; min-width:18px; height:18px; border-radius:9px; display:inline-grid; place-items:center; padding:0 5px; }
+/* importação */
+.pt-diff td { font-size:12.5px; } .pt-antes { color:var(--red); text-decoration:line-through; } .pt-depois { color:var(--green); font-weight:600; }
 /* parecer */
-.gaveta { position:fixed; top:34px; right:0; bottom:0; width:430px; background:#fff; border-left:1px solid var(--line-2); box-shadow:-12px 0 30px rgba(22,40,77,.14); transform:translateX(105%); transition:transform .25s; z-index:60; display:flex; flex-direction:column; }
-.gaveta.aberta { transform:none; }
-.gaveta .cab { background:var(--navy); color:#fff; padding:16px 18px; display:flex; justify-content:space-between; align-items:center; }
-.gaveta .cab h2 { color:#fff; font:700 18px var(--serif); }
-.gaveta .corpo { overflow-y:auto; padding:14px 18px; flex:1; }
-.mel { border:1px solid var(--line); border-radius:10px; padding:12px 14px; margin-bottom:12px; }
-.mel h3 { margin:0 0 4px; font-size:14px; color:var(--navy); }
-.opcoes { display:flex; gap:6px; margin:8px 0; }
-.opcoes button { flex:1; border:1px solid var(--line-2); background:#fff; border-radius:7px; padding:6px; font-weight:600; font-size:12.5px; cursor:pointer; }
-.opcoes button.sel.aprovar { background:var(--green); color:#fff; border-color:var(--green); }
-.opcoes button.sel.ajustar { background:var(--gold); color:var(--navy); border-color:var(--gold); }
-.opcoes button.sel.recusar { background:var(--red); color:#fff; border-color:var(--red); }
-.mel textarea { width:100%; min-height:54px; border:1px solid var(--line-2); border-radius:7px; padding:7px 9px; font-size:13px; resize:vertical; }
-.gaveta .pe { border-top:1px solid var(--line); padding:12px 18px; display:flex; gap:8px; flex-wrap:wrap; }
-.diff td { font-size:12.5px; } .antes { color:var(--red); text-decoration:line-through; } .depois { color:var(--green); font-weight:600; }
+.pt-gaveta { position:fixed; top:34px; right:0; bottom:0; width:430px; background:#fff; border-left:1px solid var(--line-2); box-shadow:-12px 0 30px rgba(22,40,77,.14); transform:translateX(105%); transition:transform .25s; z-index:85; display:flex; flex-direction:column; }
+.pt-gaveta.aberta { transform:none; }
+.pt-gaveta .cab { background:var(--navy); color:#fff; padding:16px 18px; display:flex; justify-content:space-between; align-items:center; }
+.pt-gaveta .cab h2 { color:#fff; font:700 18px var(--serif); margin:0; }
+.pt-gaveta .corpo { overflow-y:auto; padding:14px 18px; flex:1; }
+.pt-mel { border:1px solid var(--line); border-radius:10px; padding:12px 14px; margin-bottom:12px; }
+.pt-mel h3 { margin:0 0 4px; font-size:14px; color:var(--navy); }
+.pt-opcoes { display:flex; gap:6px; margin:8px 0; }
+.pt-opcoes button { flex:1; border:1px solid var(--line-2); background:#fff; border-radius:7px; padding:6px; font-weight:600; font-size:12.5px; cursor:pointer; }
+.pt-opcoes button.sel.aprovar { background:var(--green); color:#fff; border-color:var(--green); }
+.pt-opcoes button.sel.ajustar { background:var(--gold); color:var(--navy); border-color:var(--gold); }
+.pt-opcoes button.sel.recusar { background:var(--red); color:#fff; border-color:var(--red); }
+.pt-mel textarea { width:100%; min-height:54px; border:1px solid var(--line-2); border-radius:7px; padding:7px 9px; font-size:13px; resize:vertical; }
+.pt-gaveta .pe { border-top:1px solid var(--line); padding:12px 18px; display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
 @media (max-width: 900px) {
-  .app { grid-template-columns:1fr; background:var(--bg); } .sidebar { position:static; height:auto; }
-  .g4,.g2,.g-3-1 { grid-template-columns:1fr; } main { padding:18px 16px 40px; } .msg-app { grid-template-columns:1fr; height:auto; }
-  .gaveta { width:100%; } table { display:block; overflow-x:auto; }
+  .pt-graficos, .pt-kpis { grid-template-columns:1fr; } .pt-msg { grid-template-columns:1fr; height:auto; }
+  .pt-gaveta { width:100%; } .pt-hbar { grid-template-columns:minmax(0,120px) minmax(0,1fr) 56px; } .pt-colunas2 { columns:1; }
+  .pt-hbar span:first-child { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 }
 </style>
 </head>
-<body>
-<div class="proto">
-  <span>PROTÓTIPO DE MELHORIAS · não conectado ao sistema · nada é gravado · dados reais de 25/09/2026, exceto onde indicado “DADOS FICTÍCIOS DE DEMONSTRAÇÃO”</span>
+<body class="pt">
+<div class="pt-faixa">
+  <span>PROTÓTIPO DE MELHORIAS · telas atuais do sistema + acréscimos marcados como NOVO · não conectado · nada é gravado · dados reais de 25/09/2026, exceto onde indicado “DADOS FICTÍCIOS DE DEMONSTRAÇÃO”</span>
   <button id="abrirParecer">Parecer das melhorias (0/7)</button>
 </div>
-<div class="app">
-  <aside class="sidebar">
-    <div class="brand"><div class="eyebrow">GT PROPAG · Compras</div><div class="nome">FAETEC</div><div class="sub">Controle de contratações</div></div>
-    <nav class="nav" id="nav"></nav>
-    <div class="usuario"><b>Rodrigo Maul</b>Perfil: Administrador<br><span class="muted small">Visualização do protótipo</span></div>
-  </aside>
-  <main>
-    <div class="topo"><span class="eyebrow">Fluxo de contratação · 5 etapas · 32 atividades</span><span class="muted small">sexta-feira, 25 de setembro de 2026</span></div>
-    <div id="vista"></div>
-  </main>
+<div class="app" id="app">
+  <div id="sidebarBox"></div>
+  <main class="main" id="vista"></main>
 </div>
-<aside class="gaveta" id="gaveta" aria-label="Parecer das melhorias">
-  <div class="cab"><h2>Parecer das melhorias</h2><button class="btn pequeno" id="fecharParecer">Fechar</button></div>
+<aside class="pt-gaveta" id="gaveta" aria-label="Parecer das melhorias">
+  <div class="cab"><h2>Parecer das melhorias</h2><button class="btn" id="fecharParecer">Fechar</button></div>
   <div class="corpo" id="parecerCorpo"></div>
   <div class="pe"><button class="btn primario" id="baixarParecer">Baixar parecer</button><button class="btn" id="copiarParecer">Copiar parecer</button><span class="small muted" id="parecerMsg"></span></div>
 </aside>
 
 <script>
+const TELAS = __TELAS__;
 const SNAP = __SNAP__;
 const IMPORT = __IMPORT__;
 const HOJE = new Date(2026, 8, 25);
@@ -163,280 +125,334 @@ const esc = (t) => String(t ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<
 const n2 = (n) => String(n).padStart(2, '0');
 const mi = (v) => v == null ? '—' : 'R$ ' + (v / 1e6).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' mi';
 const C = Object.fromEntries(SNAP.contratacoes.map((c) => [c.n, c]));
-const corSit = { 'Em andamento': 'ouro', 'Aguardando': '', 'Devolvida': 'vermelho', 'Divergência': 'vermelho', 'Sem justificativa': 'vermelho' };
-const pill = (t, cor = '') => `<span class="pill ${cor}">${esc(t)}</span>`;
-const demoFaixa = '<span class="demo-faixa">DADOS FICTÍCIOS DE DEMONSTRAÇÃO</span>';
+const demoFaixa = '<div class="pt-demo-faixa">DADOS FICTÍCIOS DE DEMONSTRAÇÃO</div>';
+const NOVO = '<span class="pt-novo-sel">NOVO</span>';
+function toast(t) { const d = document.createElement('div'); d.className = 'pt-toast'; d.textContent = t; document.body.appendChild(d); setTimeout(() => d.remove(), 2200); }
+function topbar() { const t = document.createElement('div'); t.innerHTML = TELAS.telas.painel; return t.querySelector('.topbar').outerHTML; }
+const TOPBAR = topbar();
 
-// ---------------------------------------------------------------- navegação com histórico (melhoria 2)
-const MENU = [
-  ['painel', 'Painel'], ['contratacoes', 'Contratações'], ['pendencias', 'Minhas pendências'],
-  ['mensagens', 'Mensagens', 'novo'], ['agenda', 'Agenda de prazos', 'novo'],
-  ['atas', 'Atas de registro'], ['equipe', 'Equipe do GT'],
-  ['grupo', 'ADMINISTRAÇÃO'], ['manutencao', 'Manutenção', 'novo'],
-];
-const NOMES = { painel: 'Painel', contratacoes: 'Contratações', pendencias: 'Minhas pendências', mensagens: 'Mensagens', agenda: 'Agenda de prazos', atas: 'Atas de registro', equipe: 'Equipe do GT', manutencao: 'Manutenção', 'pend-integrante': 'Pendências do integrante' };
+// ================================================================ navegação + botão voltar (melhoria 2)
+const ROTULO = { painel: 'Painel', contratacoes: 'Contratações', pendencias: 'Minhas pendências', atas: 'Atas de registro', relatorios: 'Relatórios', equipe: 'Equipe do GT', auditoria: 'Auditoria', manutencao: 'Manutenção', mensagens: 'Mensagens', agenda: 'Agenda de prazos', evolucao: 'Evolução', nova: 'Nova contratação' };
+const SECUNDARIAS = ['detalhe', 'nova'];
 let pilha = [{ v: 'painel' }];
 function ir(v, p = {}, empilhar = true) { if (empilhar) pilha.push({ v, p }); else pilha = [{ v, p }]; render(); window.scrollTo(0, 0); }
 function voltar() { if (pilha.length > 1) pilha.pop(); render(); window.scrollTo(0, 0); }
 function botaoVoltar() {
   if (pilha.length < 2) return '';
-  const ant = pilha[pilha.length - 2];
-  const rot = ant.v === 'detalhe' ? `contratação ${n2(ant.p.n)}` : (NOMES[ant.v] || 'tela anterior');
-  return `<button class="voltar" onclick="voltar()">← Voltar para ${esc(rot)}</button>`;
+  const a = pilha[pilha.length - 2];
+  return `<button class="pt-voltar" onclick="voltar()">← Voltar para ${esc(a.v === 'detalhe' ? 'contratação ' + n2(a.p.n) : (ROTULO[a.v] || 'tela anterior'))}</button> ${NOVO}`;
 }
-function renderNav() {
-  const atual = pilha[0].v;
-  $('#nav').innerHTML = MENU.map(([v, t, novo]) => v === 'grupo' ? `<div class="grupo">${t}</div>` :
-    `<a class="${atual === v ? 'ativo' : ''}" onclick="ir('${v}', {}, false)">${t}${v === 'mensagens' && naoLidas() ? `<span class="badge">${naoLidas()}</span>` : ''}${novo ? '<span class="tag-novo">NOVO</span>' : ''}</a>`).join('');
+function rota(href) {
+  const [cam] = href.split('?');
+  if (cam === '/' || cam === '') return ['painel', {}];
+  if (cam === '/contratacoes/nova') return ['nova', {}];
+  const m = cam.match(/^\/contratacoes\/([0-9a-f-]{36})/); if (m) return ['detalhe', { n: TELAS.uuid[m[1]] }];
+  const v = cam.replace(/^\//, '').split('/')[0];
+  return [ROTULO[v] ? v : 'painel', {}];
 }
 
-// ---------------------------------------------------------------- dados de demonstração (fictícios)
-const DEMO_SEMANAS = [['03/08', 4], ['10/08', 6], ['17/08', 5], ['24/08', 9], ['31/08', 7], ['07/09', 11], ['14/09', 10], ['21/09', 13]];
-const DEMO_AGENDA = [
-  { d: '2026-09-29', tipo: 'meta', t: 'Prazo-meta · Elaboração do ETP', n: 1 },
-  { d: '2026-09-30', tipo: 'meta', t: 'Prazo-meta · Elaboração do TR', n: 10 },
-  { d: '2026-10-02', tipo: 'legal', t: 'SEPLAG · 15 dias corridos', n: 3 },
-  { d: '2026-10-06', tipo: 'meta', t: 'Prazo-meta · Elaboração do DOD', n: 8 },
-  { d: '2026-10-09', tipo: 'legal', t: 'PRODERJ · 20 dias úteis', n: 1 },
-  { d: '2026-10-14', tipo: 'ata', t: 'Fim de vigência · PE-RP 016/2024', n: 10 },
-  { d: '2026-10-16', tipo: 'legal', t: 'SEPLAG · 15 dias corridos', n: 7 },
-  { d: '2026-10-21', tipo: 'meta', t: 'Data-meta da contratação', n: 2 },
-  { d: '2026-10-27', tipo: 'legal', t: 'CGE · 15 dias corridos', n: 10 },
-];
-let CONVERSAS = [
-  { id: 1, titulo: 'Coordenação · Frente III', n: 1, part: 'Integrante A (Coordenação) · Integrante B (Ponto focal)', msgs: [
-    { de: 'Integrante A (Coordenação)', eu: false, t: 'Bom dia. Qual a previsão para a manifestação do TI na contratação 01?', h: '09:12' },
-    { de: 'Você', eu: true, t: 'Bom dia. A manifestação está em elaboração; previsão até o fim da semana.', h: '09:20' },
-    { de: 'Integrante A (Coordenação)', eu: false, t: 'Obrigado. Registre, por favor, o andamento na contratação.', h: '09:22' }], naoLidas: 1 },
-  { id: 2, titulo: 'Elaboração · DOD da contratação 08', n: 8, part: 'Integrante C (Elaboração) · Integrante D (Conformidade)', msgs: [
-    { de: 'Integrante C (Elaboração)', eu: false, t: 'Minuta do DOD enviada para conferência.', h: 'ontem' },
-    { de: 'Integrante D (Conformidade)', eu: false, t: 'Recebido. Retorno com observações até amanhã.', h: 'ontem' }], naoLidas: 2 },
-  { id: 3, titulo: 'GT PROPAG · avisos gerais', n: null, part: 'Todos os integrantes', msgs: [
-    { de: 'Integrante A (Coordenação)', eu: false, t: 'Reunião de acompanhamento na sexta-feira, às 10h.', h: 'seg.' }], naoLidas: 0 },
-];
-const naoLidas = () => CONVERSAS.reduce((a, c) => a + c.naoLidas, 0);
-let conversaAtiva = 1, verDemoEvolucao = false, verDemoAgenda = false, modoAgenda = 'mes', dataAgenda = new Date(2026, 9, 1), abaManut = 'backup';
+// ================================================================ menu lateral: o original + itens novos
+const ICON = {
+  msg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"></path></svg>',
+  agenda: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M3 10h18M8 3v4M16 3v4"></path></svg>',
+  evol: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17l6-6 4 4 8-8"></path><path d="M15 7h6v6"></path></svg>',
+};
+function renderSidebar(atual) {
+  const box = $('#sidebarBox'); box.innerHTML = TELAS.sidebar;
+  const nav = box.querySelector('.nav');
+  const novo = (href, ic, txt, extra = '') => { const a = document.createElement('a'); a.href = href; a.innerHTML = `${ic} ${txt}${extra}<span class="pt-novo">NOVO</span>`; return a; };
+  const pend = nav.querySelector('a[href="/pendencias"]');
+  pend.after(novo('/agenda', ICON.agenda, 'Agenda de prazos'));
+  pend.after(novo('/mensagens', ICON.msg, 'Mensagens', naoLidas() ? `<span class="pt-badge">${naoLidas()}</span>` : ''));
+  nav.querySelector('a[href="/relatorios"]').after(novo('/evolucao', ICON.evol, 'Evolução'));
+  nav.querySelectorAll('a').forEach((a) => { const [v] = rota(a.getAttribute('href')); a.classList.toggle('active', v === atual); a.removeAttribute('aria-current'); });
+}
 
-// ---------------------------------------------------------------- telas
-function vPainel() {
+// ================================================================ telas reais (instantâneo) + acréscimos
+function telaReal(html) { return html; }
+function pos(v) {
+  const main = $('#vista');
+  if (v === 'painel') {
+    const cab = main.querySelector('.cabecalho');
+    const t = document.createElement('div'); t.innerHTML = ticker(); cab.after(t.firstElementChild);
+  }
+  if (SECUNDARIAS.includes(v) && pilha.length > 1) {
+    const d = document.createElement('div'); d.innerHTML = botaoVoltar(); main.querySelector('.topbar').after(...d.childNodes);
+  }
+  if (v === 'manutencao') manutencaoAbas();
+}
+// letreiro (melhoria 6) — eventos reais do sistema
+function ticker() {
   const cs = SNAP.contratacoes;
-  const total = cs.length, valor = cs.reduce((a, c) => a + (c.valor || 0), 0);
-  const conc = cs.reduce((a, c) => a + c.ativ_conc, 0), ativ = cs.reduce((a, c) => a + c.ativ_total, 0);
-  const semJust = cs.filter((c) => !c.justificativa).length;
-  // ticker (melhoria 6): eventos reais do sistema
-  const eventos = [
+  const valor = cs.reduce((a, c) => a + (c.valor || 0), 0);
+  const ev = [
     ...cs.filter((c) => ['Devolvida', 'Divergência'].includes(c.situacao)).map((c) => ({ r: c.situacao.toUpperCase(), t: `${n2(c.n)} · ${c.titulo}`, n: c.n })),
     ...cs.filter((c) => c.atual_resp).map((c) => ({ r: 'EM ANDAMENTO', t: `${n2(c.n)} · ${c.titulo} — ${c.atual} com ${c.atual_resp.split(' ')[0]}`, n: c.n })),
-    { r: 'CARTEIRA', t: `${total} demandas · ${mi(valor)} em valor informado`, n: null },
-    { r: 'ATENÇÃO', t: `${semJust} demandas sem justificativa da área técnica`, n: null },
-    { r: 'CARGA', t: `${SNAP.andamentos.length} demandas registradas na carga inicial de 24/09/2026`, n: null },
+    { r: 'CARTEIRA', t: `${cs.length} demandas · ${mi(valor)} em valor informado` },
+    { r: 'ATENÇÃO', t: `${cs.filter((c) => !c.justificativa).length} demandas sem justificativa da área técnica` },
+    { r: 'CARGA', t: `${SNAP.andamentos.length} demandas registradas na carga inicial de 24/09/2026` },
   ];
-  const fita = eventos.map((e) => `<a ${e.n ? `onclick="ir('detalhe',{n:${e.n}})"` : ''}><b>${esc(e.r)}</b>${esc(e.t)}</a>`).join('');
-  // evolução semanal (melhoria 5): dado real = 1 semana
-  const reais = [['21/09', conc]];
-  const serie = verDemoEvolucao ? DEMO_SEMANAS : reais;
-  const max = Math.max(...serie.map((s) => s[1]), 1);
-  const barras = serie.map(([s, v]) => `<div class="b"><span>${v}</span><i style="height:${Math.max(4, v / max * 120)}px"></i></div>`).join('');
-  const eixo = serie.map(([s]) => `<span>${s}</span>`).join('');
-  let tend = '';
-  if (!verDemoEvolucao) tend = `<div class="vazio" style="padding:24px 6px"><b>Histórico insuficiente</b><br><span class="small">O sistema possui 1 semana de registros (desde 24/09/2026). A tendência é exibida a partir de 3 semanas.</span></div>`;
-  else {
-    const ult = DEMO_SEMANAS.slice(-4).map((s) => s[1]);
-    const media = ult.reduce((a, b) => a + b, 0) / ult.length;
-    const ys = DEMO_SEMANAS.map((s) => s[1]), xs = ys.map((_, i) => i), mx = xs.reduce((a, b) => a + b) / xs.length, my = ys.reduce((a, b) => a + b) / ys.length;
-    const inc = xs.reduce((a, x, i) => a + (x - mx) * (ys[i] - my), 0) / xs.reduce((a, x) => a + (x - mx) ** 2, 0);
-    const proj = [1, 2, 3].map((k) => Math.max(0, Math.round(my + inc * (xs.length - 1 + k - mx))));
-    const restante = 250, semanas = Math.ceil(restante / media);
-    const mx2 = Math.max(...ys, ...proj);
-    tend = `<div class="barras" style="height:120px">${ys.slice(-4).map((v) => `<div class="b"><span>${v}</span><i style="height:${v / mx2 * 95}px"></i></div>`).join('')}${proj.map((v) => `<div class="b"><span>${v}</span><i class="proj" style="height:${v / mx2 * 95}px"></i></div>`).join('')}</div>
-      <div class="eixo">${DEMO_SEMANAS.slice(-4).map((s) => `<span>${s[0]}</span>`).join('')}<span>+1</span><span>+2</span><span>+3</span></div>
-      <p class="small" style="margin:10px 0 0">Média das últimas 4 semanas: <b>${media.toLocaleString('pt-BR', { maximumFractionDigits: 1 })} atividades/semana</b> · tendência <b style="color:${inc >= 0 ? 'var(--green)' : 'var(--red)'}">${inc >= 0 ? '▲ em alta' : '▼ em queda'} (${inc >= 0 ? '+' : ''}${inc.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}/semana)</b>. No ritmo médio, ${restante} atividades pendentes levariam cerca de ${semanas} semanas.</p>
-      <p class="xs muted" style="margin:4px 0 0">Barras listradas: projeção pela tendência linear.</p>`;
-  }
-  return `
-  <div class="cabecalho"><div><h1>Painel de contratações</h1><div class="muted">Posição em 25/09/2026 · ${total} demandas em carteira</div></div></div>
-  <div class="ticker" aria-label="Letreiro de notícias do sistema"><div class="rot">AO VIVO · GT</div><div class="janela"><div class="fita">${fita}</div></div></div>
-  <div class="grid g4" style="margin-bottom:14px">
-    <div class="card kpi"><div class="small muted">Demandas em carteira</div><div class="v">${total}</div><div class="small muted">todas na Etapa I</div></div>
-    <div class="card kpi"><div class="small muted">Valor estimado informado</div><div class="v">${mi(valor)}</div><div class="small muted">3 de ${total} com valor</div></div>
-    <div class="card kpi"><div class="small muted">Atividades concluídas</div><div class="v">${conc}<span class="small muted" style="font:500 14px var(--sans)"> / ${ativ}</span></div><div class="small muted">${Math.round(conc / ativ * 100)}% do checklist</div></div>
-    <div class="card kpi"><div class="small muted">Sem justificativa da área</div><div class="v red">${semJust}</div><div class="small muted">bloqueiam o DOD</div></div>
-  </div>
-  <div class="grid g2" style="margin-bottom:14px">
-    <div class="card ${verDemoEvolucao ? 'demo' : ''}">${verDemoEvolucao ? demoFaixa : ''}
-      <div style="display:flex;justify-content:space-between;align-items:center;margin:${verDemoEvolucao ? '8px' : '0'} 0 4px"><h2>Evolução semanal · atividades concluídas</h2><span class="tag-novo">NOVO</span></div>
-      <div class="small muted">${verDemoEvolucao ? 'Série fictícia de 8 semanas' : 'Dado real: semana de 21/09 (carga inicial de 24/09/2026)'}</div>
-      <div class="barras">${barras}</div><div class="eixo">${eixo}</div>
-    </div>
-    <div class="card ${verDemoEvolucao ? 'demo' : ''}">${verDemoEvolucao ? demoFaixa : ''}
-      <div style="display:flex;justify-content:space-between;align-items:center;margin:${verDemoEvolucao ? '8px' : '0'} 0 4px"><h2>Tendência de evolução</h2><span class="tag-novo">NOVO</span></div>
-      <div class="small muted">Média móvel de 4 semanas e projeção de ritmo</div>${tend}
-    </div>
-  </div>
-  <div style="margin:-4px 0 16px"><label class="small"><input type="checkbox" ${verDemoEvolucao ? 'checked' : ''} onchange="verDemoEvolucao=this.checked;render()"> Ver os cards de evolução e tendência com dados fictícios de demonstração</label></div>
-  <div class="card"><div style="display:flex;justify-content:space-between;margin-bottom:8px"><h2>Contratações</h2><span class="small muted">clique para abrir e use “Voltar” para retornar ao Painel</span></div>${tabelaContratacoes(cs.slice(0, 8))}</div>`;
+  return `<div class="pt-ticker" aria-label="Letreiro de notícias do sistema"><div class="rot">AO VIVO · GT</div><div class="janela"><div class="fita">${ev.map((e) => `<a ${e.n ? `data-pt-n="${e.n}"` : ''}><b>${esc(e.r)}</b>${esc(e.t)}</a>`).join('')}</div></div></div>`;
 }
-function tabelaContratacoes(cs) {
-  return `<table><thead><tr><th>Nº</th><th>Objeto</th><th>Modalidade</th><th>Atividade atual · responsável</th><th class="right">Valor</th><th>Situação</th></tr></thead><tbody>${cs.map((c) => `
-    <tr class="clicavel" onclick="ir('detalhe',{n:${c.n}})"><td>${n2(c.n)}</td><td><b>${esc(c.titulo)}</b><div class="small muted">${esc(c.sei || 'Processo não informado')}</div></td>
-    <td>${pill(c.modalidade, c.modalidade === 'A definir' ? 'ouro' : 'azul')}</td><td>${esc(c.atual)}<div class="small muted">${esc(c.atual_resp || 'Sem responsável')}</div></td>
-    <td class="right">${mi(c.valor)}</td><td>${pill(c.situacao, corSit[c.situacao] ?? '')}</td></tr>`).join('')}</tbody></table>`;
-}
-function vContratacoes() {
-  return `<div class="cabecalho"><div><div class="eyebrow">Carteira · ${SNAP.contratacoes.length} demandas</div><h1>Contratações</h1></div></div><div class="card">${tabelaContratacoes(SNAP.contratacoes)}</div>`;
-}
-function vDetalhe({ n }) {
-  const c = C[n];
-  return `${botaoVoltar()}
-  <div class="migalha"><a onclick="ir('contratacoes',{},false)" style="cursor:pointer">Contratações</a> / ${n2(n)}</div>
-  <div class="cabecalho"><div><div class="eyebrow">Nº ${n2(n)} · ${esc(c.modalidade)}</div><h1>${esc(c.titulo)}</h1><div class="muted">${esc(c.objeto)}</div></div>${pill(c.situacao, corSit[c.situacao] ?? '')}</div>
-  <div class="grid g4">
-    <div class="card"><div class="small muted">Etapa atual</div><b>I · ${esc(c.etapa_nome)}</b><div class="small muted">${c.ativ_conc} de ${c.ativ_total} no fluxo</div></div>
-    <div class="card"><div class="small muted">Atividade atual</div><b>${esc(c.atual)}</b><div class="small muted">${esc(c.atual_resp || 'Sem responsável')}</div></div>
-    <div class="card"><div class="small muted">Via / ata</div><b>${esc(c.via || '—')}</b></div>
-    <div class="card"><div class="small muted">Valor estimado</div><b>${mi(c.valor)}</b><div class="small muted">Responsável geral: <span class="red">não definido</span></div></div>
-  </div>
-  <div class="aviso" style="margin-top:16px">Melhoria 2 · o botão <b>“← Voltar”</b> no topo retorna exatamente à tela de origem (Painel, Minhas pendências, Agenda, Atas, Mensagens ou Contratações). O caminho “Contratações / ${n2(n)}” continua disponível.</div>`;
-}
-function vPendencias() {
-  const minhas = SNAP.contratacoes.filter((c) => c.atual_resp === 'Gibson Cruz da Silva');
-  return `<div class="cabecalho"><div><div class="eyebrow">Minhas pendências · exemplo com o integrante Gibson Cruz da Silva</div><h1>Minhas pendências</h1></div><button class="btn" onclick="ir('pend-integrante',{})">Visão da equipe</button></div>
-  <div class="card"><table><thead><tr><th>Nº</th><th>Contratação · atividade</th><th>Situação</th></tr></thead><tbody>${minhas.map((c) => `<tr class="clicavel" onclick="ir('detalhe',{n:${c.n}})"><td>${n2(c.n)}</td><td><b>${esc(c.titulo)}</b><div class="small muted">Etapa I · ${esc(c.atual)}</div></td><td>${pill('Em andamento', 'ouro')}</td></tr>`).join('')}</tbody></table></div>`;
-}
-function vPendIntegrante() {
-  const por = {}; SNAP.contratacoes.forEach((c) => { if (c.atual_resp) por[c.atual_resp] = (por[c.atual_resp] || 0) + 1; });
-  return `${botaoVoltar()}<div class="cabecalho"><div><div class="eyebrow">Painel de pendências</div><h1>Pendências da equipe</h1></div></div>
-  <div class="card"><table><thead><tr><th>Integrante</th><th class="right">Contratações com atividade atual atribuída</th></tr></thead><tbody>${SNAP.integrantes.map((i) => `<tr><td><b>${esc(i.nome)}</b><div class="small muted">${esc(i.orgao)}${i.frente ? ' · Frente ' + i.frente : ''}</div></td><td class="right">${por[i.nome] || 0}</td></tr>`).join('')}</tbody></table></div>`;
-}
-function vAtas() {
-  return `<div class="cabecalho"><div><div class="eyebrow">Catálogo · ${SNAP.atas.length} atas</div><h1>Atas de registro de preços</h1></div></div>
-  <div class="card"><table><thead><tr><th>Ata</th><th>Objeto</th><th>Uso</th><th>Vigência</th><th>Contratação</th></tr></thead><tbody>${SNAP.atas.map((a) => { const c = SNAP.contratacoes.find((x) => x.ata === a.numero); return `<tr><td><b>${esc(a.numero)}</b><div class="small muted">${esc(a.orgao)}</div></td><td>${esc(a.objeto)}</td><td>${pill(a.uso, 'azul')}</td><td>${pill(a.vig || 'Vigência não informada')}</td><td>${c ? `<a style="cursor:pointer" onclick="ir('detalhe',{n:${c.n}})">${n2(c.n)} · ${esc(c.titulo)}</a>` : '—'}</td></tr>`; }).join('')}</tbody></table></div>`;
-}
-function vEquipe() {
-  return `<div class="cabecalho"><div><div class="eyebrow">Composição do GT</div><h1>Equipe do GT</h1></div><button class="btn" onclick="ir('pend-integrante',{})">Painel de pendências</button></div>
-  <div class="card"><table><thead><tr><th>Integrante</th><th>Órgão</th><th>Frente</th></tr></thead><tbody>${SNAP.integrantes.map((i) => `<tr><td>${esc(i.nome)}</td><td>${esc(i.orgao)}</td><td>${i.frente || '—'}</td></tr>`).join('')}</tbody></table></div>`;
-}
-// melhoria 1
+
+// ================================================================ melhoria 1 · mensagens (fictício)
+let CONVERSAS = [
+  { id: 1, titulo: 'Coordenação · Frente III', n: 1, part: 'Integrante A (Coordenação) · Integrante B (Ponto focal)', naoLidas: 1, msgs: [
+    { de: 'Integrante A (Coordenação)', t: 'Bom dia. Qual a previsão para a manifestação do TI na contratação 01?', h: '09:12' },
+    { eu: true, t: 'Bom dia. A manifestação está em elaboração; previsão até o fim da semana.', h: '09:20' },
+    { de: 'Integrante A (Coordenação)', t: 'Obrigado. Registre, por favor, o andamento na contratação.', h: '09:22' }] },
+  { id: 2, titulo: 'Elaboração · DOD da contratação 08', n: 8, part: 'Integrante C (Elaboração) · Integrante D (Conformidade)', naoLidas: 2, msgs: [
+    { de: 'Integrante C (Elaboração)', t: 'Minuta do DOD enviada para conferência.', h: 'ontem' },
+    { de: 'Integrante D (Conformidade)', t: 'Recebido. Retorno com observações até amanhã.', h: 'ontem' }] },
+  { id: 3, titulo: 'GT PROPAG · avisos gerais', n: null, part: 'Todos os integrantes', naoLidas: 0, msgs: [
+    { de: 'Integrante A (Coordenação)', t: 'Reunião de acompanhamento na sexta-feira, às 10h.', h: 'seg.' }] },
+];
+let conversaAtiva = 1;
+const naoLidas = () => CONVERSAS.reduce((a, c) => a + c.naoLidas, 0);
 function vMensagens() {
   const c = CONVERSAS.find((x) => x.id === conversaAtiva); c.naoLidas = 0;
-  setTimeout(renderNav);
-  return `<div class="cabecalho"><div><div class="eyebrow">Comunicação entre integrantes</div><h1>Mensagens</h1></div><button class="btn primario" onclick="novaConversa()">+ Nova conversa</button></div>
-  <div class="demo" style="padding:0">${demoFaixa}
-  <div class="msg-app" style="border:0;border-radius:0 0 10px 10px">
-    <div class="conversas">${CONVERSAS.map((x) => `<div class="c ${x.id === conversaAtiva ? 'ativa' : ''}" onclick="conversaAtiva=${x.id};render()"><div class="av">${x.titulo[0]}</div><div style="min-width:0;flex:1"><div style="display:flex;justify-content:space-between;gap:6px"><b style="font-size:13px">${esc(x.titulo)}</b>${x.naoLidas ? `<span class="badge">${x.naoLidas}</span>` : ''}</div><div class="small muted" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(x.msgs[x.msgs.length - 1].t)}</div></div></div>`).join('')}</div>
-    <div class="thread"><div class="cab"><div><b>${esc(c.titulo)}</b><div class="small muted">${esc(c.part)}</div></div>${c.n ? `<button class="btn pequeno" onclick="ir('detalhe',{n:${c.n}})">Abrir contratação ${n2(c.n)}</button>` : ''}</div>
-      <div class="corpo" id="corpoMsg">${c.msgs.map((m) => `<div class="bolha ${m.eu ? 'eu' : ''}">${m.eu ? '' : `<div class="small" style="font-weight:700">${esc(m.de)}</div>`}${esc(m.t)}<div class="meta">${esc(m.h)}</div></div>`).join('')}</div>
+  return `${TOPBAR}<div class="cabecalho"><div><div class="eyebrow">Comunicação entre integrantes ${NOVO}</div><h1>Mensagens</h1><p class="muted">Conversas individuais ou em grupo, opcionalmente vinculadas a uma contratação. Só os participantes leem.</p></div><div class="acoes"><button class="btn primario" onclick="novaConversa()">+ Nova conversa</button></div></div>
+  <div class="card pt-demo" style="padding:12px 12px 0">${demoFaixa}
+  <div class="pt-msg">
+    <div class="pt-conversas">${CONVERSAS.map((x) => `<div class="c ${x.id === conversaAtiva ? 'ativa' : ''}" onclick="conversaAtiva=${x.id};render()"><div class="pt-av">${esc(x.titulo[0])}</div><div style="min-width:0;flex:1"><div style="display:flex;justify-content:space-between;gap:6px"><b style="font-size:13px">${esc(x.titulo)}</b>${x.naoLidas ? `<span class="pt-cont">${x.naoLidas}</span>` : ''}</div><div class="small muted" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(x.msgs[x.msgs.length - 1].t)}</div></div></div>`).join('')}</div>
+    <div class="pt-thread"><div class="cab"><div><b>${esc(c.titulo)}</b><div class="small muted">${esc(c.part)}</div></div>${c.n ? `<button class="btn" onclick="ir('detalhe',{n:${c.n}})">Abrir contratação ${n2(c.n)}</button>` : ''}</div>
+      <div class="corpo" id="corpoMsg">${c.msgs.map((m) => `<div class="pt-bolha ${m.eu ? 'eu' : ''}">${m.eu ? '' : `<div class="small" style="font-weight:700">${esc(m.de)}</div>`}${esc(m.t)}<div class="meta">${esc(m.h)}</div></div>`).join('')}</div>
       <form onsubmit="enviar(event)"><input type="text" id="txtMsg" placeholder="Escreva uma mensagem (no protótipo, fica só nesta tela)" autocomplete="off"><button class="btn primario">Enviar</button></form>
     </div>
-  </div></div>
-  <p class="small muted" style="margin-top:10px">No sistema: conversas individuais ou em grupo, opcionalmente vinculadas a uma contratação; só os participantes leem; contador de não lidas no menu; aviso no sino de notificações.</p>`;
+  </div></div>`;
 }
-function enviar(e) { e.preventDefault(); const t = $('#txtMsg').value.trim(); if (!t) return; CONVERSAS.find((x) => x.id === conversaAtiva).msgs.push({ de: 'Você', eu: true, t, h: 'agora' }); render(); const cm = $('#corpoMsg'); if (cm) cm.scrollTop = cm.scrollHeight; }
-function novaConversa() { const id = Math.max(...CONVERSAS.map((c) => c.id)) + 1; CONVERSAS.unshift({ id, titulo: 'Nova conversa (demonstração)', n: null, part: 'Selecione os participantes', msgs: [{ de: 'Sistema', eu: false, t: 'Conversa criada. No sistema, você escolhe os integrantes e, se quiser, a contratação.', h: 'agora' }], naoLidas: 0 }); conversaAtiva = id; render(); }
-// melhoria 7
+function enviar(e) { e.preventDefault(); const t = $('#txtMsg').value.trim(); if (!t) return; CONVERSAS.find((x) => x.id === conversaAtiva).msgs.push({ eu: true, t, h: 'agora' }); render(); const cm = $('#corpoMsg'); if (cm) cm.scrollTop = cm.scrollHeight; }
+function novaConversa() { const id = Math.max(...CONVERSAS.map((c) => c.id)) + 1; CONVERSAS.unshift({ id, titulo: 'Nova conversa (demonstração)', n: null, part: 'Selecione os participantes', naoLidas: 0, msgs: [{ de: 'Sistema', t: 'Conversa criada. No sistema, você escolhe os integrantes e, se quiser, a contratação.', h: 'agora' }] }); conversaAtiva = id; render(); }
+
+// ================================================================ melhoria 7 · agenda
+const DEMO_AGENDA = [
+  { d: '2026-09-29', tipo: 'meta', t: 'Prazo-meta · Elaboração do ETP', n: 1 }, { d: '2026-09-30', tipo: 'meta', t: 'Prazo-meta · Elaboração do TR', n: 10 },
+  { d: '2026-10-02', tipo: 'legal', t: 'SEPLAG · 15 dias corridos', n: 3 }, { d: '2026-10-06', tipo: 'meta', t: 'Prazo-meta · Elaboração do DOD', n: 8 },
+  { d: '2026-10-09', tipo: 'legal', t: 'PRODERJ · 20 dias úteis', n: 1 }, { d: '2026-10-14', tipo: 'ata', t: 'Fim de vigência · PE-RP 016/2024', n: 10 },
+  { d: '2026-10-16', tipo: 'legal', t: 'SEPLAG · 15 dias corridos', n: 7 }, { d: '2026-10-21', tipo: 'meta', t: 'Data-meta da contratação', n: 2 },
+  { d: '2026-10-27', tipo: 'legal', t: 'CGE · 15 dias corridos', n: 10 },
+];
+let verDemoAgenda = false, modoAgenda = 'mes', dataAgenda = new Date(2026, 9, 1);
 function vAgenda() {
   const evs = verDemoAgenda ? DEMO_AGENDA : [];
   const iso = (d) => `${d.getFullYear()}-${n2(d.getMonth() + 1)}-${n2(d.getDate())}`;
   const doDia = (d) => evs.filter((e) => e.d === iso(d));
-  const evHtml = (e) => `<span class="ev ${e.tipo}" onclick="event.stopPropagation();ir('detalhe',{n:${e.n}})" title="${esc(e.t)}">${n2(e.n)} · ${esc(e.t)}</span>`;
-  const meses = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
-  let corpo = '', titulo = '';
+  const evH = (e) => `<span class="pt-ev ${e.tipo}" onclick="event.stopPropagation();ir('detalhe',{n:${e.n}})" title="${esc(e.t)}">${n2(e.n)} · ${esc(e.t)}</span>`;
+  const meses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+  const abrirDia = (d) => `dataAgenda=new Date(${d.getFullYear()},${d.getMonth()},${d.getDate()});modoAgenda='dia';render()`;
+  let corpo, titulo;
   if (modoAgenda === 'mes') {
-    titulo = `${meses[dataAgenda.getMonth()][0].toUpperCase() + meses[dataAgenda.getMonth()].slice(1)} de ${dataAgenda.getFullYear()}`;
-    const ini = new Date(dataAgenda.getFullYear(), dataAgenda.getMonth(), 1); const off = (ini.getDay() + 6) % 7; const d0 = new Date(ini); d0.setDate(1 - off);
-    corpo = `<div class="cal">${['seg', 'ter', 'qua', 'qui', 'sex', 'sáb', 'dom'].map((d) => `<div class="dow">${d}</div>`).join('')}${Array.from({ length: 42 }, (_, i) => { const d = new Date(d0); d.setDate(d0.getDate() + i); return `<div class="dia ${d.getMonth() !== dataAgenda.getMonth() ? 'fora' : ''} ${iso(d) === iso(HOJE) ? 'hoje' : ''}" onclick="dataAgenda=new Date(${d.getFullYear()},${d.getMonth()},${d.getDate()});modoAgenda='dia';render()"><span class="num">${d.getDate()}</span>${doDia(d).map(evHtml).join('')}</div>`; }).join('')}</div>`;
+    titulo = `${meses[dataAgenda.getMonth()]} de ${dataAgenda.getFullYear()}`;
+    const ini = new Date(dataAgenda.getFullYear(), dataAgenda.getMonth(), 1), d0 = new Date(ini); d0.setDate(1 - (ini.getDay() + 6) % 7);
+    corpo = `<div class="pt-cal">${['seg', 'ter', 'qua', 'qui', 'sex', 'sáb', 'dom'].map((d) => `<div class="dow">${d}</div>`).join('')}${Array.from({ length: 42 }, (_, i) => { const d = new Date(d0); d.setDate(d0.getDate() + i); return `<div class="dia ${d.getMonth() !== dataAgenda.getMonth() ? 'fora' : ''} ${iso(d) === iso(HOJE) ? 'hoje' : ''}" onclick="${abrirDia(d)}"><span class="num">${d.getDate()}</span>${doDia(d).map(evH).join('')}</div>`; }).join('')}</div>`;
   } else if (modoAgenda === 'semana') {
-    const off = (dataAgenda.getDay() + 6) % 7; const d0 = new Date(dataAgenda); d0.setDate(dataAgenda.getDate() - off);
-    const d6 = new Date(d0); d6.setDate(d0.getDate() + 6); titulo = `${d0.toLocaleDateString('pt-BR')} a ${d6.toLocaleDateString('pt-BR')}`;
-    corpo = `<div class="cal">${Array.from({ length: 7 }, (_, i) => { const d = new Date(d0); d.setDate(d0.getDate() + i); return `<div class="dow">${d.toLocaleDateString('pt-BR', { weekday: 'short', day: '2-digit', month: '2-digit' })}</div>`; }).join('')}${Array.from({ length: 7 }, (_, i) => { const d = new Date(d0); d.setDate(d0.getDate() + i); return `<div class="dia ${iso(d) === iso(HOJE) ? 'hoje' : ''}" style="min-height:220px" onclick="dataAgenda=new Date(${d.getFullYear()},${d.getMonth()},${d.getDate()});modoAgenda='dia';render()">${doDia(d).map(evHtml).join('') || '<span class="xs muted"> </span>'}</div>`; }).join('')}</div>`;
+    const d0 = new Date(dataAgenda); d0.setDate(dataAgenda.getDate() - (dataAgenda.getDay() + 6) % 7); const d6 = new Date(d0); d6.setDate(d0.getDate() + 6);
+    titulo = `${d0.toLocaleDateString('pt-BR')} a ${d6.toLocaleDateString('pt-BR')}`;
+    const dias = Array.from({ length: 7 }, (_, i) => { const d = new Date(d0); d.setDate(d0.getDate() + i); return d; });
+    corpo = `<div class="pt-cal">${dias.map((d) => `<div class="dow">${d.toLocaleDateString('pt-BR', { weekday: 'short', day: '2-digit', month: '2-digit' })}</div>`).join('')}${dias.map((d) => `<div class="dia ${iso(d) === iso(HOJE) ? 'hoje' : ''}" style="min-height:220px" onclick="${abrirDia(d)}">${doDia(d).map(evH).join('')}</div>`).join('')}</div>`;
   } else {
     titulo = dataAgenda.toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' });
     const l = doDia(dataAgenda);
-    corpo = l.length ? `<div class="lista-dia">${l.map((e) => `<div class="item" onclick="ir('detalhe',{n:${e.n}})"><span class="ev ${e.tipo}" style="margin:0">${e.tipo === 'legal' ? 'Prazo legal' : e.tipo === 'ata' ? 'Vigência de ata' : 'Prazo-meta'}</span><div style="flex:1"><b>${n2(e.n)} · ${esc(C[e.n].titulo)}</b><div class="small muted">${esc(e.t)}</div></div><span class="btn pequeno">Abrir contratação →</span></div>`).join('')}</div>` : `<div class="vazio">Nenhum prazo neste dia.</div>`;
+    corpo = l.length ? `<div class="pt-dia-lista">${l.map((e) => `<div class="item" onclick="ir('detalhe',{n:${e.n}})"><span class="pt-ev ${e.tipo}" style="margin:0">${e.tipo === 'legal' ? 'Prazo legal' : e.tipo === 'ata' ? 'Vigência de ata' : 'Prazo-meta'}</span><div style="flex:1"><b>${n2(e.n)} · ${esc(C[e.n].titulo)}</b><div class="small muted">${esc(e.t)}</div></div><span class="btn">Abrir contratação →</span></div>`).join('')}</div>` : '<div class="vazio">Nenhum prazo neste dia.</div>';
   }
   const passo = (k) => { const d = new Date(dataAgenda); if (modoAgenda === 'mes') d.setMonth(d.getMonth() + k); else d.setDate(d.getDate() + (modoAgenda === 'semana' ? 7 : 1) * k); return `dataAgenda=new Date(${d.getFullYear()},${d.getMonth()},${d.getDate()});render()`; };
-  return `<div class="cabecalho"><div><div class="eyebrow">Prazos legais, prazos-meta e vigência de atas</div><h1>Agenda de prazos</h1></div>
-    <div style="display:flex;gap:6px;flex-wrap:wrap">${['dia', 'semana', 'mes'].map((m) => `<button class="btn pequeno ${modoAgenda === m ? 'primario' : ''}" onclick="modoAgenda='${m}';render()">${m === 'mes' ? 'Mês' : m[0].toUpperCase() + m.slice(1)}</button>`).join('')}</div></div>
-  ${verDemoAgenda ? '' : '<div class="aviso">Dado real: em 25/09/2026 não há nenhum prazo registrado no sistema (nenhuma data de envio, prazo-meta ou vigência de ata). A agenda ficará preenchida conforme as equipes registrarem as datas.</div>'}
+  return `${TOPBAR}<div class="cabecalho"><div><div class="eyebrow">Prazos legais, prazos-meta e vigência de atas ${NOVO}</div><h1>Agenda de prazos</h1><p class="muted">Clique no dia para ver o detalhe; clique no prazo para abrir a contratação.</p></div>
+    <div class="acoes">${['dia', 'semana', 'mes'].map((m) => `<button class="btn ${modoAgenda === m ? 'primario' : ''}" onclick="modoAgenda='${m}';render()">${{ dia: 'Dia', semana: 'Semana', mes: 'Mês' }[m]}</button>`).join('')}</div></div>
+  ${verDemoAgenda ? '' : '<div class="pt-aviso">Dado real: em 25/09/2026 não há nenhum prazo registrado no sistema (nenhuma data de envio, prazo-meta ou vigência de ata). A agenda será preenchida conforme as equipes registrarem as datas.</div>'}
   <label class="small" style="display:block;margin-bottom:12px"><input type="checkbox" ${verDemoAgenda ? 'checked' : ''} onchange="verDemoAgenda=this.checked;render()"> Ver a agenda com prazos fictícios de demonstração</label>
-  <div class="card ${verDemoAgenda ? 'demo' : ''}">${verDemoAgenda ? demoFaixa : ''}
-    <div style="display:flex;justify-content:space-between;align-items:center;margin:8px 0 12px"><button class="btn pequeno" onclick="${passo(-1)}">‹ Anterior</button><b>${titulo}</b><button class="btn pequeno" onclick="${passo(1)}">Próximo ›</button></div>
+  <div class="card ${verDemoAgenda ? 'pt-demo' : ''}">${verDemoAgenda ? demoFaixa : ''}
+    <div style="display:flex;justify-content:space-between;align-items:center;margin:4px 0 12px"><button class="btn" onclick="${passo(-1)}">‹ Anterior</button><b>${titulo}</b><button class="btn" onclick="${passo(1)}">Próximo ›</button></div>
     ${corpo}
-    <div class="small muted" style="margin-top:10px;display:flex;gap:14px;flex-wrap:wrap"><span class="ev legal" style="display:inline-block">Prazo legal</span><span class="ev meta" style="display:inline-block">Prazo-meta</span><span class="ev ata" style="display:inline-block">Vigência de ata</span><span>Clique no dia para ver o detalhe; clique no prazo para abrir a contratação.</span></div>
+    <div class="pt-legenda"><span><i style="background:var(--red)"></i>Prazo legal</span><span><i style="background:var(--blue)"></i>Prazo-meta</span><span><i style="background:var(--gold)"></i>Vigência de ata</span></div>
   </div>`;
 }
-// melhorias 3 e 4
-function vManutencao() {
+
+// ================================================================ melhoria 5 · aba Evolução (gráficos)
+let verDemoEvol = false;
+const DEMO_SEMANAS = [['03/08', 4, [3, 1, 0, 0, 0]], ['10/08', 6, [4, 2, 0, 0, 0]], ['17/08', 5, [3, 1, 1, 0, 0]], ['24/08', 9, [5, 2, 1, 1, 0]], ['31/08', 7, [4, 1, 1, 1, 0]], ['07/09', 11, [5, 2, 2, 1, 1]], ['14/09', 10, [4, 2, 2, 1, 1]], ['21/09', 13, [5, 3, 2, 2, 1]]];
+const COR_ET = ['#16284d', '#2a4478', '#c8962f', '#8a5f0d', '#6f8fc4'];
+function donut(fatias, total, rotulo) {
+  let ac = 0; const R = 70, Cc = 2 * Math.PI * R;
+  const arcos = fatias.map(([, v, cor]) => { const l = v / total * Cc; const s = `<circle r="${R}" cx="90" cy="90" fill="none" stroke="${cor}" stroke-width="26" stroke-dasharray="${l} ${Cc - l}" stroke-dashoffset="${-ac}" transform="rotate(-90 90 90)"></circle>`; ac += l; return s; }).join('');
+  return `<div style="display:flex;gap:20px;align-items:center;flex-wrap:wrap"><svg viewBox="0 0 180 180" width="170" height="170" role="img" aria-label="${esc(rotulo)}">${arcos}<text x="90" y="86" text-anchor="middle" font-family="Source Serif 4, Georgia, serif" font-weight="700" font-size="28" fill="#16284d">${total}</text><text x="90" y="106" text-anchor="middle" font-size="11" fill="#6e6758">${esc(rotulo)}</text></svg>
+    <div>${fatias.map(([n, v, cor]) => `<div style="margin:6px 0;font-size:13px"><i style="display:inline-block;width:11px;height:11px;border-radius:2px;background:${cor};margin-right:7px"></i><b>${v}</b> ${esc(n)} <span class="muted">(${(v / total * 100).toLocaleString('pt-BR', { maximumFractionDigits: 1 })}%)</span></div>`).join('')}</div></div>`;
+}
+function hbar(rot, partes, total, dir) { return `<div class="pt-hbar"><span>${rot}</span><div class="trilho">${partes.map(([v, cor]) => `<i style="width:${v / total * 100}%;background:${cor}"></i>`).join('')}</div><span class="right muted">${dir}</span></div>`; }
+function colunas(serie, alt = 160, empilhado = false) {
+  const max = Math.max(...serie.map((s) => empilhado ? s[2].reduce((a, b) => a + b, 0) : s[1]), 1);
+  return `<div style="display:flex;align-items:flex-end;gap:10px;height:${alt}px;border-bottom:1px solid var(--line-2);padding-top:18px">${serie.map((s) => {
+    const barras = empilhado ? s[2].map((v, k) => `<i style="display:block;height:${v / max * (alt - 30)}px;background:${COR_ET[k]}"></i>`).reverse().join('') : `<i style="display:block;height:${s[1] / max * (alt - 30)}px;background:${s[3] || 'var(--navy)'}"></i>`;
+    return `<div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%"><span class="xs muted">${empilhado ? s[2].reduce((a, b) => a + b, 0) : s[1]}</span><div style="width:100%;max-width:44px;border-radius:4px 4px 0 0;overflow:hidden">${barras}</div></div>`;
+  }).join('')}</div><div style="display:flex;gap:10px;padding-top:4px">${serie.map((s) => `<span style="flex:1;text-align:center" class="xs muted">${s[0]}</span>`).join('')}</div>`;
+}
+function linha(series, rotulos, alt = 180, maxY) {
+  const W = 560, H = alt, pl = 36, pb = 22, pt = 12; const n = rotulos.length;
+  const my = maxY || Math.max(...series.flatMap((s) => s.pts.filter((v) => v != null)));
+  const x = (i) => pl + i * (W - pl - 10) / (n - 1), y = (v) => pt + (H - pt - pb) * (1 - v / my);
+  const grade = [0, .25, .5, .75, 1].map((f) => `<line x1="${pl}" x2="${W - 10}" y1="${y(my * f)}" y2="${y(my * f)}" stroke="#ece6da"></line><text x="${pl - 6}" y="${y(my * f) + 4}" font-size="10" text-anchor="end" fill="#6e6758">${Math.round(my * f)}</text>`).join('');
+  const ls = series.map((s) => { const p = s.pts.map((v, i) => v == null ? null : `${x(i)},${y(v)}`).filter(Boolean).join(' '); return `<polyline points="${p}" fill="none" stroke="${s.cor}" stroke-width="2.5" ${s.trac ? 'stroke-dasharray="6 5"' : ''}></polyline>${s.pts.map((v, i) => v == null ? '' : `<circle cx="${x(i)}" cy="${y(v)}" r="3" fill="${s.cor}"></circle>`).join('')}`; }).join('');
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img">${grade}${ls}${rotulos.map((r, i) => `<text x="${x(i)}" y="${H - 5}" font-size="10" text-anchor="middle" fill="#6e6758">${r}</text>`).join('')}</svg>
+    <div class="pt-legenda">${series.map((s) => `<span><i style="background:${s.cor}"></i>${esc(s.nome)}</span>`).join('')}</div>`;
+}
+function vEvolucao() {
+  const cs = SNAP.contratacoes, TOT = 276, CONC = 17;
+  const st = [['concluídas', 17, '#16284d'], ['em curso', 9, '#c8962f'], ['pendentes', 250, '#e6e0d4']];
+  const et = [[1, 'Planejamento', 119, 17], [2, 'Adesão à ARP', 24, 0], [3, 'Comunicações', 21, 0], [4, 'Pesquisa de preços', 49, 0], [5, 'Formalização', 63, 0]];
+  const sit = [['Em andamento', 4, '#c8962f'], ['Aguardando', 3, '#8b8577'], ['Devolvida', 2, '#b3372b'], ['Divergência', 2, '#d4574a'], ['Sem justificativa', 6, '#e9a39a']];
+  const mod = [['Adesão à ARP', 4], ['Participante de RP', 2], ['Dispensa', 1], ['A definir', 10]];
+  const reais = `
+  <div class="pt-kpis">
+    <div class="card kpi"><div class="small muted">Atividades concluídas</div><div class="valor" style="font:700 30px var(--serif);color:var(--navy)">${CONC}<span class="small muted"> / ${TOT}</span></div><div class="small muted">${Math.round(CONC / TOT * 100)}% do checklist</div></div>
+    <div class="card kpi"><div class="small muted">Em curso</div><div style="font:700 30px var(--serif);color:var(--gold-ink)">9</div><div class="small muted">em andamento, aguardando ou devolvidas</div></div>
+    <div class="card kpi"><div class="small muted">Contratações além da Etapa I</div><div style="font:700 30px var(--serif);color:var(--red)">0</div><div class="small muted">de ${cs.length}</div></div>
+    <div class="card kpi"><div class="small muted">Semanas de histórico</div><div style="font:700 30px var(--serif);color:var(--navy)">1</div><div class="small muted">desde 24/09/2026</div></div>
+  </div>
+  <div class="pt-graficos">
+    <div class="card"><h2>Atividades por situação</h2><p class="small muted">Checklist completo das ${cs.length} contratações</p>${donut(st, TOT, 'atividades')}</div>
+    <div class="card"><h2>Demandas por situação</h2><p class="small muted">Situação registrada em cada contratação</p>${donut(sit, cs.length, 'demandas')}</div>
+    <div class="card"><h2>Andamento por etapa</h2><p class="small muted">Concluídas sobre o total de atividades previstas em cada etapa</p>${et.map(([n, r, t, c]) => hbar(`${['I', 'II', 'III', 'IV', 'V'][n - 1]} · ${r}`, [[c, '#16284d']], t, `${c} de ${t}`)).join('')}</div>
+    <div class="card"><h2>Demandas por modalidade</h2><p class="small muted">Define o tamanho do checklist (32, 26 ou 7 atividades)</p>${mod.map(([r, v]) => hbar(r, [[v, r === 'A definir' ? '#c8962f' : '#16284d']], cs.length, `${v} de ${cs.length}`)).join('')}</div>
+    <div class="card largo"><h2>Progresso por contratação</h2><p class="small muted">Atividades concluídas sobre o total do checklist de cada contratação</p>
+      <div class="pt-colunas2">${cs.map((c) => `<div style="break-inside:avoid">${hbar(`${n2(c.n)} · ${esc(c.titulo)}`, [[c.ativ_conc, '#16284d']], c.ativ_total, `${c.ativ_conc}/${c.ativ_total}`)}</div>`).join('')}</div></div>
+  </div>`;
+  // série temporal
+  let tempo;
+  if (!verDemoEvol) {
+    tempo = `<div class="card"><h2>Evolução semanal e tendência</h2><div class="vazio" style="padding:26px 10px"><b>Histórico insuficiente</b><br><span class="small">O sistema possui 1 semana de registros (a carga inicial de 24/09/2026, com 17 atividades concluídas). Os gráficos de evolução, curva acumulada, burn-down e tendência são exibidos a partir de 3 semanas de histórico.</span></div></div>`;
+  } else {
+    const ys = DEMO_SEMANAS.map((s) => s[1]), rot = DEMO_SEMANAS.map((s) => s[0]);
+    let acum = 0; const acumulada = ys.map((v) => (acum += v));
+    const pend = acumulada.map((a) => TOT - a);
+    const ult4 = ys.slice(-4), media = ult4.reduce((a, b) => a + b) / 4;
+    const xs = ys.map((_, i) => i), mx = (xs.length - 1) / 2, my = ys.reduce((a, b) => a + b) / ys.length;
+    const inc = xs.reduce((a, x, i) => a + (x - mx) * (ys[i] - my), 0) / xs.reduce((a, x) => a + (x - mx) ** 2, 0);
+    const proj = [1, 2, 3, 4].map((k) => Math.max(0, Math.round(my + inc * (xs.length - 1 + k - mx))));
+    const mm = ys.map((_, i) => i < 3 ? null : +(ys.slice(i - 3, i + 1).reduce((a, b) => a + b) / 4).toFixed(1));
+    const rotP = [...rot, '+1', '+2', '+3', '+4'];
+    let pp = pend[pend.length - 1]; const pendProj = [...pend.map(() => null)]; pendProj[pend.length - 1] = pp; proj.forEach((v) => { pp = Math.max(0, pp - v); pendProj.push(pp); });
+    const semanas = Math.ceil(pend[pend.length - 1] / media);
+    tempo = `<div class="pt-demo card" style="padding:14px">${demoFaixa}
+      <div class="pt-kpis">
+        <div class="card kpi"><div class="small muted">Média das últimas 4 semanas</div><div style="font:700 28px var(--serif);color:var(--navy)">${media.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}</div><div class="small muted">atividades concluídas por semana</div></div>
+        <div class="card kpi"><div class="small muted">Tendência</div><div style="font:700 28px var(--serif);color:${inc >= 0 ? 'var(--green)' : 'var(--red)'}">${inc >= 0 ? '▲' : '▼'} ${inc.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}</div><div class="small muted">atividades/semana, por semana</div></div>
+        <div class="card kpi"><div class="small muted">Concluídas no período</div><div style="font:700 28px var(--serif);color:var(--navy)">${acumulada[acumulada.length - 1]}</div><div class="small muted">em 8 semanas</div></div>
+        <div class="card kpi"><div class="small muted">Previsão no ritmo médio</div><div style="font:700 28px var(--serif);color:var(--gold-ink)">${semanas} sem.</div><div class="small muted">para concluir as ${pend[pend.length - 1]} pendentes</div></div>
+      </div>
+      <div class="pt-graficos">
+        <div class="card"><h2>Concluídas por semana</h2><p class="small muted">Atividades concluídas em cada semana</p>${colunas(DEMO_SEMANAS)}</div>
+        <div class="card"><h2>Tendência e projeção</h2><p class="small muted">Média móvel de 4 semanas e projeção linear das próximas 4</p>${linha([{ nome: 'Concluídas', cor: '#16284d', pts: [...ys, null, null, null, null] }, { nome: 'Média móvel (4 sem.)', cor: '#c8962f', pts: [...mm, null, null, null, null] }, { nome: 'Projeção', cor: '#8a5f0d', trac: true, pts: [...ys.map((v, i) => i === ys.length - 1 ? v : null), ...proj] }], rotP)}</div>
+        <div class="card"><h2>Curva acumulada de conclusão</h2><p class="small muted">Total concluído ao fim de cada semana</p>${linha([{ nome: 'Concluídas (acumulado)', cor: '#16284d', pts: acumulada }], rot)}</div>
+        <div class="card"><h2>Burn-down das atividades pendentes</h2><p class="small muted">Pendentes ao fim de cada semana e projeção no ritmo da tendência</p>${linha([{ nome: 'Pendentes', cor: '#b3372b', pts: [...pend, null, null, null, null] }, { nome: 'Projeção', cor: '#b3372b', trac: true, pts: pendProj }], rotP, TOT)}</div>
+        <div class="card largo"><h2>Concluídas por semana, por etapa</h2><p class="small muted">Onde o avanço acontece a cada semana</p>${colunas(DEMO_SEMANAS, 180, true)}<div class="pt-legenda">${['I · Planejamento', 'II · Adesão', 'III · Comunicações', 'IV · Pesquisa de preços', 'V · Formalização'].map((r, k) => `<span><i style="background:${COR_ET[k]}"></i>${r}</span>`).join('')}</div></div>
+      </div></div>`;
+  }
+  return `${TOPBAR}<div class="cabecalho"><div><div class="eyebrow">Indicadores de desempenho ${NOVO}</div><h1>Evolução</h1><p class="muted">Situação atual da carteira e evolução semanal das atividades, com média, tendência e projeção.</p></div></div>
+  <h2 style="margin:4px 0 10px">Situação atual · dados reais de 25/09/2026</h2>${reais}
+  <div style="display:flex;justify-content:space-between;align-items:center;margin:22px 0 10px;flex-wrap:wrap;gap:8px"><h2>Evolução no tempo</h2><label class="small"><input type="checkbox" ${verDemoEvol ? 'checked' : ''} onchange="verDemoEvol=this.checked;render()"> Ver com dados fictícios de demonstração (8 semanas)</label></div>${tempo}`;
+}
+
+// ================================================================ melhorias 3 e 4 · manutenção (abas novas)
+let abaManut = null;
+function manutencaoAbas() {
+  const main = $('#vista'); const abas = main.querySelector('.abas'); if (!abas) return;
+  [['backup', 'Backup'], ['importar', 'Importar']].forEach(([k, r]) => {
+    const b = document.createElement('button'); b.className = 'aba' + (abaManut === k ? ' on' : ''); b.innerHTML = `${r} <span class="pt-novo-sel">NOVO</span>`;
+    b.onclick = () => { abaManut = k; render(); }; abas.appendChild(b);
+  });
+  abas.querySelectorAll('.aba').forEach((b, i, l) => { if (i < l.length - 2) b.onclick = () => { if (abaManut || i > 0) { abaManut = null; render(); if (i > 0) toast('No protótipo, apenas a aba “Integrantes e perfis” está disponível entre as abas existentes.'); } }; });
+  if (!abaManut) return;
+  abas.querySelectorAll('.aba').forEach((b, i, l) => { if (i < l.length - 2) b.classList.remove('on'); });
+  while (abas.nextElementSibling) abas.nextElementSibling.remove();
+  const d = document.createElement('div'); d.innerHTML = abaManut === 'backup' ? htmlBackup() : htmlImportar(); abas.after(d);
+}
+function htmlBackup() {
+  return `<div class="card"><h2>Backup de dados em JSON</h2>
+    <p class="muted">Exporta todas as tabelas do sistema em um arquivo JSON, com data, hora e responsável pela exportação. Complementa o backup automático diário do Supabase (plano Pro, guardado por 7 dias). Os arquivos anexados não entram no JSON, apenas a lista deles.</p>
+    <div class="pt-aviso ouro">No protótipo, o arquivo gerado contém apenas os dados reais embutidos nesta página (contratações, andamentos, atas e integrantes de 25/09/2026).</div>
+    <button class="btn primario" onclick="baixarBackup()">Exportar backup (JSON)</button></div>`;
+}
+function htmlImportar() {
   const pv = IMPORT.preview, novas = pv.filter((p) => p.acao === 'nova'), atual = pv.filter((p) => p.acao === 'atualizar');
   const conferir = pv.filter((p) => p.mudancas.some((m) => m.regra === 'conferir')).length;
-  const fmt = (v) => typeof v === 'number' ? mi(v) : esc(v);
-  const imp = `
-    <div class="aviso">Simulação real: comparação da <b>planilha do GT de 25/09/2026</b> com os dados atuais do sistema. Nada é gravado; no sistema, a gravação só ocorre após a confirmação do administrador e fica registrada na auditoria.</div>
-    <div class="grid g4" style="margin-bottom:14px">
-      <div class="card kpi"><div class="small muted">Novas demandas</div><div class="v" style="color:var(--green)">${novas.length}</div><div class="small muted">sem correspondência no sistema</div></div>
-      <div class="card kpi"><div class="small muted">Atualizações</div><div class="v">${atual.length}</div><div class="small muted">demandas com campos alterados</div></div>
-      <div class="card kpi"><div class="small muted">Só no sistema</div><div class="v red">${IMPORT.somente_sistema.length}</div><div class="small muted">${IMPORT.somente_sistema.map((s) => esc(s.objeto)).join(' · ')} — mantidas</div></div>
-      <div class="card kpi"><div class="small muted">A conferir</div><div class="v" style="color:var(--gold-ink)">${conferir}</div><div class="small muted">processo SEI com ano diferente de 2026</div></div>
-    </div>
-    <div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><h2>Revisão antes de gravar</h2><div style="display:flex;gap:8px"><label class="btn pequeno">Selecionar planilha…<input type="file" accept=".xlsx" hidden onchange="this.parentElement.nextElementSibling.textContent='No protótipo, a leitura do arquivo não é executada.'"></label><span class="small muted"></span></div></div>
-    <p class="small muted" style="margin-top:0">Regras contra duplicação: correspondência pelo processo SEI e, na falta dele, pelo objeto (o número do item muda entre planilhas). Campo em branco na planilha não apaga valor existente.</p>
-    <table class="diff"><thead><tr><th>Plan.</th><th>Objeto</th><th>Ação</th><th>Correspondência</th><th>Alterações</th></tr></thead><tbody>
-    ${pv.map((p) => `<tr><td>${n2(p.plan)}</td><td><b>${esc(p.objeto)}</b></td><td>${p.acao === 'nova' ? pill('Nova', 'verde') : pill('Atualizar', 'azul')}</td><td class="small">${p.sist ? `sistema ${n2(p.sist)} · por ${esc(p.via)}` : '—'}</td>
-      <td>${p.mudancas.map((m) => `<div class="small"><b>${esc(m.campo)}:</b> <span class="antes">${fmt(m.antes)}</span> → ${m.regra === 'mantido' ? '<span class="muted">em branco na planilha — valor mantido</span>' : `<span class="depois">${fmt(m.depois)}</span>`}${m.regra === 'conferir' ? ' ' + pill('conferir', 'ouro') : ''}</div>`).join('') || '<span class="small muted">nova demanda completa</span>'}</td></tr>`).join('')}
-    </tbody></table>
-    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:14px"><button class="btn">Cancelar</button><button class="btn primario" disabled title="Desabilitado no protótipo">Confirmar importação</button></div></div>`;
-  const bak = `
-    <div class="card"><h2>Backup de dados em JSON</h2>
-      <p class="muted">Exporta todas as tabelas do sistema em um arquivo JSON, com data, hora e responsável pela exportação. Complementa o backup automático diário do Supabase (plano Pro, guardado por 7 dias). Os arquivos anexados não entram no JSON, apenas a lista deles.</p>
-      <div class="aviso ouro">No protótipo, o arquivo gerado contém apenas os dados reais embutidos nesta página (contratações, andamentos, atas e integrantes de 25/09/2026).</div>
-      <button class="btn primario" onclick="baixarBackup()">Exportar backup (JSON)</button> <span class="small muted" id="bakMsg"></span>
-    </div>`;
-  return `<div class="cabecalho"><div><div class="eyebrow">Administração · controle total</div><h1>Manutenção</h1></div></div>
-  <div class="abas"><button class="${abaManut === 'backup' ? 'ativa' : ''}" onclick="abaManut='backup';render()">Backup (JSON) <span class="tag-novo">NOVO</span></button><button class="${abaManut === 'importar' ? 'ativa' : ''}" onclick="abaManut='importar';render()">Importar dados <span class="tag-novo">NOVO</span></button></div>
-  ${abaManut === 'backup' ? bak : imp}`;
+  const f = (v) => typeof v === 'number' ? mi(v) : esc(v);
+  return `<div class="pt-aviso">Simulação real: comparação da <b>planilha do GT de 25/09/2026</b> com os dados atuais do sistema. Nada é gravado; no sistema, a gravação só ocorre após a confirmação do administrador e fica registrada na auditoria.</div>
+  <div class="pt-kpis">
+    <div class="card kpi"><div class="small muted">Novas demandas</div><div style="font:700 30px var(--serif);color:var(--green)">${novas.length}</div><div class="small muted">sem correspondência no sistema</div></div>
+    <div class="card kpi"><div class="small muted">Atualizações</div><div style="font:700 30px var(--serif);color:var(--navy)">${atual.length}</div><div class="small muted">demandas com campos alterados</div></div>
+    <div class="card kpi"><div class="small muted">Só no sistema</div><div style="font:700 30px var(--serif);color:var(--red)">${IMPORT.somente_sistema.length}</div><div class="small muted">${IMPORT.somente_sistema.map((s) => esc(s.objeto)).join(' · ')} — mantidas</div></div>
+    <div class="card kpi"><div class="small muted">A conferir</div><div style="font:700 30px var(--serif);color:var(--gold-ink)">${conferir}</div><div class="small muted">processo SEI com ano diferente de 2026</div></div>
+  </div>
+  <div class="card"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><h2>Revisão antes de gravar</h2><label class="btn">Selecionar planilha…<input type="file" accept=".xlsx" hidden onchange="toast('No protótipo, a leitura do arquivo não é executada.')"></label></div>
+  <p class="small muted">Regras contra duplicação: correspondência pelo processo SEI e, na falta dele, pelo objeto (o número do item muda entre planilhas). Campo em branco na planilha não apaga valor existente.</p>
+  <div class="tabela-wrap"><table class="tabela pt-diff"><thead><tr><th>Plan.</th><th>Objeto</th><th>Ação</th><th>Correspondência</th><th>Alterações</th></tr></thead><tbody>
+  ${pv.map((p) => `<tr><td>${n2(p.plan)}</td><td><b>${esc(p.objeto)}</b></td><td>${p.acao === 'nova' ? '<span class="pt-pill verde">Nova</span>' : '<span class="pt-pill azul">Atualizar</span>'}</td><td class="small">${p.sist ? `sistema ${n2(p.sist)} · por ${esc(p.via)}` : '—'}</td>
+    <td>${p.mudancas.map((m) => `<div class="small"><b>${esc(m.campo)}:</b> <span class="pt-antes">${f(m.antes)}</span> → ${m.regra === 'mantido' ? '<span class="muted">em branco na planilha — valor mantido</span>' : `<span class="pt-depois">${f(m.depois)}</span>`}${m.regra === 'conferir' ? ' <span class="pt-pill ouro">conferir</span>' : ''}</div>`).join('') || '<span class="small muted">nova demanda completa</span>'}</td></tr>`).join('')}
+  </tbody></table></div>
+  <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:14px"><button class="btn" onclick="abaManut=null;render()">Cancelar</button><button class="btn primario" disabled title="Desabilitado no protótipo">Confirmar importação</button></div></div>`;
 }
-function baixar(nome, conteudo, tipo) { const b = new Blob([conteudo], { type: tipo }); const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = nome; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000); }
-function baixarBackup() { baixar('backup_gt_propag_prototipo_2026-09-25.json', JSON.stringify({ gerado_em: new Date().toISOString(), origem: 'Protótipo · dados de 25/09/2026', tabelas: SNAP }, null, 2), 'application/json'); $('#bakMsg').textContent = 'Arquivo gerado.'; }
+function baixar(nome, conteudo, tipo) { const b = new Blob([conteudo], { type: tipo }); const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = nome; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 1000); }
+function baixarBackup() { baixar('backup_gt_propag_prototipo_2026-09-25.json', JSON.stringify({ gerado_em: new Date().toISOString(), origem: 'Protótipo · dados de 25/09/2026', tabelas: SNAP }, null, 2), 'application/json'); toast('Arquivo de backup gerado.'); }
 
-// ---------------------------------------------------------------- render
-const VISTAS = { painel: vPainel, contratacoes: vContratacoes, detalhe: vDetalhe, pendencias: vPendencias, 'pend-integrante': vPendIntegrante, atas: vAtas, equipe: vEquipe, mensagens: vMensagens, agenda: vAgenda, manutencao: vManutencao };
-function render() { const t = pilha[pilha.length - 1]; renderNav(); $('#vista').innerHTML = VISTAS[t.v](t.p || {}); }
+// ================================================================ render + cliques nas telas reais
+const NOVAS = { mensagens: vMensagens, agenda: vAgenda, evolucao: vEvolucao };
+function render() {
+  document.querySelectorAll('body > .modal-fundo').forEach((f) => f.remove());
+  const t = pilha[pilha.length - 1];
+  renderSidebar(pilha[0].v === 'detalhe' ? 'contratacoes' : pilha[0].v);
+  const main = $('#vista');
+  if (NOVAS[t.v]) main.innerHTML = NOVAS[t.v]();
+  else if (t.v === 'detalhe') main.innerHTML = TELAS.detalhes[t.p.n];
+  else main.innerHTML = TELAS.telas[t.v];
+  pos(t.v);
+}
+document.addEventListener('click', (e) => {
+  if (e.target.closest('.menu-mobile')) { $('.sidebar').classList.add('aberta'); const f = document.createElement('div'); f.className = 'modal-fundo'; f.style.zIndex = 35; f.onclick = () => { $('.sidebar').classList.remove('aberta'); f.remove(); }; document.body.appendChild(f); return; }
+  const tk = e.target.closest('[data-pt-n]'); if (tk) { ir('detalhe', { n: +tk.dataset.ptN }); return; }
+  const a = e.target.closest('a[href]');
+  if (a && a.getAttribute('href').startsWith('/')) {
+    e.preventDefault(); const [v, p] = rota(a.getAttribute('href'));
+    const doMenu = !!a.closest('.sidebar'); ir(v, p, !doMenu); return;
+  }
+  const tr = e.target.closest('tr[data-n]'); if (tr && tr.closest('#vista')) { ir('detalhe', { n: +tr.dataset.n }); return; }
+  const btn = e.target.closest('#vista button, #vista select, #vista input');
+  if (btn && !btn.closest('.pt-thread, .pt-demo, .pt-cal, .cabecalho .acoes, .abas') && !btn.onclick && !btn.getAttribute('onclick') && btn.tagName === 'BUTTON' && !btn.classList.contains('pt-voltar')) toast('No protótipo, as funções já existentes não gravam dados.');
+});
 
-// ---------------------------------------------------------------- parecer
+// ================================================================ parecer
 const MELHORIAS = [
   ['1', 'Central de mensagens', 'Menu “Mensagens” · conversas entre integrantes, vinculáveis a uma contratação.', 'mensagens'],
-  ['2', 'Botões de voltar', 'Botão “← Voltar” no detalhe da contratação, pendências da equipe e telas secundárias.', 'painel'],
+  ['2', 'Botões de voltar', 'Botão “← Voltar para…” ao abrir uma contratação a partir de qualquer tela (Painel, Agenda, Mensagens, Atas, Pendências etc.).', 'painel'],
   ['3', 'Importar dados', 'Manutenção › Importar dados · revisão antes de gravar, sem duplicação.', 'manutencao:importar'],
-  ['4', 'Backup em JSON', 'Manutenção › Backup · exportação completa em JSON.', 'manutencao:backup'],
-  ['5', 'Evolução e tendência semanal', 'Painel · dois novos cards.', 'painel'],
-  ['6', 'Letreiro de notícias', 'Painel · faixa “AO VIVO · GT” com eventos do próprio sistema.', 'painel'],
-  ['7', 'Agenda de prazos', 'Menu “Agenda de prazos” · dia, semana e mês; clique abre a contratação.', 'agenda'],
+  ['4', 'Backup em JSON', 'Manutenção › Backup (JSON) · exportação completa.', 'manutencao:backup'],
+  ['5', 'Aba Evolução', 'Menu “Evolução” · situação atual em gráficos e evolução semanal com média, tendência, curva acumulada, burn-down e avanço por etapa.', 'evolucao'],
+  ['6', 'Letreiro de notícias', 'Painel · faixa “AO VIVO · GT” com eventos do próprio sistema, acima dos cards atuais (todos mantidos).', 'painel'],
+  ['7', 'Agenda de prazos', 'Menu “Agenda de prazos” · dia, semana e mês; o clique abre a contratação.', 'agenda'],
 ];
 let parecer = {};
 try { parecer = JSON.parse(localStorage.getItem('parecer_melhorias_gt') || '{}'); } catch (e) { parecer = {}; }
-function salvarParecer() { try { localStorage.setItem('parecer_melhorias_gt', JSON.stringify(parecer)); } catch (e) {} atualizarContador(); }
-function atualizarContador() { const n = MELHORIAS.filter(([k]) => parecer[k]?.decisao).length; $('#abrirParecer').textContent = `Parecer das melhorias (${n}/7)`; }
+function salvarParecer() { try { localStorage.setItem('parecer_melhorias_gt', JSON.stringify(parecer)); } catch (e) {} contador(); }
+function contador() { $('#abrirParecer').textContent = `Parecer das melhorias (${MELHORIAS.filter(([k]) => parecer[k]?.decisao).length}/7)`; }
 function renderParecer() {
-  $('#parecerCorpo').innerHTML = `<p class="small muted" style="margin-top:0">Para cada melhoria, escolha uma decisão e, se quiser, deixe um comentário. Depois, baixe ou copie o parecer e envie na conversa.</p>` + MELHORIAS.map(([k, t, d, alvo]) => {
+  $('#parecerCorpo').innerHTML = `<p class="small muted" style="margin-top:0">Para cada melhoria, escolha uma decisão e, se quiser, deixe um comentário. Depois, copie ou baixe o parecer e envie na conversa.</p>` + MELHORIAS.map(([k, t, d, alvo]) => {
     const p = parecer[k] || {};
-    return `<div class="mel"><h3>${k} · ${esc(t)}</h3><div class="small muted">${esc(d)}</div>
-      <button class="btn pequeno" style="margin-top:6px" onclick="verMelhoria('${alvo}')">Ver no protótipo</button>
-      <div class="opcoes">${[['aprovar', 'Aprovar'], ['ajustar', 'Ajustar'], ['recusar', 'Recusar']].map(([v, r]) => `<button class="${v} ${p.decisao === v ? 'sel' : ''}" onclick="decidir('${k}','${v}')">${r}</button>`).join('')}</div>
+    return `<div class="pt-mel"><h3>${k} · ${esc(t)}</h3><div class="small muted">${esc(d)}</div>
+      <button class="btn" style="margin-top:6px" onclick="verMelhoria('${alvo}')">Ver no protótipo</button>
+      <div class="pt-opcoes">${[['aprovar', 'Aprovar'], ['ajustar', 'Ajustar'], ['recusar', 'Recusar']].map(([v, r]) => `<button class="${v} ${p.decisao === v ? 'sel' : ''}" onclick="decidir('${k}','${v}')">${r}</button>`).join('')}</div>
       <textarea placeholder="Comentário (opcional)" oninput="comentar('${k}',this.value)">${esc(p.comentario || '')}</textarea></div>`;
   }).join('');
 }
 function decidir(k, v) { parecer[k] = { ...(parecer[k] || {}), decisao: v }; salvarParecer(); renderParecer(); }
 function comentar(k, v) { parecer[k] = { ...(parecer[k] || {}), comentario: v }; salvarParecer(); }
-function verMelhoria(alvo) { const [v, aba] = alvo.split(':'); if (aba) abaManut = aba; ir(v, {}, false); if (window.innerWidth < 900) $('#gaveta').classList.remove('aberta'); }
+function verMelhoria(alvo) { const [v, aba] = alvo.split(':'); abaManut = aba || null; ir(v, {}, false); if (window.innerWidth < 900) $('#gaveta').classList.remove('aberta'); }
 function textoParecer() {
-  const rot = { aprovar: 'APROVADA', ajustar: 'AJUSTAR', recusar: 'RECUSADA' };
-  return 'PARECER DAS MELHORIAS · GT PROPAG · protótipo work.html\n' + MELHORIAS.map(([k, t]) => { const p = parecer[k] || {}; return `${k}. ${t}: ${rot[p.decisao] || 'SEM DECISÃO'}${p.comentario ? ' — ' + p.comentario.trim() : ''}`; }).join('\n');
+  const r = { aprovar: 'APROVADA', ajustar: 'AJUSTAR', recusar: 'RECUSADA' };
+  return 'PARECER DAS MELHORIAS · GT PROPAG · protótipo work.html (versão 2)\n' + MELHORIAS.map(([k, t]) => { const p = parecer[k] || {}; return `${k}. ${t}: ${r[p.decisao] || 'SEM DECISÃO'}${p.comentario ? ' — ' + p.comentario.trim() : ''}`; }).join('\n');
 }
 $('#abrirParecer').onclick = () => { renderParecer(); $('#gaveta').classList.add('aberta'); };
 $('#fecharParecer').onclick = () => $('#gaveta').classList.remove('aberta');
 $('#baixarParecer').onclick = () => baixar('parecer_melhorias_gt_propag.txt', textoParecer(), 'text/plain;charset=utf-8');
 $('#copiarParecer').onclick = async () => { try { await navigator.clipboard.writeText(textoParecer()); $('#parecerMsg').textContent = 'Parecer copiado.'; } catch (e) { $('#parecerMsg').textContent = 'Não foi possível copiar; use “Baixar parecer”.'; } };
-atualizarContador();
+contador();
 render();
 </script>
 </body>
