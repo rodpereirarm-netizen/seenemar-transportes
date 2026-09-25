@@ -224,6 +224,7 @@ export interface Notificacao {
   titulo: string;
   texto: string | null;
   contratacao_id: string | null;
+  conversa_id?: string | null;
   lida: boolean;
   created_at: string;
 }

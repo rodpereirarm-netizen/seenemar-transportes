@@ -6,18 +6,32 @@ import { PAPEIS, relativo } from '../lib/format';
 import type { Notificacao } from '../lib/types';
 import { Campo, Modal, toast } from './ui';
 import { InputSenha } from './InputSenha';
+import { registrarRota } from '../lib/navegacao';
 import {
-  IcBarras, IcCheck, IcDoc, IcEngrenagem, IcEquipe, IcEscudo, IcLista, IcMenu, IcPainel, IcSino,
+  IcAgenda, IcBarras, IcCheck, IcDoc, IcEngrenagem, IcEquipe, IcEscudo, IcEvolucao, IcLista, IcMenu, IcMensagem, IcPainel, IcSino,
 } from './Icones';
+import { EVENTO_MENSAGENS } from '../lib/eventos';
 
 export default function Layout() {
   const { eu, pode, sair } = useApp();
   const [aberta, setAberta] = useState(false);
   const [pendentes, setPendentes] = useState(0);
+  const [msgNaoLidas, setMsgNaoLidas] = useState(0);
   const [trocarSenha, setTrocarSenha] = useState(false);
   const loc = useLocation();
 
   useEffect(() => setAberta(false), [loc.pathname]);
+  useEffect(() => registrarRota(loc.pathname + loc.search), [loc.pathname, loc.search]);
+
+  // Mensagens não lidas: a cada 30 s, ao trocar de tela e quando a central avisa
+  useEffect(() => {
+    if (!eu) return;
+    const contar = () => supabase.rpc('fn_mensagens_nao_lidas').then(({ data, error }) => !error && setMsgNaoLidas(Number(data ?? 0)));
+    contar();
+    const h = setInterval(contar, 30_000);
+    window.addEventListener(EVENTO_MENSAGENS, contar);
+    return () => { clearInterval(h); window.removeEventListener(EVENTO_MENSAGENS, contar); };
+  }, [eu, loc.pathname]);
 
   useEffect(() => {
     if (!eu) return;
@@ -43,8 +57,13 @@ export default function Layout() {
           <NavLink to="/pendencias">
             <IcCheck /> Minhas pendências {pendentes > 0 && <span className="contador">{pendentes}</span>}
           </NavLink>
+          <NavLink to="/mensagens">
+            <IcMensagem /> Mensagens {msgNaoLidas > 0 && <span className="contador">{msgNaoLidas}</span>}
+          </NavLink>
+          <NavLink to="/agenda"><IcAgenda /> Agenda de prazos</NavLink>
           <NavLink to="/atas"><IcDoc /> Atas de registro</NavLink>
           <NavLink to="/relatorios"><IcBarras /> Relatórios</NavLink>
+          <NavLink to="/evolucao"><IcEvolucao /> Evolução</NavLink>
           <NavLink to="/equipe"><IcEquipe /> Equipe do GT</NavLink>
           {(pode.verAuditoria || pode.admin) && <div className="grupo">Administração</div>}
           {pode.verAuditoria && <NavLink to="/auditoria"><IcEscudo /> Auditoria</NavLink>}
@@ -172,7 +191,8 @@ function Notificacoes() {
     if (!n.lida) await supabase.from('notificacoes').update({ lida: true }).eq('id', n.id);
     setAberto(false);
     carregar();
-    if (n.contratacao_id) nav(`/contratacoes/${n.contratacao_id}`);
+    if (n.conversa_id) nav(`/mensagens?c=${n.conversa_id}`);
+    else if (n.contratacao_id) nav(`/contratacoes/${n.contratacao_id}`);
   }
 
   return (

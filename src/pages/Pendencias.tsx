@@ -6,6 +6,7 @@ import { FRENTES, PAPEIS, ROMANOS, SITUACAO_PRAZO, STATUS_ATIVIDADE, data, num2,
 import { exportarExcel } from '../lib/excel';
 import type { AtividadeView, CargaIntegrante, ContratacaoView, StatusAtividade } from '../lib/types';
 import { Carregando, Erro, Iniciais, Selo, SeloLista, Vazio, toast } from '../components/ui';
+import { Voltar } from '../components/Voltar';
 import { IcBaixar, IcSeta } from '../components/Icones';
 
 const ABERTA = (a: AtividadeView) => a.status !== 'concluida' && a.status !== 'nao_se_aplica';
@@ -90,6 +91,7 @@ function VisaoIndividual({ id, onEquipe }: { id: string; onEquipe: () => void })
 
   return (
     <>
+      {!souEu && <Voltar padrao="/equipe" rotuloPadrao="Equipe do GT" />}
       <div className="cabecalho">
         <div className="pessoa">
           <Iniciais nome={pessoa.nome} frente={pessoa.frente} />
@@ -228,6 +230,7 @@ function VisaoEquipe({ onVoltar }: { onVoltar: () => void }) {
 
   return (
     <>
+      <button type="button" className="voltar nao-imprimir" onClick={onVoltar}>← Voltar para Minhas pendências</button>
       <div className="cabecalho">
         <div>
           <div className="eyebrow">Painel de pendências</div>

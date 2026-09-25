@@ -4,6 +4,7 @@ import { useApp, useCarregar } from '../lib/app';
 import { ok, supabase } from '../lib/supabase';
 import { ROMANOS, SITUACAO_PRAZO, data, dataHora, moeda, nomeCurto, num2, prazoTexto } from '../lib/format';
 import type { AtividadeView, ContratacaoView } from '../lib/types';
+import { Letreiro } from '../components/Letreiro';
 import { Barra, Carregando, Erro, Selo, SeloLista } from '../components/ui';
 
 const ABERTAS = (a: AtividadeView) => a.status !== 'concluida' && a.status !== 'nao_se_aplica';
@@ -152,6 +153,8 @@ export default function Painel() {
           <Link className="btn pequeno" to="/relatorios?periodo=personalizado">Report por período</Link>
         </div>
       </div>
+
+      <Letreiro contratacoes={dados.contratacoes.filter((c) => !c.rascunho && !ENCERRADAS.includes(c.situacao))} atividades={dados.atividades} />
 
       <div className="linha mb">
         <select className="filtro-btn" value={fModalidade} onChange={(e) => setFModalidade(e.target.value)} aria-label="Modalidade">

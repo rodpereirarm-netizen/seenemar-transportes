@@ -5,8 +5,10 @@ import { FRENTES, PAPEIS, ROMANOS, data, prazoTexto } from '../lib/format';
 import type { AtividadeModelo, Cor, Feriado, Integrante, Modalidade, OpcaoLista, Papel } from '../lib/types';
 import { Campo, Carregando, Modal, Segmentado, Selo, toast } from '../components/ui';
 import { IcMais } from '../components/Icones';
+import Backup from '../components/manutencao/Backup';
+import Importar from '../components/manutencao/Importar';
 
-type Aba = 'integrantes' | 'listas' | 'areas' | 'feriados' | 'modelo' | 'modalidades';
+type Aba = 'integrantes' | 'listas' | 'areas' | 'feriados' | 'modelo' | 'modalidades' | 'backup' | 'importar';
 
 export default function Manutencao() {
   const [aba, setAba] = useState<Aba>('integrantes');
@@ -23,6 +25,7 @@ export default function Manutencao() {
         {([
           ['integrantes', 'Integrantes e perfis'], ['listas', 'Listas suspensas'], ['areas', 'Áreas demandantes'],
           ['feriados', 'Feriados'], ['modelo', 'Atividades e prazos'], ['modalidades', 'Modalidades'],
+          ['importar', 'Importar dados'], ['backup', 'Backup (JSON)'],
         ] as [Aba, string][]).map(([k, r]) => <button key={k} className={`aba ${aba === k ? 'on' : ''}`} onClick={() => setAba(k)}>{r}</button>)}
       </div>
       {aba === 'integrantes' && <Integrantes />}
@@ -31,6 +34,8 @@ export default function Manutencao() {
       {aba === 'feriados' && <Feriados />}
       {aba === 'modelo' && <ModeloAtividades />}
       {aba === 'modalidades' && <Modalidades />}
+      {aba === 'importar' && <Importar />}
+      {aba === 'backup' && <Backup />}
     </>
   );
 }

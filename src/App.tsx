@@ -16,6 +16,9 @@ const Relatorios = lazy(() => import('./pages/Relatorios'));
 const Equipe = lazy(() => import('./pages/Equipe'));
 const Auditoria = lazy(() => import('./pages/Auditoria'));
 const Manutencao = lazy(() => import('./pages/Manutencao'));
+const Mensagens = lazy(() => import('./pages/Mensagens'));
+const Agenda = lazy(() => import('./pages/Agenda'));
+const Evolucao = lazy(() => import('./pages/Evolucao'));
 
 export default function App() {
   const { session, carregando, eu, pode } = useApp();
@@ -53,6 +56,9 @@ export default function App() {
             <Route path="contratacoes/:id" element={<ContratacaoDetalhe />} />
             <Route path="pendencias" element={<Pendencias />} />
             <Route path="pendencias/:integranteId" element={<Pendencias />} />
+            <Route path="mensagens" element={<Mensagens />} />
+            <Route path="agenda" element={<Agenda />} />
+            <Route path="evolucao" element={<Evolucao />} />
             <Route path="atas" element={<Atas />} />
             <Route path="relatorios" element={<Relatorios />} />
             <Route path="equipe" element={<Equipe />} />

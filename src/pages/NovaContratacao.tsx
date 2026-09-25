@@ -6,6 +6,7 @@ import { ROMANOS, prazoTexto } from '../lib/format';
 import type { Contratacao } from '../lib/types';
 import { Campo, Segmentado, SelectIntegrante, SelectLista, toast } from '../components/ui';
 import { Dropzone, ListaArquivosPendentes, enviarDocumento, validarArquivo } from '../components/Upload';
+import { Voltar } from '../components/Voltar';
 import { AtaForm } from './Atas';
 
 type Form = Partial<Contratacao> & { observacao_inicial?: string };
@@ -162,6 +163,7 @@ export default function NovaContratacao() {
     <>
       <div className="cabecalho">
         <div>
+          <Voltar padrao="/contratacoes" rotuloPadrao="Contratações" />
           <div className="migalha"><Link to="/contratacoes">Contratações</Link> / Nova contratação</div>
           <div className="eyebrow">Cadastro da demanda · gera o checklist do fluxo</div>
           <h1>Nova contratação</h1>

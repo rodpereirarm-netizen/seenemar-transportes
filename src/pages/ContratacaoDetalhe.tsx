@@ -15,6 +15,7 @@ import {
 } from '../components/ui';
 import { Dropzone, IconeExt, baixarDocumento, enviarDocumento, validarArquivo } from '../components/Upload';
 import DiffAuditoria from '../components/Diff';
+import { Voltar } from '../components/Voltar';
 import { IcBaixar, IcLapis, IcLixo } from '../components/Icones';
 
 type Aba = 'checklist' | 'dados' | 'andamentos' | 'documentos' | 'historico';
@@ -106,6 +107,7 @@ export default function ContratacaoDetalhe() {
     <>
       <div className="cabecalho">
         <div style={{ minWidth: 0 }}>
+          <Voltar padrao="/contratacoes" rotuloPadrao="Contratações" />
           <div className="migalha"><Link to="/contratacoes">Contratações</Link> / {num2(c.numero)}</div>
           <div className="linha" style={{ marginBottom: 4 }}>
             <span className="eyebrow">Nº {num2(c.numero)}</span>
