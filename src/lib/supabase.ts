@@ -27,3 +27,21 @@ export function traduzirErro(msg: string): string {
   if (/Password should be/i.test(msg)) return 'A senha deve ter pelo menos 6 caracteres.';
   return msg;
 }
+
+const PAGINA = 1000;
+type Pagina<T> = PromiseLike<{ data: T[] | null; error: { message: string } | null }>;
+
+/**
+ * Lê todas as linhas de uma consulta, em páginas de 1.000.
+ * A API do Supabase devolve no máximo 1.000 linhas por requisição (max-rows) e ignora
+ * `.limit()` maior, sem avisar. `montar` recebe o intervalo e deve ter ordenação estável.
+ */
+export async function lerTodas<T>(montar: (de: number, ate: number) => Pagina<T>): Promise<T[]> {
+  const linhas: T[] = [];
+  for (let de = 0; ; de += PAGINA) {
+    const { data, error } = await montar(de, de + PAGINA - 1);
+    if (error) throw new Error(traduzirErro(error.message));
+    linhas.push(...(data ?? []));
+    if (!data || data.length < PAGINA) return linhas;
+  }
+}

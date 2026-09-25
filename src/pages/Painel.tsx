@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useApp, useCarregar } from '../lib/app';
-import { ok, supabase } from '../lib/supabase';
+import { lerTodas, ok, supabase } from '../lib/supabase';
 import { ROMANOS, SITUACAO_PRAZO, data, dataHora, moeda, nomeCurto, num2, prazoTexto } from '../lib/format';
 import type { AtividadeView, ContratacaoView } from '../lib/types';
 import { Letreiro } from '../components/Letreiro';
@@ -20,9 +20,9 @@ export default function Painel() {
   const { dados, erro, carregando } = useCarregar(async () => {
     const [c, a] = await Promise.all([
       supabase.from('vw_contratacoes').select('*').order('numero'),
-      supabase.from('vw_atividades').select('*').limit(10000),
+      lerTodas<AtividadeView>((de, ate) => supabase.from('vw_atividades').select('*').order('id').range(de, ate)),
     ]);
-    return { contratacoes: ok(c) as ContratacaoView[], atividades: ok(a) as AtividadeView[] };
+    return { contratacoes: ok(c) as ContratacaoView[], atividades: a };
   }, []);
 
   const f = useMemo(() => {

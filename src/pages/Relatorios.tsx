@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useApp, useCarregar } from '../lib/app';
-import { ok, supabase } from '../lib/supabase';
+import { lerTodas, ok, supabase } from '../lib/supabase';
 import {
   ROMANOS, SITUACAO_PRAZO, STATUS_ATIVIDADE, data, dataHora, hojeISO, moeda, num2, prazoTexto, somarDiasISO,
 } from '../lib/format';
@@ -48,10 +48,10 @@ export default function Relatorios() {
   const { dados, erro, carregando } = useCarregar(async () => {
     const [c, a, n] = await Promise.all([
       supabase.from('vw_contratacoes').select('*').order('numero'),
-      supabase.from('vw_atividades').select('*').limit(20000),
-      supabase.from('andamentos').select('*').gte('created_at', `${ini}T00:00:00-03:00`).lte('created_at', `${fim}T23:59:59-03:00`).order('created_at').limit(5000),
+      lerTodas<AtividadeView>((de, ate) => supabase.from('vw_atividades').select('*').order('id').range(de, ate)),
+      lerTodas<Andamento>((de, ate) => supabase.from('andamentos').select('*').gte('created_at', `${ini}T00:00:00-03:00`).lte('created_at', `${fim}T23:59:59-03:00`).order('created_at').order('id').range(de, ate)),
     ]);
-    return { cs: ok(c) as ContratacaoView[], as: ok(a) as AtividadeView[], ns: ok(n) as Andamento[] };
+    return { cs: ok(c) as ContratacaoView[], as: a, ns: n };
   }, [ini, fim]);
 
   const fm = useMemo(() => {

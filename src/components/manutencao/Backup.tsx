@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useApp } from '../../lib/app';
-import { supabase } from '../../lib/supabase';
+import { lerTodas, supabase } from '../../lib/supabase';
 import { dataHora } from '../../lib/format';
 import { toast } from '../ui';
 
@@ -9,15 +9,15 @@ const TABELAS = [
   'integrantes', 'etapas', 'modalidades', 'atividades_modelo', 'feriados', 'areas_demandantes', 'opcoes_lista',
   'atas', 'contratacoes', 'contratacao_responsaveis', 'atividades', 'andamentos', 'documentos', 'auditoria',
 ] as const;
-const PAGINA = 1000;
+/** Ordenação estável para a leitura em páginas (chave primária de cada tabela). */
+const CHAVE: Record<string, string[]> = { etapas: ['numero'], modalidades: ['codigo'], feriados: ['data'], contratacao_responsaveis: ['contratacao_id', 'etapa'] };
 
 async function lerTudo(tabela: string) {
-  const linhas: unknown[] = [];
-  for (let de = 0; ; de += PAGINA) {
-    const { data, error } = await supabase.from(tabela).select('*').range(de, de + PAGINA - 1);
-    if (error) throw new Error(`${tabela}: ${error.message}`);
-    linhas.push(...(data ?? []));
-    if (!data || data.length < PAGINA) return linhas;
+  try {
+    return await lerTodas((de, ate) =>
+      (CHAVE[tabela] ?? ['id']).reduce((q, k) => q.order(k), supabase.from(tabela).select('*')).range(de, ate));
+  } catch (e) {
+    throw new Error(`${tabela}: ${(e as Error).message}`);
   }
 }
 

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { useApp, useCarregar } from '../lib/app';
-import { ok, supabase } from '../lib/supabase';
+import { lerTodas, ok, supabase } from '../lib/supabase';
 import { ROMANOS, num2 } from '../lib/format';
 import type { AtividadeView, ContratacaoView } from '../lib/types';
 import { Carregando, Erro } from '../components/ui';
@@ -29,9 +29,9 @@ export default function Evolucao() {
   const { dados, erro, carregando } = useCarregar(async () => {
     const [c, a] = await Promise.all([
       supabase.from('vw_contratacoes').select('*').order('numero'),
-      supabase.from('vw_atividades').select('*').limit(10000),
+      lerTodas<AtividadeView>((de, ate) => supabase.from('vw_atividades').select('*').order('id').range(de, ate)),
     ]);
-    return { contratacoes: (ok(c) as ContratacaoView[]).filter((x) => !x.rascunho), atividades: ok(a) as AtividadeView[] };
+    return { contratacoes: (ok(c) as ContratacaoView[]).filter((x) => !x.rascunho), atividades: a };
   }, []);
 
   const m = useMemo(() => {

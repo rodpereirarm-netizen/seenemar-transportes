@@ -1,7 +1,7 @@
 import { Fragment, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useApp, useCarregar } from '../lib/app';
-import { ok, supabase } from '../lib/supabase';
+import { lerTodas, ok, supabase } from '../lib/supabase';
 import { dataHora, hojeISO, somarDiasISO } from '../lib/format';
 import { CAMPOS, OPERACOES, TABELAS } from '../lib/rotulos';
 import { exportarExcel } from '../lib/excel';
@@ -44,10 +44,10 @@ export default function Auditoria() {
   contratacoes?.forEach((c) => numeros.set(c.id, `${String(c.numero).padStart(2, '0')} · ${c.titulo}`));
 
   async function exportar() {
-    const res = await supabase.from('auditoria').select('*')
+    const todas = await lerTodas<RegistroAuditoria>((ini, fim) => supabase.from('auditoria').select('*')
       .gte('created_at', `${de}T00:00:00-03:00`).lte('created_at', `${ate}T23:59:59-03:00`)
-      .order('created_at', { ascending: false }).limit(10000);
-    const linhas = (ok(res) as RegistroAuditoria[]).filter((r) =>
+      .order('id', { ascending: false }).range(ini, fim));
+    const linhas = todas.filter((r) =>
       (!usuario || (usuario === 'sistema' ? !r.integrante_id : r.integrante_id === usuario)) &&
       (!tabela || r.tabela === tabela) && (!operacao || r.operacao === operacao));
     await exportarExcel(`auditoria-${de}-a-${ate}`, [{
