@@ -1,0 +1,387 @@
+{
+ "preview": [
+  {
+   "plan": 1,
+   "objeto": "Chromebooks",
+   "acao": "atualizar",
+   "via": "processo SEI",
+   "sist": 1,
+   "mudancas": [
+    {
+     "campo": "Ata (status)",
+     "antes": "SIM",
+     "depois": "—",
+     "regra": "mantido"
+    },
+    {
+     "campo": "Manifestação do TI",
+     "antes": "EM ANÁLISE",
+     "depois": "SIM",
+     "regra": "aplicar"
+    }
+   ]
+  },
+  {
+   "plan": 2,
+   "objeto": "Softwares de edição e arquitetura",
+   "acao": "atualizar",
+   "via": "processo SEI",
+   "sist": 2,
+   "mudancas": [
+    {
+     "campo": "Manifestação do TI",
+     "antes": "EM ANÁLISE",
+     "depois": "SIM",
+     "regra": "aplicar"
+    }
+   ]
+  },
+  {
+   "plan": 3,
+   "objeto": "Telefonia VoIP",
+   "acao": "atualizar",
+   "via": "objeto",
+   "sist": 3,
+   "mudancas": [
+    {
+     "campo": "Processo SEI",
+     "antes": "—",
+     "depois": "SEI-260005/009055/2026",
+     "regra": "aplicar"
+    }
+   ]
+  },
+  {
+   "plan": 4,
+   "objeto": "Câmeras de segurança (instalação e fornecimento)",
+   "acao": "atualizar",
+   "via": "objeto",
+   "sist": 4,
+   "mudancas": [
+    {
+     "campo": "Processo SEI",
+     "antes": "—",
+     "depois": "SEI-260005/008655/2026",
+     "regra": "aplicar"
+    }
+   ]
+  },
+  {
+   "plan": 5,
+   "objeto": "Link de internet (Links SDWAN)",
+   "acao": "atualizar",
+   "via": "objeto",
+   "sist": 6,
+   "mudancas": [
+    {
+     "campo": "Processo SEI",
+     "antes": "—",
+     "depois": "SEI-260005/008620/2026",
+     "regra": "aplicar"
+    },
+    {
+     "campo": "DOD",
+     "antes": "Em Elaboração",
+     "depois": "Elaborado",
+     "regra": "aplicar"
+    }
+   ]
+  },
+  {
+   "plan": 6,
+   "objeto": "Licenciamento de softwares Microsoft",
+   "acao": "atualizar",
+   "via": "objeto",
+   "sist": 7,
+   "mudancas": [
+    {
+     "campo": "Processo SEI",
+     "antes": "—",
+     "depois": "SEI-260005/008723/2026",
+     "regra": "aplicar"
+    },
+    {
+     "campo": "Manifestação do TI",
+     "antes": "NÃO",
+     "depois": "SIM",
+     "regra": "aplicar"
+    }
+   ]
+  },
+  {
+   "plan": 7,
+   "objeto": "Antivírus com tecnologia EDR",
+   "acao": "atualizar",
+   "via": "objeto",
+   "sist": 8,
+   "mudancas": [
+    {
+     "campo": "Processo SEI",
+     "antes": "—",
+     "depois": "SEI-260005/009050/2026",
+     "regra": "aplicar"
+    },
+    {
+     "campo": "DOD",
+     "antes": "Em Elaboração",
+     "depois": "Elaborado",
+     "regra": "aplicar"
+    }
+   ]
+  },
+  {
+   "plan": 8,
+   "objeto": "Computadores básicos, notebooks e monitores",
+   "acao": "atualizar",
+   "via": "objeto",
+   "sist": 9,
+   "mudancas": [
+    {
+     "campo": "Processo SEI",
+     "antes": "—",
+     "depois": "SEI-260005/008722/2026",
+     "regra": "aplicar"
+    }
+   ]
+  },
+  {
+   "plan": 9,
+   "objeto": "Computadores avançados",
+   "acao": "nova",
+   "via": null,
+   "sist": null,
+   "mudancas": []
+  },
+  {
+   "plan": 10,
+   "objeto": "Appliances para backup",
+   "acao": "atualizar",
+   "via": "processo SEI",
+   "sist": 10,
+   "mudancas": [
+    {
+     "campo": "Manifestação do TI",
+     "antes": "NÃO",
+     "depois": "SIM",
+     "regra": "aplicar"
+    }
+   ]
+  },
+  {
+   "plan": 11,
+   "objeto": "Switch top of rack",
+   "acao": "atualizar",
+   "via": "objeto",
+   "sist": 11,
+   "mudancas": [
+    {
+     "campo": "Processo SEI",
+     "antes": "—",
+     "depois": "SEI-260005/008710/2026",
+     "regra": "aplicar"
+    },
+    {
+     "campo": "DOD",
+     "antes": "—",
+     "depois": "EM ANÁLISE",
+     "regra": "aplicar"
+    },
+    {
+     "campo": "Manifestação do TI",
+     "antes": "—",
+     "depois": "NÃO",
+     "regra": "aplicar"
+    }
+   ]
+  },
+  {
+   "plan": 12,
+   "objeto": "Servidor hiperconvergente",
+   "acao": "atualizar",
+   "via": "objeto",
+   "sist": 13,
+   "mudancas": [
+    {
+     "campo": "Processo SEI",
+     "antes": "—",
+     "depois": "SEI-260005/008677/2026",
+     "regra": "aplicar"
+    },
+    {
+     "campo": "DOD",
+     "antes": "—",
+     "depois": "Elaborado",
+     "regra": "aplicar"
+    },
+    {
+     "campo": "Ata (status)",
+     "antes": "—",
+     "depois": "SIM",
+     "regra": "aplicar"
+    },
+    {
+     "campo": "Manifestação do TI",
+     "antes": "—",
+     "depois": "NÃO",
+     "regra": "aplicar"
+    }
+   ]
+  },
+  {
+   "plan": 13,
+   "objeto": "Rack 19U",
+   "acao": "atualizar",
+   "via": "objeto",
+   "sist": 14,
+   "mudancas": [
+    {
+     "campo": "Processo SEI",
+     "antes": "—",
+     "depois": "SEI-260005/009052/2026",
+     "regra": "aplicar"
+    },
+    {
+     "campo": "DOD",
+     "antes": "—",
+     "depois": "Em Elaboração",
+     "regra": "aplicar"
+    },
+    {
+     "campo": "Ata (status)",
+     "antes": "—",
+     "depois": "SIM",
+     "regra": "aplicar"
+    },
+    {
+     "campo": "Manifestação do TI",
+     "antes": "—",
+     "depois": "NÃO",
+     "regra": "aplicar"
+    }
+   ]
+  },
+  {
+   "plan": 14,
+   "objeto": "Access Point",
+   "acao": "nova",
+   "via": null,
+   "sist": null,
+   "mudancas": []
+  },
+  {
+   "plan": 15,
+   "objeto": "Pontos lógicos",
+   "acao": "atualizar",
+   "via": "objeto",
+   "sist": 15,
+   "mudancas": [
+    {
+     "campo": "Processo SEI",
+     "antes": "—",
+     "depois": "SEI-260005/009053/2028",
+     "regra": "conferir"
+    },
+    {
+     "campo": "DOD",
+     "antes": "—",
+     "depois": "EM ANÁLISE",
+     "regra": "aplicar"
+    },
+    {
+     "campo": "Manifestação do TI",
+     "antes": "—",
+     "depois": "NÃO",
+     "regra": "aplicar"
+    }
+   ]
+  },
+  {
+   "plan": 16,
+   "objeto": "Telefonia móvel (celular)",
+   "acao": "atualizar",
+   "via": "objeto",
+   "sist": 16,
+   "mudancas": [
+    {
+     "campo": "Processo SEI",
+     "antes": "—",
+     "depois": "SEI-260005/009054/2029",
+     "regra": "conferir"
+    },
+    {
+     "campo": "DOD",
+     "antes": "—",
+     "depois": "EM ANÁLISE",
+     "regra": "aplicar"
+    },
+    {
+     "campo": "Manifestação do TI",
+     "antes": "—",
+     "depois": "NÃO",
+     "regra": "aplicar"
+    }
+   ]
+  },
+  {
+   "plan": 17,
+   "objeto": "Switch core",
+   "acao": "atualizar",
+   "via": "objeto",
+   "sist": 17,
+   "mudancas": [
+    {
+     "campo": "Processo SEI",
+     "antes": "—",
+     "depois": "SEI-260005/008717/2025",
+     "regra": "conferir"
+    },
+    {
+     "campo": "DOD",
+     "antes": "—",
+     "depois": "EM ANÁLISE",
+     "regra": "aplicar"
+    },
+    {
+     "campo": "Manifestação do TI",
+     "antes": "—",
+     "depois": "NÃO",
+     "regra": "aplicar"
+    }
+   ]
+  },
+  {
+   "plan": 18,
+   "objeto": "Switch de acesso",
+   "acao": "nova",
+   "via": null,
+   "sist": null,
+   "mudancas": []
+  },
+  {
+   "plan": 19,
+   "objeto": "Firewall Fortinet",
+   "acao": "nova",
+   "via": null,
+   "sist": null,
+   "mudancas": []
+  },
+  {
+   "plan": 20,
+   "objeto": "Computador quântico",
+   "acao": "nova",
+   "via": null,
+   "sist": null,
+   "mudancas": []
+  }
+ ],
+ "somente_sistema": [
+  {
+   "sist": 5,
+   "objeto": "Tela interativa"
+  },
+  {
+   "sist": 12,
+   "objeto": "Firewall"
+  }
+ ]
+}
