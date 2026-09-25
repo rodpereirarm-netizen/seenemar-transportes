@@ -6,7 +6,7 @@ import { FRENTES, PAPEIS, ROMANOS, SITUACAO_PRAZO, STATUS_ATIVIDADE, data, num2,
 import { exportarExcel } from '../lib/excel';
 import type { AtividadeView, CargaIntegrante, ContratacaoView, StatusAtividade } from '../lib/types';
 import { Carregando, Erro, Iniciais, Selo, SeloLista, Vazio, toast } from '../components/ui';
-import { IcBaixar } from '../components/Icones';
+import { IcBaixar, IcSeta } from '../components/Icones';
 
 const ABERTA = (a: AtividadeView) => a.status !== 'concluida' && a.status !== 'nao_se_aplica';
 
@@ -171,7 +171,7 @@ function VisaoIndividual({ id, onEquipe }: { id: string; onEquipe: () => void })
                           )}
                         </td>
                         <td><Selo cor={sp.cor}>{sp.rotulo}</Selo></td>
-                        <td className="acoes-td"><Link className="abrir" to={`/contratacoes/${a.contratacao_id}`}>Abrir</Link></td>
+                        <td className="acoes-td"><Link className="abrir" to={`/contratacoes/${a.contratacao_id}`}>Detalhes <IcSeta width={14} /></Link></td>
                       </tr>
                     );
                   })}
@@ -259,7 +259,7 @@ function VisaoEquipe({ onVoltar }: { onVoltar: () => void }) {
                   <td className="right mono">{i.vencem_5_dias}</td>
                   <td className="right mono">{i.atividades_concluidas}</td>
                   <td className="right mono">{i.contratacoes_envolvidas}{i.contratacoes_coordenadas ? ` (+${i.contratacoes_coordenadas} coord.)` : ''}</td>
-                  <td className="acoes-td"><span className="abrir btn-link">Ver</span></td>
+                  <td className="acoes-td"><span className="abrir">Ver <IcSeta width={14} /></span></td>
                 </tr>
               ))}
             </tbody>

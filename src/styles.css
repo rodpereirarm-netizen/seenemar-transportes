@@ -192,7 +192,13 @@ table.tabela { width: 100%; border-collapse: collapse; font-size: 13px; }
 .tabela .obj { font-weight: 600; color: var(--navy); }
 .tabela .sub { font-size: 11.5px; color: var(--muted); }
 .tabela .num { color: var(--muted); font-variant-numeric: tabular-nums; }
-.tabela a.abrir { font-weight: 600; font-size: 12.5px; }
+.tabela .abrir {
+  display: inline-flex; align-items: center; gap: 4px; padding: 5px 9px 5px 12px; border: 1px solid var(--line-2); border-radius: 8px;
+  background: #fff; color: var(--navy); font-weight: 600; font-size: 12.5px; text-decoration: none; white-space: nowrap; cursor: pointer;
+  transition: background .15s, color .15s, border-color .15s;
+}
+.tabela .abrir:hover, .tabela tr.clicavel:hover .abrir { background: var(--navy); border-color: var(--navy); color: #fff; }
+.tabela .abrir:focus-visible { outline: 2px solid rgba(22, 40, 77, 0.35); outline-offset: 2px; }
 .tabela td.acoes-td { white-space: nowrap; text-align: right; }
 .tabela tr.clicavel { cursor: pointer; }
 .rodape-tabela { display: flex; justify-content: space-between; gap: 12px; padding-top: 12px; border-top: 1px solid var(--line); margin-top: 4px; font-size: 12px; color: var(--muted); flex-wrap: wrap; }

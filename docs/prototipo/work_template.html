@@ -122,7 +122,7 @@ body.pt .sidebar { top:34px; height:calc(100vh - 34px); }
 <body class="pt">
 <div class="pt-faixa">
   <span>PROTÓTIPO DE MELHORIAS · telas atuais do sistema + acréscimos marcados como NOVO · não conectado · nada é gravado · dados reais de 25/09/2026, exceto onde indicado “DADOS FICTÍCIOS DE DEMONSTRAÇÃO”</span>
-  <button id="abrirParecer">Parecer das melhorias (0/7)</button>
+  <button id="abrirParecer">Parecer das melhorias (0/8)</button>
 </div>
 <div class="app" id="app">
   <div id="sidebarBox"></div>
@@ -511,13 +511,15 @@ const MELHORIAS = [
   ['3', 'Importar dados', 'Manutenção › Importar dados · revisão antes de gravar, sem duplicação.', 'manutencao:importar'],
   ['4', 'Backup em JSON', 'Manutenção › Backup (JSON) · exportação completa.', 'manutencao:backup'],
   ['5', 'Aba Evolução', 'Menu “Evolução” · gráficos da situação atual (com percentual de evolução por contratação) e evolução semanal com média, tendência, curva acumulada, burn-down e avanço por etapa.', 'evolucao'],
+  ['8', 'Botão “Detalhes”', 'Lista de contratações e Minhas pendências · o “›” vira o botão “Detalhes ›”, que fica azul ao passar o mouse na linha.', 'contratacoes'],
   ['6', 'Letreiro de notícias', 'Painel · faixa “AO VIVO · GT” com eventos do próprio sistema, acima dos cards atuais (todos mantidos).', 'painel'],
   ['7', 'Agenda de prazos', 'Menu “Agenda de prazos” · dia, semana e mês; o clique abre a contratação.', 'agenda'],
 ];
+MELHORIAS.sort((a, b) => +a[0] - +b[0]);
 let parecer = {};
 try { parecer = JSON.parse(localStorage.getItem('parecer_melhorias_gt_v3') || '{}'); } catch (e) { parecer = {}; }
 function salvarParecer() { try { localStorage.setItem('parecer_melhorias_gt_v3', JSON.stringify(parecer)); } catch (e) {} contador(); }
-function contador() { $('#abrirParecer').textContent = `Parecer das melhorias (${MELHORIAS.filter(([k]) => parecer[k]?.decisao).length}/7)`; }
+function contador() { $('#abrirParecer').textContent = `Parecer das melhorias (${MELHORIAS.filter(([k]) => parecer[k]?.decisao).length}/${MELHORIAS.length})`; }
 function renderParecer() {
   $('#parecerCorpo').innerHTML = `<p class="small muted" style="margin-top:0">Para cada melhoria, escolha uma decisão e, se quiser, deixe um comentário. Depois, copie ou baixe o parecer e envie na conversa.</p>` + MELHORIAS.map(([k, t, d, alvo]) => {
     const p = parecer[k] || {};

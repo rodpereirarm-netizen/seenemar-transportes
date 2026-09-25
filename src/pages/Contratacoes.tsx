@@ -6,7 +6,7 @@ import { ROMANOS, data, moeda, normalizar, num2 } from '../lib/format';
 import { exportarExcel } from '../lib/excel';
 import type { ContratacaoView } from '../lib/types';
 import { Carregando, Erro, Progresso, SelectLista, SeloLista, SeloModalidade, toast } from '../components/ui';
-import { IcBaixar, IcMais } from '../components/Icones';
+import { IcBaixar, IcMais, IcSeta } from '../components/Icones';
 
 type Chip = 'todas' | 'andamento' | 'aguardando' | 'devolvidas' | 'divergencias' | 'semjust' | 'semresp' | 'vencidos' | 'encerradas';
 
@@ -215,7 +215,7 @@ export default function Contratacoes() {
                     </td>
                     <td className="right nowrap">{moeda(c.valor_estimado, true)}</td>
                     <td><SeloLista lista="situacao" valor={c.situacao} /></td>
-                    <td className="acoes-td"><Link className="abrir" to={`/contratacoes/${c.id}`} onClick={(e) => e.stopPropagation()} aria-label="Abrir">›</Link></td>
+                    <td className="acoes-td"><Link className="abrir" to={`/contratacoes/${c.id}`} onClick={(e) => e.stopPropagation()} aria-label={`Ver detalhes da contratação ${c.titulo}`}>Detalhes <IcSeta width={14} /></Link></td>
                   </tr>
                 ))}
                 {linhas.length === 0 && <tr><td colSpan={9} className="vazio">Nenhuma contratação com esses filtros.</td></tr>}
