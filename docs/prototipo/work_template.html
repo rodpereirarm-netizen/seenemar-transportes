@@ -13,7 +13,7 @@ __CSS__
 /* ======== Acréscimos do protótipo (prefixo pt-) ======== */
 .pt-faixa { position:sticky; top:0; z-index:80; background:repeating-linear-gradient(135deg,#8a5f0d 0 14px,#96681a 14px 28px); color:#fff; font:600 12.5px/1.3 var(--sans); padding:7px 16px; display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap; }
 .pt-faixa button { background:#fff; color:var(--navy); border:0; border-radius:6px; padding:5px 12px; font-weight:700; cursor:pointer; }
-body.pt .sidebar { top:34px; height:calc(100vh - 34px); }
+body.pt .sidebar { top:var(--pt-faixa,34px); height:calc(100vh - var(--pt-faixa,34px)); }
 .nav a .pt-novo { margin-left:auto; background:var(--gold); color:var(--navy); font-size:9.5px; font-weight:800; letter-spacing:.06em; padding:2px 6px; border-radius:4px; }
 .nav a .pt-badge { margin-left:auto; background:var(--red); color:#fff; font-size:10.5px; font-weight:700; min-width:18px; height:18px; border-radius:9px; display:inline-grid; place-items:center; padding:0 5px; }
 .nav a .pt-badge + .pt-novo { margin-left:6px; }
@@ -98,7 +98,7 @@ body.pt .sidebar { top:34px; height:calc(100vh - 34px); }
 /* importação */
 .pt-diff td { font-size:12.5px; } .pt-antes { color:var(--red); text-decoration:line-through; } .pt-depois { color:var(--green); font-weight:600; }
 /* parecer */
-.pt-gaveta { position:fixed; top:34px; right:0; bottom:0; width:430px; background:#fff; border-left:1px solid var(--line-2); box-shadow:-12px 0 30px rgba(22,40,77,.14); transform:translateX(105%); transition:transform .25s; z-index:85; display:flex; flex-direction:column; }
+.pt-gaveta { position:fixed; top:var(--pt-faixa,34px); right:0; bottom:0; width:430px; background:#fff; border-left:1px solid var(--line-2); box-shadow:-12px 0 30px rgba(22,40,77,.14); transform:translateX(105%); transition:transform .25s; z-index:85; display:flex; flex-direction:column; }
 .pt-gaveta.aberta { transform:none; }
 .pt-gaveta .cab { background:var(--navy); color:#fff; padding:16px 18px; display:flex; justify-content:space-between; align-items:center; }
 .pt-gaveta .cab h2 { color:#fff; font:700 18px var(--serif); margin:0; }
@@ -121,13 +121,15 @@ body.pt .sidebar { top:34px; height:calc(100vh - 34px); }
 </head>
 <body class="pt">
 <div class="pt-faixa">
-  <span>PROTÓTIPO DE MELHORIAS · telas atuais do sistema + acréscimos marcados como NOVO · não conectado · nada é gravado · dados reais de 25/09/2026, exceto onde indicado “DADOS FICTÍCIOS DE DEMONSTRAÇÃO”</span>
-  <button id="abrirParecer">Parecer das melhorias (0/8)</button>
+  <span>PROTÓTIPO DE MELHORIAS · versão 5 · telas atuais do sistema + acréscimos marcados como NOVO · não conectado · nada é gravado · dados reais de 25/09/2026, exceto onde indicado “DADOS FICTÍCIOS DE DEMONSTRAÇÃO”</span>
+  <button id="verLogin" style="margin-left:auto">Tela de entrada (olho da senha)</button>
+  <button id="abrirParecer">Parecer das melhorias (0/9)</button>
 </div>
 <div class="app" id="app">
   <div id="sidebarBox"></div>
   <main class="main" id="vista"></main>
 </div>
+<div id="loginBox" hidden style="position:fixed;top:var(--pt-faixa,34px);left:0;right:0;bottom:0;z-index:79;overflow:auto;background:var(--bg)"></div>
 <aside class="pt-gaveta" id="gaveta" aria-label="Parecer das melhorias">
   <div class="cab"><h2>Parecer das melhorias</h2><button class="btn" id="fecharParecer">Fechar</button></div>
   <div class="corpo" id="parecerCorpo"></div>
@@ -136,6 +138,7 @@ body.pt .sidebar { top:34px; height:calc(100vh - 34px); }
 
 <script>
 const TELAS = __TELAS__;
+const LOGIN = __LOGIN__;
 const SNAP = __SNAP__;
 const IMPORT = __IMPORT__;
 const HOJE = new Date(2026, 8, 25);
@@ -512,13 +515,14 @@ const MELHORIAS = [
   ['4', 'Backup em JSON', 'Manutenção › Backup (JSON) · exportação completa.', 'manutencao:backup'],
   ['5', 'Aba Evolução', 'Menu “Evolução” · gráficos da situação atual (com percentual de evolução por contratação) e evolução semanal com média, tendência, curva acumulada, burn-down e avanço por etapa.', 'evolucao'],
   ['8', 'Botão “Detalhes”', 'Lista de contratações e Minhas pendências · o “›” vira o botão “Detalhes ›”, que fica azul ao passar o mouse na linha.', 'contratacoes'],
+  ['9', 'Ver senha (olho)', 'Tela de entrada, primeiro acesso, nova senha e “Alterar senha” · ícone de olho para mostrar ou ocultar a senha. Veja pelo botão “Tela de entrada” no topo.', 'login'],
   ['6', 'Letreiro de notícias', 'Painel · faixa “AO VIVO · GT” com eventos do próprio sistema, acima dos cards atuais (todos mantidos).', 'painel'],
   ['7', 'Agenda de prazos', 'Menu “Agenda de prazos” · dia, semana e mês; o clique abre a contratação.', 'agenda'],
 ];
 MELHORIAS.sort((a, b) => +a[0] - +b[0]);
 let parecer = {};
-try { parecer = JSON.parse(localStorage.getItem('parecer_melhorias_gt_v3') || '{}'); } catch (e) { parecer = {}; }
-function salvarParecer() { try { localStorage.setItem('parecer_melhorias_gt_v3', JSON.stringify(parecer)); } catch (e) {} contador(); }
+try { parecer = JSON.parse(localStorage.getItem('parecer_melhorias_gt_v5') || '{}'); } catch (e) { parecer = {}; }
+function salvarParecer() { try { localStorage.setItem('parecer_melhorias_gt_v5', JSON.stringify(parecer)); } catch (e) {} contador(); }
 function contador() { $('#abrirParecer').textContent = `Parecer das melhorias (${MELHORIAS.filter(([k]) => parecer[k]?.decisao).length}/${MELHORIAS.length})`; }
 function renderParecer() {
   $('#parecerCorpo').innerHTML = `<p class="small muted" style="margin-top:0">Para cada melhoria, escolha uma decisão e, se quiser, deixe um comentário. Depois, copie ou baixe o parecer e envie na conversa.</p>` + MELHORIAS.map(([k, t, d, alvo]) => {
@@ -531,15 +535,28 @@ function renderParecer() {
 }
 function decidir(k, v) { parecer[k] = { ...(parecer[k] || {}), decisao: v }; salvarParecer(); renderParecer(); }
 function comentar(k, v) { parecer[k] = { ...(parecer[k] || {}), comentario: v }; salvarParecer(); }
-function verMelhoria(alvo) { const [v, aba] = alvo.split(':'); abaManut = aba || null; ir(v, {}, false); if (window.innerWidth < 900) $('#gaveta').classList.remove('aberta'); }
+function verMelhoria(alvo) { if (alvo === 'login') { $('#gaveta').classList.remove('aberta'); if ($('#loginBox').hidden) $('#verLogin').click(); return; } if (!$('#loginBox').hidden) $('#verLogin').click(); const [v, aba] = alvo.split(':'); abaManut = aba || null; ir(v, {}, false); if (window.innerWidth < 900) $('#gaveta').classList.remove('aberta'); }
 function textoParecer() {
   const r = { aprovar: 'APROVADA', ajustar: 'AJUSTAR', recusar: 'RECUSADA' };
-  return 'PARECER DAS MELHORIAS · GT PROPAG · protótipo work.html (versão 3)\n' + MELHORIAS.map(([k, t]) => { const p = parecer[k] || {}; return `${k}. ${t}: ${r[p.decisao] || 'SEM DECISÃO'}${p.comentario ? ' — ' + p.comentario.trim() : ''}`; }).join('\n');
+  return 'PARECER DAS MELHORIAS · GT PROPAG · protótipo work.html (versão 5)\n' + MELHORIAS.map(([k, t]) => { const p = parecer[k] || {}; return `${k}. ${t}: ${r[p.decisao] || 'SEM DECISÃO'}${p.comentario ? ' — ' + p.comentario.trim() : ''}`; }).join('\n');
 }
 $('#abrirParecer').onclick = () => { renderParecer(); $('#gaveta').classList.add('aberta'); };
 $('#fecharParecer').onclick = () => $('#gaveta').classList.remove('aberta');
 $('#baixarParecer').onclick = () => baixar('parecer_melhorias_gt_propag.txt', textoParecer(), 'text/plain;charset=utf-8');
 $('#copiarParecer').onclick = async () => { try { await navigator.clipboard.writeText(textoParecer()); $('#parecerMsg').textContent = 'Parecer copiado.'; } catch (e) { $('#parecerMsg').textContent = 'Não foi possível copiar; use “Baixar parecer”.'; } };
+$('#verLogin').onclick = () => {
+  const box = $('#loginBox');
+  if (!box.hidden) { box.hidden = true; $('#verLogin').textContent = 'Tela de entrada (olho da senha)'; return; }
+  box.innerHTML = `<div style="position:absolute;top:12px;left:50%;transform:translateX(-50%);z-index:2;background:var(--gold-soft);color:var(--gold-ink);border-radius:8px;padding:8px 14px;font-size:13px;font-weight:600">Item 9 · digite uma senha e clique no olho para mostrar ou ocultar ${NOVO}</div>` + LOGIN;
+  box.hidden = false; $('#verLogin').textContent = 'Voltar ao sistema';
+  box.querySelectorAll('.senha-olho').forEach((b) => b.onclick = (e) => { e.preventDefault(); const i = b.parentElement.querySelector('input'); const ver = i.type === 'password'; i.type = ver ? 'text' : 'password'; b.setAttribute('aria-label', ver ? 'Ocultar senha' : 'Mostrar senha'); b.title = b.getAttribute('aria-label'); b.innerHTML = ver ? OLHO_FECHADO : OLHO; });
+  box.querySelector('form')?.addEventListener('submit', (e) => { e.preventDefault(); toast('No protótipo, a entrada não é executada.'); });
+  box.querySelectorAll('.btn-link, a').forEach((a) => a.addEventListener('click', (e) => { e.preventDefault(); toast('No protótipo, apenas a tela “Entrar” está disponível.'); }));
+};
+const OLHO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" width="18"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle></svg>';
+const OLHO_FECHADO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" width="18"><path d="M10.6 5.1A10.4 10.4 0 0 1 12 5c6.4 0 10 7 10 7a17.6 17.6 0 0 1-3.2 4.2M6.6 6.6A17.4 17.4 0 0 0 2 12s3.6 7 10 7a9.7 9.7 0 0 0 5.4-1.6"></path><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2M3 3l18 18"></path></svg>';
+const ajustaFaixa = () => document.documentElement.style.setProperty('--pt-faixa', $('.pt-faixa').offsetHeight + 'px');
+window.addEventListener('resize', ajustaFaixa); ajustaFaixa();
 contador();
 (() => {
   const d = document.createElement('div'); d.className = 'pt-tip'; d.hidden = true; document.body.appendChild(d);
