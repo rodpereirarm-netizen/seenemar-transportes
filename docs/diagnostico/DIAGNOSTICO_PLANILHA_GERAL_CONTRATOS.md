@@ -851,4 +851,4 @@ Fluxo: PDF do contrato ou termo → extração de texto (OCR se for digitalizado
 
 ---
 
-*Aguardando autorização para a fase de arquitetura. Nenhum código foi escrito nesta fase.*
+*Fase de arquitetura autorizada e entregue em [`docs/arquitetura/`](../arquitetura/README.md): schema, regras de negócio com testes e wireframes. Nenhum código de front-end foi escrito.*
