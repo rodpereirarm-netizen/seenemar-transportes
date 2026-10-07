@@ -9,6 +9,7 @@
 | Método | Leitura célula a célula: valores, fórmulas, mesclagens, validações de lista e cores. Os scripts estão em [`auditoria/`](auditoria/) |
 | Convenções | **[DADO AUSENTE]** marca o que a planilha não informa. **[REQUISITO A VALIDAR]** e **[REGRA A CONFIRMAR]** marcam decisões da área. **[VALIDAR REGULAMENTAÇÃO ESTADUAL/RJ]** marca normas estaduais que não foram verificadas |
 | Linha da planilha | "L30" significa a linha 30 do Excel, para que cada achado possa ser conferido no arquivo |
+| **Nome do órgão** | A planilha usa a sigla **SEDEICS** (coluna A, nome da aba e cabeçalho L1–L3). O nome correto do órgão é **SEDES**. Neste documento, "SEDES" abrange as linhas marcadas como SEDEICS (L17–L29) e as demandas da SEDES (L12–L16). Na importação, o valor "SEDEICS" é mapeado para SEDES e o texto original fica preservado |
 
 ---
 
@@ -17,8 +18,8 @@
 O prompt propõe o nome provisório **ContractGov RJ**. Recomendo trocá-lo, por três motivos.
 
 1. **O nome está em inglês.** Isso destoa do padrão de sistemas da Administração Pública fluminense (SEI-RJ, SIAFE-Rio, SIGA) e dificulta a comunicação com o Controle Interno e a Auditoria.
-2. **A planilha já é multiórgão.** Uma única DGAF controla contratos da **SEDES**, da **SEDEICS** e da **SEENEMAR**, além de uma linha "DESCENTRALIZAÇÃO". O nome não pode carregar a sigla de nenhuma secretaria, e o órgão deve ser um atributo do dado, não da marca.
-3. **O nome deve sobreviver a reorganizações.** A própria planilha mostra uma reestruturação em curso, com portarias "SEDECSCTI" e a coluna "Apostilamento p/ SEDEICSCTI".
+2. **A planilha já é multiórgão.** Uma única DGAF controla contratos da **SEDES** e da **SEENEMAR**, além de uma linha "DESCENTRALIZAÇÃO". O nome não pode carregar a sigla de nenhuma secretaria, e o órgão deve ser um atributo do dado, não da marca.
+3. **O nome deve sobreviver a reorganizações.** A própria planilha ainda usa a sigla antiga SEDEICS para contratos que hoje são da SEDES e mostra uma reestruturação em curso, com portarias "SEDECSCTI" e a coluna "Apostilamento p/ SEDEICSCTI".
 
 **Proposta: SIGC, Sistema Integrado de Gestão de Contratos.**
 Subtítulo: *Inteligência, Governança e Gestão de Contratos*.
@@ -36,13 +37,13 @@ Em cada tela aparece o órgão ativo, por exemplo "SIGC · SEDES". O nome do pro
 
 # 01 — RESUMO EXECUTIVO
 
-**O que a planilha é.** É um painel manual de controle de vigências e designações de fiscais. A DGAF mantém o arquivo para três secretarias. Ela **não é** um cadastro de contratos: não tem CNPJ, empenho, pagamento, garantia (valor e validade), modalidade nem regime legal. Também não guarda o histórico de aditivos e apostilamentos.
+**O que a planilha é.** É um painel manual de controle de vigências e designações de fiscais. A DGAF mantém o arquivo para duas secretarias, SEDES e SEENEMAR. Ela **não é** um cadastro de contratos: não tem CNPJ, empenho, pagamento, garantia (valor e validade), modalidade nem regime legal. Também não guarda o histórico de aditivos e apostilamentos.
 
 **Números principais (referência 07/10/2026)**
 
 | Indicador | Valor |
 |---|---|
-| Linhas de registro | **40**: SEDES 5, SEDEICS 12, SEENEMAR 22, Descentralização 1 |
+| Linhas de registro | **40**: SEDES 17 (12 marcadas como "SEDEICS" na planilha + 5 demandas), SEENEMAR 22, Descentralização 1 |
 | Instrumentos já formalizados (com data de início) | **34** |
 | Demandas sem formalização (sem início) | **6** (L12, L14, L15, L16, L51, L52) |
 | Valor total contratado informado | **R$ 37.281.765,18**, somando 32 registros com valor numérico |
@@ -74,19 +75,19 @@ Em cada tela aparece o órgão ativo, por exemplo "SIGC · SEDES". O nome do pro
 
 | Aba | Intervalo | Linhas de dados | Colunas | Finalidade | Qualidade |
 |---|---|---|---|---|---|
-| `CONTRATOS SEDEICS e SEENEMAR  ` (com 2 espaços no fim do nome) | A1:AO52 | 40 (L12–L52, sem a L21, que está vazia e mesclada) | 41 (A–AO), com 36 campos úteis | Controle de vigência, designação e publicação dos contratos de SEDES, SEDEICS e SEENEMAR | Baixa para máquina, razoável para leitura humana |
+| `CONTRATOS SEDEICS e SEENEMAR  ` (com 2 espaços no fim do nome) | A1:AO52 | 40 (L12–L52, sem a L21, que está vazia e mesclada) | 41 (A–AO), com 36 campos úteis | Controle de vigência, designação e publicação dos contratos de SEDES (marcada como SEDEICS) e SEENEMAR | Baixa para máquina, razoável para leitura humana |
 | `Plan1` | A1 | 0 | 0 | Vazia | Remover |
 
 ## 2.2 Layout (o que dificulta a importação)
 
 | Elemento | Situação | Impacto na importação |
 |---|---|---|
-| Cabeçalho institucional | L1–L3 (SEDEICS / SUBEXE / DGAF), L5–L6 (título com "**SEDES**"), H6 "DATA DE ATUALIZAÇÃO: 25/09/2026" | A data de atualização vira metadado da importação |
+| Cabeçalho institucional | L1–L3 (SEDEICS / SUBEXE / DGAF, sigla antiga), L5–L6 (título com "**SEDES**", o nome correto), H6 "DATA DE ATUALIZAÇÃO: 25/09/2026" | A data de atualização vira metadado da importação |
 | Cabeçalho em 3 níveis | Grupo em L9 (ex.: "VIGÊNCIA DO INSTRUMENTO"), campo em L10 e complemento em L11 (ex.: "(MESES)") | O mapeamento das colunas precisa ser explícito, não pode ser inferido |
 | **284 células mescladas** | Todas as linhas mesclam E:F, G:H, AG:AH, AI:AJ, AK:AL e AM:AN. L20 e L21 estão mescladas verticalmente | O leitor deve usar a célula âncora |
 | Fórmulas voláteis | `R8` e `AD8` = `=TODAY()` | A situação muda conforme o dia em que o arquivo é aberto e não é auditável |
-| Fórmulas de término | `T = EDATE(R;S)-1` só na SEDEICS (L17–L29). Na SEENEMAR (L30–L50) o término foi **digitado** | Há duas convenções de término na mesma planilha (seção 06) |
-| Cor por secretaria | Laranja = SEDES, verde = SEDEICS, azul = SEENEMAR, lilás = Descentralização | A cor é redundante com a coluna A, que é a fonte de verdade |
+| Fórmulas de término | `T = EDATE(R;S)-1` só nas linhas da SEDES marcadas como SEDEICS (L17–L29). Na SEENEMAR (L30–L50) o término foi **digitado** | Há duas convenções de término na mesma planilha (seção 06) |
+| Cor por secretaria | Laranja = SEDES (demandas), verde = SEDES (contratos marcados como SEDEICS), azul = SEENEMAR, lilás = Descentralização | A cor é redundante com a coluna A, que é a fonte de verdade (depois do mapeamento SEDEICS → SEDES) |
 | Cor como status | Término com fundo **vermelho** (L17, 18, 23, 24, 29) ou **amarelo** (L20, 22, 28) | É uma regra implícita: vermelho = vencido, amarelo = vence em breve. O sistema vai calcular isso |
 | Fonte vermelha | Em X, Y e nas colunas de fiscais (ex.: L36, L42, L45, L48) | São alertas manuais sem categoria |
 | Validações de lista | W: `SIM, SIM (SEM TERMOS), N/C, ****`. V: `PNCP, DOERJ, ASSINATURA, ORDEM DE SERVIÇO`. Y: `Assinado e Publicado, Assinado, Pendente, Não será executado, Indefinido, A ser definido`. AM: `SIM, NÃO` | Dão os domínios iniciais. As listas têm espaços à esquerda (" NÃO", " DOERJ"), que contaminam os valores |
@@ -109,7 +110,7 @@ A **completude** é medida sobre os 34 instrumentos formalizados. Preenchido = v
 
 | Col. | Nome atual | Significado (inferido) | Tipo encontrado | Obrig. | Exemplo | Completude | Problemas | Normalização | Tabela de destino |
 |---|---|---|---|---|---|---|---|---|---|
-| A | SECRETARIA | Órgão contratante | texto | Sim | `SEENEMAR` | 39/40 | L12 está vazia (laranja = SEDES). "DESCENTRALIZAÇÃO" não é um órgão | FK para `orgaos` | `contratos.orgao_id` |
+| A | SECRETARIA | Órgão contratante | texto | Sim | `SEENEMAR` | 39/40 | Sigla antiga "SEDEICS" em 12 linhas (o órgão é SEDES). L12 está vazia (laranja = SEDES). "DESCENTRALIZAÇÃO" não é um órgão | FK para `orgaos` | `contratos.orgao_id` |
 | B | NÚMERO (ou Nº NOTA EMPENHO) | Número do instrumento | texto | Sim | `002/2025` | 34/34 | Misturado com tipo ("Empenho 2024NE00376", "Termo Nº928-2024", "Resolução nº 53/2025"), fornecedor ("016/2026 (BRASVIP)"), quebra de linha ("\n002/2023") e espaços. Repete entre órgãos | Separar em `tipo_instrumento`, `numero` e `ano`. Chave única: (órgão, tipo, número, ano) | `contratos` |
 | C | CONTRATADA | Fornecedor | texto | Sim | ` CS BRASIL ` | 40/40 | Espaços à esquerda e à direita, nome fantasia, sufixos ("(Email)", "- SEDE", "- CANECO"). 3 grafias de CS BRASIL. **Sem CNPJ** | Entidade `fornecedores` com CNPJ. O sufixo vira o objeto ou a unidade | `fornecedores` |
 | D:H | OBJETO / Descrição | Objeto | texto | Sim | `LOCAÇÃO VEÍCULOS DE SERVIÇO` | 34/34 | Caixa alta e baixa misturadas, observações dentro do objeto ("(Obs.: Faturamento Quinzenal)") | Texto livre mais `categoria` controlada (veículos, TI, alimentação…) | `contratos.objeto`, `contratos.categoria_id` |
@@ -164,13 +165,13 @@ Mapa de problemas, do mais grave ao menos grave. **Nenhum foi corrigido**: todos
 | P12 | **Alta** | L47 METTA | R$ 4,45 mi, vence em 51 dias, com "Fluxo de Sindicância" | Sem valor unitário ou mensal | — | Risco jurídico e de imagem | Risco alto manual. Acompanhamento pela alta gestão |
 | P13 | **Alta** | L36 ABL | Valor total × mensal × prazo | L = 3.064.065,00 | 60.000 × 30 = 1.800.000,00 (diferença de +R$ 1.264.065, ou +70%) | Valor contratado possivelmente superestimado | Conferir a composição (encargos? termos anteriores?) |
 | P14 | **Alta** | L48 Águas do Rio | Vigente sem fiscal, gestor nem portaria | `****` em todas as colunas | Comissão designada | Contrato sem responsável | Designar |
-| P15 | Média | 12 linhas SEENEMAR | Convenção de término diferente da SEDEICS | T = mesmo dia do início + n meses (+1 dia em relação à fórmula) | `EDATE(início; meses) − 1` (convenção da SEDEICS) | Alertas diferentes para casos iguais | [REGRA A CONFIRMAR] |
+| P15 | Média | 12 linhas SEENEMAR | Convenção de término diferente da SEDES | T = mesmo dia do início + n meses (+1 dia em relação à fórmula) | `EDATE(início; meses) − 1` (convenção da SEDES) | Alertas diferentes para casos iguais | [REGRA A CONFIRMAR] |
 | P16 | Média | L40 PLUXEE SEENEMAR | Total não reflete o unitário atualizado | L = 2.077.920 = 130 × **666** × 24 | 130 × 740 × 24 = 2.308.800 (diferença de R$ 230.880) | Saldo subestimado | Registrar o apostilamento de reajuste |
-| P17 | Média | L27 PLUXEE SEDEICS | Valor mensal **idêntico** ao do TRIVALE (L29) | 76.140,00, com quantidade e unitário "VARIÁVEL" | — | Possível cópia | Conferir |
+| P17 | Média | L27 PLUXEE SEDES | Valor mensal **idêntico** ao do TRIVALE (L29) | 76.140,00, com quantidade e unitário "VARIÁVEL" | — | Possível cópia | Conferir |
 | P18 | Média | L28 CIEE | Mensal ≠ Σ (quantidade × unitário) | 249.837,30 | 100 × 1.928,10 + 33 × 1.725,10 = 249.738,30 (diferença de R$ 99,00/mês) | R$ 2.376 em 24 meses | Conferir |
 | P19 | Média | L39 ANDEF | Unitário derivado do total | `I = J = L/24` | Σ dos postos (5 categorias) | Sem preço por posto | Detalhar os itens |
 | P20 | Média | L20, L39, L49, L50 | Marco de início ≠ datas | L20: marco DOERJ (30/11/2023), início 30/10/2023. L39: marco ASSINATURA (12/06/2024), início 10/02/2025. L49: DOERJ 204 dias antes do início | Início = data do marco | Vigência incerta | Validar caso a caso |
-| P21 | Média | 3 pares | Mesmo número em órgãos diferentes | 008/2023, 002/2024, 007/2025 | É legítimo: a numeração é por órgão | Colisão de chave | Chave composta (órgão, número, ano) |
+| P21 | Média | 3 pares | Mesmo número na SEDES e na SEENEMAR | 008/2023, 002/2024, 007/2025 | É legítimo: a numeração é por órgão | Colisão de chave | Chave composta (órgão, número, ano) |
 | P22 | Média | 13 pessoas | Nome com grafias diferentes | "Marcelo Mendonça Veiga Jr" × "Junior"; "Yasmin" × "Yasmim"; "Valéria Gomes S. M. Gonçalves" × "Valeria Gomes Silva de mello Gonçalves"; "Daniele … Pereira Carvalho" × "… Pereira de Carvalho" | Uma pessoa = uma matrícula | Contagem de carga errada | Cadastro de `pessoas` por matrícula |
 | P23 | Média | L19 | Mesma pessoa em 2 posições de fiscal | Fabio da Costa Miranda em AB e AC | Membros distintos | Comissão incompleta | Corrigir |
 | P24 | Média | L13 | Colunas deslocadas | Portaria em Y, presidente em Z | — | Importação incorreta | Mapeamento específico ou correção manual |
@@ -192,8 +193,7 @@ Mapa de problemas, do mais grave ao menos grave. **Nenhum foi corrigido**: todos
 | Órgão | Registros com valor | Valor total |
 |---|---|---|
 | SEENEMAR | 20 | R$ 23.277.145,06 |
-| SEDEICS | 10 | R$ 13.115.620,12 |
-| SEDES | 2 (demandas sem formalização) | R$ 889.000,00 |
+| SEDES | 12 (10 contratos marcados como SEDEICS + 2 demandas sem formalização) | R$ 14.004.620,12 |
 | **Total** | **32** | **R$ 37.281.765,18** |
 
 Os seis maiores são CIEE 004/2024 (R$ 5,99 mi), METTA (R$ 4,45 mi), G&E (R$ 3,87 mi), ABL (R$ 3,06 mi), CIEE 017/2025 (R$ 2,39 mi) e ANDEF (R$ 2,21 mi). **Os quatro primeiros estão vencidos ou vencem em até 51 dias.** A materialidade financeira se concentra exatamente onde está o risco de vigência.
@@ -230,11 +230,11 @@ A soma dos valores mensais dos vigentes com valor numérico dá **R$ 753.136,24/
 | Faixa | Qtde | Valor (L) | Instrumentos |
 |---|---|---|---|
 | **Vencido** | **11** | R$ 11.948.038,74 | PRODERJ 001/2021, TRANSFORMATIO 002/2022, WEBTRIP 002/2024, TOTAL PASS (NE), TRIVALE 007/2025, PRIME 003/2023 (SEENEMAR), G&E 007/2023, ABL 008/2023, LIGHT-CANECO, BRASVIP 016/2026, CS BRASIL 002/2023 |
-| ≤ 30 dias | 2 | R$ 7.059.938,40 | CIEE 004/2024 (21/10), PRIME 008/2023 SEDEICS (29/10) |
+| ≤ 30 dias | 2 | R$ 7.059.938,40 | CIEE 004/2024 (21/10), PRIME 008/2023 SEDES (29/10) |
 | 31–60 | 3 | R$ 5.229.605,20 | AMAZONIA BR (26/11), METTA (27/11), CHADA (29/11) |
 | 61–90 | 1 | R$ 50.000,00 | ÁGUAS DO RIO (11/12) |
 | 91–120 | 1 | R$ 83.004,61 | KOLKE (12/01/2027) |
-| 121–180 | 4 | R$ 4.728.194,74 | ANDEF (10/02), ABRACO (25/02), HADDAD (12/03), PLUXEE SEDEICS (03/04/2027) |
+| 121–180 | 4 | R$ 4.728.194,74 | ANDEF (10/02), ABRACO (25/02), HADDAD (12/03), PLUXEE SEDES (03/04/2027) |
 | > 180 | 11 | R$ 7.293.983,49 | demais |
 | Sem término | 1 | R$ 330.000,00 | ROG.e 2026 (o término calculado seria 20/09/2027) |
 
@@ -249,7 +249,7 @@ A soma dos valores mensais dos vigentes com valor numérico dá **R$ 753.136,24/
 
 ## 6.2 Início + prazo × término informado
 
-A fórmula da SEDEICS é `término = EDATE(início; prazo) − 1`. Os 12 instrumentos da SEDEICS com término usam essa fórmula e conferem 100%. Os da SEENEMAR foram digitados e se dividem assim:
+Nas linhas da SEDES (marcadas como SEDEICS), a fórmula é `término = EDATE(início; prazo) − 1`. Os 12 instrumentos dessas linhas usam essa fórmula e conferem 100%. Os da SEENEMAR foram digitados e se dividem assim:
 
 | Diferença (término informado − esperado) | Qtde | Linhas | Leitura |
 |---|---|---|---|
@@ -277,7 +277,7 @@ Existem contratos de 2021 a 2023, possivelmente sob a Lei 8.666/93, cujo limite 
 |---|---|
 | Sem fiscal | **1**: Águas do Rio (L48) |
 | Portaria não publicada | **2**: AUTOPEL (L42) e AMAZONIA BR (L45), "aguardando publicação" |
-| Sem fiscal substituto | **9/22 (41%)**: HADDAD, PRIME SEDEICS, CHADA, KOLKE, CS BRASIL 002/2025, AUTOPEL, ABRACO, AMAZONIA BR, ÁGUAS DO RIO |
+| Sem fiscal substituto | **9/22 (41%)**: HADDAD, PRIME SEDES, CHADA, KOLKE, CS BRASIL 002/2025, AUTOPEL, ABRACO, AMAZONIA BR, ÁGUAS DO RIO |
 | Sem gestor | 1 (L48) |
 | Sem gestor substituto | 3 (KOLKE, ABRACO, ÁGUAS DO RIO) |
 | Comissão com a mesma pessoa duas vezes | 1 (L19) |
@@ -366,7 +366,7 @@ Esta seção é conceitual. O DDL completo, os índices e as políticas RLS são
 | `faturamentos` como valores | Na planilha, "FAT." é **processo de pagamento**, não valor | Criar dado que não existe | `contrato_processos` com papel = pagamento e exercício. Valores em `liquidacoes` e `pagamentos` (fonte SIAFE) | **Adotar** |
 | `gestores` e `fiscais` como tabelas | O mesmo servidor é gestor num contrato e fiscal em outro | Duplicar pessoas | **`pessoas`** (servidor, com matrícula) e **`designacoes`** (pessoa × contrato × papel × portaria × período) | **Adotar** |
 | `usuarios` = fiscais | Muitos fiscais não terão login no MVP | Cadastro forçado | `pessoas.usuario_id` opcional | **Adotar** |
-| Começar com um único órgão | A planilha já tem 3 secretarias | Retrabalho de multi-tenant depois | `orgao_id` em todas as tabelas de negócio desde o MVP. RLS por órgão | **Adotar** |
+| Começar com um único órgão | A planilha já tem 2 secretarias (SEDES e SEENEMAR) e uma linha de descentralização | Retrabalho de multi-tenant depois | `orgao_id` em todas as tabelas de negócio desde o MVP. RLS por órgão | **Adotar** |
 
 ## 11.2 Entidades
 
@@ -401,7 +401,7 @@ erDiagram
 
 | Tabela | Finalidade | Campos principais | Chaves e regras de integridade |
 |---|---|---|---|
-| `orgaos` | Tenant (SEDES, SEDEICS, SEENEMAR…) | sigla, nome, prefixo_sei (ex.: 480001), ativo | PK uuid. `sigla` única |
+| `orgaos` | Tenant (SEDES, SEENEMAR…) | sigla, nome, siglas_anteriores (ex.: SEDEICS), prefixo_sei (ex.: 480001), ativo | PK uuid. `sigla` única. `siglas_anteriores` permite importar e pesquisar pelo nome antigo |
 | `unidades` | Unidade interna (DGAF, SUBEXE…) | orgao_id, sigla, nome | FK orgaos |
 | `usuarios` / `usuario_perfis` | Login (Supabase Auth) e perfis por órgão | auth_user_id, email, perfil, orgao_id | Um usuário pode ter perfis em vários órgãos |
 | `pessoas` | Servidor designável | nome, matricula (ID), email, usuario_id?, situacao | `matricula` única. Nome normalizado para busca |
@@ -568,7 +568,7 @@ As regras ficam em `regras_alerta` e são editadas na tela de Administração. O
 | DQ-* | Inconsistência de dado (seção 04) | Pendência | Quem importou ou cadastrou | Sim |
 
 Exemplo de e-mail:
-`[ALERTA CONTRATUAL] SEDEICS · Contrato 004/2024 (CIEE) · Vencimento em 14 dias (21/10/2026)`
+`[ALERTA CONTRATUAL] SEDES · Contrato 004/2024 (CIEE) · Vencimento em 14 dias (21/10/2026)`
 
 ---
 
@@ -749,7 +749,7 @@ Fluxo: PDF do contrato ou termo → extração de texto (OCR se for digitalizado
 
 # 24 — INTEGRAÇÃO SEI
 
-- **Processos presentes na planilha:** 40 processos-mãe (prefixos 220001/220012 SEDEICS, 480001 SEENEMAR e 150001 [A VALIDAR qual órgão]) e cerca de 42 processos de pagamento.
+- **Processos presentes na planilha:** 40 processos-mãe (prefixos 220001/220012 SEDES, 480001 SEENEMAR e 150001 [A VALIDAR qual órgão]) e cerca de 42 processos de pagamento.
 - **No MVP:** número canônico, papel (principal, pagamento do exercício, aditivo, sanção), link para o SEI-RJ, etapa, responsável e data da última atualização, informada manualmente.
 - **Integração automática:** [REQUISITO A VALIDAR] se existe API ou webservice do SEI-RJ liberado pelo PRODERJ. Sem API, o sistema trabalha só com referência e link.
 
@@ -779,7 +779,7 @@ Fluxo: PDF do contrato ou termo → extração de texto (OCR se for digitalizado
 **Objetivo:** substituir a planilha **sem perder nada** e responder no primeiro dia: o que venceu, o que vai vencer, quem é o responsável e o que está pendente.
 
 **Dentro do MVP**
-1. Autenticação, órgãos (SEDES, SEDEICS, SEENEMAR), perfis e RLS.
+1. Autenticação, órgãos (SEDES e SEENEMAR), perfis e RLS.
 2. Contratos, itens, fornecedores, processos, pessoas, portarias, designações, publicações, alterações (forma simplificada) e garantia (situação, valor e validade, quando houver).
 3. Situação e vigência calculadas, motor de alertas parametrizável, pendências (Minhas e Equipe) e notificações (sininho + e-mail diário).
 4. **Importador da planilha** com staging, relatório (importados, com erro, duplicados, inconsistentes), revisão e aprovação.
@@ -830,9 +830,9 @@ Fluxo: PDF do contrato ou termo → extração de texto (OCR se for digitalizado
 
 | # | Pergunta | Por que importa |
 |---|---|---|
-| 1 | Qual é a convenção de término: `EDATE − 1` (SEDEICS) ou o mesmo dia (SEENEMAR)? Ou vale sempre a data escrita no termo? | Todas as faixas de alerta |
+| 1 | Qual é a convenção de término: `EDATE − 1` (linhas da SEDES) ou o mesmo dia (SEENEMAR)? Ou vale sempre a data escrita no termo? | Todas as faixas de alerta |
 | 2 | O que significam `N/C`, `****`, `***` e `XXX`? São equivalentes? | Distinguir "não se aplica" de "não informado" |
-| 3 | A coluna Y trata do apostilamento de troca do órgão contratante após a reorganização? Qual é o nome correto do órgão: SEDECSCTI ou SEDEICSCTI? | Modelagem de campanhas e de órgãos |
+| 3 | A coluna Y ("Apostilamento p/ SEDEICSCTI") trata do apostilamento de troca do órgão contratante após a reorganização? Para qual órgão: SEDES? E as portarias "SEDECSCTI" foram emitidas por qual órgão? | Modelagem de campanhas e de órgãos |
 | 4 | O valor da coluna L inclui reajustes já aplicados? E o caso da ABL (+70%)? | Saldo e valor atualizado |
 | 5 | Que órgão usa o prefixo de processo 150001 (BRASVIP, METTA, Containers)? | Cadastro de órgãos e unidades |
 | 6 | Qual é o regime legal (8.666 ou 14.133) de cada contrato anterior a 2024? | Limite de prorrogação e obrigação de PNCP |
