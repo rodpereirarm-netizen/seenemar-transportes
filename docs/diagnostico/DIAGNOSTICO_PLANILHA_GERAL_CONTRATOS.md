@@ -131,10 +131,10 @@ A **completude** é medida sobre os 34 instrumentos formalizados. Preenchido = v
 | X | OBSERVAÇÕES / ALERTA | Situação e próximas providências | texto livre | Não | `Manifestação para prorrogação contratual` | 25/40 | Mistura status, tarefa, trecho de parecer e descrição do objeto | Separar em `tarefas`, `ocorrencias` e `contratos.observacao` | várias |
 | Y | Apostilamento p/ SEDEICSCTI (SITUAÇÃO ATUAL) | Andamento do apostilamento de **troca do órgão contratante** após reorganização [REGRA A CONFIRMAR] | lista | Condicional | `Pendente` | 21/40 (só SEENEMAR e L13) | L13 tem uma portaria nesta coluna, com deslocamento de colunas | Tratar como **ação em lote** (campanha) que gera tarefas | `tarefas` (origem = campanha) |
 | Z | Portaria Nº | Ato de designação da comissão | texto | Sim | `SEDECSCTI N° 103(20/08/26)` | 28/34 | Formatos variados, data embutida, ano com 2 dígitos, "Nº (aguardando publicação)", "Nº  118" sem data | Separar em número, órgão emissor e data | `portarias` |
-| AA | Fiscal (Presidente) | Presidente da comissão | texto | Sim | `Celso Reis Formozo` | 31/34 | Grafias diferentes, matrícula embutida ("- ID 5179348-2") às vezes | `pessoas` (matrícula) e `designacoes` (papel) | `designacoes` |
+| AA | Fiscal (Presidente) | Presidente da comissão | texto | Sim | `<nome do servidor>` | 31/34 | Grafias diferentes, matrícula embutida ("<nome> - ID <matrícula>") às vezes | `pessoas` (matrícula) e `designacoes` (papel) | `designacoes` |
 | AB, AC | Fiscal | Membros | texto | Condicional | — | AB 31/34, AC 11/34 (19 × N/C) | L19 tem a mesma pessoa em AB e AC | Idem | `designacoes` |
 | AD | Fiscal (substituto) | Suplente | texto | Recomendado | — | 22/34 | — | Idem | `designacoes` |
-| AE | Gestor | Gestor do contrato | texto | Sim | `Mauricio Leal Costa` | 31/34 | — | Idem | `designacoes` |
+| AE | Gestor | Gestor do contrato | texto | Sim | `<nome do servidor>` | 31/34 | — | Idem | `designacoes` |
 | AF | Gestor (substituto) | — | texto | Recomendado | — | 27/34 | — | Idem | `designacoes` |
 | AG:AH | DATA DE ASSINATURA | — | data | Sim | `15/04/2025` | 32/34 | L13: 4 datas iguais (possível preenchimento-padrão) | Data | `contratos.data_assinatura` |
 | AI:AJ | DOERJ | Publicação no Diário Oficial | data | Sim [VALIDAR REGULAMENTAÇÃO ESTADUAL/RJ] | `24/04/2025` | 30/34 | Atrasos de até 282 dias. Data igual à de outro contrato (L20 = L22) | Publicação com veículo = DOERJ | `publicacoes` |
@@ -172,8 +172,8 @@ Mapa de problemas, do mais grave ao menos grave. **Nenhum foi corrigido**: todos
 | P19 | Média | L39 ANDEF | Unitário derivado do total | `I = J = L/24` | Σ dos postos (5 categorias) | Sem preço por posto | Detalhar os itens |
 | P20 | Média | L20, L39, L49, L50 | Marco de início ≠ datas | L20: marco DOERJ (30/11/2023), início 30/10/2023. L39: marco ASSINATURA (12/06/2024), início 10/02/2025. L49: DOERJ 204 dias antes do início | Início = data do marco | Vigência incerta | Validar caso a caso |
 | P21 | Média | 3 pares | Mesmo número na SEDES e na SEENEMAR | 008/2023, 002/2024, 007/2025 | É legítimo: a numeração é por órgão | Colisão de chave | Chave composta (órgão, número, ano) |
-| P22 | Média | 13 pessoas | Nome com grafias diferentes | "Marcelo Mendonça Veiga Jr" × "Junior"; "Yasmin" × "Yasmim"; "Valéria Gomes S. M. Gonçalves" × "Valeria Gomes Silva de mello Gonçalves"; "Daniele … Pereira Carvalho" × "… Pereira de Carvalho" | Uma pessoa = uma matrícula | Contagem de carga errada | Cadastro de `pessoas` por matrícula |
-| P23 | Média | L19 | Mesma pessoa em 2 posições de fiscal | Fabio da Costa Miranda em AB e AC | Membros distintos | Comissão incompleta | Corrigir |
+| P22 | Média | 13 pessoas | Nome com grafias diferentes | sufixo abreviado ("Jr" × "Junior"); troca de letra ("…in" × "…im"); sobrenome abreviado ("S. M." × nome completo); partícula omitida ("Silva Souza" × "Silva de Souza") | Uma pessoa = uma matrícula | Contagem de carga errada | Cadastro de `pessoas` por matrícula |
+| P23 | Média | L19 | Mesma pessoa em 2 posições de fiscal | O mesmo servidor em AB e AC | Membros distintos | Comissão incompleta | Corrigir |
 | P24 | Média | L13 | Colunas deslocadas | Portaria em Y, presidente em Z | — | Importação incorreta | Mapeamento específico ou correção manual |
 | P25 | Média | N–Q | Processo de pagamento no ano errado | L27: FAT.2023 = ".../2026", FAT.2024 = ".../2027" | Exercício = ano da coluna | Rastreabilidade | Importar como processo e validar o exercício |
 | P26 | Média | toda a coluna P | FAT.2025 vazia | 0/40 | Processos de pagamento de 2025 | Lacuna de um exercício inteiro | [DADO AUSENTE] |
@@ -289,15 +289,17 @@ A maioria das portarias dos vigentes é de agosto e setembro de 2026 (nºs 103 a
 
 Depois da unificação de grafias, há **45 pessoas distintas** e **13** delas aparecem com grafias diferentes.
 
+Os nomes foram substituídos por letras (minimização de dados pessoais, LGPD). A identificação está na planilha original.
+
 | Pessoa | Designações (40 linhas) | Papéis |
 |---|---|---|
-| Fabio da Costa Miranda | 14 | fiscal 10, presidente 1, substituto 3 |
-| Marcelo Mendonça Veiga Junior | 14 | gestor 8, gestor substituto 5, fiscal substituto 1 |
-| Amanda Arcanjo Barbosa Briel | 13 | gestora 3, gestora substituta 10 |
-| Daniele Raiane Pereira de Carvalho | 12 | gestora 6, gestora substituta 6 |
-| Mauricio Leal Costa | 12 | gestor 9, gestor substituto 3 |
-| Matheus Pereira Ramos | 10 | substituto 7, fiscal 2, presidente 1 |
-| Celso Reis Formozo | 8 | presidente 7, fiscal 1 |
+| Servidor A | 14 | fiscal 10, presidente 1, substituto 3 |
+| Servidor B | 14 | gestor 8, gestor substituto 5, fiscal substituto 1 |
+| Servidora C | 13 | gestora 3, gestora substituta 10 |
+| Servidora D | 12 | gestora 6, gestora substituta 6 |
+| Servidor E | 12 | gestor 9, gestor substituto 3 |
+| Servidor F | 10 | substituto 7, fiscal 2, presidente 1 |
+| Servidor G | 8 | presidente 7, fiscal 1 |
 
 **Leitura para a gestão.** Sete pessoas respondem por **83** designações. Uma ausência delas (férias, licença ou exoneração) deixa vários contratos sem fiscalização ao mesmo tempo. O sistema deve mostrar a **carga por pessoa** e alertar quando um afastamento descobrir contratos.
 

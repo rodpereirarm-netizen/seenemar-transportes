@@ -39,7 +39,7 @@ Os parâmetros ficam na tabela `parametros`, com a coluna `a_validar` preenchida
 | RN-F01 | Contrato vigente ou vencido precisa de gestor **e** fiscal designados. Na falta, o alerta FIS-SEM é crítico | FIS-SEM (06) | T-MOT-05 |
 | RN-F02 | Sem fiscal substituto, o alerta é FIS-SUB, de atenção | FIS-SUB (06) | T-MOT-05 |
 | RN-F03 | A mesma pessoa não ocupa o **mesmo papel** duas vezes no mesmo contrato em períodos sobrepostos, e há só um titular por vez de gestor, gestor substituto e presidente da comissão. A regra é um **bloqueio** no banco | `ex_designacao_duplicada`, `ex_papel_singular` (03) | T-DES-01, T-DES-02 |
-| RN-F04 | A mesma pessoa em **papéis diferentes** no mesmo contrato (ex.: gestor e fiscal) gera FIS-SEG, mas **não** bloqueia. **[REGRA A CONFIRMAR]**: se deve virar bloqueio (Lei 14.133, art. 7º, §1º) | FIS-SEG (06) | T-MOT-05, T-IMP-06 |
+| RN-F04 | A mesma pessoa em **papéis diferentes** no mesmo contrato (ex.: gestor e fiscal) **só gera alerta** (FIS-SEG) e mensagem recomendando atores distintos; **nunca bloqueia** a operação (decisão de 07/10/2026). A tela chama `fn_aviso_segregacao` antes de salvar e exibe o aviso; a importação registra IMP-PESSOA-DUP como aviso | FIS-SEG (06), `fn_aviso_segregacao` (06) | T-MOT-05, T-IMP-06 |
 | RN-F05 | Designação em vigor sem portaria publicada há mais de **15 dias** gera FIS-PORT. **[REGRA A CONFIRMAR]** prazo | FIS-PORT (06) | T-MOT-05 |
 | RN-F06 | Pessoa designada desligada, afastada ou com afastamento em curso (férias, licença) gera FIS-AUS | FIS-AUS (06), `pessoa_afastamentos` (02) | T-MOT-05 |
 | RN-F07 | Encerrar uma designação exige o motivo do fim | `ck_designacao_motivo_fim` (03) | T-DES-03 |
@@ -58,7 +58,7 @@ Os parâmetros ficam na tabela `parametros`, com a coluna `a_validar` preenchida
 
 | Código | Regra | Implementação | Testes |
 |---|---|---|---|
-| RN-G01 | Garantia exigida e não apresentada **10 dias** após o início gera GAR-PEND **[REGRA A CONFIRMAR]**. Na planilha, "SIM" = exigida, "N/C" = não se aplica e "****" = não informado | GAR-PEND (06), `fn_importacao_normalizar` (05) | T-IMP-02 |
+| RN-G01 | Garantia exigida e não apresentada **10 dias** após o início gera GAR-PEND (regra mantida ativa: a área cadastrará as garantias, decisão de 07/10/2026; prazo **[REGRA A CONFIRMAR]**). Na planilha, "SIM" = exigida, "N/C" = não se aplica e "****" = não informado | GAR-PEND (06), `fn_importacao_normalizar` (05) | T-IMP-02 |
 | RN-G02 | Garantia apresentada que vence em até 30 dias, ou antes do fim da vigência mais a margem, gera GAR-VENC. A validade é **[DADO AUSENTE]** na planilha | GAR-VENC (06) | — |
 | RN-A03 | Alteração parada na mesma etapa (rascunho, análise jurídica, aguardando assinatura) há mais de **30 dias** gera ALT-PEND | ALT-PEND (06), `situacao_desde` (03) | T-MOT-09 |
 | RN-A04 | O gestor só cria e edita alteração **em rascunho**. O jurídico só registra parecer e avança a alteração que está em análise jurídica. Assinar, alterar valores e registrar prazos cabe à gestão de contratos | `fn_alteracao_restringir_perfil` (10) | T-SEG-03, T-SEG-04 |

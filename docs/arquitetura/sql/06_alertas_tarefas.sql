@@ -272,11 +272,12 @@ select r.codigo, c.orgao_id, c.id, d.id::text, r.severidade,
         or exists (select 1 from public.pessoa_afastamentos af where af.pessoa_id = d.pessoa_id
                     and af.inicio <= c.hoje and (af.fim is null or af.fim >= c.hoje)))
 
--- FIS-SEG: mesma pessoa em mais de um papel no mesmo contrato (RN-F04) -----------------------
+-- FIS-SEG: mesma pessoa em mais de um papel no mesmo contrato (RN-F04: só alerta, nunca bloqueia)
 union all
 select r.codigo, c.orgao_id, c.id, x.pessoa_id::text, r.severidade,
-       x.pessoa_nome || ' acumula ' || x.papeis || ' · ' || c.rotulo,
-       jsonb_build_object('pessoa_id', x.pessoa_id)
+       x.pessoa_nome || ' acumula ' || x.papeis || ': designe atores distintos · ' || c.rotulo,
+       jsonb_build_object('pessoa_id', x.pessoa_id, 'papeis', x.papeis, 'bloqueia', false,
+                          'recomendacao', 'Recomenda-se designar pessoas distintas para cada papel (segregação de funções, Lei 14.133, art. 7º, §1º). Aviso apenas: a operação não é bloqueada.')
   from c join r on r.orgao_id = c.orgao_id and r.codigo = 'FIS-SEG'
   join (select d.contrato_id, d.pessoa_id, d.pessoa_nome,
                string_agg(replace(d.papel::text, '_', ' '), ' e ' order by d.papel) as papeis
@@ -412,3 +413,18 @@ select r.codigo, c.orgao_id, c.id, il.id::text, r.severidade,
 
 comment on view public.vw_alertas_condicoes is
   'Uma linha por condição de alerta verdadeira hoje. Colunas posicionais: regra_codigo, orgao_id, contrato_id, chave, severidade, titulo, detalhe.';
+
+-- -----------------------------------------------------------------------------
+-- Aviso de segregação para a TELA (RN-F04): chamado antes de salvar uma designação.
+-- Devolve a mensagem quando a pessoa já ocupa outro papel no contrato; nulo quando não há conflito.
+-- Nunca impede o cadastro: a decisão (decisão do usuário, 07/10/2026) é alertar sem impactar a operação.
+-- -----------------------------------------------------------------------------
+create or replace function public.fn_aviso_segregacao(p_contrato uuid, p_pessoa uuid, p_papel public.papel_designacao)
+returns text language sql stable security invoker set search_path = public as $$
+  select 'Esta pessoa já atua como ' || string_agg(replace(d.papel::text, '_', ' '), ' e ' order by d.papel)
+         || ' neste contrato. Recomenda-se designar pessoas distintas para cada papel (segregação de funções, Lei 14.133, art. 7º, §1º). Aviso apenas: a operação não é bloqueada.'
+    from public.designacoes d
+   where d.contrato_id = p_contrato and d.pessoa_id = p_pessoa and d.papel <> p_papel
+     and (d.fim is null or d.fim >= public.fn_hoje())
+  having count(*) > 0;
+$$;

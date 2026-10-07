@@ -335,7 +335,8 @@ begin
     'fn_gere_algum_orgao()', 'fn_tem_algum_perfil()', 'fn_pode_importar()',
     'fn_designado_no_contrato(uuid, public.papel_designacao[])', 'fn_eh_gestor_do_contrato(uuid)',
     'fn_importacao_validar(uuid)', 'fn_importacao_aprovar(uuid)', 'fn_recalcular_contrato(uuid)',
-    'fn_excluir_contrato(uuid, text)', 'fn_restaurar_contrato(uuid, text)', 'fn_parametro(text, uuid)']
+    'fn_excluir_contrato(uuid, text)', 'fn_restaurar_contrato(uuid, text)', 'fn_parametro(text, uuid)',
+    'fn_aviso_segregacao(uuid, uuid, public.papel_designacao)']
   loop
     execute format('revoke execute on function public.%s from public, anon', f);
     execute format('grant execute on function public.%s to authenticated', f);

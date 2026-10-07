@@ -106,7 +106,7 @@ docs/arquitetura/testes/rodar.sh
 ```
 
 - `t10` vigência e valores · `t20` motor de alertas · `t30` saúde, risco e painel · `t40` segurança (RLS, perfis, motivo, auditoria, soft delete) · `t50` importação.
-- **142 verificações, todas passando**. Cada arquivo roda numa transação desfeita no fim, e todos os dados são DEMO.
+- **146 verificações, todas passando**. Cada arquivo roda numa transação desfeita no fim, e todos os dados são DEMO.
 
 ### Teste de aceite com a planilha real (seção 27 do diagnóstico)
 
@@ -132,13 +132,19 @@ O JSON contém nomes e matrículas, então **não deve ser versionado**. O scrip
 | Pessoas | 45 (estimativa com normalização manual) | 50 cadastros + **4 pares** sinalizados para fusão | Variações como "Jr" × "Junior" não são fundidas automaticamente (`fn_fundir_pessoas`) |
 | Inconsistências viram pendência | exigido | **221 alertas** e 132 tarefas na 1ª execução do motor | GAR-PEND (16) aparece porque a garantia é "SIM" e não há dados de apresentação [DADO AUSENTE] |
 
-## 5. Pontos de atenção para a aprovação
+## 5. Decisões registradas (07/10/2026)
 
-1. **Volume inicial de pendências.** A primeira execução abre 221 alertas, a maior parte de qualidade de dado (CNPJ, regime, histórico). DQ-CNPJ, DQ-REGIME e DQ-HIST **não geram tarefa**: aparecem só na tela Qualidade dos Dados, para não soterrar as pendências críticas. Se preferir, isso muda em `regras_alerta.gera_tarefa`.
-2. **GAR-PEND.** São 16 contratos com garantia "SIM" e nenhum registro de apresentação. Ou a área cadastra as garantias, ou a regra fica desligada até lá.
-3. **Fiscalização regular.** O sistema dá 25% na SEDES e 63% na SEENEMAR. O critério é estrito: gestor, fiscal, substituto **e** todas as portarias publicadas. O diagnóstico estimou cerca de 59% no total, com critério menos rígido. O critério precisa ser confirmado.
-4. **Segregação gestor × fiscal.** Hoje só gera alerta (FIS-SEG). Se a área entender que é vedação, a regra vira bloqueio com uma linha de constraint.
-5. **Processos compartilhados entre órgãos.** O mesmo processo de pagamento aparece em dois contratos (P27 do diagnóstico). Ele pertence ao órgão da primeira linha importada. Se houver processos de fato compartilhados entre SEDES e SEENEMAR, a visibilidade precisa ser revista.
+| # | Tema | Decisão | Efeito no schema |
+|---|---|---|---|
+| 1 | Volume inicial de pendências | DQ-CNPJ, DQ-REGIME e DQ-HIST aparecem só na tela Qualidade dos Dados, sem tarefa | `regras_alerta.gera_tarefa = false` nessas três (já era o padrão) |
+| 2 | Garantias | A área cadastrará as garantias; GAR-PEND continua ativa | Sem mudança na regra; anotado em `a_validar` |
+| 3 | Fiscalização regular | Mantido o critério estrito (gestor, fiscal, substituto e portarias publicadas) | `vw_contrato_fiscalizacao` |
+| 4 | Mesma pessoa em dois papéis | **Só alerta**, com mensagem recomendando atores distintos, **sem bloquear a operação** | FIS-SEG com recomendação; `fn_aviso_segregacao` para a tela; aviso IMP-PESSOA-DUP na importação |
+| 5 | Repositório | Repositório próprio (`sigc`), privado | Ver seção 6 |
+
+Ponto ainda aberto: **processos compartilhados entre órgãos** (P27). O mesmo processo de pagamento aparece em dois contratos e fica no órgão da primeira linha importada. Se houver processos de fato compartilhados entre SEDES e SEENEMAR, a visibilidade precisa ser revista.
+
+**Dados pessoais.** Os documentos não trazem nomes nem matrículas de servidores (substituídos por letras e exemplos fictícios). A planilha e o JSON do aceite nunca são versionados.
 
 ## 6. Próxima fase (desenvolvimento do MVP), após aprovação
 

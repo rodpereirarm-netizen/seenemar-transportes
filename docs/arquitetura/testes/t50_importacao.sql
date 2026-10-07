@@ -24,8 +24,8 @@ begin
   perform teste.ok(r.tipo = 'nota_empenho' and r.numero = '376' and r.ano = 2024, 'T-IMP-01 nota de empenho');
   select * into r from public.fn_imp_numero_contrato('Resolução nº 53/2025');
   perform teste.ok(r.tipo = 'resolucao' and r.numero = '053', 'T-IMP-01 resolução');
-  select * into r from public.fn_imp_pessoa('DEMO Fulana de Tal - ID 5156890-0;');
-  perform teste.ok(r.nome = 'DEMO Fulana de Tal' and r.matricula = '51568900', 'T-IMP-01 pessoa com "- ID"');
+  select * into r from public.fn_imp_pessoa('DEMO Fulana de Tal - ID 1234567-8;');
+  perform teste.ok(r.nome = 'DEMO Fulana de Tal' and r.matricula = '12345678', 'T-IMP-01 pessoa com "- ID"');
   select * into r from public.fn_imp_portaria('SEDECSCTI N° 109(21/08/26)');
   perform teste.ok(r.emissor = 'SEDECSCTI' and r.numero = '109' and r.data_publicacao = '2026-08-21', 'T-IMP-01 portaria com emissor e data curta');
   select * into r from public.fn_imp_portaria(E'Nº  99 (08/06/2026)');

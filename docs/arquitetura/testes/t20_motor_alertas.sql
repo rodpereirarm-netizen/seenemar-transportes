@@ -74,6 +74,16 @@ begin
   perform public.fn_motor_alertas();
   perform teste.ok(teste.alertas(c_sem) = array['FIS-PORT', 'FIS-SEG', 'FIS-SUB'],
                    'T-MOT-05 equipe parcial: portaria não publicada, segregação e sem substituto');
+  perform teste.ok((select titulo like '%designe atores distintos%' and (detalhe ->> 'bloqueia')::boolean = false
+                      from public.alertas where contrato_id = c_sem and regra_codigo = 'FIS-SEG' and resolvido_em is null),
+                   'T-MOT-05 FIS-SEG recomenda atores distintos e informa que não bloqueia');
+  perform teste.ok((select count(*) from public.designacoes where contrato_id = c_sem) = 2,
+                   'T-MOT-05 a designação acumulada foi gravada (operação não bloqueada)');
+  perform teste.ok(public.fn_aviso_segregacao(c_sem, (select pessoa_id from public.designacoes where contrato_id = c_sem limit 1), 'fiscal_substituto')
+                   like 'Esta pessoa já atua como gestor e fiscal neste contrato.%não é bloqueada.',
+                   'T-MOT-05 aviso de segregação para a tela antes de salvar');
+  perform teste.ok(public.fn_aviso_segregacao(c_sem, teste.pessoa('DEMO Outra Pessoa'), 'fiscal_substituto') is null,
+                   'T-MOT-05 sem conflito, sem aviso');
 
   -- FIS-AUS: afastamento em curso
   insert into public.pessoa_afastamentos (pessoa_id, inicio, fim, motivo)

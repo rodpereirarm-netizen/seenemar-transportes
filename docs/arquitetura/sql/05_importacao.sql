@@ -121,7 +121,7 @@ begin
   return null;
 end $$;
 
--- "Fulano de Tal - ID 5156890-0;" → (FULANO…, 51568900)
+-- "Fulano de Tal - ID 1234567-8;" → (FULANO…, 12345678)
 create or replace function public.fn_imp_pessoa(p text, out nome text, out matricula text)
 language plpgsql immutable set search_path = public as $$
 declare m text[];
@@ -381,7 +381,7 @@ begin
     continue when v_pes.nome is null;
     if v_vistos ? public.fn_normalizar_texto(v_pes.nome) then
       e := e || jsonb_build_object('codigo', 'IMP-PESSOA-DUP', 'campo', c.campo, 'severidade', 'aviso',
-                                   'mensagem', format('A mesma pessoa aparece como %s e %s',
+                                   'mensagem', format('A mesma pessoa aparece como %s e %s. Recomenda-se designar atores distintos (aviso: não bloqueia a importação)',
                                                       v_vistos ->> public.fn_normalizar_texto(v_pes.nome), c.papel),
                                    'original', v_txt);
     end if;
