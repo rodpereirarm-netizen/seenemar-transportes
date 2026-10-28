@@ -24,5 +24,5 @@ Botão no sistema que gera um arquivo Excel por projeto.
 - Correções de dados no banco: datas digitadas como "20206", início depois do fim, projetos marcados como manuais, projetos sem status. Exemplo: o Projeto 06 tem início 20206-07-01.
 - Mover os anexos ao renumerar um projeto.
 - Viabilidade da aba KPIs (Visão Executiva): faltam decisões.
-- Migração institucional (Windows Server + PostgreSQL): EM ESPERA.
+- Migração institucional (Windows Server + PostgreSQL): EM ESPERA. O plano está em `docs/migracao-institucional/PLANO_MIGRACAO_INSTITUCIONAL.md`.
 - GND: trocar "2. Outras Despesas" por "3. Outras Despesas Correntes" (classificação oficial)? Depois disso, retirar a aceitação do código '3' no banco? Aguarda decisão.
