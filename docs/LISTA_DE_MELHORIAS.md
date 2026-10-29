@@ -48,12 +48,21 @@ O usuário escolheu as opções **A** e **B**. A prévia foi montada numa cópia
   - A prova técnica com a biblioteca ExcelJS funcionou.
   - Exige corrigir o defeito da biblioteca nas validações de data.
   - Exige refazer a aba "Listas" com os dados do momento.
-  - Exige um modelo v36 com intervalos de lista maiores.
+  - Exige uma versão nova do Modelo de Importação, com intervalos de lista maiores.
 - **Opção D (layout da DIP):** não recomendada no navegador.
 
 ## Pendências anteriores (registradas no histórico)
 - Correções de dados no banco: datas digitadas como "20206", início depois do fim, projetos marcados como manuais, projetos sem status. Exemplo: o Projeto 06 tem início 20206-07-01.
 - Mover os anexos ao renumerar um projeto.
-- Viabilidade da aba KPIs (Visão Executiva): faltam decisões.
+- **Aba KPIs (Visão Executiva): v36 entregue para publicação em 29/10/2026.**
+  - As 6 decisões foram confirmadas: barras por Subsecretaria (opção Pilar); "Em risco" = críticos; "Dentro do prazo" = em dia ÷ total; matriz Situação × Prioridade; todos os perfis veem (gerente e sponsor só os próprios projetos); custo médio só com metade dos projetos com investimento.
+  - Inclui a prevenção da foto semanal: só é gravada com a EAP carregada.
+  - Fica para depois: matriz Risco × Impacto (precisa de campos novos) e o indicador "Conclusão no prazo".
+- **Risco: carga da EAP limitada a 1.000 linhas (registrado em 29/10/2026).**
+  - O sistema lê toda a EAP numa única consulta. Hoje são 918 linhas, e o Supabase devolve no máximo 1.000 por consulta na configuração padrão.
+  - Ao passar de 1.000 linhas, as etapas excedentes sumiriam de todas as telas, sem aviso.
+  - Conferir em Supabase › Project Settings › API › "Max rows".
+  - Correção proposta: carregar a EAP em páginas, numa versão própria, com teste de regressão.
+- **Foto semanal de 05/10/2026:** a aba KPIs já a desconsidera, mas o gráfico Planejado × Realizado do Painel Executivo ainda a mostra. Igualar o Painel Executivo seria uma mudança à parte.
 - Migração institucional (Windows Server + PostgreSQL): EM ESPERA. O plano está em `docs/migracao-institucional/PLANO_MIGRACAO_INSTITUCIONAL.md`.
 - GND: trocar "2. Outras Despesas" por "3. Outras Despesas Correntes" (classificação oficial)? Depois disso, retirar a aceitação do código '3' no banco? Aguarda decisão.
