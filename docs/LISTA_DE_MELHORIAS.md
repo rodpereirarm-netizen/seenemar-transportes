@@ -84,5 +84,10 @@ O usuário escolheu as opções **A** e **B**. A prévia foi montada numa cópia
   - **Fora do sistema:** cards, planilhas DIP e apresentações com os números antigos não mudam sozinhos (ex.: "Projeto 75/76" da SUBICS, "Projeto 72" dos cards). Avisar as áreas.
   - **Alternativa de menor risco:** manter a lacuna e mudar o número automático para seguir do maior (Projeto 77).
   - **Cadastros incompletos vistos na mesma análise:** Projetos 62, 63 e 64 sem status, gerente e prazo; Projeto 66 sem subsecretaria.
+- **Configurações: retirar o texto "Prioritário pela Área" (opção 1 escolhida em 03/11/2026; implementar depois).**
+  - **Situação:** a tela de Configurações descreve um "Prioritário pela Área — ranking interno, apenas indicativo", mas isso nunca foi construído. Não há onde marcar nem onde exibir.
+  - **No banco:** a coluna `prioridade_area` (sim/não) está desmarcada nos 69 projetos e nunca foi alterada (nenhum registro no histórico).
+  - **O que fazer:** tirar esse parágrafo da tela de Configurações. Manter o texto do "Prioritário pelo Executivo", que é a única prioridade em uso.
+  - **O que não muda:** a coluna fica no banco, sem efeito. Nenhum dado é alterado.
 - Migração institucional (Windows Server + PostgreSQL): EM ESPERA. O plano está em `docs/migracao-institucional/PLANO_MIGRACAO_INSTITUCIONAL.md`.
 - GND: trocar "2. Outras Despesas" por "3. Outras Despesas Correntes" (classificação oficial)? Depois disso, retirar a aceitação do código '3' no banco? Aguarda decisão.
