@@ -119,6 +119,62 @@ O gerador preenche o próprio arquivo do modelo da DIP (SUBENEMAR "Cidades Efici
   - **Fora do sistema:** cards, planilhas DIP e apresentações com os números antigos não mudam sozinhos (ex.: "Projeto 75/76" da SUBICS, "Projeto 72" dos cards). Avisar as áreas.
   - **Alternativa de menor risco:** manter a lacuna e mudar o número automático para seguir do maior (Projeto 77).
   - **Cadastros incompletos vistos na mesma análise:** Projetos 62, 63 e 64 sem status, gerente e prazo; Projeto 66 sem subsecretaria.
+- **Percentuais do Dashboard Carteira × Painel Executivo × KPIs (análise de 03/11/2026; aguarda autorização).**
+  - **Situação verificada:** todas as contagens fecham entre as três telas (situações, concluídos, matriz, setores, qualidade dos dados). Os números conferem com o banco e com as regras do sistema; a conferência foi feita com as funções da v37 e com uma referência separada em Python. O risco está nas médias e na projeção, que usam bases diferentes com o mesmo nome.
+  - **1. Projeção sem as semanas de cadastro de EAP.**
+    - O ritmo de cada projeto deixa de contar o intervalo entre duas fotos em que o projeto teve etapas cadastradas. Sinal usado: a data de criação das etapas; o reteste pela auditoria dá o mesmo resultado.
+    - **Simulação com os dados de 03/11:**
+
+      | Grupo | Ritmo hoje | Ritmo proposto | Jan/27 hoje | Jan/27 proposto |
+      |---|---|---|---|---|
+      | Não priorizados | 13,0 p.p./mês | 1,1 | 45,6% | 21,8% |
+      | Priorizados | 22,6 | 6,7 | 79,6% | 67,3% |
+      | Carteira | 16,5 | 3,1 | 58,0% | 38,3% |
+
+    - Nos não priorizados, "concluem até o prazo" passa de 12 para 0 e "sem avanço" de 14 para 32.
+    - **Regra dos 25%, EM SUSPENSO para estudo:** contar como carga só quando entram pelo menos 25% das etapas do projeto. Com ela, os priorizados ficam em 8,5 p.p./mês e os não priorizados não mudam.
+    - **Limitação:** progresso digitado em lote em etapas que já existiam não é detectado.
+  - **1a. Janela do ritmo (estudar junto com a regra dos 25%).**
+    - A tela diz "últimas 4 semanas", mas, como a foto de 05/10 é desconsiderada, a conta usa 28/09→02/11, que são 5 semanas.
+    - Exemplo, Projeto 09 (EVTEA):
+      - o avanço foi de 27% para 51,7% numa única atualização da EAP, em 30/09, e não mudou desde então;
+      - com 5 semanas, a tela mostra +21,5 p.p./mês e "conclusão em jan/2027";
+      - com as últimas 3 semanas válidas, o ritmo é 0 ("sem avanço").
+    - **Opções:** corrigir só o rótulo, ou usar a janela real de 4 semanas.
+  - **2 e 3. Uma só definição de avanço, com os projetos sem medição à parte.**
+    - Os 10 projetos sem nenhuma medição (32, 33, 35, 36, 41, 45, 62, 63, 64 e 66, todos não priorizados) saem das médias e aparecem como "X sem medição".
+    - **Efeito:**
+      - carteira de 30% para 35%;
+      - não priorizados de 17% (Dashboard) e 18,6% (KPIs) para 22%;
+      - SUBICS de 29% para 36%, passando a AGERIO;
+      - SUBENEMAR de 25% para 28%;
+      - priorizados sem mudança (58%).
+    - Exige uma nota de mudança de metodologia.
+  - **4. Listas de urgência com nomes claros.**
+    - Painel Executivo, "maior atraso": 14, 06, 08, 04, 17.
+    - KPIs, Top 5 "maior risco": 06, 08, 04, 13, 05.
+    - O Projeto 14 (75 dias de atraso, "em atenção") não aparece no Top 5.
+    - **Recomendado:** manter as duas regras e nomear "Mais atrasados" × "Maior risco".
+  - **5. "Requerem atenção" em projetos e correção do Radar.**
+    - Hoje são 199 itens do Radar em 31 projetos; a proposta é mostrar 47 projetos críticos ou em atenção.
+    - **Falha encontrada:** o Radar ignora macroetapas sem etapas filhas, que pela regra do sistema contam como etapa.
+      - Hoje, 6 críticos ficam sem nenhum item: Projetos 03, 06, 07, 08, 10 e 28. O 06 é o 1º do Top 5.
+      - Com a correção, o Radar passa a 228 itens em 38 projetos, e só o Projeto 28 fica sem item.
+      - Afeta o Dashboard, o Alerta Gestão e o Meu Painel.
+  - **6. Dashboard:** mostrar "58% · em andamento 48%" nos priorizados. Nenhum número muda.
+  - **7. Arredondamento "meio para cima" no sistema todo.**
+    - Hoje o mesmo ",5" sai para cima nos Projetos 29 e 53 e para baixo nos 14 e 50 (ruído de ponto flutuante).
+    - Mudam 4 valores na tela: Projeto 14 (87% → 88%), Projeto 50 (37% → 38%), macroetapa 1 do Projeto 50 (37% → 38%) e a média do CGREE (87% → 88%).
+  - **Observados nos prints de 03/11 (KPIs):**
+    - **Título do gráfico:** diz "Evolução da Carteira" mesmo com filtro. Por exemplo, Pilar Integridade: 5 projetos, base de 4, porque o Projeto 21 não tem todas as fotos. O título deveria dizer qual recorte está sendo mostrado.
+    - **Base pequena:** com 4 projetos, cada um pesa 25% da média. Mostrar um aviso de "amostra pequena".
+    - **"Foto de toda segunda-feira":** a foto é gravada no primeiro acesso da semana. Já houve fotos gravadas na terça, quarta e quinta (a de 02/11 foi gravada em 03/11). Ajustar o texto.
+    - **Já listados nos ajustes da v38:** "▲ +0,0 p.p." em verde para variação zero e "sem início e prazo" quando falta só o início (Projeto 09 tem prazo em 15/04/2027).
+  - **Como implementar:**
+    - versão própria, junto com os ajustes da v38;
+    - só o `index.html`, sem mudança no banco;
+    - ordem sugerida: 5, 1, 2 e 3, 7, 4 e 6;
+    - publicar com uma nota de mudança de metodologia.
 - **Configurações: retirar o texto "Prioritário pela Área" (opção 1 escolhida em 03/11/2026; implementar depois).**
   - **Situação:** a tela de Configurações descreve um "Prioritário pela Área — ranking interno, apenas indicativo", mas isso nunca foi construído. Não há onde marcar nem onde exibir.
   - **No banco:** a coluna `prioridade_area` (sim/não) está desmarcada nos 69 projetos e nunca foi alterada (nenhum registro no histórico).
