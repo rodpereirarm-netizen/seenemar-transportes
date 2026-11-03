@@ -49,7 +49,42 @@ O usuário escolheu as opções **A** e **B**. A prévia foi montada numa cópia
   - Exige corrigir o defeito da biblioteca nas validações de data.
   - Exige refazer a aba "Listas" com os dados do momento.
   - Exige uma versão nova do Modelo de Importação, com intervalos de lista maiores.
-- **Opção D (layout da DIP):** não recomendada no navegador.
+- **Opção D (layout da DIP):** substituída pelo item 1.2, que já foi testado no navegador.
+
+### 1.2 Exportar DIP (Excel) no layout do modelo (prévia aprovada em 03/11/2026, "arquivo bem construído")
+O gerador preenche o próprio arquivo do modelo da DIP (SUBENEMAR "Cidades Eficientes") com os dados do banco. **Não está implementado nem publicado.**
+
+- **O que fica igual ao modelo:**
+  - fontes, cores, bordas, logotipo e ícone;
+  - formatação condicional da macroetapa e barras de progresso;
+  - listas SIM/NÃO e BAIXA/MÉDIA/ALTA;
+  - impressão em 1 página.
+- **Fórmulas:**
+  - progresso pela MÉDIA, datas pelo MÍNIMO/MÁXIMO, dias, dias restantes e métricas;
+  - aba oculta "Planilha1" com uma linha por etapa.
+- **Testes com os 69 projetos (foto do banco de 03/11/2026):**
+  - 324.031 verificações independentes, 0 falhas;
+  - recálculo sem erros de fórmula;
+  - progresso igual ao do sistema nos 69;
+  - sem erro novo de esquema;
+  - controle negativo: os 5 erros plantados foram detectados;
+  - o mesmo gerador no navegador produz arquivos idênticos (26 ms o maior).
+- **Como implementar:**
+  - botão "Exportar DIP (Excel)" na página do projeto;
+  - usa a SheetJS que o sistema já tem;
+  - o modelo fica embutido no `index.html` (cerca de +140 KB);
+  - nenhuma mudança no banco;
+  - a EAP é relida só do projeto exportado (evita o limite de 1.000 linhas).
+- **Decisões pendentes (recomendação entre parênteses):**
+  - impressão em 1 página (sim, como no modelo);
+  - quadro PRIORIDADE em branco (sim);
+  - datas das macroetapas pelo MÍNIMO/MÁXIMO das etapas (sim; diferem do gravado em 33 datas);
+  - marco crítico SIM/NÃO conforme o sistema.
+- **Dados a corrigir no banco, que aparecem na DIP:**
+  - Projeto 06: início "20206-07-01";
+  - Projeto 42: etapa 1.2 com fim "20206-05-15";
+  - Projetos 25 e 26: etapas soltas na mesma posição de macroetapas.
+- **Junto com o card em PowerPoint (item 1.3, em análise), as exportações do projeto passam a oferecer DIP (Excel) e card (PPTX).**
 
 ## Pendências anteriores (registradas no histórico)
 - Correções de dados no banco: datas digitadas como "20206", início depois do fim, projetos marcados como manuais, projetos sem status. Exemplo: o Projeto 06 tem início 20206-07-01.
