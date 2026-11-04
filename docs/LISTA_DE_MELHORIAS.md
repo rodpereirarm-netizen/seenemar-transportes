@@ -176,6 +176,16 @@ O gerador preenche o próprio slide do modelo `pit_agro_editavel.pptx` (Book de 
       - na v38: sino 300 → 296;
       - o Projeto 19 passa de Em Atenção a Em Dia (Painel Executivo 7 · 1 → 6 · 2; Recuperação 16 → 15).
     - **Tabela mensal da projeção:** ajustada para caber em telas de 901 a 1440 px (0 textos cortados nos 69 projetos, em 8 larguras).
+  - **v39 entregue para publicação em 04/11/2026: quadro "Evolução" da aba KPIs por série encadeada (aprovado em 04/11).**
+    - **Problema:** a Evolução mostrava a carteira em 40,0% e o Dashboard em 35%, e os priorizados em 57,4% × 58%. A linha usava só os 45 projetos com foto em todas as semanas; os 14 cadastrados depois de 28/09 ficavam fora.
+    - **Solução:**
+      - o último ponto é a média real da foto mais recente, com todos os projetos com medição;
+      - os anteriores são reconstruídos pela variação semanal dos projetos presentes nas duas fotos;
+      - legenda, rodapé e tooltip explicam que os pontos antigos não são a média registrada naquela semana;
+      - "hoje" aparece ao lado (o mesmo valor do Dashboard).
+    - **Números:** carteira 34,5% na foto de 02/11 e 34,7% hoje; priorizados 58,0% e 58,4%.
+    - **Testes:** 882 verificações contra referência independente, 0 falhas; regressão de 75 de 78 telas idênticas (só a aba KPIs muda).
+    - **Observado, não alterado:** com o filtro Status Concluído, o eixo do gráfico vai a 125% (mesmo comportamento da v38). Pode ser limitado a 100% se autorizado.
 - **Percentuais do Dashboard Carteira × Painel Executivo × KPIs (análise de 03/11/2026).**
   - **Situação verificada:** todas as contagens fecham entre as três telas (situações, concluídos, matriz, setores, qualidade dos dados). Os números conferem com o banco e com as regras do sistema; a conferência foi feita com as funções da v37 e com uma referência separada em Python. O risco está nas médias e na projeção, que usam bases diferentes com o mesmo nome.
   - **1. Projeção sem as semanas de cadastro de EAP.**
