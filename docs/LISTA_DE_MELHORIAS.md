@@ -203,6 +203,20 @@ O gerador preenche o próprio slide do modelo `pit_agro_editavel.pptx` (Book de 
     - tela: 41 de 41 verificações;
     - DIP e card com 0 falhas;
     - regressão de 90 telas sem erro de JavaScript.
+- **v41 entregue para publicação em 04/11/2026 (decisões 1 a 4 "OK"):**
+  - **Etapas e marcos vencidos:** a janela ganha as abas "Etapas (N) / Projetos (N)" e "Marcos / Projetos", com as etapas listadas pelo maior atraso.
+  - **Listas da aba KPIs:** páginas de 12 linhas.
+  - **"Qualidade dos dados":** cada item incompleto vira link para os projetos sem a informação.
+  - **Ficha do projeto:** "Possui investimento? Sim / Não", gravado ao clicar com confirmação.
+    - É uma coluna nova no banco, com a mesma trava de gerente e sponsor.
+    - "Não" conta como preenchido na qualidade e sai da base do custo médio.
+    - A DIP mostra "Sem investimento".
+  - **Script `SCRIPT_BANCO_v41.sql`:** o passo 3, opcional, marca os 6 projetos com o texto "Sem custo" (31, 44, 46, 47, 55 e 65).
+  - **Testes:**
+    - tela: 24 de 24;
+    - DIP e card com 0 falhas;
+    - regressão de 93 telas sem erro de JavaScript;
+    - script testado em PostgreSQL local.
 - **Percentuais do Dashboard Carteira × Painel Executivo × KPIs (análise de 03/11/2026).**
   - **Situação verificada:** todas as contagens fecham entre as três telas (situações, concluídos, matriz, setores, qualidade dos dados). Os números conferem com o banco e com as regras do sistema; a conferência foi feita com as funções da v37 e com uma referência separada em Python. O risco está nas médias e na projeção, que usam bases diferentes com o mesmo nome.
   - **1. Projeção sem as semanas de cadastro de EAP.**
