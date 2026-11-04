@@ -75,16 +75,41 @@ O gerador preenche o próprio arquivo do modelo da DIP (SUBENEMAR "Cidades Efici
   - o modelo fica embutido no `index.html` (cerca de +140 KB);
   - nenhuma mudança no banco;
   - a EAP é relida só do projeto exportado (evita o limite de 1.000 linhas).
-- **Decisões pendentes (recomendação entre parênteses):**
-  - impressão em 1 página (sim, como no modelo);
-  - quadro PRIORIDADE em branco (sim);
-  - datas das macroetapas pelo MÍNIMO/MÁXIMO das etapas (sim; diferem do gravado em 33 datas);
+- **Decisões tomadas em 04/11/2026 (todas aprovadas):**
+  - impressão em 1 página, como no modelo;
+  - quadro PRIORIDADE em branco;
+  - datas das macroetapas pelo MÍNIMO/MÁXIMO das etapas (diferem do gravado em 33 datas);
   - marco crítico SIM/NÃO conforme o sistema.
+- **Situação:** APROVADA para implementar. A implementação aguarda as pendências da aba KPIs serem resolvidas (pedido do usuário em 04/11/2026).
 - **Dados a corrigir no banco, que aparecem na DIP:**
   - Projeto 06: início "20206-07-01";
   - Projeto 42: etapa 1.2 com fim "20206-05-15";
   - Projetos 25 e 26: etapas soltas na mesma posição de macroetapas.
-- **Junto com o card em PowerPoint (item 1.3, em análise), as exportações do projeto passam a oferecer DIP (Excel) e card (PPTX).**
+- **Junto com o card em PowerPoint (item 1.3), as exportações do projeto passam a oferecer DIP (Excel) e card (PPTX).**
+
+### 1.3 Card do projeto em PowerPoint editável (prévia e decisões aprovadas em 04/11/2026)
+O gerador preenche o próprio slide do modelo `pit_agro_editavel.pptx` (Book de Transição) com os dados do banco. Os números vêm da mesma função do Status Report individual. **Não está implementado nem publicado.**
+
+- **Editável:** caixas de texto, cartões (formas) e a tabela de macroatividades (tabela nativa). Nada vira imagem.
+- **Igual ao modelo:** A4 paisagem; fontes Cambria/Calibri; cores; faixas; pílula de status; ✓ na Situação atual; cabeçalho e rodapé do Book.
+- **Encaixe:** a fonte só diminui na parte que não cabe (até 75%, mínimo 7 pt). Se ainda não couber, o card sai em 2 slides ("CARD 1/2" e "CARD 2/2"). Com os dados de 03/11, isso ocorreu em 4 dos 69 projetos: 14, 22, 55 e 72.
+- **Testes com os 69 projetos (73 slides):**
+  - 26.592 verificações independentes, 0 falhas;
+  - validador oficial do formato: 70 de 70 arquivos aprovados;
+  - controle negativo: 6 de 6 erros plantados detectados;
+  - o mesmo gerador no navegador produz arquivos idênticos (25 ms por card; 0,4 s o deck com os 69).
+- **Decisões tomadas em 04/11/2026 (todas aprovadas):**
+  - data das macroetapas igual à da DIP (maior data das etapas);
+  - card em 2 slides quando não couber;
+  - só a sigla do setor no topo (o banco não tem o nome por extenso);
+  - "Entregas programadas para 2026" vazio, como no modelo;
+  - exportar nos dois lugares: um card na página do projeto e um arquivo com vários cards em Relatórios (projetos do filtro).
+- **Como implementar:**
+  - botão "Exportar card (PowerPoint)" ao lado de "Exportar DIP (Excel)", mais a opção em lote em Relatórios;
+  - usa a SheetJS que o sistema já tem;
+  - modelo e tabela de larguras das fontes embutidos no `index.html` (cerca de +60 KB);
+  - nenhuma mudança no banco.
+- **Situação:** APROVADO para implementar, junto com a DIP, depois das pendências da aba KPIs.
 
 ## Pendências anteriores (registradas no histórico)
 - Correções de dados no banco: datas digitadas como "20206", início depois do fim, projetos marcados como manuais, projetos sem status. Exemplo: o Projeto 06 tem início 20206-07-01.
