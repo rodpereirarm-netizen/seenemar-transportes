@@ -52,7 +52,7 @@ O usuário escolheu as opções **A** e **B**. A prévia foi montada numa cópia
 - **Opção D (layout da DIP):** substituída pelo item 1.2, que já foi testado no navegador.
 
 ### 1.2 Exportar DIP (Excel) no layout do modelo (prévia aprovada em 03/11/2026, "arquivo bem construído")
-O gerador preenche o próprio arquivo do modelo da DIP (SUBENEMAR "Cidades Eficientes") com os dados do banco. **Não está implementado nem publicado.**
+O gerador preenche o próprio arquivo do modelo da DIP (SUBENEMAR "Cidades Eficientes") com os dados do banco. **Implementado na v38 (entregue para publicação em 04/11/2026).** Botões na página do projeto (cabeçalho da EAP) e no Status Report Individual.
 
 - **O que fica igual ao modelo:**
   - fontes, cores, bordas, logotipo e ícone;
@@ -88,7 +88,7 @@ O gerador preenche o próprio arquivo do modelo da DIP (SUBENEMAR "Cidades Efici
 - **Junto com o card em PowerPoint (item 1.3), as exportações do projeto passam a oferecer DIP (Excel) e card (PPTX).**
 
 ### 1.3 Card do projeto em PowerPoint editável (prévia e decisões aprovadas em 04/11/2026)
-O gerador preenche o próprio slide do modelo `pit_agro_editavel.pptx` (Book de Transição) com os dados do banco. Os números vêm da mesma função do Status Report individual. **Não está implementado nem publicado.**
+O gerador preenche o próprio slide do modelo `pit_agro_editavel.pptx` (Book de Transição) com os dados do banco. Os números vêm da mesma função do Status Report individual. **Implementado na v38 (entregue para publicação em 04/11/2026).** Botões na página do projeto, no Status Report Individual e, em lote, no Status Report Consolidado.
 
 - **Editável:** caixas de texto, cartões (formas) e a tabela de macroatividades (tabela nativa). Nada vira imagem.
 - **Igual ao modelo:** A4 paisagem; fontes Cambria/Calibri; cores; faixas; pílula de status; ✓ na Situação atual; cabeçalho e rodapé do Book.
@@ -109,7 +109,7 @@ O gerador preenche o próprio slide do modelo `pit_agro_editavel.pptx` (Book de 
   - usa a SheetJS que o sistema já tem;
   - modelo e tabela de larguras das fontes embutidos no `index.html` (cerca de +60 KB);
   - nenhuma mudança no banco.
-- **Situação:** APROVADO para implementar, junto com a DIP, depois das pendências da aba KPIs.
+- **Situação:** implementado na v38, junto com a DIP. Testes no sistema com os dados de 04/11: DIP com 324.029 verificações e card com 26.593, 0 falhas; 72 de 72 PowerPoint aprovados pelo validador.
 
 ## Pendências anteriores (registradas no histórico)
 - Correções de dados no banco: datas digitadas como "20206", início depois do fim, projetos marcados como manuais, projetos sem status. Exemplo: o Projeto 06 tem início 20206-07-01.
@@ -154,7 +154,7 @@ O gerador preenche o próprio slide do modelo `pit_agro_editavel.pptx` (Book de 
     - uma só definição de avanço, com os projetos sem medição à parte (propostas 2 e 3);
     - arredondamento "meio para cima" no sistema todo (proposta 7);
     - nomes das listas "Maior risco" (KPIs) × "Mais atrasados" (Painel Executivo) (proposta 4).
-  - **Bloco B (regra da projeção): estudo concluído em 04/11/2026; aguarda aprovação.** Foram comparadas 8 regras com backtest nas fotos semanais, coerência com a situação gerencial, estabilidade e casos reais.
+  - **Bloco B (regra da projeção): estudo concluído e solução APROVADA em 04/11/2026.** Foram comparadas 8 regras com backtest nas fotos semanais, coerência com a situação gerencial, estabilidade e casos reais.
     - **Solução recomendada:**
       - previsão de conclusão e linha de projeção pelo **Earned Schedule com a linha de base da EAP** (SPI(t) e IEAC(t), prática de mercado);
       - sinal de curto prazo "último avanço registrado em dd/mm (há N semanas)", com alerta a partir de 4 semanas;
@@ -162,7 +162,20 @@ O gerador preenche o próprio slide do modelo `pit_agro_editavel.pptx` (Book de 
       - a regra dos 25% e o item 1a (janela) deixam de ser necessários.
     - **Efeito em jan/27:** carteira 58,0% → 49,1%; não priorizados 45,6% → 32,8%; priorizados 79,6% → 77,6%. O Projeto 09 passa de "jan/27, no prazo" para "jul/27, depois do prazo".
     - **Limitação:** o sistema não guarda a linha de base original. Melhoria futura: congelar as datas previstas na aprovação da EAP.
-  - Itens 5 (Radar) e 6 (Dashboard 58% · 48%): aguardam autorização.
+  - Itens 5 (Radar) e 6 (Dashboard 58% · 48%): aguardam autorização (fora da v38).
+  - **v38 entregue para publicação em 04/11/2026: blocos A, B e C, mais as exportações DIP (1.2) e card (1.3).** Detalhes e testes no `LEIA-ME_v38.md` do pacote.
+    - **Números com os dados de 04/11:**
+      - carteira 30% → 35% (59 com medição, 10 sem medição);
+      - não priorizados 17% → 22%;
+      - priorizados 58%, sem mudança.
+    - **Projeção em jan/27:**
+      - priorizados 78,7%; não priorizados 42,7%; carteira 55,5%;
+      - difere do estudo porque usa a base do bloco C, parte do avanço de hoje e usa os dados de 04/11.
+    - **Efeito do arredondamento na origem:**
+      - 4 macroetapas dos Projetos 14 e 19, com todas as etapas em 100%, davam 99,99999…% na v37 e geravam alertas falsos de atraso;
+      - na v38: sino 300 → 296;
+      - o Projeto 19 passa de Em Atenção a Em Dia (Painel Executivo 7 · 1 → 6 · 2; Recuperação 16 → 15).
+    - **Tabela mensal da projeção:** ajustada para caber em telas de 901 a 1440 px (0 textos cortados nos 69 projetos, em 8 larguras).
 - **Percentuais do Dashboard Carteira × Painel Executivo × KPIs (análise de 03/11/2026).**
   - **Situação verificada:** todas as contagens fecham entre as três telas (situações, concluídos, matriz, setores, qualidade dos dados). Os números conferem com o banco e com as regras do sistema; a conferência foi feita com as funções da v37 e com uma referência separada em Python. O risco está nas médias e na projeção, que usam bases diferentes com o mesmo nome.
   - **1. Projeção sem as semanas de cadastro de EAP.**
