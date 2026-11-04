@@ -133,7 +133,20 @@ O gerador preenche o próprio slide do modelo `pit_agro_editavel.pptx` (Book de 
   6. **Ritmo necessário com menos de 30 dias até o prazo:** mostrar "faltam X p.p. em N dias" no lugar de p.p./mês. Hoje aparecem valores como 2.714 p.p./mês no Projeto 04.
   7. **Seletor e textos:** nome completo do projeto no seletor; "sem data de início" (e não "sem início e prazo") quando só falta o início, como no Projeto 05.
   8. **Testes novos (sobreposição de textos em todos os projetos) entram na bateria da v38.**
-- **Numeração dos projetos: fechar a lacuna 56–61 (proposta de 03/11/2026; aguarda autorização).**
+- **Numeração dos projetos: opção A APROVADA em 04/11/2026; v42 entregue para aplicação (script do banco + index.html).**
+  - **Situação em 04/11:** 69 projetos de 01 a 76, com lacunas no 34 (excluído em 03/11) e no 56 a 61 (excluídos em 28/10). A regra do número novo preenchia a primeira lacuna, então o próximo projeto seria o "Projeto 34".
+  - **v42:**
+    - renumera 36 projetos (35–55 → 34–54; 62–76 → 55–69) e a carteira fica de 01 a 69;
+    - o número novo passa a ser "maior já usado + 1", sem reaproveitar número excluído; o próximo será o 70;
+    - a auditoria não é alterada: a tela v42 segue as trocas de número a partir de 04/11/2026 e identifica os projetos excluídos;
+    - as trocas de 28/09 e 27/10 não têm registro confiável, então o histórico desse período continua como estava.
+  - **Testes em cópia local com os dados reais:**
+    - ida e volta exatas;
+    - travas de segurança;
+    - histórico dos 69 projetos idêntico antes e depois;
+    - sem a v42, 36 projetos teriam histórico errado.
+  - **Ordem de aplicação:** publicar o index.html v42, rodar o script, recarregar a página e enviar a tabela de números às áreas.
+- **(histórico) Numeração dos projetos: fechar a lacuna 56–61 (proposta de 03/11/2026; substituída pela opção A de 04/11/2026).**
   - **Situação:** 70 projetos numerados de 01 a 76. A faixa 56–61 ficou vazia com a exclusão de 6 projetos em 28/10. O número automático preenche a primeira lacuna, então o próximo projeto novo receberia "Projeto 56", fora da ordem.
   - **Proposta:** renumerar 62→56, 63→57, 64→58, 65→59, 66→60, 67→61, 68→62, 69→63, 70→64, 71→65, 72→66, 73→67, 74→68, 75→69 e 76→70. A ordem se mantém, a carteira fica de 01 a 70 e o próximo projeto novo passa a ser o 71.
   - **Como:** script SQL "tudo ou nada" com a função oficial `fn_renumerar_projeto`, que grava uma observação com a justificativa em cada projeto. As 10 tabelas ligadas acompanham o número (ligações em cascata). Nenhum dos 15 tem anexo.
