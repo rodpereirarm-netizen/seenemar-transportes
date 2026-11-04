@@ -186,6 +186,23 @@ O gerador preenche o próprio slide do modelo `pit_agro_editavel.pptx` (Book de 
     - **Números:** carteira 34,5% na foto de 02/11 e 34,7% hoje; priorizados 58,0% e 58,4%.
     - **Testes:** 882 verificações contra referência independente, 0 falhas; regressão de 75 de 78 telas idênticas (só a aba KPIs muda).
     - **Observado, não alterado:** com o filtro Status Concluído, o eixo do gráfico vai a 125% (mesmo comportamento da v38). Pode ser limitado a 100% se autorizado.
+- **v40 entregue para publicação em 04/11/2026 (decisões de 04/11): numeração automática da EAP + "Limpar filtros" da aba KPIs (opção A).**
+  - **Problema (Projeto 27):**
+    - a etapa "2.1 Análise de conjuntura…", criada em 04/11, entrou no fim da macroetapa 2 (5ª posição) com o número 2.1 digitado no nome, repetindo a 2.1;
+    - o número era só texto do nome, e toda etapa nova ia para o fim, sem como escolher a posição.
+  - **Solução:**
+    - o número vem da posição, em todas as telas e exportações;
+    - o número digitado é escondido na tela, sem reescrever os nomes no banco (decisão 2);
+    - campo "Posição" no cadastro e na edição, e setas ↑ ↓ para admin, PMO e executivo;
+    - funções do banco `eap_posicionar` e `eap_renumerar` (script `SCRIPT_BANCO_v40.sql`, a rodar antes de publicar) renumeram as irmãs e o "Código na EAP" de uma vez (decisão 4);
+    - as 41 etapas sem macroetapa ficam como estão (decisão 3).
+  - **Correção junto:** na importação de planilha, linha nova entrava com ordem 0 (no começo); agora entra no fim, e a EAP é renumerada.
+  - **KPIs:** o "Limpar filtros" também volta o período da Evolução para 6 semanas.
+  - **Testes:**
+    - script testado num PostgreSQL local com os 918 registros reais, auditoria, índice único e regras de acesso: 13 de 13 casos, 0 códigos duplicados;
+    - tela: 41 de 41 verificações;
+    - DIP e card com 0 falhas;
+    - regressão de 90 telas sem erro de JavaScript.
 - **Percentuais do Dashboard Carteira × Painel Executivo × KPIs (análise de 03/11/2026).**
   - **Situação verificada:** todas as contagens fecham entre as três telas (situações, concluídos, matriz, setores, qualidade dos dados). Os números conferem com o banco e com as regras do sistema; a conferência foi feita com as funções da v37 e com uma referência separada em Python. O risco está nas médias e na projeção, que usam bases diferentes com o mesmo nome.
   - **1. Projeção sem as semanas de cadastro de EAP.**
