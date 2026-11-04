@@ -154,7 +154,14 @@ O gerador preenche o próprio slide do modelo `pit_agro_editavel.pptx` (Book de 
     - uma só definição de avanço, com os projetos sem medição à parte (propostas 2 e 3);
     - arredondamento "meio para cima" no sistema todo (proposta 7);
     - nomes das listas "Maior risco" (KPIs) × "Mais atrasados" (Painel Executivo) (proposta 4).
-  - **Bloco B (regra da projeção): EM ESTUDO.** Estudo comparativo pedido em 04/11/2026, com práticas de mercado. A implementação só ocorre depois da aprovação da solução apontada no estudo.
+  - **Bloco B (regra da projeção): estudo concluído em 04/11/2026; aguarda aprovação.** Foram comparadas 8 regras com backtest nas fotos semanais, coerência com a situação gerencial, estabilidade e casos reais.
+    - **Solução recomendada:**
+      - previsão de conclusão e linha de projeção pelo **Earned Schedule com a linha de base da EAP** (SPI(t) e IEAC(t), prática de mercado);
+      - sinal de curto prazo "último avanço registrado em dd/mm (há N semanas)", com alerta a partir de 4 semanas;
+      - projetos sem linha de base (hoje 17) com "projeção indisponível";
+      - a regra dos 25% e o item 1a (janela) deixam de ser necessários.
+    - **Efeito em jan/27:** carteira 58,0% → 49,1%; não priorizados 45,6% → 32,8%; priorizados 79,6% → 77,6%. O Projeto 09 passa de "jan/27, no prazo" para "jul/27, depois do prazo".
+    - **Limitação:** o sistema não guarda a linha de base original. Melhoria futura: congelar as datas previstas na aprovação da EAP.
   - Itens 5 (Radar) e 6 (Dashboard 58% · 48%): aguardam autorização.
 - **Percentuais do Dashboard Carteira × Painel Executivo × KPIs (análise de 03/11/2026).**
   - **Situação verificada:** todas as contagens fecham entre as três telas (situações, concluídos, matriz, setores, qualidade dos dados). Os números conferem com o banco e com as regras do sistema; a conferência foi feita com as funções da v37 e com uma referência separada em Python. O risco está nas médias e na projeção, que usam bases diferentes com o mesmo nome.
