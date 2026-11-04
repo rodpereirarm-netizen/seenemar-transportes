@@ -144,7 +144,19 @@ O gerador preenche o próprio slide do modelo `pit_agro_editavel.pptx` (Book de 
   - **Fora do sistema:** cards, planilhas DIP e apresentações com os números antigos não mudam sozinhos (ex.: "Projeto 75/76" da SUBICS, "Projeto 72" dos cards). Avisar as áreas.
   - **Alternativa de menor risco:** manter a lacuna e mudar o número automático para seguir do maior (Projeto 77).
   - **Cadastros incompletos vistos na mesma análise:** Projetos 62, 63 e 64 sem status, gerente e prazo; Projeto 66 sem subsecretaria.
-- **Percentuais do Dashboard Carteira × Painel Executivo × KPIs (análise de 03/11/2026; aguarda autorização).**
+- **Pendências da aba KPIs: decisões de 04/11/2026.**
+  - **Bloco A, APROVADO (só apresentação):**
+    - os 7 ajustes da v38 listados acima, menos o item 8 (testes), que acompanha a implementação;
+    - título do gráfico de evolução com o recorte em uso;
+    - aviso de "amostra pequena" quando a base tiver menos de 10 projetos;
+    - texto "foto da semana, gravada no primeiro acesso" no lugar de "foto de toda segunda-feira".
+  - **Bloco C, APROVADO:**
+    - uma só definição de avanço, com os projetos sem medição à parte (propostas 2 e 3);
+    - arredondamento "meio para cima" no sistema todo (proposta 7);
+    - nomes das listas "Maior risco" (KPIs) × "Mais atrasados" (Painel Executivo) (proposta 4).
+  - **Bloco B (regra da projeção): EM ESTUDO.** Estudo comparativo pedido em 04/11/2026, com práticas de mercado. A implementação só ocorre depois da aprovação da solução apontada no estudo.
+  - Itens 5 (Radar) e 6 (Dashboard 58% · 48%): aguardam autorização.
+- **Percentuais do Dashboard Carteira × Painel Executivo × KPIs (análise de 03/11/2026).**
   - **Situação verificada:** todas as contagens fecham entre as três telas (situações, concluídos, matriz, setores, qualidade dos dados). Os números conferem com o banco e com as regras do sistema; a conferência foi feita com as funções da v37 e com uma referência separada em Python. O risco está nas médias e na projeção, que usam bases diferentes com o mesmo nome.
   - **1. Projeção sem as semanas de cadastro de EAP.**
     - O ritmo de cada projeto deixa de contar o intervalo entre duas fotos em que o projeto teve etapas cadastradas. Sinal usado: a data de criação das etapas; o reteste pela auditoria dá o mesmo resultado.
