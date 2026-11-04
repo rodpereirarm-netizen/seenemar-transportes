@@ -146,6 +146,22 @@ O gerador preenche o próprio slide do modelo `pit_agro_editavel.pptx` (Book de 
     - histórico dos 69 projetos idêntico antes e depois;
     - sem a v42, 36 projetos teriam histórico errado.
   - **Ordem de aplicação:** publicar o index.html v42, rodar o script, recarregar a página e enviar a tabela de números às áreas.
+- **Perfil "Orçamento": APROVADO em 04/11/2026; v43 entregue para aplicação (script do banco + index.html).**
+  - **Pedido:** um perfil para o dono das informações do PPA e da LOA (primeiro chamado "Controller", renomeado para "Orçamento"). Ele acessa qualquer projeto, em qualquer situação, e edita somente o PPA e a LOA.
+  - **Decisões:** sem Auditoria, sem Conversas, sem manter a lista de referência do PPA/LOA e sem delegação.
+  - **Banco:**
+    - o valor `orcamento` passa a ser aceito no cadastro de usuários;
+    - entra nas 9 regras de leitura em que o perfil `leitura` já aparece;
+    - entra na função `fn_salvar_ppa_loa`, para qualquer projeto;
+    - nenhuma regra de alteração inclui o perfil, então tudo o mais é barrado pelo próprio banco.
+  - **Tela:** botão "Editar PPA/LOA", que abre só o formulário do PPA/LOA, com "Salvar PPA/LOA" e "Cancelar". Fora isso, a tela é igual à do perfil leitura.
+  - **Testes:**
+    - banco: 44 de 44, com as regras de acesso conferidas por md5 contra o Supabase; desfazer volta exatamente ao original;
+    - tela: 23 de 23; os demais perfis ficam idênticos à v42 em 69 fichas e 6 telas.
+  - **Ordem de aplicação:**
+    1. rodar o `SCRIPT_BANCO_v43.sql`;
+    2. publicar o `index.html` v43;
+    3. o admin atribui o perfil em Configurações → Usuários e perfis.
 - **(histórico) Numeração dos projetos: fechar a lacuna 56–61 (proposta de 03/11/2026; substituída pela opção A de 04/11/2026).**
   - **Situação:** 70 projetos numerados de 01 a 76. A faixa 56–61 ficou vazia com a exclusão de 6 projetos em 28/10. O número automático preenche a primeira lacuna, então o próximo projeto novo receberia "Projeto 56", fora da ordem.
   - **Proposta:** renumerar 62→56, 63→57, 64→58, 65→59, 66→60, 67→61, 68→62, 69→63, 70→64, 71→65, 72→66, 73→67, 74→68, 75→69 e 76→70. A ordem se mantém, a carteira fica de 01 a 70 e o próximo projeto novo passa a ser o 71.
