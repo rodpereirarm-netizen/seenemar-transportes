@@ -162,6 +162,24 @@ O gerador preenche o próprio slide do modelo `pit_agro_editavel.pptx` (Book de 
     1. rodar o `SCRIPT_BANCO_v43.sql`;
     2. publicar o `index.html` v43;
     3. o admin atribui o perfil em Configurações → Usuários e perfis.
+- **Card do projeto (PowerPoint) sem as frases do Book de Transição: APROVADO em 05/11/2026; v44 entregue (só index.html).**
+  - **O que sai do card:** as três frases fixas herdadas do modelo de outra apresentação:
+    - "SEDES · BOOK DE TRANSIÇÃO" (cabeçalho);
+    - "4 · DIRETRIZES, PROGRAMAS E PROJETOS" (cabeçalho);
+    - "BOOK DE TRANSIÇÃO GOVERNAMENTAL · SEDES" (rodapé).
+  - **O que fica igual:** todo o resto do card.
+  - **Testes:**
+    - o card do Projeto 71 ficou idêntico, pixel a pixel, ao exemplo aprovado;
+    - em 70 de 70 projetos, o card novo é igual ao antigo sem as três frases (149 slides, incluindo 4 cards em 2 partes);
+    - os botões e o lote funcionaram, sem erros.
+- **Pontos observados na elaboração do Guia de Métricas (05/11/2026), para decidir depois:**
+  1. **Relatório Gerencial:**
+     - o período (mensal, trimestral etc.) é só um rótulo e não filtra os números;
+     - as caixas "Indicadores e evolução" e "Histórico comparativo" não alteram o conteúdo;
+     - o rótulo "Detalhamento dos 15 projetos" é fixo (hoje são 21 priorizados).
+  2. **Painel Executivo:** o seletor de período ("mês corrente"/"desde a data inicial") não altera os números.
+  3. **Perfil Sponsor:** o texto de Configurações diz "sem editar", mas o sponsor atualiza os projetos vinculados (como o gerente) e ainda altera escopo e produto.
+  4. **Avanço médio no Painel de Recuperação e no Relatório Gerencial:** inclui projetos sem medição (contados como 0%). As demais telas os excluem.
 - **(histórico) Numeração dos projetos: fechar a lacuna 56–61 (proposta de 03/11/2026; substituída pela opção A de 04/11/2026).**
   - **Situação:** 70 projetos numerados de 01 a 76. A faixa 56–61 ficou vazia com a exclusão de 6 projetos em 28/10. O número automático preenche a primeira lacuna, então o próximo projeto novo receberia "Projeto 56", fora da ordem.
   - **Proposta:** renumerar 62→56, 63→57, 64→58, 65→59, 66→60, 67→61, 68→62, 69→63, 70→64, 71→65, 72→66, 73→67, 74→68, 75→69 e 76→70. A ordem se mantém, a carteira fica de 01 a 70 e o próximo projeto novo passa a ser o 71.
