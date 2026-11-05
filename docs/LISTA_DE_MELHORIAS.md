@@ -111,6 +111,37 @@ O gerador preenche o próprio slide do modelo `pit_agro_editavel.pptx` (Book de 
   - nenhuma mudança no banco.
 - **Situação:** implementado na v38, junto com a DIP. Testes no sistema com os dados de 04/11: DIP com 324.029 verificações e card com 26.593, 0 falhas; 72 de 72 PowerPoint aprovados pelo validador.
 
+## 2. PPA na aba KPIs e origem dos valores nos quadros de orçamento (layout aprovado em 05/11/2026)
+Aprovado como melhoria. **Implementar só quando o usuário mandar.** As maquetes C1 a C3 e D0 a D7 usaram dados fictícios, com a faixa "SIMULAÇÃO · DADOS FICTÍCIOS".
+
+- **Problema:** o quadro "Execução Orçamentária" usa só a LOA (`renderKpiOrcamento`). O PPA aparece só na ficha do projeto e não entra em nenhum indicador.
+- **Opção escolhida: B.** Uma linha nova com 2 quadros abaixo do atual; o quadro de LOA fica como está.
+  - **Alinhamento ao PPA:** cobertura (projetos vinculados), meta financeira do exercício, número de programas e de projetos com meta física, barras por programa e chips de ODS. O link "N projetos sem PPA: ver lista" abre a lista de projetos que já existe.
+  - **Planejado × executado:** meta financeira do PPA × dotação da LOA × pago, no mesmo exercício, só para projetos com PPA e LOA. O ▲ vermelho marca dotação acima da meta do PPA.
+  - Meta física com unidades diferentes não é somada.
+  - **Celular:** cartões 2 por linha e tabela inteira dentro do quadro, sem rolagem lateral na página.
+- **Clique nos cards (origem dos valores):** o clique abre a janela de lista que já existe (`kpiAbrir`/`renderKpiModal`), com uma tabela nova.
+  - **Execução Orçamentária:**
+    - aba "Projetos": valores por projeto, com a coluna clicada destacada e usada na ordenação;
+    - aba "Linhas de LOA": fonte e GND. **Decisão: manter as duas abas.**
+  - **Alinhamento ao PPA:** projeto, programa, meta financeira, meta física com a unidade e ODS. A barra de um programa ou um chip de ODS filtra a lista.
+  - **Planejado × executado:** a lista inclui os projetos que ficaram fora da comparação. Clicar numa linha da tabela do quadro abre a ficha do projeto.
+  - A linha **Total** de cada coluna tem de ser igual ao valor do quadro. Card e janela usam a mesma função de cálculo: mesmos filtros, mesmo exercício e mesma regra "dotação atualizada; se vazia, a inicial", marcada com *.
+  - Sem dados, nada fica clicável. As listas atuais de situação, matriz, qualidade e projeção não mudam.
+  - Acesso por teclado: Enter abre, Esc ou "Fechar" fecha.
+- **Qualidade dos dados:** novo item "PPA vinculado", ao lado de "LOA (execução)". **Decisão: incluir.**
+- **Programas do PPA:** **decisão: usar a lista oficial.**
+  - O banco já tem a estrutura: a coluna `projeto_ppa.programa_id` e a tabela `ppa_loa_ref` com tipo `programa` (código, nome, lei e `pai_id` para o ciclo). Hoje há 0 programas cadastrados.
+  - Hoje o programa é digitado como texto livre (`programa_txt`). O comentário da v27 diz "texto editável até existirem as listas oficiais".
+  - **Passo 1, script SQL rodado pelo usuário:** cadastrar os programas do PPA 2024–2027 (código e nome) a partir da lei do PPA. O sistema não tem tela para manter essas listas.
+  - **Passo 2, no sistema:** o campo "Programa" da ficha passa a ser uma lista de escolha. Um texto já digitado continua visível até alguém escolher o programa da lista.
+  - Não precisa mudar a estrutura do banco.
+  - **Falta:** a lista oficial de programas (fonte: lei do PPA 2024–2027 / Revisão 2026).
+- **Testes na implementação:**
+  - soma da janela = valor do quadro em cada card, no computador e no celular;
+  - as listas existentes não mudam;
+  - os estados vazios continuam como hoje: 0 PPA e 0 LOA no banco em 05/11/2026.
+
 ## Pendências anteriores (registradas no histórico)
 - Correções de dados no banco: datas digitadas como "20206", início depois do fim, projetos marcados como manuais, projetos sem status. Exemplo: o Projeto 06 tem início 20206-07-01.
 - Mover os anexos ao renumerar um projeto.
