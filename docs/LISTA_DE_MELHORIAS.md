@@ -136,7 +136,15 @@ Aprovado como melhoria. **Implementar só quando o usuário mandar.** As maquete
   - **Passo 1, script SQL rodado pelo usuário:** cadastrar os programas do PPA 2024–2027 (código e nome) a partir da lei do PPA. O sistema não tem tela para manter essas listas.
   - **Passo 2, no sistema:** o campo "Programa" da ficha passa a ser uma lista de escolha. Um texto já digitado continua visível até alguém escolher o programa da lista.
   - Não precisa mudar a estrutura do banco.
-  - **Falta:** a lista oficial de programas (fonte: lei do PPA 2024–2027 / Revisão 2026).
+  - **Lista recebida em 05/11/2026: 37 programas.**
+    - 25 finalísticos do Poder Executivo, de 442 a 512;
+    - 7 de gestão do Poder Executivo, de 434 a 513;
+    - 5 de Outros Poderes e órgãos autônomos: 027, 136, 137, 141 e 515.
+  - **Script do passo 1 em rascunho, NÃO executado:** `docs/melhorias/ppa_programas_2024_2027_RASCUNHO.sql`.
+    - Grava os programas como filhos do ciclo 2024-2027, com a lei do ciclo (Lei nº 10.276/2024), na ordem da lista.
+    - Pode ser rodado de novo sem duplicar nada.
+    - Conferência só de leitura no banco, em 05/11/2026: o ciclo foi encontrado e os 37 códigos são novos e distintos.
+  - **Ponto a decidir na implementação:** o banco não tem campo para o grupo (finalístico, gestão ou outros Poderes). A ordem da lista mantém os grupos juntos. Se for preciso mostrar o grupo na tela, isso será uma decisão à parte.
 - **Testes na implementação:**
   - soma da janela = valor do quadro em cada card, no computador e no celular;
   - as listas existentes não mudam;
