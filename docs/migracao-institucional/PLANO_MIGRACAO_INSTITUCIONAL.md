@@ -1,7 +1,21 @@
 # Plano de migração do sistema para o ambiente institucional da Secretaria
 
-Status: **em espera** — retomar quando autorizado (fase 1 ainda não iniciada).
-Registro feito em 16/10/2026.
+Status: **em análise da proposta do PRODERJ** (05/11/2026). Registro inicial em 16/10/2026.
+
+## Atualização de 05/11/2026 — proposta PRODERJ DIT_SEDES_001/2026
+- **Ambiente com Linux:** o PRODERJ oferece Linux (RHEL 9), e isso substitui a premissa "somente Windows". Com containers, os sistemas podem usar os mesmos componentes do Supabase, quase sem mudar o código.
+- **Respostas da SEDES:**
+  - o ambiente SEDEICS ainda não é pago, e esta é a primeira contratação;
+  - os sistemas serão acessados pela internet, em domínio do Governo;
+  - o novo site será estático;
+  - o GT PROPAG está pausado.
+- **Análise completa:** `Nota_Tecnica_Infraestrutura_PRODERJ_SEDES.docx` (nesta pasta). Traz o comparativo das alternativas, a matriz técnica × custo e 17 devolutivas ao PRODERJ.
+- **Recomendação:** Alternativa B.
+  - VPS de aplicação para os sistemas;
+  - VPS dedicada com PostgreSQL, na rede de banco de dados;
+  - site estático no servidor web existente (SEDEICSWBP01);
+  - retirada da instância MySQL compartilhada, que não executa os sistemas;
+  - custo de R$ 13.748,86/mês, R$ 750,87 a mais que a proposta.
 
 ## Objetivo
 Institucionalizar o sistema: sair do Supabase em nuvem e rodar tudo no ambiente da Secretaria.
