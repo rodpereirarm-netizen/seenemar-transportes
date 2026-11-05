@@ -136,7 +136,7 @@ Aprovado como melhoria. **Implementar só quando o usuário mandar.** As maquete
   - **Passo 1, script SQL rodado pelo usuário:** cadastrar os programas do PPA 2024–2027 (código e nome) a partir da lei do PPA. O sistema não tem tela para manter essas listas.
   - **Passo 2, no sistema:** o campo "Programa" da ficha passa a ser uma lista de escolha. Um texto já digitado continua visível até alguém escolher o programa da lista.
   - Não precisa mudar a estrutura do banco.
-  - **Lista recebida em 05/11/2026: 37 programas.**
+  - **Lista recebida em 05/11/2026: 37 programas.** Fonte informada pelo usuário: lei do PPA 2024–2027, principalmente o **Anexo I – Programação Resumida** e o **Anexo II – Programação Completa do Poder Executivo**.
     - 25 finalísticos do Poder Executivo, de 442 a 512;
     - 7 de gestão do Poder Executivo, de 434 a 513;
     - 5 de Outros Poderes e órgãos autônomos: 027, 136, 137, 141 e 515.

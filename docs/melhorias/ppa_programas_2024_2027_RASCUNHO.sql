@@ -1,5 +1,6 @@
 -- RASCUNHO — NÃO EXECUTAR SEM AUTORIZAÇÃO DO USUÁRIO
 -- Programas do PPA 2024–2027 (lista enviada pelo usuário em 05/11/2026): 37 programas
+-- Fonte: PPA 2024–2027, Anexo I – Programação Resumida e Anexo II – Programação Completa do Poder Executivo
 --   ordem 1–25  Poder Executivo – programas finalísticos
 --   ordem 26–32 Poder Executivo – programas de gestão
 --   ordem 33–37 Outros Poderes e órgãos autônomos
