@@ -10,12 +10,11 @@ Status: **em análise da proposta do PRODERJ** (05/11/2026). Registro inicial em
   - o novo site será estático;
   - o GT PROPAG está pausado.
 - **Análise completa:** `Nota_Tecnica_Infraestrutura_PRODERJ_SEDES.docx` (nesta pasta). Traz o comparativo das alternativas, a matriz técnica × custo e 17 devolutivas ao PRODERJ.
-- **Recomendação:** Alternativa B.
-  - VPS de aplicação para os sistemas;
-  - VPS dedicada com PostgreSQL, na rede de banco de dados;
-  - site estático no servidor web existente (SEDEICSWBP01);
-  - retirada da instância MySQL compartilhada, que não executa os sistemas;
-  - custo de R$ 13.748,86/mês, R$ 750,87 a mais que a proposta.
+- **Recomendação (versão 2.0 da Nota, 05/11/2026):** servidor único.
+  - uma VPS Linux básica com PostgreSQL próprio, os sistemas e o site estático;
+  - custo de R$ 909,16/mês (R$ 11.016,78/ano), 93% abaixo da proposta;
+  - ficam fora da contratação o AD, o servidor de arquivos, o servidor web existente e a instância MySQL compartilhada.
+- **Alternativa:** dois servidores (R$ 1.818,32/mês), só se a política do PRODERJ exigir o banco separado.
 
 ## Objetivo
 Institucionalizar o sistema: sair do Supabase em nuvem e rodar tudo no ambiente da Secretaria.
