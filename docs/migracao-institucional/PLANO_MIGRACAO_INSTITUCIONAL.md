@@ -2,6 +2,15 @@
 
 Status: **em análise da proposta do PRODERJ** (05/11/2026). Registro inicial em 16/10/2026.
 
+## Atualização de 05/11/2026 (tarde) — nova proposta do PRODERJ após reunião
+- **Proposta:** servidor R$ 517,56, gerenciamento R$ 578,17, banco PostgreSQL de 10 GB R$ 276,00 e domínio R$ 106,88/ano, mais suporte à migração. O total informado é R$ 1.478,91, mas a soma dos itens dá R$ 1.478,61.
+- **Escopo:** dois sistemas, Projetos e Contratos (SIGC, projeto Supabase "sigc"), em Supabase self-hosted (Docker).
+- **Nota Técnica v3.0:** `Nota_Tecnica_Hospedagem_Sistemas_PRODERJ_v3.pdf`.
+  - o servidor precisa ser Linux (R$ 517,56 é o preço da VPS Windows Básica; a Linux Básica custa R$ 330,99);
+  - o banco do PRODERJ precisa ter os papéis e esquemas do Supabase, pg_cron, pg_net, supabase_vault, shared_preload_libraries e wal_level=logical;
+  - se não tiver, o banco fica em container no próprio servidor (R$ 909,16/mês).
+  - Traz 19 esclarecimentos do ofício e 8 complementares.
+
 ## Atualização de 05/11/2026 — proposta PRODERJ DIT_SEDES_001/2026
 - **Ambiente com Linux:** o PRODERJ oferece Linux (RHEL 9), e isso substitui a premissa "somente Windows". Com containers, os sistemas podem usar os mesmos componentes do Supabase, quase sem mudar o código.
 - **Respostas da SEDES:**
