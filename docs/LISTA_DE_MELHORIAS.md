@@ -112,7 +112,10 @@ O gerador preenche o próprio slide do modelo `pit_agro_editavel.pptx` (Book de 
 - **Situação:** implementado na v38, junto com a DIP. Testes no sistema com os dados de 04/11: DIP com 324.029 verificações e card com 26.593, 0 falhas; 72 de 72 PowerPoint aprovados pelo validador.
 
 ## 2. PPA na aba KPIs e origem dos valores nos quadros de orçamento (layout aprovado em 05/11/2026)
-Aprovado como melhoria. **Implementar só quando o usuário mandar.** As maquetes C1 a C3 e D0 a D7 usaram dados fictícios, com a faixa "SIMULAÇÃO · DADOS FICTÍCIOS".
+**v46 entregue para publicação em 06/11/2026** (pacote `ENTREGA_v46`): `index.html` mais o script opcional `SCRIPT_BANCO_v46_programas_PPA.sql` (os 37 programas).
+- **Testes:** 41 de 41.
+- **Comparação com a v45:** 504 de 510 telas idênticas; só a aba KPIs muda.
+- **Hoje:** o banco tem 0 PPA e 0 LOA, então os quadros aparecem com o aviso "ainda não disponível". As maquetes C1 a C3 e D0 a D7 usaram dados fictícios, com a faixa "SIMULAÇÃO · DADOS FICTÍCIOS".
 
 - **Problema:** o quadro "Execução Orçamentária" usa só a LOA (`renderKpiOrcamento`). O PPA aparece só na ficha do projeto e não entra em nenhum indicador.
 - **Opção escolhida: B.** Uma linha nova com 2 quadros abaixo do atual; o quadro de LOA fica como está.
@@ -151,7 +154,9 @@ Aprovado como melhoria. **Implementar só quando o usuário mandar.** As maquete
   - os estados vazios continuam como hoje: 0 PPA e 0 LOA no banco em 05/11/2026.
 
 ## 3. Status geral só manual: fim da conclusão automática (decisão de 06/11/2026)
-Aprovado. **Implementar só quando o usuário mandar.**
+**v45 entregue para publicação em 06/11/2026** (pacote `ENTREGA_v45`, só `index.html`), junto com os itens 4 e 5.
+- **Testes:** 33 de 33.
+- **Comparação com a v44:** 463 de 510 telas idênticas; as 47 diferenças são as previstas.
 
 - **Problema:** a função `verificarAutoConclusao` (`index.html`) grava "Concluído" sem confirmação quando o avanço calculado pela EAP chega a 100%.
   - Ela roda ao salvar ou excluir uma etapa e ao voltar o avanço para "automático".
@@ -176,7 +181,7 @@ Aprovado. **Implementar só quando o usuário mandar.**
   - **Observação:** a coluna antiga `projetos.avanco_fisico` (13%, 50% e 0% nesses três) não é atualizada quando o avanço vem da EAP. Ela só é usada quando o projeto não tem EAP ou nenhuma etapa tem percentual.
 
 ## 4. Alerta "etapa termina depois da macroetapa" (layout aprovado em 06/11/2026)
-Aprovado. **Implementar só quando o usuário mandar.** As maquetes E1 a E5 foram feitas sobre a cópia de teste de 04/11.
+**v45 entregue para publicação em 06/11/2026.** O item novo nos KPIs tem o link "ver N com datas a conferir", porque a lista também inclui as datas com ano inválido. As maquetes E1 a E5 foram feitas sobre a cópia de teste de 04/11.
 
 - **Regra:** a etapa tem fim previsto depois do fim previsto da sua macroetapa.
   - A comparação é feita como data, não como texto.
@@ -198,6 +203,13 @@ Aprovado. **Implementar só quando o usuário mandar.** As maquetes E1 a E5 fora
   - etapas soltas (sem macroetapa) não entram na regra;
   - computador e celular.
 
+## 5. EAP carregada em partes (risco do limite de 1.000 linhas)
+**v45 entregue para publicação em 06/11/2026.** Em 06/11 a EAP tinha 928 linhas.
+- **Antes:** o sistema lia tudo numa consulta, limitada a 1.000 linhas pelo Supabase.
+- **Agora:** lê em partes até terminar.
+- **Testado** com limites de 1.000, 300 e 7 linhas e com uma carteira de 1.374 linhas; o avanço de todos os projetos ficou idêntico.
+- **Configurações:** na mesma versão, saiu o texto "Prioritário pela Área".
+
 ## Pendências anteriores (registradas no histórico)
 - Correções de dados no banco: datas digitadas como "20206", início depois do fim, projetos marcados como manuais, projetos sem status. Exemplo: o Projeto 06 tem início 20206-07-01.
 - Mover os anexos ao renumerar um projeto.
@@ -205,7 +217,7 @@ Aprovado. **Implementar só quando o usuário mandar.** As maquetes E1 a E5 fora
   - As 6 decisões foram confirmadas: barras por Subsecretaria (opção Pilar); "Em risco" = críticos; "Dentro do prazo" = em dia ÷ total; matriz Situação × Prioridade; todos os perfis veem (gerente e sponsor só os próprios projetos); custo médio só com metade dos projetos com investimento.
   - Inclui a prevenção da foto semanal: só é gravada com a EAP carregada.
   - Fica para depois: matriz Risco × Impacto (precisa de campos novos) e o indicador "Conclusão no prazo".
-- **Risco: carga da EAP limitada a 1.000 linhas (registrado em 29/10/2026).**
+- **Risco: carga da EAP limitada a 1.000 linhas (registrado em 29/10/2026). Resolvido na v45 (item 5).**
   - O sistema lê toda a EAP numa única consulta. Hoje são 918 linhas, e o Supabase devolve no máximo 1.000 por consulta na configuração padrão.
   - Ao passar de 1.000 linhas, as etapas excedentes sumiriam de todas as telas, sem aviso.
   - Conferir em Supabase › Project Settings › API › "Max rows".
@@ -407,7 +419,7 @@ Aprovado. **Implementar só quando o usuário mandar.** As maquetes E1 a E5 fora
     - só o `index.html`, sem mudança no banco;
     - ordem sugerida: 5, 1, 2 e 3, 7, 4 e 6;
     - publicar com uma nota de mudança de metodologia.
-- **Configurações: retirar o texto "Prioritário pela Área" (opção 1 escolhida em 03/11/2026; implementar depois).**
+- **Configurações: retirar o texto "Prioritário pela Área" (opção 1 escolhida em 03/11/2026). Feito na v45.**
   - **Situação:** a tela de Configurações descreve um "Prioritário pela Área — ranking interno, apenas indicativo", mas isso nunca foi construído. Não há onde marcar nem onde exibir.
   - **No banco:** a coluna `prioridade_area` (sim/não) está desmarcada nos 69 projetos e nunca foi alterada (nenhum registro no histórico).
   - **O que fazer:** tirar esse parágrafo da tela de Configurações. Manter o texto do "Prioritário pelo Executivo", que é a única prioridade em uso.
