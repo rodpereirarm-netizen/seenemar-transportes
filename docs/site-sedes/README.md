@@ -1,73 +1,49 @@
 # Novo site SEDES RJ · Maquete estática
 
-Maquete em HTML estático da página inicial proposta em *Proposta_Novo_Site_SEDES_VS.2.pdf*.
+Reprodução em HTML estático da página inicial proposta em *Proposta_Novo_Site_SEDES_VS.2.pdf* (protótipo dos slides 6 a 9).
 Abra `index.html` direto no navegador; não precisa de build nem de servidor.
 
-- `index.html`: página única com CSS e JS embutidos
-- `img/`: fotos recortadas da própria apresentação (resolução de rascunho)
+- `index.html`: página única com CSS, JS e a malha do mapa embutidos
+- `img/`: imagens recortadas da própria apresentação, com o texto que vinha "queimado" nelas removido, para que o texto real do HTML fique por cima
 
-> Textos, números, datas e eventos são **ilustrativos**. Antes de publicar, substitua pelos conteúdos e pelas fontes oficiais.
+## Fidelidade à proposta
 
-## Identidade aplicada (vinda da proposta)
+- **Layout:** comparado lado a lado com os slides 7, 8 e 9 em 1334 px de largura, a mesma escala do protótipo. Ordem, medidas, cores, imagens e textos seguem a referência.
+- **Paleta:** azul-marinho `#0a2252`, azul `#1e88e5`, ciano `#5cc3f7`, fundo `#f4f8fd` e as cores temáticas dos eixos (azul `#1d7fe6`, laranja `#f07c12`, verde `#2ba24c`).
+- **Fonte:** *Plus Jakarta Sans*, sans geométrica equivalente à dos títulos da proposta.
+- **Imagens:** fotos do hero, dos eixos, do "Estude o Rio", do destaque, das notícias, do banner final e o brasão colorido do Governo, todas tiradas do PDF.
 
-| Token | Cor | Uso |
-|---|---|---|
-| Azul-marinho | `#0a2252` | Títulos ("Introdução", "Rio de Janeiro"), rodapé |
-| Azul institucional | `#1e88e5` | Destaques ("e contexto", "em movimento"), botão principal |
-| Ciano | `#4fc3f7` | Traços de destaque, "acontece aqui." |
-| Teal | `#159fb5` / `#5fd3e6` | Pilares Dinamismo e Acessibilidade |
-| Eixo Energia e Mar | `#1e7be0` | Cor temática |
-| Eixo Inovação | `#f07c12` (texto `#b85500`) | Cor temática |
-| Eixo Indústria | `#2ea44f` (texto `#1f7a3a`) | Cor temática |
-| Fundo | `#f4f8fd` | Fundo claro azulado dos slides |
+## Mapa do Rio de Janeiro (O Rio em dados)
 
-- **Tipografia:** *Plus Jakarta Sans* (Google Fonts), uma sans geométrica parecida com a dos títulos dos slides; *Dancing Script* para a assinatura "Rio de Janeiro é mais forte quando desenvolve."
-- **Elementos gráficos:** traço ciano sob os títulos, linha curva ("swoosh") no hero, cards arredondados com sombra suave e selos circulares com ícones nos eixos.
+- **Malha:** os 92 municípios reais, a partir da malha municipal do IBGE (via `tbrugz/geodata-br`), simplificada e embutida em SVG.
+- **Visual:** tons de azul por município e pontos coloridos por setor (Energia, Indústria, Comércio e Serviços, Inovação), como no slide 9. Os pontos são ilustrativos.
+- **Interação:**
+  - passar o mouse mostra o nome do município e a região;
+  - clicar ou tocar abre o painel do município, com região, vocações e o botão "Ver oportunidades";
+  - "Explore por região" abre a busca por município, com autocompletar, e o filtro por Região de Governo;
+  - clicar na legenda liga e desliga os pontos de cada setor;
+  - o mapa pode ser navegado pelo teclado (Tab e Enter).
 
-## Estrutura (na ordem do protótipo do slide 06)
+## Interações (todas testadas)
 
-1. Cabeçalho: SEDES RJ, menu com submenus, busca e brasão do Governo
-2. Hero: "O futuro do Rio acontece aqui." + vídeo institucional
-3. Caminhos por perfil: cidadão, empreendedor, investidor, inovação
-4. Três eixos, com a cor temática de cada subsecretaria
-5. **Estude o Rio:** quiz que funciona de verdade (educação básica e ensino superior, 5 perguntas cada, com explicações)
-6. **O Rio em dados:** indicadores com fonte e data + **mapa clicável por região de governo**, com lista de seleção acessível e um destaque (Porto do Rio)
-7. Notícias e histórias que transformam
-8. Agenda com filtro (eventos, editais, missões)
-9. Chamada final, newsletter e rodapé institucional
+Todos os elementos clicáveis respondem. Como as páginas internas ainda não existem, cada link abre uma página interna simulada, com título, resumo e imagem.
 
-## Melhorias sugeridas
+- **Menu:** submenus por clique e por passar o mouse; menu "hambúrguer" no celular; Esc fecha.
+- **Busca:** lupa ou tecla "/"; encontra páginas e municípios (clicar num município leva ao mapa).
+- **Vídeo:** o cartão do hero abre o modal do vídeo institucional.
+- **Navegação geral:** perfis, "Saiba mais", tags dos eixos, KPIs, destaque, notícias, eventos, banner final e rodapé.
+- **Quiz:** educação básica e ensino superior, 5 perguntas cada, com explicação, resultado, "Refazer" e "Sair".
 
-As marcadas com ✅ já estão na maquete.
+Um teste automatizado no Playwright clica em cada elemento em 1334 px, 820 px e 390 px, sem erros no console e sem rolagem lateral.
 
-### Acessibilidade e conformidade (portal público)
-- ✅ **Barra de governo e acessibilidade:** atalhos de teclado (accesskey), A−/A/A+, alto contraste, Libras (VLibras) e link "Ir para o conteúdo".
-- ✅ **Mapa com alternativa em texto:** cada região pode ser escolhida pelo teclado e por uma lista de seleção, como a proposta pede ("mapa com busca por município e dados em texto").
-- ✅ **Banner de cookies (LGPD)** com opção "Só essenciais".
-- ✅ **Vídeo com legendas, Libras e transcrição** (o espaço do player já traz essa orientação).
-- ✅ **Contraste das cores dos eixos:** o laranja e o verde do protótipo não passam no WCAG AA quando usados em texto pequeno sobre fundo branco. A maquete usa tons mais escuros (`#b85500` e `#1f7a3a`) nos textos e mantém os tons vivos nos ícones.
-- Usar o modelo de acessibilidade e-MAG e testar com leitor de tela (NVDA ou VoiceOver) antes de publicar.
+> Textos, números, datas e eventos são os do protótipo e são **ilustrativos**. Antes de publicar, substitua pelos conteúdos e pelas fontes oficiais.
 
-### Arquitetura e navegação
-- ✅ **"LGPD" e "Transparência" saíram do menu principal** e foram para a barra superior e o rodapé. Isso libera espaço no menu e cumpre a exigência legal (Acesso à Informação, e-SIC e Ouvidoria continuam sempre visíveis).
-- ✅ **Busca global** com sugestões frequentes (atalho de teclado "/").
-- ✅ **Submenus descritivos:** cada item tem uma linha de explicação, o que reduz cliques errados.
-- **Ordem das seções:** o quiz tem público mais específico. Vale testar "O Rio em dados" logo após os eixos e o quiz mais abaixo, ou um bloco de quiz mais compacto. A maquete mantém a ordem da proposta.
-- Criar páginas internas por eixo e por perfil, com trilha de navegação (breadcrumb).
+## Sugestões de melhoria (não aplicadas, para manter a fidelidade à proposta)
 
-### Conteúdo e dados
-- ✅ **Fonte, data de atualização e download (CSV)** junto aos indicadores, o que dá credibilidade, um dos pilares da proposta.
-- ✅ **Contadores animados** nos KPIs ("animações discretas").
-- Ligar o painel a fontes oficiais (IBGE, Novo CAGED, CEPERJ) por API, para não depender de atualização manual.
-- ✅ **Tipo de conteúdo nos cards de notícia** (vídeo, história que transforma), o que reforça a seção "Histórias que transformam".
-- **Versões em EN/ES** da jornada "Quero investir no RJ" para o investidor estrangeiro (o seletor já aparece na barra).
-
-### Relacionamento
-- ✅ **Newsletter com alertas por tema** (editais e oportunidades) para trazer o visitante de volta.
-- Agenda com o botão "Adicionar ao calendário" (.ics).
-
-### Técnica e governança
-- Gerar imagens em WebP/AVIF com `srcset`; as fotos atuais saíram do PDF e precisam ser trocadas pelos originais em alta resolução, com direitos de uso.
-- Usar um CMS (por exemplo, WordPress ou Strapi) com perfis por subsecretaria, como a proposta prevê na "governança editorial", e um guia de estilo de conteúdo.
-- Medir o uso com uma ferramenta respeitosa à LGPD (Matomo, por exemplo) e definir metas por jornada (cliques em editais, uso do mapa, quizzes concluídos).
-- As fotos da proposta parecem geradas por IA. Para um portal oficial, vale usar o banco de imagens do Governo, de forma a evitar estranheza e questões de autenticidade.
+- Barra de acessibilidade (A+/A−, alto contraste, VLibras) e atalhos de teclado, conforme o e-MAG.
+- Fonte e data de atualização junto aos indicadores, com download em CSV.
+- Levar "LGPD" e "Transparência" para o rodapé ou para uma barra superior, liberando espaço no menu.
+- Aviso de cookies (LGPD) e cadastro para receber editais por tema.
+- Contraste: o laranja e o verde dos eixos não atingem o WCAG AA em texto pequeno; usar tons mais escuros em textos.
+- Trocar as fotos, que parecem geradas por IA, por fotos reais do banco de imagens do Governo, em alta resolução.
+- Versões em inglês e espanhol da jornada "Quero investir no RJ".
