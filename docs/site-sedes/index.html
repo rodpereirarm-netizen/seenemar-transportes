@@ -1,0 +1,916 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SEDES RJ · Maquete do novo site</title>
+<meta name="description" content="Maquete estática do novo site institucional da Secretaria de Desenvolvimento Econômico do Estado do Rio de Janeiro (SEDES).">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+<style>
+/* =========================================================
+   TOKENS — extraídos da proposta (slides 01–07)
+   ========================================================= */
+:root{
+  --navy-950:#06173a;
+  --navy-900:#0a2252;   /* títulos "Introdução", "Rio de Janeiro" */
+  --navy-800:#0f2f6b;   /* botões escuros, faixa da tabela de eixos */
+  --navy-700:#16408a;
+  --blue-600:#1673d1;
+  --blue-500:#1e88e5;   /* "e contexto", "em movimento", CTA principal */
+  --blue-100:#e3f0fd;
+  --cyan-400:#4fc3f7;   /* traços de destaque, "acontece aqui." */
+  --cyan-300:#7fd6f9;
+  --teal-500:#159fb5;   /* pilar Dinamismo */
+  --teal-300:#5fd3e6;   /* pilar Acessibilidade */
+
+  /* identidade temática dos três eixos (slide 07/08) */
+  --eixo-energia:#1e7be0;
+  --eixo-inovacao:#f07c12;   --eixo-inovacao-txt:#b85500;
+  --eixo-industria:#2ea44f;  --eixo-industria-txt:#1f7a3a;
+
+  --bg:#f4f8fd;
+  --surface:#ffffff;
+  --ink:#0d1f3c;
+  --muted:#53627c;
+  --line:#dde6f2;
+  --shadow:0 10px 30px -12px rgba(10,34,82,.22);
+  --shadow-lg:0 24px 60px -20px rgba(10,34,82,.35);
+  --radius:16px;
+  --radius-sm:10px;
+  --wrap:1200px;
+  --font:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --script:"Dancing Script",cursive;
+}
+/* Alto contraste (acionado pela barra de acessibilidade) */
+html.alto-contraste{
+  --bg:#000; --surface:#000; --ink:#fff; --muted:#fff; --line:#fff;
+  --navy-900:#fff; --navy-800:#000; --blue-500:#ffeb3b; --blue-600:#ffeb3b; --cyan-400:#ffeb3b;
+  --blue-100:#000; --eixo-inovacao-txt:#ffeb3b; --eixo-industria-txt:#ffeb3b;
+}
+html.alto-contraste img{filter:grayscale(1) contrast(1.2)}
+html.alto-contraste a{color:#ffeb3b!important}
+html.alto-contraste .hero::after,html.alto-contraste .cta-final::after{background:rgba(0,0,0,.85)!important}
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+html{overflow-x:clip}
+body{margin:0;font-family:var(--font);color:var(--ink);background:var(--bg);line-height:1.55;font-size:1rem;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:var(--blue-600);text-decoration:none}
+a:hover{text-decoration:underline}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--cyan-400);outline-offset:3px;border-radius:6px}
+.wrap{max-width:var(--wrap);margin-inline:auto;padding-inline:24px}
+.sr-only{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.skip{position:absolute;left:12px;top:-60px;z-index:999;background:var(--navy-900);color:#fff;padding:10px 16px;border-radius:8px;font-weight:700}
+.skip:focus{top:12px}
+
+/* tipografia */
+.eyebrow{font-size:.78rem;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:var(--blue-600);margin:0 0 10px}
+.h-sec{font-size:clamp(1.8rem,3.2vw,2.6rem);line-height:1.08;font-weight:800;color:var(--navy-900);margin:0;letter-spacing:-.02em}
+.h-sec .hl{color:var(--blue-500)}
+.lead{color:var(--muted);font-size:1.05rem;max-width:56ch}
+.dash{display:block;width:56px;height:4px;border-radius:4px;background:var(--cyan-400);margin:18px 0}
+
+/* botões */
+.btn{display:inline-flex;align-items:center;gap:10px;font-weight:700;font-size:.95rem;border-radius:999px;padding:13px 24px;border:2px solid transparent;transition:transform .15s,box-shadow .15s,background .15s;text-decoration:none!important;line-height:1.2}
+.btn:hover{transform:translateY(-1px)}
+.btn svg{width:18px;height:18px;flex:none}
+.btn-primary{background:var(--blue-500);color:#fff;box-shadow:0 8px 20px -8px rgba(30,136,229,.7)}
+.btn-primary:hover{background:var(--blue-600)}
+.btn-dark{background:var(--navy-800);color:#fff}
+.btn-dark:hover{background:var(--navy-700)}
+.btn-ghost{border-color:rgba(255,255,255,.7);color:#fff;background:rgba(255,255,255,.06)}
+.btn-ghost:hover{background:rgba(255,255,255,.16)}
+.btn-white{background:#fff;color:var(--navy-800)}
+.link-more{font-weight:700;display:inline-flex;align-items:center;gap:6px;color:var(--blue-600)}
+.link-more svg{width:16px;height:16px;transition:transform .15s}
+.link-more:hover svg{transform:translateX(3px)}
+
+/* =========================================================
+   BARRA DO GOVERNO + ACESSIBILIDADE  (melhoria)
+   ========================================================= */
+.govbar{background:var(--navy-950);color:#cfe0f7;font-size:.8rem}
+.govbar .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:38px;flex-wrap:wrap}
+.govbar a,.govbar button{color:#cfe0f7;background:none;border:0;padding:4px 6px;font-size:.8rem}
+.govbar a:hover,.govbar button:hover{color:#fff}
+.govbar .atalhos,.govbar .a11y{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.govbar .sep{opacity:.35}
+.govbar .a11y button{border:1px solid rgba(255,255,255,.18);border-radius:6px;min-width:30px}
+.govbar .lang{font-weight:700;letter-spacing:.05em}
+
+/* =========================================================
+   CABEÇALHO
+   ========================================================= */
+.header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.96);backdrop-filter:saturate(1.4) blur(10px);border-bottom:1px solid var(--line)}
+html.alto-contraste .header{background:#000}
+.header .wrap{display:flex;align-items:center;gap:16px;min-height:76px}
+.brand{display:flex;flex-direction:column;line-height:1;text-decoration:none!important;flex:none}
+.brand b{font-size:2rem;font-weight:800;letter-spacing:-.02em;color:var(--navy-900)}
+.brand b span{color:var(--blue-500)}
+.brand small{font-size:.56rem;font-weight:800;letter-spacing:.04em;color:var(--navy-900);text-transform:uppercase;margin-top:3px}
+.nav{margin-left:auto}
+.nav>ul{display:flex;gap:2px;list-style:none;margin:0;padding:0;align-items:center}
+.nav>ul>li{position:relative}
+.nav>ul>li>a,.nav>ul>li>button{display:flex;align-items:center;gap:4px;padding:10px 9px;border-radius:8px;color:var(--navy-900);font-weight:600;font-size:.88rem;background:none;border:0;white-space:nowrap}
+.nav>ul>li>a:hover,.nav>ul>li>button:hover{background:var(--blue-100);text-decoration:none}
+.nav .chev{width:14px;height:14px;transition:transform .2s}
+.nav .drop{position:absolute;top:100%;left:0;min-width:280px;background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow-lg);padding:10px;opacity:0;visibility:hidden;transform:translateY(6px);transition:.18s;list-style:none;margin:0}
+.nav li:hover>.drop,.nav li:focus-within>.drop{opacity:1;visibility:visible;transform:none}
+.nav li:hover .chev,.nav li:focus-within .chev{transform:rotate(180deg)}
+.nav .drop a{display:block;padding:9px 12px;border-radius:8px;color:var(--ink);font-size:.9rem}
+.nav .drop a small{display:block;color:var(--muted);font-size:.78rem}
+.nav .drop a:hover{background:var(--blue-100);text-decoration:none}
+.header-tools{display:flex;align-items:center;gap:14px;flex:none}
+.icon-btn{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;border:0;background:var(--navy-900);color:#fff}
+.icon-btn svg{width:20px;height:20px}
+.brasao{height:42px;width:auto;mix-blend-mode:multiply}
+html.alto-contraste .brasao{mix-blend-mode:normal;background:#fff;border-radius:6px}
+.menu-toggle{display:none}
+
+@media (max-width:1240px){
+  .menu-toggle{display:grid;background:var(--blue-100);color:var(--navy-900)}
+  .nav{position:fixed;inset:76px 0 0 0;background:var(--surface);overflow:auto;padding:16px 24px 40px;margin:0;z-index:60;display:none}
+  .nav.open{display:block}
+  .header-tools{margin-left:auto}
+  .nav>ul{flex-direction:column;align-items:stretch}
+  .nav>ul>li>a,.nav>ul>li>button{font-size:1.05rem;padding:14px 8px;width:100%;justify-content:space-between;border-bottom:1px solid var(--line);border-radius:0}
+  .nav .drop{position:static;opacity:1;visibility:visible;transform:none;box-shadow:none;border:0;padding:0 0 8px 8px;display:none}
+  .nav li.open>.drop{display:block}
+  .brasao{height:38px}
+}
+@media (max-width:520px){ .brasao{display:none} .brand b{font-size:1.7rem} }
+
+/* Busca (melhoria: busca global com atalhos por perfil) */
+.search{position:fixed;inset:0;z-index:100;background:rgba(6,23,58,.72);backdrop-filter:blur(6px);display:none;padding:10vh 16px}
+.search.open{display:block}
+.search .box{max-width:760px;margin:auto;background:var(--surface);border-radius:20px;padding:22px;box-shadow:var(--shadow-lg)}
+.search form{display:flex;gap:10px}
+.search input{flex:1;font:inherit;font-size:1.15rem;padding:14px 18px;border:2px solid var(--line);border-radius:12px;color:var(--ink);background:var(--surface);min-width:0}
+.search input:focus{border-color:var(--blue-500);outline:none}
+.search .sugs{margin-top:16px;display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:999px;background:var(--blue-100);color:var(--navy-800);font-size:.84rem;font-weight:600;border:0}
+.chip:hover{background:#cfe4fb;text-decoration:none}
+
+/* =========================================================
+   HERO
+   ========================================================= */
+.hero{position:relative;background:var(--navy-900);color:#fff;overflow:hidden;isolation:isolate}
+.hero__img{position:absolute;inset:0 0 0 auto;width:68%;height:100%;object-fit:cover;object-position:center 40%;z-index:-2}
+.hero::after{content:"";position:absolute;inset:0;z-index:-1;background:
+  linear-gradient(90deg,var(--navy-900) 30%,rgba(10,34,82,.82) 46%,rgba(10,34,82,.2) 75%,rgba(10,34,82,.05)),
+  linear-gradient(0deg,rgba(6,23,58,.75),transparent 40%)}
+.hero .wrap{display:grid;grid-template-columns:1.2fr .8fr;gap:32px;align-items:end;padding-top:84px;padding-bottom:140px;min-height:560px}
+.hero .eyebrow{color:#cfe6fb}
+.hero h1{font-size:clamp(2.6rem,6vw,4.6rem);line-height:.98;font-weight:800;letter-spacing:-.035em;margin:6px 0 18px}
+.hero h1 span{color:var(--cyan-400);display:block}
+.hero p{font-size:1.15rem;max-width:34ch;color:#e3eefc;margin:0 0 28px}
+.hero .ctas{display:flex;gap:12px;flex-wrap:wrap}
+/* swoosh decorativo das apresentações */
+.hero .swoosh{position:absolute;right:-40px;top:-60px;width:520px;height:520px;border:2px solid rgba(79,195,247,.55);border-radius:46% 54% 0 60%;transform:rotate(-18deg);pointer-events:none;z-index:-1}
+.video-card{justify-self:end;display:flex;align-items:center;gap:16px;background:rgba(6,23,58,.45);border:1px solid rgba(255,255,255,.35);backdrop-filter:blur(8px);border-radius:18px;padding:16px 22px 16px 16px;color:#fff;text-align:left;max-width:360px}
+.video-card .play{width:62px;height:62px;border-radius:50%;background:#fff;display:grid;place-items:center;flex:none;transition:transform .2s}
+.video-card:hover .play{transform:scale(1.08)}
+.video-card .play svg{width:24px;height:24px;color:var(--navy-900);margin-left:4px}
+.video-card b{display:block;font-size:1.2rem;line-height:1.15}
+.video-card small{color:#d7e6fa}
+@media (max-width:860px){
+  .hero__img{width:100%;opacity:.55}
+  .hero::after{background:linear-gradient(180deg,rgba(10,34,82,.55),var(--navy-900) 85%)}
+  .hero .wrap{grid-template-columns:1fr;padding-top:56px;padding-bottom:120px;min-height:0}
+  .video-card{justify-self:start}
+}
+
+/* Perfis / jornadas */
+.perfis{position:relative;margin-top:-78px;z-index:5}
+.perfis ul{list-style:none;margin:0;padding:10px;display:grid;grid-template-columns:repeat(4,1fr);background:var(--surface);border-radius:20px;box-shadow:var(--shadow-lg);border:1px solid var(--line)}
+.perfis li+li a{border-left:1px solid var(--line)}
+.perfis a{display:flex;align-items:center;gap:14px;padding:18px 18px;color:var(--ink);height:100%;border-radius:14px}
+.perfis a:hover{background:var(--bg);text-decoration:none}
+.perfis .ic{width:60px;height:60px;border-radius:50%;display:grid;place-items:center;flex:none}
+.perfis .ic svg{width:28px;height:28px}
+.perfis b{display:block;color:var(--navy-900);font-size:1.02rem}
+.perfis small{color:var(--muted);font-size:.82rem;line-height:1.35;display:block}
+.perfis .go{margin-left:auto;width:18px;height:18px;color:var(--navy-900);flex:none}
+@media (max-width:1000px){.perfis ul{grid-template-columns:1fr 1fr}.perfis li:nth-child(3) a{border-left:0}.perfis li:nth-child(n+3){border-top:1px solid var(--line)}}
+@media (max-width:560px){.perfis ul{grid-template-columns:1fr}.perfis li+li a{border-left:0}.perfis li+li{border-top:1px solid var(--line)}}
+
+section{scroll-margin-top:90px}
+.sec{padding:88px 0}
+.sec-head{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:end;margin-bottom:40px}
+.sec-head .side{color:var(--muted)}
+@media (max-width:860px){.sec-head{grid-template-columns:1fr}}
+
+/* =========================================================
+   TRÊS EIXOS
+   ========================================================= */
+.eixos{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.eixo{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column;border:1px solid var(--line);transition:transform .2s,box-shadow .2s;border-top:4px solid var(--c)}
+.eixo:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+.eixo .media{position:relative;aspect-ratio:16/8.5}
+.eixo .media img{width:100%;height:100%;object-fit:cover}
+.eixo .badge{position:absolute;left:24px;bottom:-30px;width:64px;height:64px;border-radius:50%;background:var(--c);display:grid;place-items:center;border:4px solid #fff;box-shadow:var(--shadow)}
+.eixo .badge svg{width:30px;height:30px;color:#fff}
+.eixo .body{padding:44px 24px 24px;display:flex;flex-direction:column;gap:10px;flex:1}
+.eixo h3{margin:0;font-size:1.35rem;color:var(--navy-900);line-height:1.2}
+.eixo p{margin:0;color:var(--muted)}
+.eixo .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto;padding-top:12px}
+.eixo .tags .chip{font-size:.78rem}
+.eixo .link-more{color:var(--ct)}
+@media (max-width:960px){.eixos{grid-template-columns:1fr}.eixo .media{aspect-ratio:16/7}}
+
+/* =========================================================
+   ESTUDE O RIO (quiz)
+   ========================================================= */
+.estude{background:linear-gradient(100deg,#e6f2fd 0%,#d9ecfc 55%,#cfe6fb 100%);position:relative;overflow:hidden}
+.estude .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center}
+.estude .pill{display:inline-block;background:#cbe5fb;color:var(--blue-600);font-weight:800;font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;border-radius:999px;padding:7px 14px;margin-bottom:16px}
+.estude h2{font-size:clamp(2rem,4vw,3.2rem);line-height:1.02;margin:0 0 14px;color:var(--navy-900);font-weight:800;letter-spacing:-.03em}
+.estude h2 span{display:block;color:var(--blue-500)}
+.estude .sub{font-weight:700;color:var(--navy-900);font-size:1.1rem;margin:0 0 6px}
+.estude .photo{position:relative}
+.estude .photo img{border-radius:24px;box-shadow:var(--shadow-lg);aspect-ratio:637/546;object-fit:cover;width:100%}
+.estude .photo::before{content:"";position:absolute;inset:-22px -22px auto auto;width:140px;height:140px;border:6px solid var(--cyan-400);border-radius:50%;border-left-color:transparent;border-bottom-color:transparent;transform:rotate(20deg)}
+.niveis{display:flex;gap:12px;flex-wrap:wrap;margin:22px 0 8px}
+.nivel{display:flex;align-items:center;gap:10px;background:#fff;border:2px solid #fff;border-radius:12px;padding:12px 16px;font-weight:600;color:var(--navy-900);box-shadow:0 4px 12px -6px rgba(10,34,82,.25)}
+.nivel input{accent-color:var(--blue-500);width:18px;height:18px;margin:0}
+.nivel:has(input:checked){border-color:var(--blue-500)}
+.nivel svg{width:22px;height:22px}
+.quiz-meta{font-size:.82rem;color:var(--muted);margin-top:8px}
+/* painel do quiz */
+.quiz{display:none;background:var(--surface);border-radius:20px;box-shadow:var(--shadow-lg);padding:28px;border:1px solid var(--line)}
+.quiz.on{display:block}
+.quiz .top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px;font-size:.85rem;color:var(--muted);font-weight:600}
+.quiz .bar{height:6px;background:var(--blue-100);border-radius:6px;overflow:hidden;margin-bottom:20px}
+.quiz .bar i{display:block;height:100%;background:var(--blue-500);width:0;transition:width .3s}
+.quiz h3{margin:0 0 16px;color:var(--navy-900);font-size:1.2rem;line-height:1.35}
+.quiz .opts{display:grid;gap:10px}
+.quiz .opt{text-align:left;background:var(--bg);border:2px solid var(--line);border-radius:12px;padding:12px 16px;color:var(--ink);font-weight:500}
+.quiz .opt:hover:not(:disabled){border-color:var(--blue-500)}
+.quiz .opt.ok{border-color:var(--eixo-industria);background:#e7f6ec}
+.quiz .opt.no{border-color:#d93a3a;background:#fdecec}
+.quiz .explica{margin-top:14px;padding:14px 16px;border-radius:12px;background:var(--blue-100);color:var(--navy-900);font-size:.92rem;display:none}
+.quiz .explica.on{display:block}
+.quiz .acts{display:flex;justify-content:flex-end;margin-top:16px;gap:10px}
+html.alto-contraste .quiz .opt.ok,html.alto-contraste .quiz .opt.no{background:#000}
+@media (max-width:900px){.estude .wrap{grid-template-columns:1fr}.estude .photo{max-width:520px}}
+
+/* =========================================================
+   O RIO EM DADOS + mapa
+   ========================================================= */
+.dados-grid{display:grid;grid-template-columns:1.65fr 1fr;gap:24px}
+.painel{background:var(--surface);border-radius:20px;box-shadow:var(--shadow);border:1px solid var(--line);padding:28px;display:grid;grid-template-columns:.9fr 1.1fr;gap:28px}
+.kpis{display:grid;gap:18px;align-content:start}
+.kpi{display:flex;gap:14px;align-items:center}
+.kpi .ic{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;color:#fff;flex:none}
+.kpi .ic svg{width:24px;height:24px}
+.kpi small{display:block;color:var(--muted);font-size:.82rem}
+.kpi b{display:block;font-size:1.45rem;color:var(--navy-900);line-height:1.1}
+.kpi em{font-style:normal;color:var(--eixo-industria-txt);font-weight:700;font-size:.84rem}
+.fonte{font-size:.75rem;color:var(--muted);border-top:1px dashed var(--line);padding-top:10px;margin-top:4px}
+.mapa{position:relative}
+.mapa svg{width:100%;height:auto}
+.mapa .reg{fill:#7fb3ea;stroke:#fff;stroke-width:1.6;cursor:pointer;transition:fill .15s}
+.mapa .reg:nth-of-type(2n){fill:#4f93de}
+.mapa .reg:nth-of-type(3n){fill:#2b6fc4}
+.mapa .reg:hover,.mapa .reg:focus{fill:var(--cyan-400);outline:none}
+.mapa .reg.sel{fill:var(--navy-800)}
+.mapa .dot{fill:#ffc23a;stroke:#fff;stroke-width:1.2;pointer-events:none}
+.mapa .mar{font-size:9px;fill:#8aa5c9;font-style:italic;letter-spacing:.2em}
+.mapa label{font-size:.82rem;font-weight:700;color:var(--navy-900);display:block;margin-bottom:6px}
+.mapa select{width:100%;font:inherit;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+.regiao-info{margin-top:12px;background:var(--bg);border-radius:12px;padding:14px 16px;font-size:.88rem;min-height:118px}
+.regiao-info b{color:var(--navy-900);font-size:1rem}
+.regiao-info .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.regiao-info .chip{font-size:.74rem;padding:4px 10px}
+.destaque{position:relative;border-radius:20px;overflow:hidden;color:#fff;display:flex;flex-direction:column;justify-content:flex-end;padding:28px;min-height:420px;isolation:isolate;box-shadow:var(--shadow)}
+.destaque img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
+.destaque::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(0deg,var(--navy-950) 18%,rgba(6,23,58,.55) 60%,rgba(6,23,58,.1))}
+.destaque .tag{align-self:flex-start;background:var(--blue-500);font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:5px 12px;border-radius:999px;margin-bottom:12px}
+.destaque h3{font-size:1.7rem;line-height:1.1;margin:0 0 10px}
+.destaque p{color:#d7e6fa;margin:0 0 14px}
+.destaque a{color:#fff;font-weight:700}
+@media (max-width:1060px){.dados-grid{grid-template-columns:1fr}.destaque{min-height:300px}}
+@media (max-width:700px){.painel{grid-template-columns:1fr;padding:20px}}
+
+/* =========================================================
+   NOTÍCIAS E HISTÓRIAS
+   ========================================================= */
+.noticias{display:grid;grid-template-columns:.9fr 3fr;gap:32px;align-items:start}
+.noticias .intro h2{text-transform:uppercase;font-size:1.9rem}
+.cards4{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.news{background:var(--surface);border-radius:14px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--line);display:flex;flex-direction:column;color:var(--ink);transition:transform .2s}
+.news:hover{transform:translateY(-3px);text-decoration:none}
+.news .m{position:relative;aspect-ratio:16/10;background:var(--blue-100)}
+.news .m img{width:100%;height:100%;object-fit:cover}
+.news .cat{position:absolute;left:10px;top:10px;font-size:.66rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#fff;padding:4px 9px;border-radius:6px}
+.news .b{padding:14px 16px 18px}
+.news time{font-size:.74rem;color:var(--muted);font-weight:600}
+.news h3{font-size:.98rem;line-height:1.3;margin:4px 0 6px;color:var(--navy-900)}
+.news p{font-size:.84rem;color:var(--muted);margin:0}
+.news .tipo{display:inline-flex;align-items:center;gap:4px;font-size:.72rem;font-weight:700;color:var(--blue-600);margin-top:8px}
+@media (max-width:1060px){.noticias{grid-template-columns:1fr}.cards4{grid-template-columns:1fr 1fr}}
+@media (max-width:520px){.cards4{grid-template-columns:1fr}}
+
+/* =========================================================
+   AGENDA
+   ========================================================= */
+.agenda{display:grid;grid-template-columns:.9fr 3fr;gap:32px;align-items:center;margin-top:56px}
+.filtros{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.filtros button{border:1px solid var(--line);background:var(--surface);color:var(--navy-900);font-weight:600;font-size:.82rem;border-radius:999px;padding:7px 14px}
+.filtros button[aria-pressed="true"]{background:var(--navy-800);border-color:var(--navy-800);color:#fff}
+.eventos{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.evento{background:var(--surface);border-radius:14px;padding:18px;display:flex;gap:16px;box-shadow:var(--shadow);border:1px solid var(--line)}
+.evento[hidden]{display:none}
+.evento .data{flex:none;width:58px;text-align:center;border-radius:12px;background:var(--bg);border:1px solid var(--line);padding:8px 0;color:var(--navy-900);height:max-content}
+.evento .data b{display:block;font-size:1.6rem;line-height:1}
+.evento .data small{font-weight:700;font-size:.72rem;text-transform:uppercase}
+.evento .tp{display:inline-flex;align-items:center;gap:6px;font-size:.66rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:4px 9px;border-radius:999px}
+.evento h3{margin:8px 0 6px;font-size:1rem;color:var(--navy-900);line-height:1.3}
+.evento .loc{font-size:.82rem;color:var(--muted);display:flex;gap:6px;align-items:center}
+.evento .loc svg{width:14px;height:14px}
+@media (max-width:1060px){.agenda{grid-template-columns:1fr}.eventos{grid-template-columns:1fr 1fr}}
+@media (max-width:640px){.eventos{grid-template-columns:1fr}}
+
+/* =========================================================
+   CTA FINAL + NEWSLETTER + RODAPÉ
+   ========================================================= */
+.cta-final{position:relative;border-radius:24px;overflow:hidden;color:#fff;isolation:isolate;padding:56px 48px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.cta-final img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:right center;z-index:-2}
+.cta-final::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(10,34,82,.95) 25%,rgba(10,34,82,.55) 60%,rgba(10,34,82,.15))}
+.cta-final h2{margin:0 0 8px;font-size:clamp(1.7rem,3vw,2.4rem);line-height:1.1}
+.cta-final p{margin:0;color:#dbe8fa;max-width:44ch}
+.cta-final .assin{font-family:var(--script);font-size:1.6rem;color:var(--cyan-300);margin-top:10px}
+@media (max-width:640px){.cta-final{padding:36px 24px}}
+
+.news-letter{margin-top:24px;background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:28px 32px;display:grid;grid-template-columns:1fr 1.3fr;gap:24px;align-items:center;box-shadow:var(--shadow)}
+.news-letter h2{margin:0 0 4px;font-size:1.35rem;color:var(--navy-900)}
+.news-letter p{margin:0;color:var(--muted);font-size:.92rem}
+.news-letter form{display:grid;grid-template-columns:1fr auto;gap:10px}
+.news-letter input[type=email]{font:inherit;padding:13px 16px;border-radius:999px;border:1px solid var(--line);background:var(--bg);color:var(--ink);min-width:0}
+.news-letter fieldset{grid-column:1/-1;border:0;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:12px;font-size:.84rem;color:var(--muted)}
+.news-letter fieldset label{display:flex;gap:6px;align-items:center}
+.news-letter .ok{grid-column:1/-1;color:var(--eixo-industria-txt);font-weight:700;font-size:.9rem;display:none}
+@media (max-width:860px){.news-letter{grid-template-columns:1fr}.news-letter form{grid-template-columns:1fr}}
+
+.footer{background:var(--navy-950);color:#c7d6ee;margin-top:88px;font-size:.9rem}
+.footer .top{display:grid;grid-template-columns:1.4fr repeat(3,1fr);gap:32px;padding:56px 0 40px}
+.footer h3{color:#fff;font-size:.82rem;letter-spacing:.14em;text-transform:uppercase;margin:0 0 14px}
+.footer ul{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.footer a{color:#c7d6ee}
+.footer a:hover{color:#fff}
+.footer .marca{display:flex;align-items:center;gap:16px;margin-bottom:16px;flex-wrap:wrap}
+.footer .marca .chipimg{background:#fff;border-radius:10px;padding:6px 10px}
+.footer .marca .chipimg img{height:40px;width:auto}
+.footer .marca b{font-size:1.8rem;color:#fff;line-height:1}
+.footer .marca b span{color:var(--cyan-400)}
+.footer .marca small{display:block;font-size:.6rem;letter-spacing:.04em;text-transform:uppercase;color:#c7d6ee;font-weight:700}
+.footer .redes{display:flex;gap:10px;margin-top:16px}
+.footer .redes a{width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,.25);display:grid;place-items:center}
+.footer .redes svg{width:18px;height:18px}
+.footer .bottom{border-top:1px solid rgba(255,255,255,.12);padding:18px 0;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:.8rem}
+.footer .tagline{font-family:var(--script);font-size:1.5rem;color:var(--cyan-300)}
+@media (max-width:900px){.footer .top{grid-template-columns:1fr 1fr}}
+@media (max-width:520px){.footer .top{grid-template-columns:1fr}}
+
+/* Cookies LGPD (melhoria) */
+.cookies{position:fixed;left:16px;right:16px;bottom:16px;z-index:90;max-width:760px;margin:auto;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow-lg);padding:18px 20px;display:none;gap:16px;align-items:center;font-size:.88rem}
+.cookies.on{display:flex}
+.cookies p{margin:0;flex:1}
+.cookies .btn{padding:10px 18px;font-size:.85rem}
+@media (max-width:640px){.cookies.on{flex-direction:column;align-items:stretch}}
+
+/* Modal vídeo */
+.modal{position:fixed;inset:0;z-index:120;background:rgba(6,23,58,.82);display:none;place-items:center;padding:16px}
+.modal.on{display:grid}
+.modal .in{background:#000;border-radius:18px;max-width:880px;width:100%;aspect-ratio:16/9;position:relative;display:grid;place-items:center;color:#fff;text-align:center;padding:24px;overflow:hidden}
+.modal .in img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.35}
+.modal .in div{position:relative;max-width:46ch}
+.modal .fechar{position:absolute;top:12px;right:12px;z-index:2;background:#fff;color:var(--navy-900);border:0;border-radius:50%;width:40px;height:40px;font-size:1.3rem;font-weight:700}
+
+/* Nota da maquete */
+.maquete-nota{background:#fff8e1;color:#5d4300;font-size:.8rem;text-align:center;padding:6px 16px;border-bottom:1px solid #f2dc9b}
+html.alto-contraste .maquete-nota{background:#000;color:#fff}
+
+/* animação discreta (slide 04: "animações discretas") */
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease}
+.reveal.in{opacity:1;transform:none}
+</style>
+</head>
+<body>
+<a class="skip" href="#conteudo">Ir para o conteúdo</a>
+
+<div class="maquete-nota" role="note">Maquete estática para validação · textos, números e eventos são <strong>ilustrativos</strong>.</div>
+
+<!-- Barra do Governo + acessibilidade -->
+<div class="govbar">
+  <div class="wrap">
+    <nav class="atalhos" aria-label="Atalhos">
+      <a href="#conteudo" accesskey="1">Conteúdo [1]</a><span class="sep">|</span>
+      <a href="#menu" accesskey="2">Menu [2]</a><span class="sep">|</span>
+      <a href="#rodape" accesskey="4">Rodapé [4]</a><span class="sep">|</span>
+      <a href="#">Acesso à Informação</a><span class="sep">|</span>
+      <a href="#">Transparência</a>
+    </nav>
+    <div class="a11y" role="group" aria-label="Acessibilidade">
+      <button type="button" data-fs="-1" aria-label="Diminuir texto">A−</button>
+      <button type="button" data-fs="0" aria-label="Tamanho padrão do texto">A</button>
+      <button type="button" data-fs="1" aria-label="Aumentar texto">A+</button>
+      <button type="button" id="contraste" aria-pressed="false">◐ Contraste</button>
+      <a href="#" title="Tradução para Libras (VLibras)">🤟 Libras</a>
+      <span class="sep">|</span>
+      <span class="lang"><a href="#" aria-current="true">PT</a><a href="#">EN</a><a href="#">ES</a></span>
+    </div>
+  </div>
+</div>
+
+<!-- Cabeçalho -->
+<header class="header">
+  <div class="wrap">
+    <a class="brand" href="#" aria-label="SEDES RJ — página inicial">
+      <b>SEDES <span>RJ</span></b>
+      <small>Secretaria de Desenvolvimento Econômico</small>
+    </a>
+    <nav class="nav" id="menu" aria-label="Menu principal">
+      <ul>
+        <li><button type="button" aria-haspopup="true">A SEDES <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></button>
+          <ul class="drop">
+            <li><a href="#">Quem somos<small>Missão, competências e estrutura</small></a></li>
+            <li><a href="#">Secretário(a) e equipe</a></li>
+            <li><a href="#">Subsecretarias</a></li>
+            <li><a href="#">Legislação<small>Decretos 50.447/2026 e 50.472/2026 · Resolução 217/2026</small></a></li>
+          </ul></li>
+        <li><button type="button" aria-haspopup="true">Áreas de atuação <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></button>
+          <ul class="drop">
+            <li><a href="#eixos">Energia e Economia do Mar<small>Petróleo e gás, renováveis, economia azul</small></a></li>
+            <li><a href="#eixos">Inovação<small>Startups, ecossistemas, fomento</small></a></li>
+            <li><a href="#eixos">Indústria, Comércio e Serviços<small>Investimentos, ambiente de negócios, desenvolvimento regional</small></a></li>
+          </ul></li>
+        <li><button type="button" aria-haspopup="true">Oportunidades <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></button>
+          <ul class="drop">
+            <li><a href="#agenda">Editais e chamadas públicas</a></li>
+            <li><a href="#">Programas e fomento</a></li>
+            <li><a href="#">Incentivos fiscais</a></li>
+            <li><a href="#agenda">Eventos e missões</a></li>
+            <li><a href="#">Serviços ao empreendedor</a></li>
+          </ul></li>
+        <li><button type="button" aria-haspopup="true">O Rio em dados <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></button>
+          <ul class="drop">
+            <li><a href="#dados">Mapa de oportunidades</a></li>
+            <li><a href="#dados">Observatório do Desenvolvimento</a></li>
+            <li><a href="#">Dados abertos (CSV/API)</a></li>
+          </ul></li>
+        <li><a href="#noticias">Notícias e agenda</a></li>
+        <li><a href="#rodape">Fale conosco</a></li>
+      </ul>
+    </nav>
+    <div class="header-tools">
+      <button class="icon-btn" type="button" id="abrirBusca" aria-label="Buscar no site"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button>
+      <button class="icon-btn menu-toggle" type="button" id="menuToggle" aria-controls="menu" aria-expanded="false" aria-label="Abrir menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+      <img class="brasao" src="img/brasao-rj.png" alt="Governo do Estado do Rio de Janeiro" width="263" height="87">
+    </div>
+  </div>
+</header>
+
+<!-- Busca -->
+<div class="search" id="busca" role="dialog" aria-modal="true" aria-label="Buscar">
+  <div class="box">
+    <form role="search" onsubmit="event.preventDefault()">
+      <label class="sr-only" for="q">O que você procura?</label>
+      <input id="q" type="search" placeholder="O que você procura? Ex.: edital, incentivo fiscal, Macaé…" autocomplete="off">
+      <button class="btn btn-primary" type="submit">Buscar</button>
+    </form>
+    <div class="sugs" aria-label="Buscas frequentes">
+      <a class="chip" href="#agenda">Editais abertos</a>
+      <a class="chip" href="#">Incentivos fiscais</a>
+      <a class="chip" href="#dados">Dados do meu município</a>
+      <a class="chip" href="#eixos">Economia do mar</a>
+      <a class="chip" href="#">Abrir uma empresa no RJ</a>
+      <a class="chip" href="#estude">Quiz para estudantes</a>
+    </div>
+  </div>
+</div>
+
+<main id="conteudo">
+
+<!-- HERO -->
+<section class="hero" aria-labelledby="hero-t">
+  <img class="hero__img" src="img/hero.jpg" alt="" fetchpriority="high">
+  <span class="swoosh" aria-hidden="true"></span>
+  <div class="wrap">
+    <div>
+      <p class="eyebrow">Desenvolvimento que transforma</p>
+      <h1 id="hero-t">O futuro do Rio <span>acontece aqui.</span></h1>
+      <p>Energia, inovação e negócios para um estado mais forte, competitivo e com mais oportunidades para as pessoas.</p>
+      <div class="ctas">
+        <a class="btn btn-primary" href="#agenda">Explore oportunidades <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="btn btn-ghost" href="#eixos">Conheça a SEDES <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="m11 9 3 3-3 3"/></svg></a>
+      </div>
+    </div>
+    <button class="video-card" type="button" id="abrirVideo">
+      <span class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l13-7.5z"/></svg></span>
+      <span><b>Um Rio de mais oportunidades</b><small>Assista ao vídeo institucional · com legendas e Libras</small></span>
+    </button>
+  </div>
+</section>
+
+<!-- PERFIS -->
+<nav class="perfis wrap" aria-label="Caminhos por perfil de visitante">
+  <ul>
+    <li><a href="#"><span class="ic" style="background:#e0f1f5;color:var(--teal-500)"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="8" cy="8" r="3.2"/><circle cx="16.5" cy="8.5" r="2.7"/><path d="M2 19c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5zM14.5 19c0-1.8-.5-3.3-1.5-4.4.9-.6 2-.9 3.4-.9 2.9 0 5.1 1.9 5.1 4.7V19z"/></svg></span><span><b>Sou cidadão</b><small>Conheça projetos e benefícios para o seu município</small></span><svg class="go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m9 6 6 6-6 6"/></svg></a></li>
+    <li><a href="#"><span class="ic" style="background:#e4f5e9;color:var(--eixo-industria)"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 4h6a2 2 0 0 1 2 2v1h3a2 2 0 0 1 2 2v3H2V9a2 2 0 0 1 2-2h3V6a2 2 0 0 1 2-2zm0 3h6V6H9zM2 13.5h8V15h4v-1.5h8V19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2z"/></svg></span><span><b>Sou empreendedor</b><small>Programas, apoio e serviços para o seu negócio</small></span><svg class="go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m9 6 6 6-6 6"/></svg></a></li>
+    <li><a href="#"><span class="ic" style="background:#e2eefc;color:var(--blue-600)"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 20h18v1.5H3zM4 13h3v6H4zm5-3h3v9H9zm5 2h3v7h-3zm5-5h3v12h-3z"/><path d="m4 9 5-4 4 3 7-5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></span><span><b>Quero investir no RJ</b><small>Oportunidades e ambiente de negócios · EN/ES</small></span><svg class="go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m9 6 6 6-6 6"/></svg></a></li>
+    <li><a href="#"><span class="ic" style="background:#fdeedd;color:var(--eixo-inovacao)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.4 1 1.1 1 1.9V16h5v-.2c0-.8.4-1.5 1-1.9A6 6 0 0 0 12 3z"/></svg></span><span><b>Quero inovar</b><small>Tecnologia, startups e parcerias</small></span><svg class="go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m9 6 6 6-6 6"/></svg></a></li>
+  </ul>
+</nav>
+
+<!-- TRÊS EIXOS -->
+<section class="sec" id="eixos" aria-labelledby="eixos-t">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <p class="eyebrow">Nossas áreas de atuação</p>
+        <h2 class="h-sec" id="eixos-t">Três eixos para um Rio<br>de mais oportunidades<span class="hl">.</span></h2>
+      </div>
+      <div class="side">
+        <p>A SEDES atua de forma integrada para impulsionar o desenvolvimento econômico do estado, gerando negócios, empregos e mais qualidade de vida para a sociedade.</p>
+        <a class="link-more" href="#">Conheça todas as iniciativas <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+    </div>
+    <div class="eixos">
+      <article class="eixo reveal" style="--c:var(--eixo-energia);--ct:var(--eixo-energia)">
+        <div class="media"><img src="img/energia.jpg" alt="Plataforma de petróleo no mar ao pôr do sol" loading="lazy"><span class="badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8c2-1.5 4-1.5 6 0s4 1.5 6 0 4-1.5 6 0M3 13c2-1.5 4-1.5 6 0s4 1.5 6 0 4-1.5 6 0M3 18c2-1.5 4-1.5 6 0s4 1.5 6 0 4-1.5 6 0"/></svg></span></div>
+        <div class="body">
+          <h3>Energia e Economia do Mar</h3>
+          <p>O Rio como protagonista da energia e da economia azul: potencial energético e marítimo que impulsiona a transição para uma economia mais sustentável.</p>
+          <a class="link-more" href="#">Saiba mais <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <div class="tags"><a class="chip" href="#">Petróleo e Gás</a><a class="chip" href="#">Energia Renovável</a><a class="chip" href="#">Economia Azul</a></div>
+        </div>
+      </article>
+      <article class="eixo reveal" style="--c:var(--eixo-inovacao);--ct:var(--eixo-inovacao-txt)">
+        <div class="media"><img src="img/inovacao.jpg" alt="Pesquisadora diante de telas com dados" loading="lazy"><span class="badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.4 1 1.1 1 1.9V16h5v-.2c0-.8.4-1.5 1-1.9A6 6 0 0 0 12 3z"/></svg></span></div>
+        <div class="body">
+          <h3>Inovação</h3>
+          <p>Transformar conhecimento em desenvolvimento: conectando tecnologia, pesquisa e empreendedorismo ao futuro da economia fluminense.</p>
+          <a class="link-more" href="#">Saiba mais <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <div class="tags"><a class="chip" href="#">Startups</a><a class="chip" href="#">Ecossistemas de Inovação</a><a class="chip" href="#">Fomento</a></div>
+        </div>
+      </article>
+      <article class="eixo reveal" style="--c:var(--eixo-industria);--ct:var(--eixo-industria-txt)">
+        <div class="media"><img src="img/industria.jpg" alt="Profissional com tablet em uma linha de produção industrial" loading="lazy"><span class="badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 21V10l6 3.5V10l6 3.5V4h3v4h2V4h3v17z"/></svg></span></div>
+        <div class="body">
+          <h3>Indústria, Comércio e Serviços</h3>
+          <p>Um ambiente favorável para produzir, empreender e investir: cadeias produtivas mais competitivas em todas as regiões do estado.</p>
+          <a class="link-more" href="#">Saiba mais <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <div class="tags"><a class="chip" href="#">Investimentos</a><a class="chip" href="#">Ambiente de Negócios</a><a class="chip" href="#">Desenvolvimento Regional</a></div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ESTUDE O RIO -->
+<section class="sec estude" id="estude" aria-labelledby="estude-t">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="pill">Para estudantes e acadêmicos</span>
+      <h2 id="estude-t">Estude o Rio: <span>teste seus conhecimentos</span></h2>
+      <p class="sub">Conecte seus estudos ao desenvolvimento econômico do Rio de Janeiro.</p>
+      <p class="lead">Desafios sobre energia, economia do mar, inovação e negócios, com explicações e conteúdos para aprofundar o aprendizado.</p>
+
+      <div id="quizStart">
+        <fieldset class="niveis" style="border:0;padding:0">
+          <legend class="sr-only">Etapa de ensino</legend>
+          <label class="nivel"><input type="radio" name="nivel" value="basica" checked><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3 1 9l11 6 9-4.9V17h2V9z"/><path d="M5 13.2V17c0 1.7 3.1 3 7 3s7-1.3 7-3v-3.8l-7 3.8z"/></svg> Educação básica</label>
+          <label class="nivel"><input type="radio" name="nivel" value="superior"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3 1 9l11 6 9-4.9V17h2V9z"/><path d="M5 13.2V17c0 1.7 3.1 3 7 3s7-1.3 7-3v-3.8l-7 3.8z"/></svg> Ensino superior</label>
+          <button class="btn btn-primary" type="button" id="comecarQuiz">Começar quiz <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+        </fieldset>
+        <p class="quiz-meta">5 perguntas · Sem cadastro · Acessível por teclado</p>
+      </div>
+    </div>
+    <div>
+      <div class="photo reveal" id="quizFoto"><img src="img/estudantes.jpg" alt="Dois estudantes sorrindo enquanto estudam com um notebook" loading="lazy"></div>
+      <div class="quiz" id="quiz" aria-live="polite">
+        <div class="top"><span id="qNivel">Educação básica</span><span id="qCont">Pergunta 1 de 5</span></div>
+        <div class="bar" aria-hidden="true"><i id="qBar"></i></div>
+        <h3 id="qTxt"></h3>
+        <div class="opts" id="qOpts"></div>
+        <div class="explica" id="qExp"></div>
+        <div class="acts"><button class="btn btn-dark" type="button" id="qNext" hidden>Próxima</button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- O RIO EM DADOS -->
+<section class="sec" id="dados" aria-labelledby="dados-t">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <p class="eyebrow">Inteligência econômica</p>
+        <h2 class="h-sec" id="dados-t">O Rio em dados<span class="hl">.</span></h2>
+      </div>
+      <div class="side">
+        <p>Indicadores, investimentos, cadeias produtivas e vocações regionais em um painel interativo — com fonte e data de atualização em cada número.</p>
+        <a class="btn btn-dark" href="#">Acessar painel de dados <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+    </div>
+    <div class="dados-grid">
+      <div class="painel reveal">
+        <div class="kpis">
+          <div class="kpi"><span class="ic" style="background:var(--eixo-industria)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 16v-4M11 16V9M15 16v-6M19 16V8" stroke-width="1.8"/></svg></span><span><small>PIB do Estado</small><b data-count="1.1" data-pre="R$ " data-suf=" trilhão" data-dec="1">R$ 1,1 trilhão</b><em>▲ 2,4% (2023)</em></span></div>
+          <div class="kpi"><span class="ic" style="background:var(--blue-500)"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="8" r="3.4"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6z"/><circle cx="17" cy="9" r="2.6"/><path d="M16.5 14c3 0 5 2 5 5h-4.5c0-2-.4-3.6-1.6-4.9z"/></svg></span><span><small>Empregos formais</small><b data-count="3.8" data-suf=" milhões" data-dec="1">3,8 milhões</b><em>▲ 3,1% (2023)</em></span></div>
+          <div class="kpi"><span class="ic" style="background:var(--eixo-inovacao)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l6-6 4 4 8-8M15 7h6v6"/></svg></span><span><small>Investimentos anunciados</small><b data-count="19" data-pre="R$ " data-suf=" bilhões" data-dec="0">R$ 19 bilhões</b><em>▲ 18% (2023)</em></span></div>
+          <p class="fonte">Fonte: IBGE, Novo CAGED e CEPERJ (exemplo) · Atualizado em <time datetime="2026-10">out/2026</time> · <a href="#">Baixar dados (CSV)</a></p>
+        </div>
+        <div class="mapa">
+          <label for="selRegiao">Explore por região</label>
+          <select id="selRegiao"><option value="">Selecione uma região de governo…</option></select>
+          <svg viewBox="0 0 410 280" role="group" aria-label="Mapa esquemático do Estado do Rio de Janeiro por regiões de governo" id="mapaSvg">
+            <text x="250" y="262" class="mar">OCEANO ATLÂNTICO</text>
+          </svg>
+          <div class="regiao-info" id="regiaoInfo" aria-live="polite"><b>Clique no mapa</b><br>ou escolha uma região para ver vocações econômicas, principais municípios e oportunidades.</div>
+        </div>
+      </div>
+      <article class="destaque reveal">
+        <img src="img/porto-maravilha.jpg" alt="Região portuária do Rio com o Museu do Amanhã e navio atracado" loading="lazy">
+        <span class="tag">Destaque</span>
+        <h3>Porto do Rio: mais competitividade para o estado</h3>
+        <p>Novos investimentos ampliam a capacidade logística e impulsionam a economia fluminense.</p>
+        <a class="link-more" href="#" style="color:#fff">Saiba mais <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- NOTÍCIAS + AGENDA -->
+<section class="sec" id="noticias" style="padding-top:0" aria-labelledby="not-t">
+  <div class="wrap">
+    <div class="noticias">
+      <div class="intro reveal">
+        <p class="eyebrow">Notícias e histórias</p>
+        <h2 class="h-sec" id="not-t">Que transformam</h2>
+        <p class="lead" style="font-size:.95rem">Acompanhe as iniciativas da SEDES e conheça histórias reais de pessoas, empresas e municípios que fazem o desenvolvimento acontecer.</p>
+        <a class="btn btn-dark" href="#">Ver todas as notícias <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+      <div class="cards4">
+        <a class="news reveal" href="#"><div class="m"><img src="img/noticia-1.jpg" alt="" loading="lazy"><span class="cat" style="background:var(--eixo-inovacao-txt)">Inovação</span></div><div class="b"><time datetime="2026-11-04">04 NOV 2026</time><h3>Startups fluminenses ganham destaque em feira internacional</h3><p>Empresas do RJ apresentam soluções inovadoras para mercados globais.</p></div></a>
+        <a class="news reveal" href="#"><div class="m"><img src="img/noticia-2.jpg" alt="" loading="lazy"><span class="cat" style="background:var(--eixo-energia)">Economia do Mar</span></div><div class="b"><time datetime="2026-11-03">03 NOV 2026</time><h3>Projetos de energia offshore ampliam oportunidades no estado</h3><p>Novos empreendimentos fortalecem a cadeia produtiva e geram empregos.</p></div></a>
+        <a class="news reveal" href="#"><div class="m"><img src="img/noticia-3.jpg" alt="" loading="lazy"><span class="cat" style="background:var(--eixo-industria-txt)">Indústria</span></div><div class="b"><time datetime="2026-10-30">30 OUT 2026</time><h3>Indústria fluminense cresce acima da média nacional</h3><p>Resultados reforçam o ambiente favorável a novos investimentos.</p><span class="tipo">▶ Vídeo · 2 min</span></div></a>
+        <a class="news reveal" href="#"><div class="m"><img src="img/noticia-4.jpg" alt="" loading="lazy"><span class="cat" style="background:#d1343c">Sociedade</span></div><div class="b"><time datetime="2026-10-28">28 OUT 2026</time><h3>Qualificação profissional abre portas para o futuro</h3><p>Programas da SEDES já impactam milhares de pessoas em todo o estado.</p><span class="tipo">★ História que transforma</span></div></a>
+      </div>
+    </div>
+
+    <div class="agenda" id="agenda">
+      <div class="reveal">
+        <p class="eyebrow">Agenda</p>
+        <h2 class="h-sec" style="font-size:1.9rem">Eventos e oportunidades</h2>
+        <p class="lead" style="font-size:.92rem">Feiras, missões, editais e programas que impulsionam o desenvolvimento econômico do Rio de Janeiro.</p>
+        <a class="btn btn-dark" href="#">Ver agenda completa <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+      <div>
+        <div class="filtros" role="group" aria-label="Filtrar agenda">
+          <button type="button" data-f="todos" aria-pressed="true">Todos</button>
+          <button type="button" data-f="evento" aria-pressed="false">Eventos</button>
+          <button type="button" data-f="edital" aria-pressed="false">Editais</button>
+          <button type="button" data-f="missao" aria-pressed="false">Missões</button>
+        </div>
+        <div class="eventos">
+          <article class="evento reveal" data-t="evento"><div class="data"><b>18</b><small>Nov</small></div><div><span class="tp" style="background:var(--blue-100);color:var(--blue-600)">● Evento</span><h3>Semana Fluminense de Inovação</h3><p class="loc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-6.2 7-12a7 7 0 0 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>Rio de Janeiro/RJ</p><a class="link-more" href="#">Saiba mais <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div></article>
+          <article class="evento reveal" data-t="edital"><div class="data"><b>28</b><small>Nov</small></div><div><span class="tp" style="background:#e4f5e9;color:var(--eixo-industria-txt)">● Chamada pública</span><h3>Edital de Fomento à Economia Azul</h3><p class="loc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></svg>Inscrições até 28/11</p><a class="link-more" href="#">Saiba mais <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div></article>
+          <article class="evento reveal" data-t="missao"><div class="data"><b>09</b><small>Dez</small></div><div><span class="tp" style="background:#fdeedd;color:var(--eixo-inovacao-txt)">● Missão internacional</span><h3>Missão Empresarial — Energia e Transição Energética</h3><p class="loc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-6.2 7-12a7 7 0 0 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>Houston, EUA</p><a class="link-more" href="#">Saiba mais <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div></article>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL + NEWSLETTER -->
+<section class="wrap" aria-labelledby="cta-t">
+  <div class="cta-final reveal">
+    <img src="img/juntos.jpg" alt="">
+    <div>
+      <h2 id="cta-t">Juntos por um Rio<br>de mais oportunidades</h2>
+      <p>Desenvolvimento econômico que gera negócios, empregos e mais qualidade de vida para todos.</p>
+      <p class="assin">Rio de Janeiro é mais forte quando desenvolve.</p>
+    </div>
+    <a class="btn btn-white" href="#">Conheça a SEDES <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+  </div>
+
+  <div class="news-letter reveal">
+    <div>
+      <h2>Receba editais e oportunidades</h2>
+      <p>Alertas por tema, direto no seu e-mail. Você pode cancelar quando quiser.</p>
+    </div>
+    <form id="nlForm">
+      <label class="sr-only" for="nlEmail">Seu e-mail</label>
+      <input id="nlEmail" type="email" required placeholder="seu@email.com.br">
+      <button class="btn btn-primary" type="submit">Quero receber</button>
+      <fieldset><legend class="sr-only">Temas</legend>
+        <label><input type="checkbox" checked> Energia e Mar</label>
+        <label><input type="checkbox" checked> Inovação</label>
+        <label><input type="checkbox" checked> Indústria e Comércio</label>
+        <label><input type="checkbox"> Eventos</label>
+      </fieldset>
+      <p class="ok" id="nlOk" role="status">✓ Inscrição simulada com sucesso (maquete).</p>
+    </form>
+  </div>
+</section>
+</main>
+
+<!-- RODAPÉ -->
+<footer class="footer" id="rodape">
+  <div class="wrap">
+    <div class="top">
+      <div>
+        <div class="marca">
+          <span class="chipimg"><img src="img/brasao-rj.png" alt="Governo do Estado do Rio de Janeiro"></span>
+          <span><b>SEDES <span>RJ</span></b><small>Secretaria de Desenvolvimento Econômico</small></span>
+        </div>
+        <p>[Endereço institucional]<br>Rio de Janeiro – RJ · CEP [00000-000]</p>
+        <p>Atendimento: seg. a sex., das 9h às 18h</p>
+        <div class="redes">
+          <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a>
+          <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 9h3.5v11H4zM5.7 3.5a2 2 0 1 1 0 4 2 2 0 0 1 0-4zM10 9h3.3v1.6c.5-.9 1.7-1.9 3.5-1.9 3.6 0 4.2 2.3 4.2 5.4V20h-3.5v-5.2c0-1.3 0-2.9-1.8-2.9s-2.1 1.4-2.1 2.8V20H10z"/></svg></a>
+          <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 8.2c-.2-1.6-1-2.7-2.6-2.9C16.9 5 12 5 12 5s-4.9 0-7.4.3C3 5.5 2.2 6.6 2 8.2 1.8 9.6 1.8 12 1.8 12s0 2.4.2 3.8c.2 1.6 1 2.7 2.6 2.9 2.5.3 7.4.3 7.4.3s4.9 0 7.4-.3c1.6-.2 2.4-1.3 2.6-2.9.2-1.4.2-3.8.2-3.8s0-2.4-.2-3.8zM10 15V9l5.2 3z"/></svg></a>
+          <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 8.5V6.8c0-.8.5-1 .9-1H17V2.2L14.1 2C10.9 2 10.2 4.4 10.2 6v2.5H8V12h2.2v10H14V12h2.7l.4-3.5z"/></svg></a>
+        </div>
+      </div>
+      <nav aria-label="Institucional"><h3>A SEDES</h3><ul><li><a href="#">Quem somos</a></li><li><a href="#">Subsecretarias</a></li><li><a href="#">Legislação</a></li><li><a href="#">Imprensa</a></li></ul></nav>
+      <nav aria-label="Serviços"><h3>Serviços</h3><ul><li><a href="#">Editais e chamadas</a></li><li><a href="#">Incentivos fiscais</a></li><li><a href="#">Observatório</a></li><li><a href="#">Dados abertos</a></li></ul></nav>
+      <nav aria-label="Transparência e atendimento"><h3>Atendimento</h3><ul><li><a href="#">Fale conosco</a></li><li><a href="#">Ouvidoria</a></li><li><a href="#">Acesso à Informação (e-SIC)</a></li><li><a href="#">Transparência</a></li><li><a href="#">LGPD · Privacidade</a></li><li><a href="#">Acessibilidade</a></li></ul></nav>
+    </div>
+    <div class="bottom">
+      <span>© 2026 Governo do Estado do Rio de Janeiro · Secretaria de Desenvolvimento Econômico</span>
+      <span class="tagline">Rio de Janeiro é mais forte quando desenvolve.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- Modal vídeo -->
+<div class="modal" id="video" role="dialog" aria-modal="true" aria-label="Vídeo institucional">
+  <div class="in">
+    <button class="fechar" type="button" id="fecharVideo" aria-label="Fechar vídeo">×</button>
+    <img src="img/cristo.jpg" alt="">
+    <div><p style="font-size:1.4rem;font-weight:800;margin:0 0 8px">Um Rio de mais oportunidades</p><p style="margin:0;color:#cfe0f7">Espaço para o vídeo institucional (YouTube/Vimeo incorporado) com legendas, audiodescrição, janela de Libras e transcrição em texto abaixo do player.</p></div>
+  </div>
+</div>
+
+<!-- Cookies -->
+<div class="cookies" id="cookies" role="region" aria-label="Aviso de cookies">
+  <p>Usamos cookies essenciais e, com sua permissão, cookies de medição para melhorar o portal, conforme a <a href="#">Política de Privacidade</a> e a LGPD.</p>
+  <button class="btn btn-dark" type="button" data-ck="ok">Aceitar</button>
+  <button class="btn" type="button" data-ck="no" style="border-color:var(--line);color:var(--navy-900)">Só essenciais</button>
+</div>
+
+<script>
+(function(){
+  const $ = (s,c=document)=>c.querySelector(s), $$=(s,c=document)=>[...c.querySelectorAll(s)];
+  const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+
+  /* ---------- Acessibilidade ---------- */
+  let fs=+(store.get('sedes-fs')||0);
+  const applyFs=()=>{document.documentElement.style.fontSize=(100+fs*12.5)+'%'};
+  applyFs();
+  $$('[data-fs]').forEach(b=>b.addEventListener('click',()=>{const d=+b.dataset.fs;fs=d===0?0:Math.max(-1,Math.min(3,fs+d));applyFs();store.set('sedes-fs',fs)}));
+  const ct=$('#contraste');
+  const applyCt=on=>{document.documentElement.classList.toggle('alto-contraste',on);ct.setAttribute('aria-pressed',on)};
+  applyCt(store.get('sedes-ct')==='1');
+  ct.addEventListener('click',()=>{const on=!document.documentElement.classList.contains('alto-contraste');applyCt(on);store.set('sedes-ct',on?'1':'0')});
+
+  /* ---------- Menu mobile ---------- */
+  const nav=$('#menu'), tg=$('#menuToggle');
+  tg.addEventListener('click',()=>{const o=nav.classList.toggle('open');tg.setAttribute('aria-expanded',o)});
+  $$('.nav>ul>li>button').forEach(b=>b.addEventListener('click',()=>{if(innerWidth<=1240)b.parentElement.classList.toggle('open')}));
+  $$('.nav a').forEach(a=>a.addEventListener('click',()=>{nav.classList.remove('open');tg.setAttribute('aria-expanded',false)}));
+
+  /* ---------- Busca ---------- */
+  const busca=$('#busca');
+  const openB=()=>{busca.classList.add('open');setTimeout(()=>$('#q').focus(),30)};
+  $('#abrirBusca').addEventListener('click',openB);
+  busca.addEventListener('click',e=>{if(e.target===busca||e.target.closest('.chip'))busca.classList.remove('open')});
+  document.addEventListener('keydown',e=>{
+    if(e.key==='Escape'){busca.classList.remove('open');video.classList.remove('on')}
+    if(e.key==='/'&&!/input|textarea|select/i.test(document.activeElement.tagName)){e.preventDefault();openB()}
+  });
+
+  /* ---------- Vídeo ---------- */
+  const video=$('#video');
+  $('#abrirVideo').addEventListener('click',()=>{video.classList.add('on');$('#fecharVideo').focus()});
+  $('#fecharVideo').addEventListener('click',()=>video.classList.remove('on'));
+  video.addEventListener('click',e=>{if(e.target===video)video.classList.remove('on')});
+
+  /* ---------- Quiz ---------- */
+  const Q={
+    basica:[
+      {q:'Qual estado brasileiro é o maior produtor de petróleo do país?',o:['São Paulo','Rio de Janeiro','Bahia','Espírito Santo'],c:1,e:'O Rio de Janeiro responde pela maior parte da produção nacional de petróleo, principalmente a partir das bacias de Campos e de Santos, no mar.'},
+      {q:'O que significa “economia azul”?',o:['Atividades econômicas ligadas ao mar e aos oceanos, de forma sustentável','Comércio de produtos importados','Economia baseada apenas no turismo','Indústria de tintas e corantes'],c:0,e:'Economia azul reúne pesca, portos, turismo costeiro, energia offshore, construção naval e outras atividades ligadas ao mar, com uso sustentável dos recursos.'},
+      {q:'O que é uma startup?',o:['Uma empresa pública','Uma loja de bairro tradicional','Uma empresa nova com modelo de negócio inovador e que pode crescer rápido','Um tipo de imposto'],c:2,e:'Startups testam soluções inovadoras, geralmente com tecnologia, buscando crescer de forma rápida e escalável.'},
+      {q:'Qual cidade fluminense ficou conhecida como “Capital Nacional do Petróleo”?',o:['Petrópolis','Macaé','Paraty','Resende'],c:1,e:'Macaé, no Norte Fluminense, concentra bases de apoio às operações de petróleo e gás da Bacia de Campos.'},
+      {q:'O Porto do Açu, um dos maiores complexos portuários do país, fica em qual município?',o:['São João da Barra','Niterói','Angra dos Reis','Itaguaí'],c:0,e:'O Porto do Açu fica em São João da Barra, no Norte Fluminense, e reúne terminais de minério, petróleo, energia e indústria.'}
+    ],
+    superior:[
+      {q:'Royalties do petróleo são:',o:['Impostos sobre a venda de combustíveis nos postos','Compensações financeiras pagas pelas empresas que exploram petróleo e gás à União, estados e municípios','Lucros distribuídos aos acionistas','Taxas de importação de equipamentos'],c:1,e:'Os royalties compensam a sociedade pela exploração de um recurso natural não renovável e são distribuídos entre União, estados e municípios produtores.'},
+      {q:'Um Arranjo Produtivo Local (APL) é melhor definido como:',o:['Uma única grande empresa exportadora','Um programa federal de crédito','Uma aglomeração de empresas de um mesmo setor e território que cooperam entre si','Uma zona franca'],c:2,e:'APLs reúnem empresas, instituições de ensino e entidades de um território especializado. Exemplo fluminense: a moda íntima em Nova Friburgo e região.'},
+      {q:'Volta Redonda é historicamente associada a qual atividade industrial?',o:['Siderurgia','Têxtil','Calçados','Aeronáutica'],c:0,e:'Volta Redonda, no Médio Paraíba, se desenvolveu em torno da siderurgia, com a Companhia Siderúrgica Nacional (CSN), fundada nos anos 1940.'},
+      {q:'A eólica offshore consiste em:',o:['Usinas solares flutuantes em lagos','Turbinas eólicas instaladas no mar para gerar energia elétrica','Geração a partir das marés em rios','Biocombustível feito de algas'],c:1,e:'A eólica offshore aproveita os ventos mais fortes e constantes do mar e é uma das apostas da transição energética no litoral fluminense.'},
+      {q:'Qual indicador mede o total de bens e serviços finais produzidos em um território em determinado período?',o:['IPCA','Taxa Selic','PIB','Índice de Gini'],c:2,e:'O Produto Interno Bruto (PIB) mede a produção de bens e serviços finais. O IPCA mede a inflação, a Selic é a taxa básica de juros e o Gini mede a desigualdade de renda.'}
+    ]
+  };
+  let lista=[],i=0,acertos=0,nivel='basica';
+  const quiz=$('#quiz'),foto=$('#quizFoto');
+  function render(){
+    const it=lista[i];
+    $('#qCont').textContent=`Pergunta ${i+1} de ${lista.length}`;
+    $('#qBar').style.width=(i/lista.length*100)+'%';
+    $('#qTxt').textContent=it.q;
+    const box=$('#qOpts');box.innerHTML='';
+    it.o.forEach((t,k)=>{const b=document.createElement('button');b.type='button';b.className='opt';b.textContent=t;b.addEventListener('click',()=>responder(k));box.appendChild(b)});
+    $('#qExp').className='explica';$('#qNext').hidden=true;
+    box.firstChild.focus({preventScroll:true});
+  }
+  function responder(k){
+    const it=lista[i],bs=$$('#qOpts .opt');
+    bs.forEach((b,j)=>{b.disabled=true;if(j===it.c)b.classList.add('ok');else if(j===k)b.classList.add('no')});
+    if(k===it.c)acertos++;
+    const ex=$('#qExp');ex.innerHTML=(k===it.c?'<b>✓ Correto!</b> ':'<b>✗ Não foi dessa vez.</b> ')+it.e;ex.classList.add('on');
+    const nx=$('#qNext');nx.hidden=false;nx.textContent=i<lista.length-1?'Próxima':'Ver resultado';nx.focus();
+  }
+  $('#qNext').addEventListener('click',()=>{
+    if(i<lista.length-1){i++;render();return}
+    $('#qBar').style.width='100%';
+    $('#qTxt').textContent=`Você acertou ${acertos} de ${lista.length}!`;
+    $('#qOpts').innerHTML='<p style="margin:0;color:var(--muted)">Quer se aprofundar? Veja os conteúdos de estudo sobre <a href="#eixos">energia e economia do mar, inovação e indústria</a> e explore <a href="#dados">o Rio em dados</a>.</p>';
+    $('#qExp').className='explica';
+    const nx=$('#qNext');nx.textContent='Refazer';nx.onclick=()=>{nx.onclick=null;start()};
+  });
+  function start(){
+    nivel=$('input[name=nivel]:checked').value;
+    lista=Q[nivel];i=0;acertos=0;
+    $('#qNivel').textContent=nivel==='basica'?'Educação básica':'Ensino superior';
+    foto.hidden=true;quiz.classList.add('on');render();
+  }
+  $('#comecarQuiz').addEventListener('click',start);
+
+  /* ---------- Mapa esquemático do RJ ---------- */
+  const R=[
+    {id:'noroeste',n:'Noroeste Fluminense',p:'265,100 265,60 285,25 310,6 325,15 365,40 330,80',c:[305,52],cid:'Itaperuna, Santo Antônio de Pádua, Bom Jesus do Itabapoana',v:['Agropecuária','Laticínios','Rochas ornamentais']},
+    {id:'norte',n:'Norte Fluminense',p:'265,100 330,80 365,40 395,55 397,90 390,120 345,145 315,170 300,185 270,170 280,140',c:[350,105],cid:'Campos dos Goytacazes, Macaé, São João da Barra',v:['Petróleo e gás','Porto do Açu','Agroindústria']},
+    {id:'serrana',n:'Região Serrana',p:'175,125 225,125 265,100 280,140 270,170 225,190 205,175 185,165',c:[230,150],cid:'Petrópolis, Teresópolis, Nova Friburgo',v:['Turismo','Moda íntima (APL)','Agricultura','Cervejarias']},
+    {id:'baixadas',n:'Baixadas Litorâneas',p:'225,190 270,170 300,185 307,205 295,227 255,223',c:[275,205],cid:'Cabo Frio, Araruama, Rio das Ostras, Búzios',v:['Turismo','Economia do mar','Apoio offshore']},
+    {id:'metro',n:'Região Metropolitana',p:'95,215 110,200 130,175 150,190 185,165 205,175 225,190 255,223 210,227 185,227 175,230 145,235 115,235 90,228',c:[180,210],cid:'Rio de Janeiro, Niterói, Duque de Caxias, São Gonçalo, Itaguaí',v:['Serviços','Indústria','Inovação','Portos']},
+    {id:'centrosul',n:'Centro-Sul Fluminense',p:'125,135 175,125 185,165 150,190 130,175',c:[155,155],cid:'Três Rios, Vassouras, Paraíba do Sul',v:['Logística','Agropecuária','Turismo histórico']},
+    {id:'medio',n:'Médio Paraíba',p:'10,220 20,170 75,145 125,135 130,175 110,200 95,215 55,205',c:[70,180],cid:'Volta Redonda, Resende, Barra Mansa, Valença',v:['Siderurgia','Automotivo','Metalmecânica']},
+    {id:'costa',n:'Costa Verde',p:'10,265 10,220 55,205 95,215 90,228 65,235 35,255',c:[45,232],cid:'Angra dos Reis, Paraty, Mangaratiba',v:['Turismo','Energia','Economia do mar']}
+  ];
+  const svg=$('#mapaSvg'),sel=$('#selRegiao'),info=$('#regiaoInfo'),NS='http://www.w3.org/2000/svg';
+  R.forEach(r=>{
+    const pg=document.createElementNS(NS,'polygon');
+    pg.setAttribute('points',r.p);pg.setAttribute('class','reg');pg.setAttribute('tabindex','0');pg.setAttribute('role','button');pg.setAttribute('aria-label',r.n);pg.dataset.id=r.id;
+    const t=document.createElementNS(NS,'title');t.textContent=r.n;pg.appendChild(t);
+    pg.addEventListener('click',()=>pick(r.id));
+    pg.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();pick(r.id)}});
+    svg.insertBefore(pg,svg.firstChild);
+    const d=document.createElementNS(NS,'circle');d.setAttribute('cx',r.c[0]);d.setAttribute('cy',r.c[1]);d.setAttribute('r',4.5);d.setAttribute('class','dot');svg.appendChild(d);
+    const o=document.createElement('option');o.value=r.id;o.textContent=r.n;sel.appendChild(o);
+  });
+  sel.addEventListener('change',()=>sel.value&&pick(sel.value));
+  function pick(id){
+    const r=R.find(x=>x.id===id);sel.value=id;
+    $$('.reg',svg).forEach(p=>p.classList.toggle('sel',p.dataset.id===id));
+    info.innerHTML=`<b>${r.n}</b><br><span style="color:var(--muted)">Principais municípios: ${r.cid}</span><div class="tags">${r.v.map(v=>`<span class="chip">${v}</span>`).join('')}</div><a class="link-more" href="#" style="margin-top:8px;font-size:.84rem">Ver oportunidades na região →</a>`;
+  }
+
+  /* ---------- Agenda: filtros ---------- */
+  $$('.filtros button').forEach(b=>b.addEventListener('click',()=>{
+    $$('.filtros button').forEach(x=>x.setAttribute('aria-pressed',x===b));
+    const f=b.dataset.f;$$('.evento').forEach(ev=>ev.hidden=!(f==='todos'||ev.dataset.t===f));
+  }));
+
+  /* ---------- Newsletter ---------- */
+  $('#nlForm').addEventListener('submit',e=>{e.preventDefault();$('#nlOk').style.display='block'});
+
+  /* ---------- Cookies ---------- */
+  const ck=$('#cookies');
+  if(!store.get('sedes-ck'))ck.classList.add('on');
+  $$('[data-ck]').forEach(b=>b.addEventListener('click',()=>{store.set('sedes-ck',b.dataset.ck);ck.classList.remove('on')}));
+
+  /* ---------- Revelar ao rolar + contadores ---------- */
+  const fmt=(v,d)=>v.toLocaleString('pt-BR',{minimumFractionDigits:d,maximumFractionDigits:d});
+  const count=el=>{
+    const to=+el.dataset.count,d=+el.dataset.dec,pre=el.dataset.pre||'',suf=el.dataset.suf||'',t0=performance.now();
+    const step=t=>{const k=Math.min(1,(t-t0)/1200),e=1-Math.pow(1-k,3);el.textContent=pre+fmt(to*e,d)+suf;if(k<1)requestAnimationFrame(step)};
+    requestAnimationFrame(step);
+  };
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if('IntersectionObserver' in window&&!reduce){
+    const io=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting){en.target.classList.add('in');$$('[data-count]',en.target).forEach(count);io.unobserve(en.target)}}),{threshold:.15});
+    $$('.reveal').forEach(el=>io.observe(el));
+  }else{$$('.reveal').forEach(el=>el.classList.add('in'))}
+})();
+</script>
+</body>
+</html>
