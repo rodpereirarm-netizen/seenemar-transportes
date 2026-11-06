@@ -150,6 +150,54 @@ Aprovado como melhoria. **Implementar só quando o usuário mandar.** As maquete
   - as listas existentes não mudam;
   - os estados vazios continuam como hoje: 0 PPA e 0 LOA no banco em 05/11/2026.
 
+## 3. Status geral só manual: fim da conclusão automática (decisão de 06/11/2026)
+Aprovado. **Implementar só quando o usuário mandar.**
+
+- **Problema:** a função `verificarAutoConclusao` (`index.html`) grava "Concluído" sem confirmação quando o avanço calculado pela EAP chega a 100%.
+  - Ela roda ao salvar ou excluir uma etapa e ao voltar o avanço para "automático".
+  - Durante a montagem da EAP, uma única etapa com 100% já faz o projeto valer 100%.
+  - Quando o avanço cai depois, o status não volta.
+- **Casos confirmados na auditoria, todos corrigidos à mão depois:**
+  - Projeto 21: 21/10, por 8 min;
+  - Projeto 70: 04/11, por 6 min;
+  - **Projeto 71: de 04/11 17:43 até 06/11 10:10, cerca de 40 horas;**
+  - Projeto 72: 06/11, por 5 min;
+  - Projeto 22: 06/11, por 27 min, com o avanço caindo para 56%.
+- **Efeito enquanto o projeto fica concluído por engano:** sai de crítico/atenção, para de gerar alertas de prazo e aparece como concluído nos KPIs, no Report e no ticker.
+- **Decisão:** o status geral passa a ser **só manual**.
+  - Remover a gravação automática.
+  - Nenhuma pergunta ou sugestão automática.
+  - Nenhuma mudança no banco.
+- **Testes na implementação:**
+  - montar uma EAP do zero com a primeira etapa em 100%: o status não pode mudar;
+  - excluir uma etapa, ou voltar ao avanço automático, deixando 100%: o status também não muda;
+  - a escolha manual de "Concluído" continua funcionando, incluindo a data "Concluído em".
+- **Conferido em 06/11:** os Projetos 02, 12 e 16 estão "Concluído" com 100% calculado pela EAP e estão corretos.
+  - **Observação:** a coluna antiga `projetos.avanco_fisico` (13%, 50% e 0% nesses três) não é atualizada quando o avanço vem da EAP. Ela só é usada quando o projeto não tem EAP ou nenhuma etapa tem percentual.
+
+## 4. Alerta "etapa termina depois da macroetapa" (layout aprovado em 06/11/2026)
+Aprovado. **Implementar só quando o usuário mandar.** As maquetes E1 a E5 foram feitas sobre a cópia de teste de 04/11.
+
+- **Regra:** a etapa tem fim previsto depois do fim previsto da sua macroetapa.
+  - A comparação é feita como data, não como texto.
+  - Data com ano inválido também gera alerta: por exemplo, "20206-05-15" no Projeto 41.
+- **Onde aparece:**
+  1. **EAP do projeto:**
+     - faixa laranja na macroetapa: "⚠ N etapas desta macroetapa terminam depois do fim dela (data)";
+     - aviso em cada etapa, com as duas datas e a diferença em dias ou meses.
+  2. **Ao salvar uma etapa:** aviso com a diferença e os botões "Salvar mesmo assim" e "Voltar e corrigir". **Não bloqueia o salvamento.**
+  3. **KPIs → Qualidade dos dados:**
+     - item novo "Datas da EAP", com X/N projetos sem o problema e o link "ver N com etapa fora da macroetapa ›";
+     - o link abre a lista de etapas (projeto, macroetapa, fim da etapa, fim da macroetapa e diferença), com as abas Etapas e Projetos;
+     - clicar na linha abre o projeto.
+- **Só avisa:** não muda avanço, situação, prazos nem nenhum cálculo.
+- **Situação em 06/11/2026:** 15 etapas em 7 projetos: 13, 14, 18, 22 (1.1 com fim em 20/11/2027), 27 (macroetapa 4: 8 etapas), 41 e 58 (2 etapas).
+- **Testes na implementação:**
+  - contagem igual na EAP, nos KPIs e na lista;
+  - etapa sem data, ou macroetapa sem data, não gera alerta;
+  - etapas soltas (sem macroetapa) não entram na regra;
+  - computador e celular.
+
 ## Pendências anteriores (registradas no histórico)
 - Correções de dados no banco: datas digitadas como "20206", início depois do fim, projetos marcados como manuais, projetos sem status. Exemplo: o Projeto 06 tem início 20206-07-01.
 - Mover os anexos ao renumerar um projeto.
