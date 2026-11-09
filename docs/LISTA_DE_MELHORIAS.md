@@ -307,6 +307,91 @@ Aprovado. **Implementar só quando o usuário mandar.** Maquete: imagens A0 a A7
 
 **5. Na implementação:** repetir a varredura de larguras, comparar todas as telas com a versão anterior e conferir as contagens contra uma referência calculada à parte.
 
+## 8. Relatório Gerencial Executivo no modelo novo (layout e regras aprovados em 09/11/2026)
+Modelo de referência: `Modelo_Relatorio_Gerencial_Executivo_SEDES_RJ` (PDF de 09/11/2026, 9 páginas, dados fictícios). Maquete aprovada em 09/11/2026, gerada com os dados de teste de 04/11 (outubro/2026):
+- PDF da carteira completa (12 páginas) e PDF só dos prioritários (9 páginas);
+- painel de configuração e prévia na tela;
+- seção 5 com orçamento fictício.
+
+- **Status:** aprovado. **Implementar só quando o usuário mandar.**
+- **Substitui** o Relatório Gerencial atual. Corrige três problemas que já existem:
+  - o período não filtrava os números;
+  - o rótulo "15 projetos" era fixo;
+  - o avanço médio incluía projetos sem medição.
+
+**Decisões de 09/11/2026**
+- **D1. Abrangência:** escolha na tela entre "Carteira completa" e "Somente prioritários". Só prioritários: a seção 2.3 (prioridade) sai.
+- **D2. Situação (opção B), calculada pelo sistema:**
+  - Concluídos;
+  - Em execução (em dia);
+  - Em atenção (crítico + atenção, com o número de críticos indicado);
+  - Sem dados (sem prazo final);
+  - Suspensos/cancelados (só aparece se houver).
+- **D3. Período:** livre, com duas caixas de calendário (De / Até).
+  - Atalhos: mês anterior, mês atual, trimestre anterior, ano até hoje.
+  - Começa no mês anterior. A data final não pode passar de hoje (data de corte).
+- **D4. Avaliação geral da gestão por regras objetivas.**
+  - Mesmo critério em todas as dimensões: Adequado ≥ 90%, Atenção de 70% a 89,9%, Crítico < 70%, "Sem dados" quando não há o que medir.
+  - Execução física: etapas previstas para o período que foram concluídas.
+  - Cumprimento de prazos: projetos ativos com prazo que estão em dia.
+  - Gestão de riscos: riscos Alto/Crítico com resposta registrada.
+  - Governança: projetos ativos com gerente, patrocinador e subsecretaria. Cai um nível se houver decisão pendente vencida.
+  - Monitoramento: projetos ativos com avanço atualizado há menos de 4 semanas.
+  - Qualidade dos dados (6ª dimensão, aprovada): média dos 9 itens de qualidade da aba KPIs.
+- **D5. Riscos:** registrar impacto e probabilidade (fase 2). O nível passa a sair da matriz da seção 4.2.
+- **D6. Metas e entregas:** por pilar estratégico. Meta = etapas com término previsto no período; realizado = concluídas na data de corte.
+- **D7. Fases:** as duas.
+- **D8. Arquivo:** .docx de verdade, com os gráficos dentro. A prévia na tela usa os mesmos blocos e imprime em PDF.
+- **Limites de tamanho:** riscos até 15 linhas e projetos que demandam intervenção até 20 linhas, sempre com o total informado.
+
+**Fase 1 (só o index.html, sem mudar o banco)**
+- **Capa:** número do relatório (opcional, digitado), período, emissão, data e hora de corte, abrangência e unidade responsável.
+- **Textos de abertura:** apresentação, público-alvo e sumário.
+- **1. Sumário executivo:**
+  - diagnóstico (texto livre de quem gera);
+  - destaques apurados pelo sistema;
+  - indicadores consolidados;
+  - gráfico de pizza da situação;
+  - avaliação da gestão (D4).
+- **2. Desempenho da carteira:**
+  - distribuição por situação;
+  - evolução no período: fotos semanais do início e do fim, projetos que avançaram, sem avanço e concluídos no período (pelo histórico de status);
+  - prioritários × complementares, com tabela e gráfico de barras.
+- **3. Por subsecretaria:** situação, mais etapas do período, marcos vencidos, sem atualização ≥ 4 semanas e riscos altos.
+- **4. Riscos:**
+  - riscos registrados nas etapas abertas;
+  - projetos que demandam intervenção, com motivo apurado;
+  - critérios de classificação.
+- **5. Orçamento da LOA:**
+  - exercício = ano do fim do período; mesma conta da aba KPIs;
+  - tabela, gráfico e físico × financeiro por projeto;
+  - aviso quando não houver LOA.
+- **6. Metas e entregas por pilar.**
+- **7. Plano de ação gerencial.**
+- **8. Decisões pendentes e deliberações do período.**
+- **9. Conclusão:** texto livre.
+- **10. Governança dos dados.**
+- **Anexos (opcionais):**
+  - I: checklist de fechamento apurado automaticamente (✔/✘ com contagem);
+  - II: fichas técnicas dos indicadores.
+- **Na maquete:**
+  - .docx aprovado na validação do padrão do Word;
+  - 0 erros de JavaScript;
+  - sem rolagem lateral em 1440 e 390 px.
+
+**Fase 2 (scripts no banco que o usuário roda, depois a tela)**
+- Foto mensal da situação, para a evolução mês a mês por situação.
+- Risco nas etapas: impacto, probabilidade e resposta.
+- Plano de ação gerencial: produto esperado.
+- Decisões: contexto/problema, decisão solicitada, prioridade, texto da deliberação e evidência de cumprimento.
+- Numeração automática do relatório. Opcional: guardar os textos do diagnóstico e da conclusão.
+
+**Na implementação:**
+- testes contra uma referência calculada à parte;
+- validação do .docx;
+- abrir no Word/LibreOffice;
+- regressão das demais telas contra a v46.
+
 ## Pendências anteriores (registradas no histórico)
 - Correções de dados no banco: datas digitadas como "20206", início depois do fim, projetos marcados como manuais, projetos sem status. Exemplo: o Projeto 06 tem início 20206-07-01.
 - Mover os anexos ao renumerar um projeto.
