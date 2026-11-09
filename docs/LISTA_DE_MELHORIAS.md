@@ -426,7 +426,12 @@ Modelo de referência: `Modelo_Relatorio_Gerencial_Executivo_SEDES_RJ` (PDF de 0
 - regressão das demais telas contra a v46.
 
 ## 9. Relatórios & KPIs (Governança): projetos do filtro, caderno, filtros claros e quadro "Por subsecretaria" (aprovado em 09/11/2026)
-Aprovado. **Implementar só quando o usuário mandar.** Maquete: imagens R1 a R5, com os dados de teste de 04/11.
+**ENTREGUE na v48 (09/11/2026)**: só o `index.html`, sem script no banco. Maquete: imagens R1 a R5, com os dados de teste de 04/11.
+- **Testes:**
+  - 42 de 42;
+  - .docx do Relatório Gerencial idêntico ao da v47;
+  - regressão contra a v47: 504 de 510 telas idênticas, só a tela Relatórios & KPIs mudou.
+- **Conferido no banco real:** os Projetos 34 e 37 estão com a subsecretaria correta. A diferença era só dos dados de teste.
 
 **Origem do pedido:**
 - O usuário pediu uma aba "Status Report Subsecretarias" ou um botão de busca.
