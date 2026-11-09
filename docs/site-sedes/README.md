@@ -3,8 +3,9 @@
 Reprodução em HTML estático da página inicial proposta em *Proposta_Novo_Site_SEDES_VS.2.pdf* (protótipo dos slides 6 a 9).
 Abra `index.html` direto no navegador; não precisa de build nem de servidor.
 
-- `index.html`: página única com CSS, JS e a malha do mapa embutidos
-- `img/`: imagens recortadas da própria apresentação, com o texto que vinha "queimado" nelas removido, para que o texto real do HTML fique por cima
+- `index.html`: página única e **autossuficiente**. CSS, JS, a malha do mapa e **todas as imagens** vêm embutidos, então o arquivo funciona sozinho (enviado, anexado, aberto no celular), sem a pasta `img/`.
+- `img/`: originais das imagens, recortados da própria apresentação, com o texto que vinha "queimado" nelas removido. As fotos entram como **imagens de fundo** e os textos ficam em HTML por cima.
+- `embutir_imagens.py`: se trocar alguma foto em `img/`, rode `python3 embutir_imagens.py` para atualizar as imagens dentro do `index.html`. No CSS, use `var(--img-<nome-do-arquivo>)`.
 
 ## Fidelidade à proposta
 
