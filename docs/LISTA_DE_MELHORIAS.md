@@ -270,6 +270,43 @@ Maquete aprovada em 09/11/2026 (imagens T_*).
 - Projeção com número: 331 de 335 pontos. Planejado: 314 de 315.
 - Os 5 pontos sem número estão colados no marcador de 100%; aparecem ao passar o mouse e na tabela.
 
+## 7. Aba KPIs, quadro "Saúde da Carteira": bloco "Atualização do avanço" e correções de layout (layout aprovado em 09/11/2026)
+Aprovado. **Implementar só quando o usuário mandar.** Maquete: imagens A0 a A7, feitas sobre a v46 com os dados de teste de 04/11.
+
+**1. Bloco novo "Atualização do avanço"** (logo abaixo do donut, separado por uma linha fina)
+- **Pergunta que responde:** "posso confiar nesta foto da carteira?". A situação do donut depende do avanço registrado; projeto sem atualização há semanas pode estar com a situação errada.
+- **Barra única** com o tempo desde o último avanço registrado nas fotos semanais:
+  - verde: até 1 semana;
+  - amarelo: 2 a 3 semanas;
+  - vermelho: 4 semanas ou mais;
+  - cinza: sem foto semanal (só aparece quando houver projeto nessa situação).
+- **Legenda** no mesmo formato da legenda do donut: bolinha, nome, quantidade e %.
+- **Alerta clicável:** "⚠ N críticos ou em atenção sem avanço há 4 semanas ou mais ›", que abre a lista de projetos.
+- **Clique em qualquer faixa ou linha:** abre a lista de projetos que já existe na aba, com a data do último avanço.
+- **Base da conta:** só os projetos em execução. Concluídos, suspensos e cancelados ficam de fora.
+- **Regra das "4 semanas":** a mesma do alerta "Último avanço registrado" da projeção e da confiabilidade aprovada no item 6. É a função que já existe (`kpiUltimoAvanco`); nenhum cálculo novo de situação.
+- **Dados de teste de 04/11 (65 em execução):** 17 até 1 semana, 27 de 2 a 3 semanas, 21 com 4 ou mais, e 14 críticos ou em atenção com 4 ou mais.
+
+**2. Correção: a legenda do donut vaza (problema que já existe na v46)**
+- Com a tela entre 920 e 1220 px de largura, os números da legenda (15, 31, 22%…) saem do quadro e aparecem sobre o gráfico "Evolução".
+- Até 1360 px, os nomes da legenda quebram linha. Isso afeta notebooks de 1280 e 1366 px.
+- **Correção:** de 901 a 1379 px, o donut fica em cima (116 px) e a legenda embaixo, ocupando a largura toda.
+- De 901 a 1000 px, as linhas do bloco novo mostram só a quantidade, sem o %, para não quebrar linha.
+
+**3. Correção: rolagem lateral da página (problema que já existe na v46)**
+- Entre 920 e 1000 px, a página ganha rolagem lateral.
+- **Causa:** as caixas de ajuda ⓘ fechadas (cartão "Concluídos" e quadro "Evolução") ficam posicionadas fora da tela mesmo sem aparecer.
+- **Correção:** a caixa fechada não ocupa espaço.
+
+**4. Testes da maquete**
+- Varredura de 900 a 1600 px, de 20 em 20, mais tema claro e celular.
+- A altura dos quadros "Saúde" e "Evolução" não muda em nenhuma largura de computador (o bloco usa só o espaço vazio).
+- Nenhum texto sai do quadro e nenhuma linha da legenda quebra.
+- No celular e no tablet os quadros ficam empilhados, sem rolagem lateral.
+- Zero erros de JavaScript.
+
+**5. Na implementação:** repetir a varredura de larguras, comparar todas as telas com a versão anterior e conferir as contagens contra uma referência calculada à parte.
+
 ## Pendências anteriores (registradas no histórico)
 - Correções de dados no banco: datas digitadas como "20206", início depois do fim, projetos marcados como manuais, projetos sem status. Exemplo: o Projeto 06 tem início 20206-07-01.
 - Mover os anexos ao renumerar um projeto.
