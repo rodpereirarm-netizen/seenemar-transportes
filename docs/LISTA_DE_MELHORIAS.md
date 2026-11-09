@@ -271,7 +271,7 @@ Maquete aprovada em 09/11/2026 (imagens T_*).
 - Os 5 pontos sem número estão colados no marcador de 100%; aparecem ao passar o mouse e na tabela.
 
 ## 7. Aba KPIs, quadro "Saúde da Carteira": bloco "Atualização do avanço" e correções de layout (layout aprovado em 09/11/2026)
-Aprovado. **Implementar só quando o usuário mandar.** Maquete: imagens A0 a A7, feitas sobre a v46 com os dados de teste de 04/11.
+Aprovado e incluído na v47 (09/11/2026). **Implementar só quando o usuário mandar.** Maquete: imagens A0 a A7, feitas sobre a v46 com os dados de teste de 04/11.
 
 **1. Bloco novo "Atualização do avanço"** (logo abaixo do donut, separado por uma linha fina)
 - **Pergunta que responde:** "posso confiar nesta foto da carteira?". A situação do donut depende do avanço registrado; projeto sem atualização há semanas pode estar com a situação errada.
@@ -313,7 +313,7 @@ Modelo de referência: `Modelo_Relatorio_Gerencial_Executivo_SEDES_RJ` (PDF de 0
 - painel de configuração e prévia na tela;
 - seção 5 com orçamento fictício.
 
-- **Status:** aprovado. **Implementar só quando o usuário mandar.**
+- **Status:** aprovado. Escopo da v47 definido em 09/11/2026: fases 1 e 2. **Implementar só quando o usuário mandar.**
 - **Substitui** o Relatório Gerencial atual. Corrige três problemas que já existem:
   - o período não filtrava os números;
   - o rótulo "15 projetos" era fixo;
