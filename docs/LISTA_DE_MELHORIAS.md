@@ -425,6 +425,58 @@ Modelo de referência: `Modelo_Relatorio_Gerencial_Executivo_SEDES_RJ` (PDF de 0
 - abrir no Word/LibreOffice;
 - regressão das demais telas contra a v46.
 
+## 9. Relatórios & KPIs (Governança): projetos do filtro, caderno, filtros claros e quadro "Por subsecretaria" (aprovado em 09/11/2026)
+Aprovado. **Implementar só quando o usuário mandar.** Maquete: imagens R1 a R5, com os dados de teste de 04/11.
+
+**Origem do pedido:**
+- O usuário pediu uma aba "Status Report Subsecretarias" ou um botão de busca.
+- Na análise, os filtros já funcionam na hora, e o Consolidado com filtro de setor já é o relatório da subsecretaria.
+- O problema é a aba Individual: ela fica vazia depois de filtrar.
+- Decisão: nenhuma aba nova, nenhum botão de busca. Os filtros que já existem passam a ser aproveitados.
+
+**1. Aba Individual mostra os projetos do filtro**
+- Sem projeto escolhido, aparece uma tabela com nº, projeto, gerente, status, avanço, prazo final e situação de prazo, mais "Abrir ›".
+- Clicar abre o Status Report do projeto. Anterior e Próximo percorrem a mesma lista.
+- No celular, a tabela vira cartões.
+
+**2. Caderno dos relatórios individuais**
+- Botão "Gerar os N relatórios individuais", em **Word (.docx) e PDF pela impressão**.
+- Um único arquivo com capa (ex.: "Status Report · SUBICS · 25 projetos"), índice e um Status Report por página, na ordem da lista.
+
+**3. Filtros mais claros**
+- Rótulos visíveis: Órgão, Subsecretaria / setor, Status, Prioridade, Situação de prazo.
+- Quantidade de projetos em cada opção (ex.: "SUBICS (25)").
+- Setores sem projeto deixam de aparecer na lista.
+- Faixa "Filtro: Subsecretaria SUBICS · 25 projetos de 69" logo abaixo dos filtros.
+
+**4. Título do Consolidado conforme o filtro**
+- "Status Report Consolidado — Carteira completa" sem filtro.
+- "— SUBICS", "— SUBICS · Só prioritários" etc. com filtro.
+- Nenhuma regra de cálculo muda.
+
+**5. Quadro "Por subsecretaria" no Consolidado**
+- Aparece quando não há filtro de setor, logo abaixo dos indicadores.
+- Uma linha por setor:
+  - projetos e prioritários;
+  - em dia, vence em até 15 dias, fora do prazo, sem prazo e concluídos;
+  - suspensos, só quando houver;
+  - avanço médio só com os projetos com medição, indicando quantos ficam fora.
+- Ordem das linhas: do setor com mais projetos para o com menos, com "Sem subsecretaria" por último.
+- Linha Total no fim, igual aos indicadores de cima.
+- Clicar numa linha aplica o filtro daquele setor.
+- No celular, cada setor vira um cartão.
+
+**6. Regra da subsecretaria igual à da aba KPIs (D4)**
+- **Problema:** a tela de Relatórios usa só o nome que vem junto com o projeto. Nos dados de teste de 04/11, os Projetos 34 e 37 têm subsecretaria cadastrada, mas esse nome veio vazio. Por isso aparecem como "Sem setor" e ficam fora do filtro.
+- **Como fica:** a tela inteira (filtro, quadro e tabela) passa a usar a mesma regra da aba KPIs, que procura a subsecretaria pelo cadastro. Assim os números batem (SUBENEMAR 30, SUBICS 25, Sem subsecretaria 2).
+- **Na implementação:** conferir primeiro no banco real se o mesmo acontece no sistema publicado.
+
+**Na implementação:**
+- só o `index.html`, sem mudança no banco;
+- testes contra uma referência calculada à parte;
+- comparar as demais telas com a versão anterior;
+- conferir celular e tema claro.
+
 ## Pendências anteriores (registradas no histórico)
 - Correções de dados no banco: datas digitadas como "20206", início depois do fim, projetos marcados como manuais, projetos sem status. Exemplo: o Projeto 06 tem início 20206-07-01.
 - Mover os anexos ao renumerar um projeto.
