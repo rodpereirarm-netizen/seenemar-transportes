@@ -386,6 +386,34 @@ Modelo de referência: `Modelo_Relatorio_Gerencial_Executivo_SEDES_RJ` (PDF de 0
 - Decisões: contexto/problema, decisão solicitada, prioridade, texto da deliberação e evidência de cumprimento.
 - Numeração automática do relatório. Opcional: guardar os textos do diagnóstico e da conclusão.
 
+**Decisões da fase 2 (aprovadas em 09/11/2026)**
+- **P1. Riscos nas etapas:**
+  - entram Impacto (Baixo/Médio/Alto), Probabilidade (Baixa/Média/Alta), Resposta ao risco e Prazo da resposta;
+  - o nível é calculado pela matriz 4.2 (Alto×Alta = Crítico; Alto×Média ou Médio×Alta = Alto; Médio×Média, Alto×Baixa ou Baixo×Alta = Moderado; demais = Baixo);
+  - a "Situação do risco" antiga continua visível e vale até a etapa ser reclassificada. O script não converte os valores antigos.
+- **P2. Situação mês a mês:**
+  - a situação passa a ser gravada junto com a foto semanal que já existe; o mês usa a última foto dele;
+  - o histórico começa na v47; a primeira comparação completa será novembro × dezembro.
+- **P3. Emissão:**
+  - "Baixar rascunho" sai sem número;
+  - "Emitir relatório" reserva o próximo número do ano (001/2026…), guarda o arquivo e registra período, abrangência, textos, quem emitiu e quando;
+  - lista "Relatórios emitidos" para baixar de novo;
+  - emitem admin, PMO e executivo;
+  - o campo de número digitado sai da tela.
+- **P4. Plano de ação gerencial:**
+  - bloco novo na tela do relatório para incluir, editar e concluir ações;
+  - campos: ação, projeto, decisão de origem, responsável, prazo, produto esperado e status (A iniciar / Em andamento / Concluída / Cancelada).
+- **P5. Decisões:**
+  - o formulário ganha Contexto/problema, Decisão solicitada e Prioridade;
+  - o projeto pode ser qualquer um da carteira (prioritários primeiro);
+  - "Resolver" abre a janela "Registrar deliberação": deliberação obrigatória, evidência e data.
+- **Maquetes F1 a F6** (incluindo tema claro e celular): sem rolagem lateral e sem erros de JavaScript.
+- **Ordem de trabalho:**
+  1. script do banco (só acrescenta; testado em cópia local; com script de desfazer);
+  2. tela v47, que funciona mesmo se o script ainda não tiver sido rodado (esconde a fase 2);
+  3. testes e pacote.
+- **Ordem de aplicação:** rodar o script, conferir, publicar o index.html e recarregar.
+
 **Na implementação:**
 - testes contra uma referência calculada à parte;
 - validação do .docx;
