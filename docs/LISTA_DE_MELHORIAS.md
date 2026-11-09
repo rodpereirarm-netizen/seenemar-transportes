@@ -482,6 +482,128 @@ Modelo de referência: `Modelo_Relatorio_Gerencial_Executivo_SEDES_RJ` (PDF de 0
 - comparar as demais telas com a versão anterior;
 - conferir celular e tema claro.
 
+## 10. Análise geral do sistema: pontos de atenção e melhorias (análise de 09/11/2026)
+**Situação:** só registro. **Nenhum item autorizado.** Cada item precisa de aprovação antes de ser implementado.
+
+**Fontes da análise:**
+- avisos de segurança e desempenho do Supabase;
+- consultas de leitura no banco real em 09/11;
+- código do `index.html` v48.
+
+O site publicado no Netlify não foi conferido, porque a rede deste ambiente bloqueou o acesso.
+
+### 10.1 Pontos de atenção — prioridade alta
+1. **O código do sistema não está guardado em lugar seguro.**
+   - O `index.html` em uso (v46 a v48, mais a v49 em andamento), os scripts do banco e as baterias de teste existem só em duas cópias:
+     - na pasta temporária da sessão de trabalho, que é apagada quando a sessão encerra;
+     - nos .zip baixados.
+   - Este repositório não guarda esse sistema. Ele tem outro projeto (GT PROPAG, em React) e um `index.html` antigo, de 24/09. O `netlify.toml` também é desse outro projeto.
+   - **Proposta:** guardar no GitHub, numa pasta própria, cada versão publicada, os scripts SQL e os testes.
+2. **Banco e site em contas pessoais.**
+   - A organização do Supabase e a conta do Netlify são pessoais.
+   - Se o titular perder o acesso, o sistema fica sem dono.
+   - A migração institucional está em espera.
+3. **Sem recuperação de senha.**
+   - Não existe "Esqueci minha senha"; há só a troca de senha por quem já entrou.
+   - Quem esquece a senha depende de um admin.
+   - O estudo de senhas aguarda 5 decisões.
+4. **Cópia de segurança do banco.**
+   - A proteção contra senhas vazadas está desligada e só existe no plano pago, o que indica plano gratuito. Confirmar no painel do Supabase.
+   - No plano gratuito não há restauração do banco pelo painel.
+   - **Proposta:** exportação periódica própria.
+5. **Funções do banco que podem ser chamadas sem login.**
+   - O Supabase aponta 11 funções internas executáveis por quem não está logado:
+     - `fn_criar_perfil_padrao`, `fn_meu_ator_id`, `fn_meu_nome`, `fn_meu_perfil`;
+     - `fn_numero_automatico_projeto`, `fn_proximo_numero_projeto`;
+     - `fn_protege_prioridade_executivo`, `fn_trava_campos_projeto`, `fn_trava_data_inicio_previsto`;
+     - `fn_valida_setor_gerente`, `fn_valida_setor_responsavel`.
+   - Várias são funções de gatilho que não precisam ficar expostas. Elas não dão acesso a dados.
+   - 2 funções (`fn_rotulo_data` e `fn_valida_datas`) não fixam em qual parte do banco procuram as tabelas (`search_path`).
+   - A tabela `projeto_numero_controle` tem regras de acesso ligadas, mas nenhuma regra definida. Hoje isso bloqueia tudo, o que está correto; o Supabase só avisa.
+6. **Leitura de planilhas com biblioteca antiga.**
+   - A importação usa a SheetJS 0.18.5, que tem uma falha conhecida ao abrir arquivos .xlsx feitos para explorá-la (CVE-2023-30533).
+   - O risco é baixo, porque só usuários logados importam.
+   - **Proposta:** atualizar a biblioteca.
+7. **Versão da biblioteca do Supabase não fixada.**
+   - A tela carrega o `supabase-js@2` sem número exato.
+   - Uma atualização do fornecedor pode mudar o comportamento sem aviso.
+
+### 10.2 Pontos de atenção — dados (banco real, 09/11/2026)
+| Ponto | Situação |
+|---|---|
+| Projeto 06 | Data com ano inválido ("20206") e prazo anterior ao início |
+| Sem status geral | Projetos 56 e 57 |
+| Sem prazo final | Projetos 35, 40, 44, 48, 55, 56 e 57 |
+| Sem EAP | Projetos 35, 40, 44, 55, 56 e 57 |
+| Sem gerente | 10 projetos (34, 35, 40, 41, 44, 55, 56, 57, 59 e 64) |
+| Sem subsecretaria | Projetos 55, 59 e 71 |
+| Sem pilar | 13 projetos (01, 29, 32, 34, 35, 40, 44, 49, 50, 55, 56, 57 e 59) |
+| Sem data de início | 18 projetos |
+| Sem sponsor | 10 projetos |
+| Prazo vencido e ainda "Em Andamento" | Projetos 03, 04, 06, 07, 08, 10, 18 e 21 (o 21 venceu em 06/11) |
+| Etapas com fim real no futuro | 8 etapas, nos Projetos 05, 07, 18, 33 e 70 |
+| Etapas com início depois do fim | 2 etapas, nos Projetos 13 e 15 |
+| Etapas com fim real e abaixo de 100% | 18 |
+| Etapas sem início previsto | 18, em 8 projetos; deixam o planejado e a projeção "em degrau" (ex.: Projeto 21) |
+| Etapas sem fim previsto | 12 |
+| Etapas soltas, fora de macroetapa | 24, nos Projetos 02, 09, 38 e 59 (mantidas por decisão de 04/11) |
+| Etapas vencidas e não concluídas | 106 |
+| Coluna antiga `avanco_fisico` | Preenchida em 39 projetos e desatualizada; o sistema não a usa, mas uma consulta externa leria número errado |
+
+### 10.3 Pontos de atenção — funcionamento
+1. **Rótulos do gráfico de projeção que somem** (Projetos 14, 19 e 21): a correção v49 está pronta e testada, e aguarda aprovação das imagens.
+2. **Ferramentas novas sem uso:**
+   - plano de ação gerencial: 0 ações;
+   - decisões: 1 registrada;
+   - relatórios emitidos: 0;
+   - anexos de evidência: 1 arquivo.
+
+   Enquanto isso, o checklist e a avaliação da gestão do Relatório Gerencial mostram "0 de N".
+3. **Situação nas fotos semanais:** nenhuma foto tem a situação gravada ainda, porque a foto de 09/11 é anterior à v47.
+   - A primeira deve sair na semana de 16/11. Conferir.
+   - Se não sair, confirmar se a v47 está publicada no Netlify.
+4. **Sininho com 297 alertas:** com esse volume, os avisos deixam de ser lidos.
+5. **Uso:**
+   - 10 usuários: 5 sem entrar há mais de 30 dias e 1 que nunca entrou;
+   - só 1 usuário com perfil gerente, embora a carteira tenha vários gerentes;
+   - nenhuma delegação.
+6. **Cadastro livre de usuários:** não foi possível ler essa configuração. Confirmar no painel do Supabase que está desligado e que só o admin cria contas.
+
+### 10.4 Pontos de atenção — desempenho (prioridade baixa)
+- 48 ligações entre tabelas sem índice.
+- 10 regras de acesso que recalculam o usuário logado linha a linha.
+- 35 avisos de regras duplicadas (escrita + leitura na mesma tabela).
+- Com 73 projetos isso não pesa. Corrigir antes de a carteira crescer.
+- Banco com 19 MB. A auditoria é a maior tabela: 10.465 registros, cerca de 7 mil por mês.
+
+### 10.5 Melhorias propostas
+1. **Código versionado e testes automáticos:**
+   - cada versão publicada, os scripts e as baterias de teste no GitHub;
+   - número da versão no rodapé do sistema;
+   - regressão antes de cada publicação.
+2. **Painel "Qualidade dos dados" para o PMO:** as listas da tabela 10.2, clicáveis, com "corrigir" levando direto à ficha.
+3. **Travas de cadastro, na tela e no banco:**
+   - fim real não pode ser futuro;
+   - início não pode ser depois do fim;
+   - fim real leva a etapa a 100%;
+   - aviso ao concluir uma etapa sem anexo de evidência.
+4. **Prazo vencido:** ao abrir um projeto com prazo vencido e ainda em andamento, pedir repactuação ou mudança de status.
+5. **Recuperação de senha e convites:** pelo estudo já feito, fase 1 sem e-mail e fase 2 com e-mail institucional.
+6. **Cópia de segurança semanal** do banco (exportação), com manual de restauração.
+7. **Alertas:** resumo semanal por gerente, no lugar do sininho acumulado.
+8. **Script de segurança e desempenho do banco,** testado na cópia local antes de entregar:
+   - fechar as funções expostas sem login;
+   - fixar o `search_path` das 2 funções;
+   - criar os índices;
+   - unificar as regras de acesso duplicadas.
+9. **Coluna antiga `avanco_fisico`:** limpar, ou passar a gravar nela o valor calculado.
+10. **Bibliotecas:** fixar a versão do `supabase-js` e atualizar a SheetJS, com regressão da importação de planilhas.
+11. **Pendências antigas ainda em aberto** (detalhes em "Pendências anteriores"):
+    - importação dos 10 projetos de Energia e do Jovens do Mar;
+    - 4 pontos do Guia de Métricas;
+    - troca do GND;
+    - migração institucional.
+
 ## Pendências anteriores (registradas no histórico)
 - Correções de dados no banco: datas digitadas como "20206", início depois do fim, projetos marcados como manuais, projetos sem status. Exemplo: o Projeto 06 tem início 20206-07-01.
 - Mover os anexos ao renumerar um projeto.
