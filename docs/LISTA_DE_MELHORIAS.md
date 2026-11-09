@@ -210,6 +210,66 @@ O gerador preenche o próprio slide do modelo `pit_agro_editavel.pptx` (Book de 
 - **Testado** com limites de 1.000, 300 e 7 linhas e com uma carteira de 1.374 linhas; o avanço de todos os projetos ficou idêntico.
 - **Configurações:** na mesma versão, saiu o texto "Prioritário pela Área".
 
+## 6. Projeção mensal de avanço (modo Projeto): percentuais do planejado e ajustes (aprovado em 09/11/2026, para a v47)
+Maquete aprovada em 09/11/2026 (imagens T_*).
+- **Status:** aguardando a confirmação do usuário para começar a implementação (pedido de 09/11: "não implemente nada sem minha autorização").
+- **Escopo:** só apresentação no modo "Projeto". Nenhum cálculo muda (SPI, projeção e conclusão prevista).
+
+**1. Linha "Planejado" com percentuais**
+- Ponto no fim de cada mês, com o valor e com dica ao passar o mouse.
+- Mês a mês aparecem os dois números (projeção e planejado), mesmo quando as linhas estão próximas.
+- Onde ficam os números:
+  - projeto atrasado: planejado acima da linha e projeção abaixo;
+  - projeto adiantado: invertido.
+- Cada número tenta várias posições e nunca fica sobre outro texto, outro ponto ou uma linha.
+
+**2. Fim do plano e 100%**
+- O "100%" do planejado fica na data em que o plano chega a 100% (ex.: 15/04 no Projeto 09).
+- Se o plano terminou antes de hoje, não aparece ponto de 100% no futuro.
+- Depois de 100% não há bolinhas vazias; as linhas continuam.
+
+**3. Desvio de hoje**
+- Ponto do planejado de hoje, ligado ao ponto do realizado por um colchete.
+- No topo: "hoje 09/11 · planejado 58,9% · −7,2 p.p.", em vermelho quando atrasado e em verde quando adiantado.
+
+**4. Faixa do desvio**
+- Área colorida entre a projeção e o planejado, seguindo as duas linhas por inteiro (inclusive datas fora do fim do mês).
+- Vermelha onde a projeção está abaixo do plano, verde onde está acima. Troca de cor no cruzamento.
+- Entra na legenda como "Desvio".
+
+**5. Tabela mensal**
+- Nova linha "Diferença" (projeção − planejado, em p.p.), calculada sobre os valores exibidos com uma casa, para a conta sempre fechar.
+- Depois do fim do plano, o planejado aparece como "100%" esmaecido.
+- Nota acima da tabela: "Valores no último dia de cada mês".
+
+**6. Confiabilidade**
+- Com 4 semanas ou mais sem avanço registrado, cai para "média", com o motivo "nenhum avanço registrado há N semanas: o desempenho usado na projeção pode estar desatualizado".
+
+**7. Texto contraditório corrigido**
+- Projeto sem linha de base (confiabilidade "baixa" sem motivo listado) não mostra mais "O projeto tem linha de base na EAP e já passou do início".
+
+**8. Termo "Complementares"**
+- "Não priorizados" e "não prioritários" passam a "Complementares" em todas as telas: 12 textos visíveis, mais 1 comentário no código.
+
+  | Onde | Hoje | Passa a |
+  |---|---|---|
+  | Filtro de prioridade nos KPIs | "Não priorizados" | "Complementares" |
+  | Abas da projeção nos KPIs | "Não priorizados" | "Complementares" |
+  | Resumo do filtro nos KPIs | "Não priorizados" | "Complementares" |
+  | Frase da projeção do grupo | "não priorizados" | "complementares" |
+  | Filtros de prioridade (Report e Relatórios) | "Só não prioritários" | "Só complementares" |
+  | Rótulos do filtro escolhido | "Só não prioritários" | "Só complementares" |
+  | Indicador do relatório | "Não priorizados" | "Complementares" |
+  | Rodapé do relatório | "Não priorizados: N" | "Complementares: N" |
+
+  - Os códigos internos não mudam (`nao`, `nprio`): nada muda no banco nem nos filtros salvos.
+  - Documentos já entregues (Guia de Métricas em PDF, notas) continuam com o termo antigo até nova revisão.
+
+**9. Verificação da maquete**
+- 69 projetos, 3 larguras (1440, 1024 e 390 px): 0 falhas e 0 erros de JavaScript.
+- Projeção com número: 331 de 335 pontos. Planejado: 314 de 315.
+- Os 5 pontos sem número estão colados no marcador de 100%; aparecem ao passar o mouse e na tabela.
+
 ## Pendências anteriores (registradas no histórico)
 - Correções de dados no banco: datas digitadas como "20206", início depois do fim, projetos marcados como manuais, projetos sem status. Exemplo: o Projeto 06 tem início 20206-07-01.
 - Mover os anexos ao renumerar um projeto.
