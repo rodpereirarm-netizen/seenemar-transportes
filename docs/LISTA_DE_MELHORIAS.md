@@ -212,7 +212,7 @@ O gerador preenche o próprio slide do modelo `pit_agro_editavel.pptx` (Book de 
 
 ## 6. Projeção mensal de avanço (modo Projeto): percentuais do planejado e ajustes (aprovado em 09/11/2026, para a v47)
 Maquete aprovada em 09/11/2026 (imagens T_*).
-- **Status:** aguardando a confirmação do usuário para começar a implementação (pedido de 09/11: "não implemente nada sem minha autorização").
+- **Status:** **ENTREGUE na v47 (09/11/2026)**, com os itens 7 e 8. O termo "Complementares" também foi aplicado ao cartão "Avanço · Não Priorizados" do Dashboard.
 - **Escopo:** só apresentação no modo "Projeto". Nenhum cálculo muda (SPI, projeção e conclusão prevista).
 
 **1. Linha "Planejado" com percentuais**
@@ -271,7 +271,7 @@ Maquete aprovada em 09/11/2026 (imagens T_*).
 - Os 5 pontos sem número estão colados no marcador de 100%; aparecem ao passar o mouse e na tabela.
 
 ## 7. Aba KPIs, quadro "Saúde da Carteira": bloco "Atualização do avanço" e correções de layout (layout aprovado em 09/11/2026)
-Aprovado e incluído na v47 (09/11/2026). **Implementar só quando o usuário mandar.** Maquete: imagens A0 a A7, feitas sobre a v46 com os dados de teste de 04/11.
+**ENTREGUE na v47 (09/11/2026).** No reteste apareceu uma segunda causa da rolagem lateral entre 920 e 1000 px: o quadro vazio de orçamento (sem LOA). Foi corrigida junto. Maquete: imagens A0 a A7, feitas sobre a v46 com os dados de teste de 04/11.
 
 **1. Bloco novo "Atualização do avanço"** (logo abaixo do donut, separado por uma linha fina)
 - **Pergunta que responde:** "posso confiar nesta foto da carteira?". A situação do donut depende do avanço registrado; projeto sem atualização há semanas pode estar com a situação errada.
@@ -313,7 +313,12 @@ Modelo de referência: `Modelo_Relatorio_Gerencial_Executivo_SEDES_RJ` (PDF de 0
 - painel de configuração e prévia na tela;
 - seção 5 com orçamento fictício.
 
-- **Status:** aprovado. Escopo da v47 definido em 09/11/2026: fases 1 e 2. **Implementar só quando o usuário mandar.**
+- **Status:** **ENTREGUE na v47 (09/11/2026)**, fases 1 e 2. Pacote `ENTREGA_v47` com `index.html`, `SCRIPT_BANCO_v47.sql` (rodar antes), script de desfazer e LEIA-ME.
+  - **Testes:**
+    - banco 56 de 56;
+    - item 8: 40 de 40 no funcionamento, 28 de 28 contra referência independente e 9 de 9 na fase 2;
+    - telas: 27 de 27;
+    - regressão contra a v46: 477 de 510 telas idênticas; as 33 diferentes são só as previstas.
 - **Substitui** o Relatório Gerencial atual. Corrige três problemas que já existem:
   - o período não filtrava os números;
   - o rótulo "15 projetos" era fixo;
