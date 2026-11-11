@@ -63,9 +63,12 @@ def main(origem: Path, xlsx: Path, html: Path | None):
     # valores numéricos originais preservados quando já eram números
     for g in regs:
         if isinstance(g["Pessoas buffet (original)"], (int, float)) and g["Necessita buffet?"] != "Não":
-            eq(g["Pessoas buffet"], int(g["Pessoas buffet (original)"]), f"pessoas buffet preservado {g['ID']}")
+            eq(g["Pessoas buffet"], max(int(g["Pessoas buffet (original)"]), 30), f"pessoas buffet (mín. 30) {g['ID']}")
         if isinstance(g["Público (original)"], (int, float)):
-            eq(g["Público estimado"], int(g["Público (original)"]), f"público preservado {g['ID']}")
+            eq(g["Público estimado"], max(int(g["Público (original)"]), 30), f"público (mín. 30) {g['ID']}")
+        check(g["Público estimado"] >= 30, f"público >= 30 {g['ID']}")
+        if g["Necessita buffet?"] != "Não":
+            check(g["Pessoas buffet"] >= 30, f"buffet >= 30 {g['ID']}")
         check(g["Modalidade de buffet"] in etl.MODALIDADES_TODAS, f"modalidade válida {g['ID']}")
         check(g["Data início"].year == 2027 and g["Data fim"] >= g["Data início"], f"datas coerentes {g['ID']}")
         if g["Necessita buffet?"] == "Não":
@@ -92,9 +95,16 @@ def main(origem: Path, xlsx: Path, html: Path | None):
     # SUPCOMP (21 linhas, todas firmes): soma das pessoas
     eq(A["unidade"]["SUPCOMP"]["pessoas_firme"], 4 * 30 + 100 + 100 + 100 + 100 + 50 + 100 + 150 + 8 * 30 + 200 + 150,
        "SUPCOMP firme")
-    # SUPATI: firmes = 6 x 10 coffee + 2 x 25 brunch; condicionados = 2 x 10 + 2 x 40
-    eq(A["unidade"]["SUPATI"]["pessoas_firme"], 110, "SUPATI firme")
-    eq(A["unidade"]["SUPATI"]["pessoas_cond"], 100, "SUPATI condicionado")
+    # SUPATI (mínimo 30): firmes = 6 x 30 coffee (eram 10) + 2 x 30 brunch (eram 25);
+    # condicionados = 2 x 30 coffee (eram 10) + 2 x 40 coquetel
+    eq(A["unidade"]["SUPATI"]["pessoas_firme"], 240, "SUPATI firme")
+    eq(A["unidade"]["SUPATI"]["pessoas_cond"], 140, "SUPATI condicionado")
+    # público SUPATI: 21 reuniões/recepções abaixo de 30 sobem para 30; anúncio 2 x 40
+    eq(A["unidade"]["SUPATI"]["publico"], 27 * 30 + 2 * 40, "SUPATI público (mín. 30)")
+    eq(sum(1 for i in issues if "abaixo do mínimo" in i["problema"]),
+       sum(1 for g in regs if isinstance(g["Público (original)"], (int, float)) and g["Público (original)"] < 30)
+       + sum(1 for g in regs if g["Necessita buffet?"] != "Não" and isinstance(g["Pessoas buffet (original)"], (int, float))
+             and g["Pessoas buffet (original)"] < 30), "nº de ajustes ao mínimo registrados")
     eq(A["unidade"]["SUPATI"]["hipoteses"], 6, "SUPATI hipóteses")
     eq(A["unidade"]["SUBINOVA"]["pessoas_firme"], 340, "SUBINOVA firme")
     eq(by["EV020"]["Data início"].month, 3, "'2º bimestre' -> março")
@@ -223,13 +233,31 @@ def main(origem: Path, xlsx: Path, html: Path | None):
     ws = wb["Agenda de Buffet"]
     n_ag = sum(g["Demanda de buffet"] in agg.COM_BUFFET for g in regs)
     eq(ws.cell(6 + n_ag, 8).value, A["kpi"]["pessoas_max"], "Agenda total pessoas")
-    datas = [by[ws.cell(r, 11).value]["Data início"] for r in range(6, 6 + n_ag)]
+    por_ref = {g["Ref. origem"]: g for g in regs}
+    eq(len(por_ref), len(regs), "Ref. origem única")
+    datas = [por_ref[ws.cell(r, 11).value]["Data início"] for r in range(6, 6 + n_ag)]
     eq(datas, sorted(datas), "Agenda ordenada por data")
     ws = wb["Base Consolidada"]
-    for r in range(5, 5 + len(regs)):
-        g = by[ws.cell(r, 1).value]
-        eq(ws.cell(r, 22).value, g["Demanda de buffet"], f"fórmula Demanda {g['ID']}")
-        eq(ws.cell(r, 12).value, g["Data início"].month, f"fórmula Mês {g['ID']}")
+    import build_xlsx
+    cab = [c.value for c in ws[4] if c.value is not None]
+    eq(cab, [c[0] for c in build_xlsx.BASE_FINAL], "colunas da Base")
+    for h in build_xlsx.COLUNAS_RETIRADAS:
+        check(h not in cab, f"coluna retirada ausente: {h}")
+    eq(len(cab), 29 - 13, "Base com 16 colunas")
+    eq(sum(1 for r in range(5, ws.max_row + 1) if ws.cell(r, 3).value), len(regs), "linhas da Base")
+    for k, g in enumerate(regs):
+        r = 5 + k
+        eq([ws.cell(r, c).value for c in (1, 2, 3, 7, 10, 16)],
+           [g["Subsecretaria"], g["Setor"], g["Nome do evento"], g["Data início"].month, g["Necessita buffet?"],
+            g["Aba / linha de origem"]], f"Base linha {g['Ref. origem']}")
+    restantes = [c.value for w in wb.worksheets for row in w.iter_rows() for c in row]
+    wbf = openpyxl.load_workbook(xlsx)
+    for w in wbf.worksheets:
+        for row in w.iter_rows():
+            for c in row:
+                if isinstance(c.value, str) and c.value.startswith("="):
+                    check(not re.search(r"\bb[A-Z]|Base Consolidada|Listas!", c.value), f"fórmula órfã {w.title}!{c.coordinate}")
+    eq(list(wbf.defined_names.keys()), [], "sem nomes definidos órfãos")
     ws = wb["Notas Metodológicas"]
     r = achar_linha(ws, 1, "TOTAL")
     eq(ws.cell(r, 4).value, "Confere com a Base Consolidada", "Notas: contagem confere")

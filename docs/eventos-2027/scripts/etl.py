@@ -28,6 +28,7 @@ from pathlib import Path
 import openpyxl
 
 ANO = 2027
+MIN_PESSOAS = 30  # regra definida pela SEDES: todo evento é dimensionado para, no mínimo, 30 pessoas
 MESES = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"]
 MESES_EXTENSO = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho",
                  "agosto", "setembro", "outubro", "novembro", "dezembro"]
@@ -238,7 +239,7 @@ def consolidar(origem: Path):
     contagem_origem = {}
 
     def issue(reg, campo, problema, tratamento, acao):
-        issues.append(dict(id=reg["ID"], unidade=reg["Unidade remetente"], evento=reg["Nome do evento"],
+        issues.append(dict(id=reg["ID"], ref=reg["Ref. origem"], unidade=reg["Unidade remetente"], evento=reg["Nome do evento"],
                            periodo=reg["Data/período (original)"], campo=campo, problema=problema,
                            tratamento=tratamento, acao=acao))
 
@@ -265,6 +266,7 @@ def consolidar(origem: Path):
                 "Unidade remetente": unidade,
                 "Arquivo de origem": arq,
                 "Aba / linha de origem": f"{aba} / L{linha}",
+                "Ref. origem": f"{unidade} · {'Hipóteses' if aba != 'Previsão de Eventos 2027' else 'Previsão'} L{linha}",
                 "Subsecretaria / Setor (original)": setor_orig,
                 "Subsecretaria": sub,
                 "Setor": setor,
@@ -300,6 +302,16 @@ def consolidar(origem: Path):
                 pes_n = pub_n
                 issue(reg, "Pessoas buffet", "Quantidade de pessoas do buffet não informada",
                       f"Assumido igual ao público estimado ({pub_n})", "Unidade deve informar a quantidade")
+            # mínimo de 30 pessoas por evento (público e, havendo buffet, pessoas do buffet)
+            if pub_n is not None and pub_n < MIN_PESSOAS:
+                issue(reg, "Público estimado", f"Público informado ({pub_n}) abaixo do mínimo de {MIN_PESSOAS}",
+                      f"Ajustado para {MIN_PESSOAS}", "Nenhuma — regra de dimensionamento mínimo")
+                pub_n = MIN_PESSOAS
+                reg["Público estimado"] = pub_n
+            if buffet != "Não" and pes_n < MIN_PESSOAS:
+                issue(reg, "Pessoas buffet", f"Pessoas no buffet ({pes_n}) abaixo do mínimo de {MIN_PESSOAS}",
+                      f"Ajustado para {MIN_PESSOAS}", "Nenhuma — regra de dimensionamento mínimo")
+                pes_n = MIN_PESSOAS
             reg["Pessoas buffet"] = pes_n
             if buffet != "Não" and modal == "A definir":
                 issue(reg, "Modalidade de buffet", "Modalidade não definida", "Mantido como 'A definir'",

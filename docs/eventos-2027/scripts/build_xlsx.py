@@ -1,15 +1,20 @@
 """Gera a planilha consolidada do Levantamento de Eventos 2027 - SEDES/RJ.
 
 Uso: python build_xlsx.py <pasta_origem> <arquivo_saida.xlsx>
-Todas as tabelas-resumo são FÓRMULAS sobre a aba "Base Consolidada":
-qualquer correção feita na base recalcula os resumos automaticamente.
+Os resumos são calculados por fórmulas sobre uma Base técnica completa,
+recalculados pelo LibreOffice e gravados como valores; a Base entregue é a
+versão enxuta (sem as colunas retiradas a pedido da SEDES).
 """
 from __future__ import annotations
 
+import json
+import re
+import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
-from openpyxl import Workbook
+from openpyxl import Workbook, load_workbook
 from openpyxl.chart import BarChart, Reference
 from openpyxl.chart.label import DataLabelList
 from openpyxl.comments import Comment
@@ -239,7 +244,7 @@ def build_listas(wb):
 def build_painel(wb, regs, contagem):
     ws = wb.create_sheet("Painel", 0)
     cabecalho(ws, "LEVANTAMENTO DE EVENTOS 2027",
-              "Painel consolidado das 7 planilhas recebidas · valores calculados por fórmula a partir da Base Consolidada", 12)
+              "Painel consolidado das 7 planilhas recebidas · mínimo de 30 pessoas por evento · valores calculados na consolidação", 12)
     larguras(ws, {c: 14 for c in "ABCDEFGHIJKL"})
     ws.column_dimensions["A"].width = 24
     kpis = [
@@ -693,9 +698,9 @@ def build_agenda(wb, regs):
               "Lista ordenada por data de início · gerada da Base Consolidada no momento da consolidação "
               "(se a base for alterada, refazer a ordenação/filtro)", 11)
     cols = ["Mês ref.", "Data/período informado", "Tipo de período", "Subsecretaria", "Setor", "Evento",
-            "Modalidade", "Pessoas", "Demanda", "Status", "ID"]
+            "Modalidade", "Pessoas", "Demanda", "Status", "Ref. origem"]
     head(ws, 5, 1, cols, 30)
-    larguras(ws, {"A": 11, "B": 22, "C": 15, "D": 12, "E": 20, "F": 58, "G": 20, "H": 9, "I": 13, "J": 13, "K": 7})
+    larguras(ws, {"A": 11, "B": 22, "C": 15, "D": 12, "E": 20, "F": 58, "G": 20, "H": 9, "I": 13, "J": 13, "K": 22})
     lst = sorted([g for g in regs if g["Demanda de buffet"] in ("Firme", "Condicionada")],
                  key=lambda g: (g["Data início"], g["ID"]))
     mes_ant = None
@@ -704,7 +709,7 @@ def build_agenda(wb, regs):
         mes = g["Data início"].month
         vals = [etl.MESES_EXTENSO[mes - 1].capitalize(), g["Data/período (original)"], g["Tipo de período"],
                 g["Subsecretaria"], g["Setor"], g["Nome do evento"], g["Modalidade de buffet"], g["Pessoas buffet"],
-                g["Demanda de buffet"], g["Status"], g["ID"]]
+                g["Demanda de buffet"], g["Status"], g["Ref. origem"]]
         z = mes % 2 == 0
         for j, v in enumerate(vals, start=1):
             ws.cell(r, j, v)
@@ -730,13 +735,13 @@ def build_inconsistencias(wb, issues):
     cabecalho(ws, "INCONSISTÊNCIAS E TRATAMENTOS APLICADOS",
               f"{len(issues)} apontamentos · nada foi descartado: o valor original está preservado na Base Consolidada",
               8)
-    cols = ["ID", "Unidade remetente", "Evento", "Data/período", "Campo", "Problema encontrado",
+    cols = ["Ref. origem", "Unidade remetente", "Evento", "Data/período", "Campo", "Problema encontrado",
             "Tratamento aplicado na consolidação", "Ação sugerida"]
     head(ws, 5, 1, cols, 30)
-    larguras(ws, {"A": 8, "B": 13, "C": 45, "D": 18, "E": 18, "F": 50, "G": 42, "H": 38})
+    larguras(ws, {"A": 22, "B": 13, "C": 45, "D": 18, "E": 18, "F": 50, "G": 42, "H": 38})
     for k, i in enumerate(sorted(issues, key=lambda x: (x["id"], x["campo"]))):
         r = 6 + k
-        for j, key in enumerate(["id", "unidade", "evento", "periodo", "campo", "problema", "tratamento", "acao"], 1):
+        for j, key in enumerate(["ref", "unidade", "evento", "periodo", "campo", "problema", "tratamento", "acao"], 1):
             ws.cell(r, j, i[key])
             body(ws.cell(r, j), zebra=k % 2 == 1)
     ws.auto_filter.ref = f"A5:H{5 + len(issues)}"
@@ -748,15 +753,15 @@ def build_externos(wb, externos, regs):
     cabecalho(ws, "EVENTOS EXTERNOS DE REFERÊNCIA (PESQUISA SUPATI)",
               "Feiras e congressos de terceiros que originam reuniões pós-evento · não são eventos da SEDES e "
               "não entram nos totais", 9)
-    cols = list(externos[0].keys()) + ["Vínculo na Base (IDs)"]
+    cols = list(externos[0].keys()) + ["Vínculo na Base (ref. origem)"]
     head(ws, 5, 1, cols, 30)
-    larguras(ws, {"A": 26, "B": 14, "C": 22, "D": 34, "E": 12, "F": 22, "G": 40, "H": 60, "I": 16})
+    larguras(ws, {"A": 26, "B": 14, "C": 22, "D": 34, "E": 12, "F": 22, "G": 40, "H": 60, "I": 26})
     import unicodedata as u
     norm = lambda s: "".join(c for c in u.normalize("NFD", s) if u.category(c) != "Mn").lower()
     for k, e in enumerate(externos):
         r = 6 + k
         nome = norm(e["Evento externo"])
-        ids = [g["ID"] for g in regs if nome in norm(g["Nome do evento"])]
+        ids = [g["Ref. origem"] for g in regs if nome in norm(g["Nome do evento"])]
         for j, v in enumerate(list(e.values()) + [", ".join(ids)], 1):
             ws.cell(r, j, v)
             body(ws.cell(r, j), zebra=k % 2 == 1)
@@ -781,7 +786,7 @@ def build_notas(wb, contagem, regs, issues):
     ws.cell(rt, 1, "TOTAL")
     ws.cell(rt, 3, f"=SUM(C7:C{rt - 1})").number_format = NUM
     ws.cell(rt, 3).alignment = centro
-    ws.cell(rt, 4, '=IF(C' + str(rt) + '=COUNTA(bID),"Confere com a Base Consolidada","ATENÇÃO: diverge da Base")')
+    ws.cell(rt, 4, "Confere com a Base Consolidada" if sum(contagem.values()) == len(regs) else "ATENÇÃO: diverge da Base")
     linha_total(ws, rt, 1, 4)
     regras = [
         ("Ano de referência", "Todos os períodos foram interpretados como 2027."),
@@ -791,6 +796,13 @@ def build_notas(wb, contagem, regs, issues):
         ("Quantidades em texto", "'até 150 pessoas' → 150 (teto); '20-30 pessoas' → 30 (teto); '16 mil' → 16.000; "
                                  "'100 pessoas' → 100. Original preservado nas colunas '(original)'."),
         ("Buffet = Não", "Modalidade 'Não se aplica' e 0 pessoas."),
+        ("Mínimo de 30 pessoas", "Todo evento é dimensionado para, no mínimo, 30 pessoas: público estimado abaixo de 30 → 30; "
+                                 "pessoas do buffet abaixo de 30 → 30 (eventos sem buffet continuam com 0). Cada ajuste "
+                                 "está listado na aba Inconsistências. Valores originais preservados nas colunas '(original)' da Base."),
+        ("Colunas retiradas da Base", "A pedido da SEDES, a Base Consolidada não traz: ID, Unidade remetente, Categoria, "
+                                      "Data início, Data fim, Semestre, Público estimado, Público entra nos totais?, "
+                                      "Modalidade de buffet, Pessoas buffet, Status, Demanda de buffet e Formato. "
+                                      "Esses campos foram usados no cálculo dos resumos, que por isso são valores fixos."),
         ("Buffet sem quantidade", "Quando a unidade não informou as pessoas do buffet, assumiu-se o público estimado "
                                   "(apenas EV041 – Dia da Mulher)."),
         ("Grafia da modalidade", "'Coffee simples' padronizado para 'Coffee Simples' (lista oficial da aba Orientações)."),
@@ -800,15 +812,16 @@ def build_notas(wb, contagem, regs, issues):
         ("Status 'Hipótese (validar)'", "6 linhas da aba 'Hipóteses internas - validar' da SUPATI. Ficam na base, "
                                         "mas fora de todos os totais."),
         ("Demanda de buffet", "Firme = buffet Sim + status Previsto · Condicionada = buffet Sim + status Condicionado, "
-                              "ou buffet 'A definir' · Hipótese · Sem buffet. Calculada por fórmula na Base."),
+                              "ou buffet 'A definir' · Hipótese · Sem buffet."),
         ("Público", "Público das 3 feiras da SUBENEMAR (público total da feira) fica fora do total de público "
                     "(coluna 'Público entra nos totais?' = Não)."),
         ("Linhas repetidas", "Linhas idênticas da SUPDER (mesmo nome e período) foram mantidas como ocorrências "
                              "distintas e sinalizadas na aba Inconsistências para confirmação."),
         ("Nomes", "Correções de grafia (Forum→Fórum, Flumiense→Fluminense, Desevolvimento→Desenvolvimento, "
                   "as→às) e nomes do RH convertidos de CAIXA ALTA. Nada foi excluído."),
-        ("Atualização", "Resumos (Painel, Eventos por Período, Quantitativo Buffet, Necessidade Mensal) são fórmulas "
-                        f"sobre a Base (linhas 5 a {ULT}). Para incluir eventos, acrescente linhas na Base."),
+        ("Atualização", "Os resumos (Painel, Eventos por Período, Quantitativo Buffet, Necessidade Mensal) são valores "
+                        "calculados na consolidação; somas e subtotais internos continuam como fórmulas. Para incluir "
+                        "ou alterar eventos, corrija a planilha de origem e rode novamente os scripts (pasta scripts)."),
     ]
     r0 = rt + 3
     secao(ws, r0, 1, "2. Regras de padronização e cálculo")
@@ -826,6 +839,85 @@ def build_notas(wb, contagem, regs, issues):
     ws.cell(r + 1, 1, "Paleta inspirada na identidade do Governo do Estado do Rio de Janeiro (azul institucional "
                       "#002F6C, azul #0060A8, acento dourado #C9A227). Confirme com a ASCOM se houver manual "
                       "de marca específico a aplicar.").font = f_nota
+
+
+BASE_FINAL = [  # (cabeçalho, chave/função, largura, formato)
+    ("Subsecretaria", "Subsecretaria", 13, None),
+    ("Setor", "Setor", 22, None),
+    ("Nome do evento", "Nome do evento", 58, None),
+    ("Data/período (original)", "Data/período (original)", 20, None),
+    ("Tipo de período", "Tipo de período", 16, None),
+    ("Mês definido?", "Mês definido?", 13, None),
+    ("Mês ref. (nº)", lambda g: g["Data início"].month, 9, "0"),
+    ("Mês ref.", lambda g: etl.MESES[g["Data início"].month - 1], 9, None),
+    ("Trimestre", lambda g: f"T{(g['Data início'].month - 1) // 3 + 1}", 10, None),
+    ("Necessita buffet?", "Necessita buffet?", 11, None),
+    ("Observações", "Observações", 60, None),
+    ("Subsecretaria / Setor (original)", "Subsecretaria / Setor (original)", 24, None),
+    ("Público (original)", "Público (original)", 13, None),
+    ("Pessoas buffet (original)", "Pessoas buffet (original)", 13, None),
+    ("Arquivo de origem", "Arquivo de origem", 42, None),
+    ("Aba / linha de origem", "Aba / linha de origem", 32, None),
+]
+COLUNAS_RETIRADAS = ["ID", "Unidade remetente", "Categoria", "Data início", "Data fim", "Semestre", "Público estimado",
+                     "Público entra nos totais?", "Modalidade de buffet", "Pessoas buffet", "Status",
+                     "Demanda de buffet", "Formato"]
+
+
+def build_base_final(wb, regs, idx):
+    ws = wb.create_sheet("Base Consolidada", idx)
+    n = len(BASE_FINAL)
+    cabecalho(ws, "BASE CONSOLIDADA DE EVENTOS 2027",
+              f"{len(regs)} linhas · 1 linha por evento/ocorrência · valores como informados pelas unidades "
+              "(mínimo de 30 pessoas aplicado nos resumos)", n)
+    hr = 4
+    for i, (h, src, w, fmt) in enumerate(BASE_FINAL, start=1):
+        c = ws.cell(hr, i, h)
+        c.font, c.fill, c.alignment = f_head, fill(AZUL_ESC), centro
+        ws.column_dimensions[get_column_letter(i)].width = w
+    ws.row_dimensions[hr].height = 34
+    for k, g in enumerate(regs):
+        r = hr + 1 + k
+        for i, (h, src, w, fmt) in enumerate(BASE_FINAL, start=1):
+            c = ws.cell(r, i, src(g) if callable(src) else g[src])
+            c.font = f_txt
+            c.alignment = Alignment(vertical="top", wrap_text=h in ("Nome do evento", "Observações"))
+            if fmt:
+                c.number_format = fmt
+    tab = Table(displayName="tbBase", ref=f"A{hr}:{get_column_letter(n)}{hr + len(regs)}")
+    tab.tableStyleInfo = TableStyleInfo(name="TableStyleLight9", showRowStripes=True)
+    ws.add_table(tab)
+    ws.freeze_panes = "D5"
+    return ws
+
+
+_REF_BASE = re.compile(r"\bb[A-Z][A-Za-z]*\b|Base Consolidada|Listas!")
+
+
+def congelar(wb, valores):
+    """Troca por valor toda fórmula que depende da Base técnica; mantém somas internas como fórmula."""
+    n = 0
+    for ws in wb.worksheets:
+        if ws.title in ("Base Consolidada", "Listas"):
+            continue
+        for row in ws.iter_rows():
+            for c in row:
+                if isinstance(c.value, str) and c.value.startswith("=") and _REF_BASE.search(c.value):
+                    v = valores[ws.title][c.coordinate].value
+                    if v is None or (isinstance(v, str) and v.startswith("#")):
+                        raise RuntimeError(f"valor ausente/erro em {ws.title}!{c.coordinate}: {c.value}")
+                    c.value = v
+                    n += 1
+    return n
+
+
+def recalcular(path: Path):
+    script = sorted(Path("/root/.claude/skills/synced").glob("*/xlsx/scripts/recalc.py"))[0]
+    out = subprocess.run([sys.executable, str(script), str(path), "120"], capture_output=True, text=True)
+    res = json.loads(out.stdout)
+    if res.get("status") != "success":
+        raise RuntimeError(f"recalc falhou: {out.stdout}")
+    return res
 
 
 def main(origem: Path, saida: Path):
@@ -855,7 +947,29 @@ def main(origem: Path, saida: Path):
         ws.sheet_properties.pageSetUpPr.fitToPage = True
         ws.print_options.horizontalCentered = True
         ws.oddFooter.center.text = "SEDES · Levantamento de Eventos 2027 · &P/&N"
+    # 1) recalcula a versão técnica (com a Base completa) para obter os valores das fórmulas
+    with tempfile.TemporaryDirectory() as tmp:
+        tecnico = Path(tmp) / "tecnico.xlsx"
+        wb.save(tecnico)
+        recalcular(tecnico)
+        valores = load_workbook(tecnico, data_only=True)
+    # 2) congela os resumos, troca a Base pela versão enxuta e remove a infraestrutura técnica
+    congelar(wb, valores)
+    idx = wb.sheetnames.index("Base Consolidada")
+    wb.remove(wb["Base Consolidada"])
+    wb.remove(wb["Listas"])
+    for nome in list(wb.defined_names.keys()):
+        del wb.defined_names[nome]
+    base = build_base_final(wb, regs, idx)
+    base.sheet_properties.tabColor = AZUL_ESC
+    base.page_setup.orientation = "landscape"
+    base.page_setup.fitToWidth, base.page_setup.fitToHeight = 1, 0
+    base.sheet_properties.pageSetUpPr.fitToPage = True
+    base.oddFooter.center.text = "SEDES · Levantamento de Eventos 2027 · &P/&N"
+    wb.active = 0
     wb.save(saida)
+    # 3) recalcula as fórmulas restantes (somas internas) para gravar os valores no arquivo final
+    recalcular(saida)
     return regs, issues, contagem
 
 
