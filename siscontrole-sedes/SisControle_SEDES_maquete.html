@@ -6,7 +6,7 @@
 <title>SisControle SEDES</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="Maquete navegável do Sistema de Controle Interno e Auditoria da SEDES/RJ, com dados fictícios.">
-<meta name="theme-color" content="#0a2f5c">
+<meta name="theme-color" content="#101318">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Inter:wght@400;500;600;700&family=Public+Sans:wght@600;700&display=swap">
@@ -17,85 +17,50 @@
    e conteúdo em grade. Tokens abaixo concentram cor e tipografia
    (identidade Governo do Estado do RJ: azul institucional sobre neutros frios).
    ========================================================================= */
+/* Visual de "workspace" escuro: trilho de ícones à esquerda, abas de visão,
+   barra de contexto e grade de widgets densos. Tema único escuro, por escolha. */
 :root {
-  --font-display: "Public Sans", "Segoe UI", system-ui, sans-serif;
+  --font-display: "Inter", "Segoe UI", system-ui, sans-serif;
   --font-text: "Inter", "Segoe UI", system-ui, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
 
-  /* Neutros com viés azul */
-  --bg: #f3f5f9;
-  --surface: #ffffff;
-  --surface-2: #f7f9fc;
-  --surface-3: #eef2f7;
-  --line: #dde3ec;
-  --line-strong: #c7d0dd;
-  --fg: #132033;
-  --fg-2: #46566c;
-  --fg-3: #6f7f94;
+  --bg: #15181e;          /* fundo da área de trabalho */
+  --surface: #1e222a;     /* widget */
+  --surface-2: #252a33;   /* painel interno, cabeçalho de tabela */
+  --surface-3: #2c323c;
+  --line: #2e343e;
+  --line-strong: #3d4450;
+  --fg: #e7eaee;
+  --fg-2: #b4bbc6;
+  --fg-3: #858d9a;
 
-  /* Institucional */
-  --gov: #0a2f5c;          /* azul-marinho da barra lateral */
-  --gov-2: #0f3d74;
-  --gov-fg: #e8eef7;
-  --gov-fg-2: #a9bbd4;
-  --brand: #1858a8;        /* ação principal */
-  --brand-hover: #134a8f;
-  --brand-soft: #e6eef9;
+  --gov: #101318;         /* trilho e barra superior */
+  --gov-2: #1a1e25;
+  --gov-fg: #dfe3e8;
+  --gov-fg-2: #7f8794;
+  --brand: #3b82f6;
+  --brand-hover: #2f6fe0;
+  --brand-soft: #1d2a40;
   --brand-ink: #ffffff;
-  --gold: #c9a227;         /* filete do brasão */
+  --gold: #c9a227;
 
-  /* Semântica (estado — nunca usada como série) */
-  --ok: #1d7f46;      --ok-soft: #e3f3ea;
-  --warn: #9a6400;    --warn-soft: #fbf0d9;   --warn-mark: #e3a008;
-  --crit: #b4302a;    --crit-soft: #fbe7e5;   --crit-mark: #d6453d;
-  --serious: #b45309; --serious-soft: #fdeedd;
-  --info: #1858a8;    --info-soft: #e6eef9;
-  --violet: #5843b8;  --violet-soft: #eeebfa;
-  --muted-soft: #eef1f5;
-  --ok-mark: #2f9e5f;
+  --ok: #4cc777;      --ok-soft: #173223;
+  --warn: #f0b429;    --warn-soft: #3a2f12;   --warn-mark: #e0a526;
+  --crit: #f26b61;    --crit-soft: #3d1c1a;   --crit-mark: #d9443a;
+  --serious: #f08a3c; --serious-soft: #3a2614;
+  --info: #6aa6ff;    --info-soft: #1d2a40;
+  --violet: #c39af2;  --violet-soft: #2e2140;
+  --muted-soft: #2a2f38;
+  --ok-mark: #2e9e4f;
 
-  /* Séries de gráfico (categóricas, ordem fixa) */
-  --s1: #2a78d6;
-  --s2: #eb6834;
+  /* Séries (ordem fixa, validadas contra o fundo do widget) */
+  --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500; --s5: #d55181;
 
-  --radius: 10px;
-  --radius-sm: 6px;
-  --shadow: 0 1px 2px rgba(15, 35, 70, .06), 0 2px 8px rgba(15, 35, 70, .05);
-  --shadow-lg: 0 12px 40px rgba(10, 30, 60, .22);
-  --sidebar-w: 248px;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #0d1420; --surface: #141d2b; --surface-2: #182233; --surface-3: #1e2a3d;
-    --line: #26344a; --line-strong: #34465f;
-    --fg: #e6ecf5; --fg-2: #a8b6c9; --fg-3: #8293a9;
-    --gov: #08182e; --gov-2: #0f2442; --gov-fg: #e6ecf5; --gov-fg-2: #8fa5c4;
-    --brand: #4d8fe0; --brand-hover: #6aa2e8; --brand-soft: #1a2d4a; --brand-ink: #0b1626;
-    --gold: #d6b445;
-    --ok: #5cc98b; --ok-soft: #13301f; --warn: #e8b54a; --warn-soft: #33270e; --warn-mark: #d99a14;
-    --crit: #f07c74; --crit-soft: #3a1a19; --crit-mark: #e0605a;
-    --serious: #f0a35e; --serious-soft: #35220f;
-    --info: #79aaf0; --info-soft: #1a2d4a; --violet: #a99cf0; --violet-soft: #241f42;
-    --muted-soft: #1e2a3d; --ok-mark: #3fae6e;
-    --s1: #3987e5; --s2: #d95926;
-    --shadow: 0 1px 2px rgba(0,0,0,.3); --shadow-lg: 0 12px 40px rgba(0,0,0,.5);
-    color-scheme: dark;
-  }
-}
-:root[data-theme="dark"] {
-  --bg: #0d1420; --surface: #141d2b; --surface-2: #182233; --surface-3: #1e2a3d;
-  --line: #26344a; --line-strong: #34465f;
-  --fg: #e6ecf5; --fg-2: #a8b6c9; --fg-3: #8293a9;
-  --gov: #08182e; --gov-2: #0f2442; --gov-fg: #e6ecf5; --gov-fg-2: #8fa5c4;
-  --brand: #4d8fe0; --brand-hover: #6aa2e8; --brand-soft: #1a2d4a; --brand-ink: #0b1626;
-  --gold: #d6b445;
-  --ok: #5cc98b; --ok-soft: #13301f; --warn: #e8b54a; --warn-soft: #33270e; --warn-mark: #d99a14;
-  --crit: #f07c74; --crit-soft: #3a1a19; --crit-mark: #e0605a;
-  --serious: #f0a35e; --serious-soft: #35220f;
-  --info: #79aaf0; --info-soft: #1a2d4a; --violet: #a99cf0; --violet-soft: #241f42;
-  --muted-soft: #1e2a3d; --ok-mark: #3fae6e;
-  --s1: #3987e5; --s2: #d95926;
-  --shadow: 0 1px 2px rgba(0,0,0,.3); --shadow-lg: 0 12px 40px rgba(0,0,0,.5);
+  --radius: 6px;
+  --radius-sm: 4px;
+  --shadow: none;
+  --shadow-lg: 0 16px 48px rgba(0, 0, 0, .55);
+  --sidebar-w: 56px;
   color-scheme: dark;
 }
 
@@ -105,10 +70,10 @@
 html, body { height: 100%; }
 body {
   background: var(--bg); color: var(--fg);
-  font-family: var(--font-text); font-size: 14px; line-height: 1.5;
+  font-family: var(--font-text); font-size: 13px; line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
-body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 60; background: var(--surface); }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 60; background: var(--gov); }
 h1, h2, h3, h4 { font-family: var(--font-display); margin: 0; text-wrap: balance; color: var(--fg); }
 h1 { font-size: 1.55rem; font-weight: 700; letter-spacing: -.01em; }
 h2 { font-size: 1.05rem; font-weight: 650; }
@@ -129,73 +94,107 @@ button, input, select, textarea { font: inherit; color: inherit; }
 /* ---------- Estrutura ---------- */
 .app { display: grid; grid-template-columns: var(--sidebar-w) minmax(0, 1fr); min-height: 100%; }
 .sidebar {
-  background: var(--gov); color: var(--gov-fg);
-  position: sticky; top: 0; height: 100vh; overflow-y: auto;
-  display: flex; flex-direction: column;
+  background: var(--gov); color: var(--gov-fg); border-right: 1px solid var(--line);
+  position: sticky; top: 0; height: 100vh; z-index: 50;
+  display: flex; flex-direction: column; align-items: stretch;
   padding-left: env(safe-area-inset-left, 0px);
 }
-.brand { display: flex; gap: 12px; align-items: center; padding: 20px 18px 16px; border-bottom: 1px solid rgba(255,255,255,.08); }
-.brasao { width: 40px; height: 46px; flex: none; }
-.brand-name { font-family: var(--font-display); font-weight: 700; font-size: 1.02rem; line-height: 1.15; color: var(--gov-fg); }
-.brand-sub { font-size: .7rem; color: var(--gov-fg-2); line-height: 1.3; margin-top: 2px; }
-.nav { padding: 10px 10px 16px; display: flex; flex-direction: column; gap: 2px; }
-.nav-group { font-size: .66rem; letter-spacing: .1em; text-transform: uppercase; color: var(--gov-fg-2); padding: 14px 10px 6px; font-weight: 650; }
+.brand { display: grid; place-items: center; height: 52px; border-bottom: 1px solid var(--line); }
+.brand .brasao { width: 26px; height: 30px; }
+.brand-txt { display: none; }
+.nav { padding: 8px 0; display: flex; flex-direction: column; gap: 2px; flex: 1; overflow-y: auto; overflow-x: visible; }
+.nav-group { height: 1px; background: var(--line); margin: 6px 12px; font-size: 0; }
 .nav a {
-  display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 7px;
-  color: var(--gov-fg); opacity: .86; font-size: .9rem; text-decoration: none;
+  position: relative; display: flex; align-items: center; justify-content: center; gap: 10px;
+  height: 38px; margin: 0 8px; border-radius: 6px; color: var(--gov-fg-2); text-decoration: none;
 }
-.nav a:hover { background: rgba(255,255,255,.07); opacity: 1; }
-.nav a.active { background: rgba(255,255,255,.12); opacity: 1; font-weight: 600; box-shadow: inset 3px 0 0 var(--gold); }
-.nav a .ico { width: 18px; height: 18px; flex: none; opacity: .9; }
-.nav a .count { margin-left: auto; font-size: .72rem; background: rgba(255,255,255,.14); padding: 1px 7px; border-radius: 99px; font-variant-numeric: tabular-nums; }
+.nav a:hover { background: var(--gov-2); color: var(--gov-fg); text-decoration: none; }
+.nav a.active { color: #fff; background: var(--gov-2); box-shadow: inset 2px 0 0 var(--brand); }
+.nav a .ico { width: 19px; height: 19px; }
+.nav a .lbl { display: none; }
+.nav a .count { position: absolute; top: 3px; right: 2px; min-width: 15px; height: 15px; padding: 0 4px; border-radius: 8px; background: var(--surface-3); color: var(--fg); font-size: .62rem; font-weight: 700; display: grid; place-items: center; font-variant-numeric: tabular-nums; }
 .nav a .count.alert { background: var(--crit-mark); color: #fff; }
-.nav a.disabled { opacity: .5; }
-.nav a .tag { margin-left: auto; white-space: nowrap; font-size: .62rem; border: 1px solid rgba(255,255,255,.25); padding: 0 6px; border-radius: 99px; letter-spacing: .04em; }
-.sidebar-foot { margin-top: auto; padding: 14px 18px 18px; font-size: .72rem; color: var(--gov-fg-2); border-top: 1px solid rgba(255,255,255,.08); }
+.nav a .tag { display: none; }
+.nav a.disabled { opacity: .45; }
+.nav a[data-label]:hover::after, .nav a[data-label]:focus-visible::after {
+  content: attr(data-label); position: absolute; left: calc(100% + 10px); top: 50%; transform: translateY(-50%);
+  background: var(--surface-3); color: var(--fg); padding: 5px 9px; border-radius: 5px; font-size: .78rem; white-space: nowrap;
+  box-shadow: var(--shadow-lg); border: 1px solid var(--line-strong); pointer-events: none; z-index: 70;
+}
+.sidebar-foot { padding: 10px 0 14px; display: flex; flex-direction: column; align-items: center; gap: 10px; color: var(--gov-fg-2); }
+.env-tag { writing-mode: vertical-rl; transform: rotate(180deg); font-size: .62rem; letter-spacing: .14em; font-weight: 600; }
 
 .main { min-width: 0; display: flex; flex-direction: column; }
 .topbar {
   position: sticky; top: env(safe-area-inset-top, 0px); z-index: 40;
-  background: var(--surface); border-bottom: 1px solid var(--line);
-  display: flex; align-items: center; gap: 12px;
-  padding-block: 10px;
-  padding-left: max(24px, env(safe-area-inset-left, 0px)); padding-right: max(24px, env(safe-area-inset-right, 0px));
+  background: var(--gov); border-bottom: 1px solid var(--line);
+  display: flex; align-items: center; gap: 10px; height: 52px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
 }
 .menu-btn { display: none; }
-.search { flex: 1; max-width: 460px; position: relative; }
-.search input { width: 100%; height: 36px; border: 1px solid var(--line); background: var(--surface-2); border-radius: 8px; padding: 0 12px 0 34px; }
-.search .ico { position: absolute; left: 10px; top: 9px; width: 18px; height: 18px; color: var(--fg-3); }
-.topbar-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
-.role-switch { display: flex; align-items: center; gap: 8px; }
-.role-switch label { font-size: .75rem; color: var(--fg-3); white-space: nowrap; }
-.role-switch select { height: 36px; border: 1px solid var(--line-strong); border-radius: 8px; background: var(--surface); padding: 0 10px; max-width: 280px; }
-.icon-btn { position: relative; width: 36px; height: 36px; display: grid; place-items: center; border: 1px solid var(--line); background: var(--surface); border-radius: 8px; cursor: pointer; color: var(--fg-2); }
-.icon-btn:hover { background: var(--surface-3); }
-.icon-btn .ico { width: 18px; height: 18px; }
-.icon-btn .dot { position: absolute; top: -5px; right: -5px; min-width: 18px; height: 18px; border-radius: 9px; background: var(--crit-mark); color: #fff; font-size: .68rem; display: grid; place-items: center; padding: 0 4px; font-weight: 700; }
-.avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--brand-soft); color: var(--brand); display: grid; place-items: center; font-weight: 700; font-size: .8rem; flex: none; }
+.search { flex: 1; max-width: 460px; margin: 0 auto; position: relative; }
+.search input { width: 100%; height: 32px; border: 1px solid var(--line); background: var(--gov-2); border-radius: 7px; padding: 0 34px 0 34px; color: var(--fg); }
+.search input::placeholder { color: var(--fg-3); }
+.search .ico { position: absolute; left: 11px; top: 8px; width: 16px; height: 16px; color: var(--fg-3); }
+.search .kbd { position: absolute; right: 8px; top: 7px; font-size: .68rem; padding: 0 6px; background: var(--surface-3); border-color: var(--line-strong); color: var(--fg-2); }
+.topbar-right { display: flex; align-items: center; gap: 6px; }
+.icon-btn { position: relative; width: 32px; height: 32px; display: grid; place-items: center; border: 1px solid transparent; background: transparent; border-radius: 7px; cursor: pointer; color: var(--fg-2); }
+.icon-btn:hover { background: var(--gov-2); color: var(--fg); }
+.icon-btn .ico { width: 17px; height: 17px; }
+.icon-btn .dot { position: absolute; top: 1px; right: 0; min-width: 15px; height: 15px; border-radius: 8px; background: var(--crit-mark); color: #fff; font-size: .62rem; display: grid; place-items: center; padding: 0 4px; font-weight: 700; }
+.avatar { width: 30px; height: 30px; border-radius: 50%; background: transparent; border: 2px solid var(--crit-mark); color: var(--crit); display: grid; place-items: center; font-weight: 700; font-size: .72rem; flex: none; }
+
+/* Abas de visão */
+.tabbar {
+  display: flex; align-items: stretch; gap: 0; background: var(--gov); border-bottom: 1px solid var(--line);
+  padding-left: max(8px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); min-height: 38px;
+}
+.vtabs { display: flex; align-items: stretch; overflow-x: auto; min-width: 0; }
+.vtab { display: flex; align-items: center; gap: 8px; padding: 0 14px; color: var(--fg-3); text-decoration: none; font-weight: 600; font-size: .8rem; border-right: 1px solid var(--line); white-space: nowrap; }
+.vtab:hover { color: var(--fg); text-decoration: none; background: var(--gov-2); }
+.vtab.on { background: var(--bg); color: var(--fg); box-shadow: inset 0 2px 0 var(--brand); }
+.vtab.add { padding: 0 12px; }
+.tab-right { margin-left: auto; display: flex; align-items: center; gap: 10px; padding-left: 12px; white-space: nowrap; }
+.tab-right .upd { color: var(--fg-3); font-size: .76rem; }
+.tab-right .upd b { color: var(--fg-2); font-weight: 600; }
+.view-sel { height: 28px; border: 1px solid var(--line-strong); background: var(--surface-2); border-radius: 6px; padding: 0 8px; color: var(--fg); font-size: .78rem; max-width: 250px; }
+.refdate { display: flex; flex-direction: column; line-height: 1.1; font-size: .76rem; padding: 2px 8px; border: 1px solid var(--line-strong); border-radius: 6px; background: var(--surface-2); }
+.refdate small { font-size: .6rem; color: var(--fg-3); }
+
+/* Barra de contexto */
+.ctxbar {
+  display: flex; align-items: flex-end; gap: 10px; flex-wrap: wrap; background: var(--bg); border-bottom: 1px solid var(--line);
+  padding-block: 10px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.ctx { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.ctx span { font-size: .6rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--fg-3); padding-left: 2px; }
+.ctx select { height: 30px; min-width: 150px; border: 1px solid var(--line-strong); background: var(--surface); border-radius: 6px; padding: 0 8px; color: var(--fg); font-size: .8rem; }
+.ctxbar .grow { flex: 1; }
 
 .mock-banner {
-  background: var(--warn-soft); color: var(--warn); font-size: .78rem;
-  padding-block: 6px; padding-left: max(24px, env(safe-area-inset-left, 0px)); padding-right: max(24px, env(safe-area-inset-right, 0px));
+  background: var(--warn-soft); color: var(--warn); font-size: .74rem;
+  padding-block: 5px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
   border-bottom: 1px solid var(--line);
 }
 .content {
-  padding-block: 24px 48px;
-  padding-left: max(24px, env(safe-area-inset-left, 0px)); padding-right: max(24px, env(safe-area-inset-right, 0px));
-  display: flex; flex-direction: column; gap: 20px; max-width: 1440px; width: 100%;
+  padding-block: 14px 40px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: flex; flex-direction: column; gap: 12px; width: 100%;
 }
 .page-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
-.page-head .sub { color: var(--fg-2); margin-top: 4px; max-width: 70ch; }
-.crumbs { font-size: .78rem; color: var(--fg-3); margin-bottom: 6px; display: flex; gap: 6px; flex-wrap: wrap; }
+.page-head h1 { font-size: 1.25rem; }
+.page-head .sub { color: var(--fg-2); margin-top: 4px; max-width: 80ch; }
+.crumbs { font-size: .76rem; color: var(--fg-3); margin-bottom: 4px; display: flex; gap: 6px; flex-wrap: wrap; }
 .crumbs a { color: var(--fg-3); }
 .actions { display: flex; gap: 8px; flex-wrap: wrap; }
 
 /* ---------- Componentes ---------- */
 .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); min-width: 0; }
-.card-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 18px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+.card-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 9px 14px; border-bottom: 1px solid var(--line); flex-wrap: wrap; min-height: 40px; }
+.card-head h2 { font-size: .72rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--fg); display: flex; align-items: center; gap: 8px; }
+.card-head h2::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--ok-mark); flex: none; }
 .card-head .hint { font-size: .78rem; color: var(--fg-3); }
-.card-body { padding: 16px 18px; }
+.card-body { padding: 12px 14px; }
 .card-body.flush { padding: 0; }
 
 .grid { display: grid; gap: 16px; }
@@ -288,7 +287,7 @@ table.t { width: 100%; border-collapse: collapse; font-size: .875rem; }
 .tabs button .n { font-size: .72rem; background: var(--surface-3); color: var(--fg-2); padding: 0 6px; border-radius: 99px; margin-left: 6px; }
 
 /* KPIs */
-.kpis { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px; }
+.kpis { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; }
 .kpi { padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; }
 .kpi .label { font-size: .76rem; color: var(--fg-2); font-weight: 600; }
 .kpi .value { font-family: var(--font-display); font-size: 1.85rem; font-weight: 700; line-height: 1.05; font-variant-numeric: tabular-nums; letter-spacing: -.02em; }
@@ -453,32 +452,121 @@ table.t { width: 100%; border-collapse: collapse; font-size: .875rem; }
 .notif.unread { background: color-mix(in srgb, var(--brand-soft) 55%, var(--surface)); }
 .notif:last-child { border-bottom: 0; }
 
+/* ---------- Widgets do painel ---------- */
+.wgrid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.w2 { grid-column: span 2; }
+.w4 { grid-column: 1 / -1; }
+.widget { display: flex; flex-direction: column; }
+.widget .card-head { padding: 7px 10px 7px 14px; }
+.wicons { display: flex; gap: 2px; margin-left: auto; }
+.wicons button, .wicons a { width: 26px; height: 26px; display: grid; place-items: center; border: 0; background: transparent; color: var(--fg-3); border-radius: 5px; cursor: pointer; }
+.wicons button:hover, .wicons a:hover { background: var(--surface-3); color: var(--fg); }
+.wicons .ico { width: 15px; height: 15px; }
+.wbody { padding: 10px 14px 14px; display: flex; flex-direction: column; gap: 10px; flex: 1; min-width: 0; }
+.wchips { display: flex; gap: 6px; flex-wrap: wrap; }
+.wchip { font-size: .74rem; padding: 3px 10px; border-radius: 4px; background: var(--surface-2); border: 1px solid var(--line); color: var(--fg-2); white-space: nowrap; }
+.inner { background: var(--surface-2); border: 1px solid var(--line); border-radius: 5px; padding: 10px 12px; display: flex; flex-direction: column; gap: 8px; }
+.inner .eyebrow { color: var(--fg-2); }
+
+.tiles { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; }
+.tile { background: var(--surface-2); border: 1px solid var(--line); border-radius: 5px; padding: 14px 10px 12px; text-align: center; display: flex; flex-direction: column; gap: 4px; text-decoration: none; color: inherit; }
+a.tile:hover { border-color: var(--line-strong); background: var(--surface-3); text-decoration: none; }
+.tile .big { font-size: 1.75rem; font-weight: 600; line-height: 1.1; font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
+.tile .big small { font-size: .85rem; color: var(--fg-3); font-weight: 500; margin-left: 2px; }
+.tile .cap { font-size: .76rem; color: var(--fg-3); }
+.tile.crit .big { color: var(--crit); }
+.tile.warn .big { color: var(--warn); }
+
+.xbars { display: flex; flex-direction: column; gap: 5px; }
+.xbar { display: grid; grid-template-columns: minmax(0, 92px) minmax(0, 1fr); gap: 8px; align-items: center; font-size: .78rem; }
+.xbar .nm { text-align: right; color: var(--fg-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: var(--font-mono); font-size: .74rem; }
+.xbar .tr { display: flex; align-items: center; gap: 6px; min-width: 0; }
+.xbar .b { height: 15px; background: var(--s1); border-radius: 0 3px 3px 0; min-width: 3px; }
+.xbar .v { font-variant-numeric: tabular-nums; color: var(--fg); font-weight: 600; white-space: nowrap; }
+.xbar.hot .b { background: var(--crit-mark); display: flex; justify-content: flex-end; align-items: center; padding-right: 6px; color: #fff; font-weight: 700; font-size: .72rem; }
+
+.donut-wrap { display: grid; place-items: center; }
+.donut-wrap svg { width: 100%; max-width: 300px; height: auto; }
+.donut-wrap text { fill: var(--fg-2); font-size: 10px; font-family: var(--font-text); }
+
+.sbar { display: flex; height: 18px; border-radius: 3px; overflow: hidden; gap: 2px; background: var(--surface-3); }
+.sbar i { display: grid; place-items: center; font-style: normal; font-size: .72rem; font-weight: 700; color: #fff; min-width: 18px; }
+.legend-dots { display: flex; gap: 12px; flex-wrap: wrap; font-size: .74rem; color: var(--fg-2); }
+.legend-dots span { display: inline-flex; align-items: center; gap: 5px; }
+.legend-dots i { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+.xmark { display: inline-grid; place-items: center; width: 15px; height: 15px; border-radius: 50%; background: var(--crit-mark); color: #fff; font-size: .62rem; font-weight: 800; margin-right: 6px; }
+.okmark { background: var(--ok-mark); }
+
+.treemap { position: relative; height: 230px; border-radius: 4px; overflow: hidden; }
+.treemap .tm { position: absolute; overflow: hidden; display: grid; place-items: center; text-align: center; color: #fff; font-weight: 700; font-size: .78rem; border: 1px solid var(--surface); text-decoration: none; line-height: 1.2; }
+.treemap .tm small { display: block; font-weight: 500; font-size: .66rem; opacity: .85; }
+.treemap .tm:hover { filter: brightness(1.15); text-decoration: none; }
+
+.ladder-tools { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+table.lad { width: 100%; border-collapse: collapse; font-size: .78rem; font-variant-numeric: tabular-nums; }
+.lad th { background: var(--surface-2); color: var(--fg-2); font-weight: 600; text-align: right; padding: 6px 10px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+.lad th:first-child, .lad td:first-child { text-align: left; }
+.lad th.today { background: var(--brand); color: #fff; }
+.lad td { padding: 5px 10px; text-align: right; border-bottom: 1px solid var(--line); white-space: nowrap; color: var(--fg); }
+.lad td.today { background: color-mix(in srgb, var(--brand) 14%, transparent); }
+.lad td.z { color: var(--fg-3); }
+.lad td.late { color: var(--crit); font-weight: 700; }
+.lad tr.l0 td { background: var(--surface-2); font-weight: 700; }
+.lad tr.l0 td.today { background: color-mix(in srgb, var(--brand) 22%, var(--surface-2)); }
+.lad tr.l1 td:first-child { padding-left: 24px; }
+.lad tr.l2 td:first-child { padding-left: 46px; color: var(--fg-2); }
+.lad .tg { border: 0; background: none; color: var(--fg-2); cursor: pointer; padding: 0 4px 0 0; font-size: .7rem; }
+.lad a { color: inherit; }
+
+.gbar text { fill: var(--fg-3); font-size: 10.5px; font-family: var(--font-text); }
+.flowlist { display: flex; flex-direction: column; gap: 7px; }
+.flowrow { display: grid; grid-template-columns: minmax(0, 150px) minmax(0, 1fr) 28px; gap: 10px; align-items: center; font-size: .78rem; }
+.flowrow .nm { color: var(--fg-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.flowrow .tr { height: 8px; background: var(--surface-3); border-radius: 4px; overflow: hidden; }
+.flowrow .tr i { display: block; height: 100%; border-radius: 4px; }
+.flowrow .n { text-align: right; font-weight: 700; font-variant-numeric: tabular-nums; }
+.todo a { background: var(--surface); }
+
 /* ---------- Responsivo ---------- */
+@media (max-width: 1280px) {
+  .wgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .w2 { grid-column: 1 / -1; }
+  .tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
 @media (max-width: 1200px) {
   .kpis { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .g-main { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 960px) {
   .app { grid-template-columns: minmax(0, 1fr); }
-  .sidebar { position: fixed; inset: 0 auto 0 0; width: min(280px, 86vw); z-index: 90; transform: translateX(-102%); transition: transform .2s ease; height: 100%; }
+  .sidebar { position: fixed; inset: 0 auto 0 0; width: min(250px, 80vw); z-index: 90; transform: translateX(-102%); transition: transform .2s ease; height: 100%; }
   .sidebar.open { transform: none; box-shadow: var(--shadow-lg); }
+  .sidebar .nav a { justify-content: flex-start; padding: 0 12px; }
+  .sidebar .nav a .lbl { display: inline; }
+  .sidebar .nav a .count { position: static; margin-left: auto; }
+  .sidebar .nav a[data-label]:hover::after { display: none; }
+  .brand { justify-content: start; padding-left: 16px; display: flex; gap: 10px; }
+  .brand-txt { display: block; font-weight: 700; color: var(--gov-fg); }
   .menu-btn { display: grid; }
   .g-2, .g-3 { grid-template-columns: minmax(0, 1fr); }
   .todo { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .role-switch label { display: none; }
   .search { display: none; }
+  .topbar-right { margin-left: auto; }
+  .tab-right .upd, .refdate { display: none; }
+}
+@media (max-width: 700px) {
+  .wgrid { grid-template-columns: minmax(0, 1fr); }
+  .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ctx select { min-width: 0; width: 100%; }
+  .ctx { flex: 1 1 140px; }
 }
 @media (max-width: 620px) {
-  .topbar { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); gap: 8px; }
-  .content, .mock-banner { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
-  .content { padding-block: 18px 40px; }
   .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .dl, .form-grid { grid-template-columns: minmax(0, 1fr); }
   .ck-item .just { grid-template-columns: minmax(0, 1fr); }
-  .role-switch select { max-width: 170px; }
-  .user-chip { display: none; }
-  h1 { font-size: 1.3rem; }
-  .kpi .value { font-size: 1.5rem; }
+  .view-sel { max-width: 170px; }
+  h1 { font-size: 1.15rem; }
+  .vtab { padding: 0 10px; }
 }
 @media (prefers-reduced-motion: reduce) { .sidebar { transition: none; } }
 
@@ -550,6 +638,10 @@ const ICONS = {
   arrow: '<path d="M5 12h14M13 6l6 6-6 6"/>',
   paperclip: '<path d="m21 11-8.6 8.6a5.5 5.5 0 0 1-7.8-7.8l8.6-8.6a3.7 3.7 0 0 1 5.2 5.2l-8.6 8.6a1.8 1.8 0 0 1-2.6-2.6l8-8"/>',
   search2: '<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5M8 11h6"/>',
+  refresh: '<path d="M21 12a9 9 0 1 1-2.6-6.4L21 8"/><path d="M21 3v5h-5"/>',
+  link: '<path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/>',
+  more: '<circle cx="5" cy="12" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="19" cy="12" r="1.2"/>',
+  help: '<circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.7M12 17h.01"/>',
   stamp: '<path d="M5 22h14M19 18H5v-3a2 2 0 0 1 2-2h3l-1-5a3 3 0 1 1 6 0l-1 5h3a2 2 0 0 1 2 2z"/>',
 };
 const ico = (n) => `<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[n] || ''}</svg>`;
@@ -764,15 +856,11 @@ let ASSINATURAS = [
   { codigo: 'SEDES-9QW2-L7HN-3RCE', tipo: 'Parecer de checklist (CHK-2026-0009)', nome: 'Renata Duarte', cargo: 'Analista de Controle Interno', em: '2026-10-21 10:08', hash: '41d0e7c93ab25f6e8c1d47b0a9e36f2c58d1b7a4e09c3f6d2b8a1e5c7f40d93a' },
 ];
 
-// Série histórica fictícia para o gráfico mensal
-const MESES = ['jun', 'jul', 'ago', 'set', 'out', 'nov*'];
-const ENTRADAS = [8, 11, 9, 14, 12, 6];
-const ENCERRADOS = [6, 9, 10, 9, 13, 4];
 
 /* =========================================================================
    ESTADO E REGRAS DE VISIBILIDADE (espelham as políticas RLS propostas)
    ========================================================================= */
-const state = { userId: 'u2', route: 'inicio', q: '', filtros: { periodo: 'ano', orgao: '', area: '', origem: '', grav: '' }, pendTab: 'todas', ckTab: 'aplicacoes', admTab: 'usuarios', relTipo: 'pendencias', demFiltro: { org: '', sit: '' } };
+const state = { userId: 'u2', route: 'painel', q: '', ladAberto: new Set(['o:TCE-RJ', 'o:CGE-RJ', 'o:MPRJ', 'o:ALERJ', 'o:Checklist']), filtros: { periodo: 'ano', orgao: '', area: '', origem: '', grav: '' }, pendTab: 'todas', ckTab: 'aplicacoes', admTab: 'usuarios', relTipo: 'pendencias', demFiltro: { org: '', sit: '' } };
 try { const u = localStorage.getItem('sisc_user'); if (u && USER[u]) state.userId = u; } catch (e) { /* armazenamento indisponível */ }
 
 const eu = () => USER[state.userId];
@@ -866,55 +954,12 @@ function evidencias(it) {
 }
 
 /* =========================================================================
-   GRÁFICOS (SVG à mão; dica de passar o mouse em todas as marcas)
+   GRÁFICOS — ver widgets do painel
    ========================================================================= */
-function hbars(rows, { W = 520, labelW = 74, fmtv = (v) => v } = {}) {
-  const rh = 22, gap = 10, top = 4;
-  const H = top + rows.length * (rh + gap);
-  const max = Math.max(1, ...rows.map((r) => r.segs.reduce((a, s) => a + s.v, 0)));
-  const sc = (W - labelW - 36) / max;
-  let g = `<line x1="${labelW}" x2="${labelW}" y1="0" y2="${H - gap + 4}" class="grid-line"/>`;
-  rows.forEach((r, i) => {
-    const y = top + i * (rh + gap);
-    let x = labelW;
-    const tot = r.segs.reduce((a, s) => a + s.v, 0);
-    g += `<text x="${labelW - 8}" y="${y + rh / 2 + 4}" text-anchor="end" font-weight="600">${esc(r.label)}</text>`;
-    const vis = r.segs.filter((s) => s.v > 0);
-    vis.forEach((s, k) => {
-      const w = s.v * sc;
-      const last = k === vis.length - 1;
-      const tip = `${r.label} — ${s.name}: ${fmtv(s.v)}`;
-      g += `<rect x="${x.toFixed(1)}" y="${y}" width="${Math.max(1, w - (last ? 0 : 2)).toFixed(1)}" height="${rh}" rx="${last ? 3 : 0}" fill="${s.color}" data-tip="${esc(tip)}"/>`;
-      x += w;
-    });
-    g += `<text x="${(x + 6).toFixed(1)}" y="${y + rh / 2 + 4}" font-weight="600" style="fill:var(--fg)">${fmtv(tot)}</text>`;
-  });
-  return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Gráfico de barras">${g}</svg>`;
-}
-function lineChart(labels, series) {
-  const W = 520, H = 210, pl = 30, pr = 14, pt = 12, pb = 26;
-  const max = Math.ceil(Math.max(...series.flatMap((s) => s.data)) / 5) * 5;
-  const xs = (i) => pl + (i * (W - pl - pr)) / (labels.length - 1);
-  const ys = (v) => pt + (1 - v / max) * (H - pt - pb);
-  let g = '';
-  for (let v = 0; v <= max; v += 5) g += `<line x1="${pl}" x2="${W - pr}" y1="${ys(v)}" y2="${ys(v)}" class="grid-line"/><text x="${pl - 6}" y="${ys(v) + 4}" text-anchor="end" class="axis-label">${v}</text>`;
-  labels.forEach((l, i) => { g += `<text x="${xs(i)}" y="${H - 6}" text-anchor="middle" class="axis-label">${l}</text>`; });
-  series.forEach((s) => {
-    g += `<path d="${s.data.map((v, i) => `${i ? 'L' : 'M'}${xs(i).toFixed(1)},${ys(v).toFixed(1)}`).join('')}" fill="none" stroke="${s.color}" stroke-width="2" stroke-linejoin="round"/>`;
-    s.data.forEach((v, i) => { g += `<circle cx="${xs(i)}" cy="${ys(v)}" r="4" fill="${s.color}" stroke="var(--surface)" stroke-width="2"/>`; });
-    const li = s.data.length - 1;
-    g += `<text x="${xs(li) - 8}" y="${ys(s.data[li]) - 9}" text-anchor="end" font-weight="600" style="fill:var(--fg)">${s.data[li]}</text>`;
-  });
-  labels.forEach((l, i) => {
-    const w = (W - pl - pr) / (labels.length - 1);
-    g += `<rect class="hit" x="${xs(i) - w / 2}" y="${pt}" width="${w}" height="${H - pt - pb}" data-tip="${esc(`${l.replace('*', '')}/2026|${series.map((s) => `${s.name}: ${s.data[i]}`).join('|')}`)}"/>`;
-  });
-  return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Demandas recebidas e encerradas por mês">${g}</svg>`;
-}
-
 /* =========================================================================
    SHELL
    ========================================================================= */
+const TITULOS = { painel: 'Painel executivo', inicio: 'Minha fila', demandas: 'Demandas externas', demanda: 'Demanda', item: 'Item', pendencias: 'Pendências', prorrogacoes: 'Prorrogações', checklists: 'Checklists', aplicacao: 'Checklist', relatorios: 'Relatórios', notificacoes: 'Notificações', lixeira: 'Lixeira', trilha: 'Trilha de auditoria', admin: 'Administração', auditoria: 'Auditoria interna', riscos: 'Riscos e controles' };
 function navLinks() {
   const u = eu();
   const vis = itensVisiveis();
@@ -923,52 +968,80 @@ function navLinks() {
   const prPend = PRORROGACOES.filter((p) => p.status === 'pendente').length;
   const naoLidas = minhasNotifs().filter((n) => !n.lida).length;
   const items = [
-    ['g', 'Visão geral'],
-    ['inicio', 'Início', 'home'],
     ['painel', 'Painel executivo', 'chart'],
-    ['g', 'Acompanhamento'],
+    ['inicio', 'Minha fila', 'home'],
+    ['g'],
     ['demandas', 'Demandas externas', 'inbox'],
     ['pendencias', 'Pendências', 'list', venc ? `<span class="count alert" title="${venc} vencidas">${venc}</span>` : `<span class="count">${abertas}</span>`],
     ...(['ascoin', 'admin'].includes(u.papel) ? [['prorrogacoes', 'Prorrogações', 'clock', prPend ? `<span class="count">${prPend}</span>` : '']] : []),
-    ['g', 'Conformidade'],
     ['checklists', 'Checklists', 'checklist'],
-    ['g', 'Gestão'],
+    ['g'],
     ['relatorios', 'Relatórios', 'file'],
     ['notificacoes', 'Notificações', 'bell', naoLidas ? `<span class="count">${naoLidas}</span>` : ''],
     ...(['ascoin', 'admin'].includes(u.papel) ? [['lixeira', 'Lixeira', 'trash']] : []),
     ...(['ascoin', 'admin', 'auditoria'].includes(u.papel) ? [['trilha', 'Trilha de auditoria', 'history']] : []),
     ...(u.papel === 'admin' ? [['admin', 'Administração', 'gear']] : []),
-    ['g', 'Fase 2'],
-    ['auditoria', 'Auditoria interna', 'search2', '<span class="tag">Fase 2</span>'],
-    ['riscos', 'Riscos e controles', 'target', '<span class="tag">Fase 2</span>'],
+    ['g'],
+    ['auditoria', 'Auditoria interna (Fase 2)', 'search2'],
+    ['riscos', 'Riscos e controles (Fase 2)', 'target'],
   ];
-  const atual = state.route.split('-')[0];
-  const mapa = { demanda: 'demandas', item: 'pendencias', aplicacao: 'checklists' };
-  const ativo = mapa[atual] || atual;
-  return items.map((x) => (x[0] === 'g' ? `<div class="nav-group">${x[1]}</div>` : `<a href="#${x[0]}" class="${ativo === x[0] ? 'active' : ''} ${x[0] === 'auditoria' || x[0] === 'riscos' ? 'disabled' : ''}" ${ativo === x[0] ? 'aria-current="page"' : ''}>${ico(x[2])}<span>${x[1]}</span>${x[3] || ''}</a>`)).join('');
+  const ativo = rotaBase();
+  return items.map((x) => (x[0] === 'g' ? '<div class="nav-group" role="separator"></div>' : `<a href="#${x[0]}" data-label="${x[1]}" aria-label="${x[1]}" class="${ativo === x[0] ? 'active' : ''} ${x[0] === 'auditoria' || x[0] === 'riscos' ? 'disabled' : ''}" ${ativo === x[0] ? 'aria-current="page"' : ''}>${ico(x[2])}<span class="lbl">${x[1]}</span>${x[3] || ''}</a>`)).join('');
+}
+function rotaBase() {
+  const b = state.route.split('-')[0];
+  return { demanda: 'demandas', item: 'pendencias', aplicacao: 'checklists' }[b] || b;
+}
+function ctxBar() {
+  const f = state.filtros;
+  const topAreas = AREAS.filter((a) => ['SUBEXE', 'DGAF', 'GABSEC', 'SUBICS', 'SUBINOV', 'SUBEEM', 'CODIN', 'AGERIO'].includes(a.sigla));
+  const sel = (id, label, opts) => `<label class="ctx"><span>${label}</span><select data-filtro="${id}" id="f-${id}">${opts.map(([v, t]) => `<option value="${v}" ${f[id] === v ? 'selected' : ''}>${t}</option>`).join('')}</select></label>`;
+  return `<div class="ctxbar">
+    ${sel('orgao', 'Órgão', [['', 'Todos os órgãos'], ...ORGAOS.map((o) => [o, o])])}
+    ${sel('area', 'Área', [['', 'Todas as áreas'], ...topAreas.map((a) => [a.sigla, `${a.sigla} e subáreas`])])}
+    ${sel('periodo', 'Período', [['ano', 'Exercício 2026'], ['90', 'Últimos 90 dias'], ['30', 'Últimos 30 dias']])}
+    ${sel('origem', 'Origem', [['', 'Todas'], ['demanda_externa', 'Demanda externa'], ['checklist', 'Checklist']])}
+    ${sel('grav', 'Gravidade', [['', 'Todas'], ['4', 'Crítica'], ['3', 'Alta'], ['2', 'Média'], ['1', 'Baixa']])}
+    <span class="grow"></span>
+    <button class="btn ghost sm" data-act="limpar-filtros">Limpar filtros</button>
+    <button class="btn primary sm" data-act="add-widget">${ico('plus')}Adicionar widget</button>
+  </div>`;
 }
 function shell(content) {
   const u = eu();
   const naoLidas = minhasNotifs().filter((n) => !n.lida).length;
+  const base = rotaBase();
+  const fixas = [['painel', 'Painel executivo'], ['inicio', 'Minha fila']];
+  const abas = fixas.map(([k, t]) => `<a class="vtab ${base === k ? 'on' : ''}" href="#${k}">${t}</a>`).join('')
+    + (fixas.some(([k]) => k === base) ? '' : `<a class="vtab on" href="#${state.route}">${TITULOS[state.route.split('-')[0]] || 'Visão'}</a>`)
+    + `<button class="vtab add btn ghost" style="height:auto;border-radius:0" data-act="nova-visao" aria-label="Nova visão">${ico('plus')}</button>`;
   return `<div class="app">
     <aside class="sidebar" id="sidebar" aria-label="Menu principal">
-      <div class="brand">${BRASAO}<div><div class="brand-name">SisControle</div><div class="brand-sub">Controle Interno e Auditoria<br>SEDES · Governo do Estado do RJ</div></div></div>
+      <div class="brand">${BRASAO}<span class="brand-txt">SisControle</span></div>
       <nav class="nav">${navLinks()}</nav>
-      <div class="sidebar-foot">Maquete v0.1 · dados fictícios<br>Referência: 13/11/2026</div>
+      <div class="sidebar-foot"><span class="env-tag">SEDES · MAQUETE</span><a class="icon-btn" href="#login" aria-label="Sair" title="Sair">${ico('logout')}</a></div>
     </aside>
     <div class="main">
       <header class="topbar">
         <button class="icon-btn menu-btn" data-act="menu" aria-label="Abrir menu">${ico('menu')}</button>
-        <div class="search">${ico('search')}<input id="q" type="search" placeholder="Buscar por nº, SEI, assunto ou área" aria-label="Buscar" value="${esc(state.q)}"></div>
+        <div class="search">${ico('search')}<input id="q" type="search" placeholder="Buscar ou ir para… (nº, SEI, assunto, área)" aria-label="Buscar" value="${esc(state.q)}"><span class="kbd">/</span></div>
         <div class="topbar-right">
-          <div class="role-switch"><label for="perfil">Ver como</label>
-            <select id="perfil" data-act="perfil">${SWITCH.map((id) => `<option value="${id}" ${id === state.userId ? 'selected' : ''}>${USER[id].nome} — ${PAPEIS[USER[id].papel]}${USER[id].papel === 'ponto_focal' || USER[id].papel === 'gestor' ? ' ' + USER[id].area : ''}</option>`).join('')}</select></div>
           <a class="icon-btn" href="#notificacoes" aria-label="Notificações">${ico('bell')}${naoLidas ? `<span class="dot">${naoLidas}</span>` : ''}</a>
+          <button class="icon-btn" data-act="ajuda" aria-label="Ajuda">${ico('help')}</button>
           <div class="avatar" title="${esc(u.nome)} — ${esc(u.cargo)}">${iniciais(u.nome)}</div>
-          <a class="icon-btn" href="#login" aria-label="Sair" title="Sair">${ico('logout')}</a>
         </div>
       </header>
-      <div class="mock-banner">Maquete para validação com a ASCOIN. Os dados são fictícios e as ações não gravam nada. Troque o perfil em <b>Ver como</b> para ver o que cada papel enxerga.</div>
+      <div class="tabbar">
+        <div class="vtabs">${abas}</div>
+        <div class="tab-right">
+          <span class="upd">Atualizado há <b>3 min</b></span>
+          <select class="view-sel" id="perfil" aria-label="Ver o sistema como">${SWITCH.map((id) => `<option value="${id}" ${id === state.userId ? 'selected' : ''}>Visão: ${USER[id].nome} · ${PAPEIS[USER[id].papel]}${USER[id].papel === 'ponto_focal' || USER[id].papel === 'gestor' ? ' ' + USER[id].area : ''}</option>`).join('')}</select>
+          <span class="refdate"><small>Data de referência</small>Hoje · 13/11/2026</span>
+          <button class="icon-btn" data-act="refresh" aria-label="Atualizar">${ico('refresh')}</button>
+        </div>
+      </div>
+      ${base === 'painel' ? ctxBar() : ''}
+      <div class="mock-banner">Maquete com dados fictícios. As ações não gravam nada. Troque a <b>Visão</b> no alto para ver o que cada perfil enxerga.</div>
       <main class="content" id="content">${content}</main>
     </div>
   </div>`;
@@ -1046,7 +1119,74 @@ function filtrarPainel(lista) {
     return true;
   });
 }
+const orgaoDe = (it) => (it.origem === 'checklist' ? 'Checklist' : DEM[it.ref].org);
+const pct = (v, t) => (t ? ((v / t) * 100).toFixed(1).replace('.', ',') : '0,0');
+function widget(title, body, { cls = '', chips = [], link = '' } = {}) {
+  return `<section class="card widget ${cls}"><div class="card-head"><h2>${title}</h2><div class="wicons">${link ? `<a href="#${link}" aria-label="Abrir ${esc(title)}" title="Abrir">${ico('link')}</a>` : ''}<button data-act="w-refresh" aria-label="Atualizar widget" title="Atualizar">${ico('refresh')}</button><button data-act="w-more" aria-label="Mais opções" title="Mais opções">${ico('more')}</button></div></div><div class="wbody">${chips.length ? `<div class="wchips">${chips.map((c) => `<span class="wchip">${esc(c)}</span>`).join('')}</div>` : ''}${body}</div></section>`;
+}
+function arco(cx, cy, r0, r1, a0, a1) {
+  const p = (r, a) => `${(cx + r * Math.sin(a)).toFixed(2)},${(cy - r * Math.cos(a)).toFixed(2)}`;
+  const big = a1 - a0 > Math.PI ? 1 : 0;
+  if (a1 - a0 >= Math.PI * 2 - 1e-6) a1 = a0 + Math.PI * 2 - 1e-4;
+  return `M${p(r1, a0)}A${r1},${r1} 0 ${big} 1 ${p(r1, a1)}L${p(r0, a1)}A${r0},${r0} 0 ${big} 0 ${p(r0, a0)}Z`;
+}
+function donut(outer, inner, centro) {
+  const cx = 180, cy = 112;
+  const tot = outer.reduce((a, s) => a + s.v, 0) || 1;
+  const totI = inner.reduce((a, s) => a + s.v, 0) || 1;
+  let g = ''; let a = 0;
+  outer.forEach((s) => {
+    if (!s.v) return;
+    const da = (s.v / tot) * Math.PI * 2;
+    g += `<path d="${arco(cx, cy, 62, 92, a, a + da)}" fill="${s.color}" stroke="var(--surface)" stroke-width="2" data-tip="${esc(`${s.name}|${s.v} pendências · ${pct(s.v, tot)}%`)}"/>`;
+    const m = a + da / 2; const lx = cx + 104 * Math.sin(m); const ly = cy - 104 * Math.cos(m);
+    g += `<text x="${lx.toFixed(1)}" y="${(ly + 3).toFixed(1)}" text-anchor="${Math.sin(m) >= 0 ? 'start' : 'end'}">${esc(s.name)}: ${pct(s.v, tot)}%</text>`;
+    a += da;
+  });
+  a = 0;
+  inner.forEach((s) => {
+    if (!s.v) return;
+    const da = (s.v / totI) * Math.PI * 2;
+    g += `<path d="${arco(cx, cy, 36, 58, a, a + da)}" fill="${s.color}" stroke="var(--surface)" stroke-width="2" data-tip="${esc(`${s.name}|${s.v} pendências`)}"/>`;
+    a += da;
+  });
+  g += `<text x="${cx}" y="${cy + 2}" text-anchor="middle" style="fill:var(--fg);font-size:17px;font-weight:700">${centro}</text><text x="${cx}" y="${cy + 15}" text-anchor="middle" style="font-size:8.5px">abertas</text>`;
+  return `<div class="donut-wrap"><svg viewBox="0 0 360 224" role="img" aria-label="Pendências abertas por órgão (anel externo) e por situação de prazo (anel interno)">${g}</svg></div>`;
+}
+function treemapLayout(items, x, y, w, h, out = []) {
+  if (!items.length) return out;
+  if (items.length === 1) { out.push({ ...items[0], x, y, w, h }); return out; }
+  const tot = items.reduce((s, i) => s + i.v, 0);
+  let acc = 0; let k = 0;
+  while (k < items.length - 1 && acc + items[k].v <= tot / 2) { acc += items[k].v; k++; }
+  if (k === 0) { acc = items[0].v; k = 1; }
+  const r = acc / tot;
+  if (w >= h) { treemapLayout(items.slice(0, k), x, y, w * r, h, out); treemapLayout(items.slice(k), x + w * r, y, w * (1 - r), h, out); }
+  else { treemapLayout(items.slice(0, k), x, y, w, h * r, out); treemapLayout(items.slice(k), x, y + h * r, w, h * (1 - r), out); }
+  return out;
+}
+function gbars(grupos, series) {
+  const W = 340, H = 200, pl = 26, pr = 8, pt = 14, pb = 24;
+  const max = Math.max(5, Math.ceil(Math.max(...grupos.flatMap((g) => g.v)) / 5) * 5);
+  const ys = (v) => pt + (1 - v / max) * (H - pt - pb);
+  const gw = (W - pl - pr) / grupos.length; const bw = 14;
+  let s = '';
+  for (let v = 0; v <= max; v += max / 5) s += `<line x1="${pl}" x2="${W - pr}" y1="${ys(v)}" y2="${ys(v)}" class="grid-line"/><text x="${pl - 5}" y="${ys(v) + 3.5}" text-anchor="end">${v}</text>`;
+  grupos.forEach((g, i) => {
+    const cx = pl + gw * i + gw / 2;
+    g.v.forEach((v, k) => {
+      const x = cx - bw - 1 + k * (bw + 2);
+      s += `<path d="M${x},${ys(0)}V${ys(v) + 3}a3,3 0 0 1 3,-3h${bw - 6}a3,3 0 0 1 3,3V${ys(0)}Z" fill="${series[k].color}" data-tip="${esc(`${g.label}|${series[k].name}: ${v}`)}"/>`;
+    });
+    s += `<text x="${cx}" y="${H - 7}" text-anchor="middle">${esc(g.label)}</text>`;
+  });
+  return `<svg class="chart gbar" viewBox="0 0 ${W} ${H}" role="img" aria-label="Demandas recebidas e encerradas por órgão">${s}</svg>`;
+}
+const SIT_COR = { vencido: 'var(--crit-mark)', avencer: 'var(--warn-mark)', noprazo: 'var(--ok-mark)', encerrado: '#5b6472' };
+const ST_COR = { 'c-neutral': '#6b7482', 'c-info': 'var(--s1)', 'c-warn': 'var(--warn-mark)', 'c-violet': 'var(--violet)', 'c-ok': 'var(--ok-mark)', 'c-serious': 'var(--serious)', 'c-crit': 'var(--crit-mark)' };
+
 function viewPainel() {
+  const u = eu();
   const f = state.filtros;
   const base = filtrarPainel(itensVisiveis());
   const abertos = base.filter((i) => !isFinal(i));
@@ -1054,59 +1194,114 @@ function viewPainel() {
   const av = abertos.filter((i) => situacao(i).cls === 'avencer');
   const finais = base.filter((i) => isFinal(i) && i.status !== 'cancelada');
   const pctAt = finais.length ? Math.round((finais.filter((i) => i.status === 'atendida').length / finais.length) * 100) : 0;
-  const resp = base.filter((i) => stIdx(i.status) >= 4 && i.status !== 'devolvida' || isFinal(i));
+  const resp = base.filter((i) => (stIdx(i.status) >= 4 && i.status !== 'devolvida') || isFinal(i));
   const tmr = resp.length ? (resp.reduce((a, i) => a + diasResposta(i), 0) / resp.length).toFixed(1).replace('.', ',') : '—';
   const demsVis = DEMANDAS.filter(podeVerDemanda);
   const reinc = demsVis.filter((d) => d.reinc).length;
-  const devolTot = base.reduce((a, i) => a + i.devol, 0);
+  const chipsCtx = [f.orgao || 'Todos os órgãos', { ano: 'Exercício 2026', 90: 'Últimos 90 dias', 30: 'Últimos 30 dias' }[f.periodo]];
+  const recorte = u.papel === 'ponto_focal' || (u.papel === 'gestor' && u.area !== 'CHEGAB') ? `Recorte: ${raizVisao(u)} e subáreas` : null;
 
-  // pendências por área (unidade de topo da hierarquia, exceto SEDES)
-  const areasAbertas = [...new Set(abertos.map((i) => i.area))];
-  const rowsArea = areasAbertas.map((a) => {
-    const its = abertos.filter((i) => i.area === a);
-    return { label: a, segs: [
-      { v: its.filter((i) => situacao(i).cls === 'vencido').length, color: 'var(--crit-mark)', name: 'Vencidas' },
-      { v: its.filter((i) => situacao(i).cls === 'avencer').length, color: 'var(--warn-mark)', name: 'A vencer (até 5 dias)' },
-      { v: its.filter((i) => situacao(i).cls === 'noprazo').length, color: 'var(--ok-mark)', name: 'No prazo' },
-      { v: its.filter((i) => situacao(i).cls === 'encerrado').length, color: 'var(--line-strong)', name: 'Com a ASCOIN / em consolidação' },
-    ] };
-  }).sort((a, b) => b.segs.reduce((x, s) => x + s.v * (s.name === 'Vencidas' ? 100 : 1), 0) - a.segs.reduce((x, s) => x + s.v * (s.name === 'Vencidas' ? 100 : 1), 0));
-  const rowsOrg = ORGAOS.map((o) => ({ label: o, segs: [{ v: abertos.filter((i) => i.origem === 'demanda_externa' && DEM[i.ref].org === o).length, color: 'var(--s1)', name: 'Pendências abertas' }] })).filter((r) => r.segs[0].v > 0);
-  const chk = abertos.filter((i) => i.origem === 'checklist').length;
-  if (chk) rowsOrg.push({ label: 'Checklist', segs: [{ v: chk, color: 'var(--s1)', name: 'Pendências abertas' }] });
-  const devAreas = [...new Set(base.filter((i) => i.devol).map((i) => i.area))].map((a) => ({ label: a, segs: [{ v: base.filter((i) => i.area === a).reduce((x, i) => x + i.devol, 0), color: 'var(--s1)', name: 'Devoluções' }] })).sort((a, b) => b.segs[0].v - a.segs[0].v);
-  const topAreas = AREAS.filter((a) => ['SUBEXE', 'DGAF', 'GABSEC', 'SUBICS', 'SUBINOV', 'SUBEEM', 'CODIN', 'AGERIO'].includes(a.sigla));
-  const sel = (id, label, opts) => `<label class="field"><span>${label}</span><select data-filtro="${id}" id="f-${id}">${opts.map(([v, t]) => `<option value="${v}" ${f[id] === v ? 'selected' : ''}>${t}</option>`).join('')}</select></label>`;
+  // 1. Indicadores-chave
+  const tiles = [
+    [abertos.length, '', 'Pendências abertas', 'pendencias', ''],
+    [venc.length, '', 'Vencidas · escalonadas', 'pendencias', 'crit'],
+    [av.length, '', 'A vencer em até 5 dias', 'pendencias', 'warn'],
+    [pctAt, '%', 'Recomendações atendidas', 'relatorios', ''],
+    [tmr, 'dias', 'Tempo médio de resposta', 'relatorios', ''],
+    [reinc, `de ${demsVis.length}`, 'Demandas reincidentes', 'demandas', ''],
+  ];
+  const w1 = widget('Indicadores-chave', `<div class="tiles">${tiles.map(([v, sf, c, go, cl]) => `<a class="tile ${cl}" href="#${go}"><span class="big">${v}${sf ? `<small>${sf}</small>` : ''}</span><span class="cap">${c}</span></a>`).join('')}</div>`, { cls: 'w4' });
 
-  return `${pageHead('Painel executivo', `Visão consolidada das pendências dos órgãos de controle e dos checklists. ${eu().papel === 'ponto_focal' || (eu().papel === 'gestor' && eu().area !== 'CHEGAB') ? `<b>Recorte da sua hierarquia: ${raizVisao(eu())}.</b>` : ''}`, `<button class="btn" data-act="exportar" data-fmt="PDF">${ico('download')}PDF</button><button class="btn" data-act="exportar" data-fmt="Excel">${ico('download')}Excel</button>`)}
-  <div class="card"><div class="card-body"><div class="filters">
-    ${sel('periodo', 'Período (recebimento)', [['ano', 'Exercício 2026'], ['90', 'Últimos 90 dias'], ['30', 'Últimos 30 dias']])}
-    ${sel('orgao', 'Órgão', [['', 'Todos'], ...ORGAOS.map((o) => [o, o])])}
-    ${sel('area', 'Área (com subáreas)', [['', 'Todas'], ...topAreas.map((a) => [a.sigla, a.sigla])])}
-    ${sel('origem', 'Origem', [['', 'Todas'], ['demanda_externa', 'Demanda externa'], ['checklist', 'Checklist']])}
-    ${sel('grav', 'Gravidade', [['', 'Todas'], ['4', 'Crítica'], ['3', 'Alta'], ['2', 'Média'], ['1', 'Baixa']])}
-    <button class="btn ghost" data-act="limpar-filtros">Limpar</button>
-  </div></div></div>
-  <div class="kpis">
-    <div class="card kpi"><span class="label">Pendências abertas</span><span class="value">${abertos.length}</span><span class="foot">${base.length} itens no período</span></div>
-    <div class="card kpi crit"><span class="label">Vencidas</span><span class="value">${venc.length}</span><span class="foot">${ico('up')} escalonadas à CHEGAB</span></div>
-    <div class="card kpi warn"><span class="label">A vencer em 5 dias</span><span class="value">${av.length}</span><span class="foot">Alertas D-5 e D-2</span></div>
-    <div class="card kpi"><span class="label">Recomendações atendidas</span><span class="value">${pctAt}<small>%</small></span><span class="foot">${finais.length} encerradas no período</span></div>
-    <div class="card kpi"><span class="label">Tempo médio de resposta</span><span class="value">${tmr}<small>dias</small></span><span class="foot">Da distribuição à 1ª resposta</span></div>
-    <div class="card kpi"><span class="label">Reincidência</span><span class="value">${reinc}<small>de ${demsVis.length}</small></span><span class="foot">Demandas com tema repetido</span></div>
-  </div>
-  <div class="grid g-2">
-    <section class="card"><div class="card-head"><h2>Pendências abertas por área</h2><div class="legend"><span><i style="background:var(--crit-mark)"></i>Vencidas</span><span><i style="background:var(--warn-mark)"></i>A vencer</span><span><i style="background:var(--ok-mark)"></i>No prazo</span><span><i style="background:var(--line-strong)"></i>Com a ASCOIN</span></div></div>
-      <div class="card-body">${rowsArea.length ? hbars(rowsArea) : '<div class="empty">Sem pendências no recorte.</div>'}</div></section>
-    <section class="card"><div class="card-head"><h2>Demandas recebidas e encerradas</h2><div class="legend"><span><i class="line" style="background:var(--s1)"></i>Recebidas</span><span><i class="line" style="background:var(--s2)"></i>Encerradas</span></div></div>
-      <div class="card-body">${lineChart(MESES, [{ name: 'Recebidas', data: ENTRADAS, color: 'var(--s1)' }, { name: 'Encerradas', data: ENCERRADOS, color: 'var(--s2)' }])}<p class="small muted">* Novembro parcial, até 13/11. Série histórica ilustrativa.</p></div></section>
-    <section class="card"><div class="card-head"><h2>Pendências abertas por órgão</h2><span class="hint">Inclui itens de checklist</span></div>
-      <div class="card-body">${rowsOrg.length ? hbars(rowsOrg) : '<div class="empty">Sem pendências no recorte.</div>'}</div></section>
-    <section class="card"><div class="card-head"><h2>Devoluções por área</h2><span class="hint">${devolTot} devoluções para complementação no período</span></div>
-      <div class="card-body">${devAreas.length ? hbars(devAreas) : '<div class="empty">Nenhuma devolução no recorte.</div>'}</div></section>
-  </div>
-  <section class="card"><div class="card-head"><h2>Itens vencidos</h2><span class="hint">Ordenados pelo atraso</span></div><div class="card-body flush">${tabelaItens(venc.sort((a, b) => a.prazo.localeCompare(b.prazo)), { vazio: 'Nenhum item vencido no recorte.' })}</div></section>
-  <div class="callout info">${ico('info')}<p><b>Riscos altos</b> entram neste painel na Fase 2, com o módulo de Riscos e controles.</p></div>`;
+  // 2. Pendências por área
+  const porArea = [...new Set(abertos.map((i) => i.area))].map((a) => { const its = abertos.filter((i) => i.area === a); return { a, n: its.length, v: its.filter((i) => situacao(i).cls === 'vencido').length }; }).sort((x, y) => y.v - x.v || y.n - x.n);
+  const maxA = Math.max(1, ...porArea.map((x) => x.n));
+  const w2 = widget('Pendências por área', porArea.length ? `<div class="xbars">${porArea.slice(0, 9).map((x, i) => `<div class="xbar ${i === 0 && x.v ? 'hot' : ''}"><span class="nm" title="${esc(AREA[x.a]?.nome || x.a)}">${x.a}</span><span class="tr"><span class="b" style="width:${Math.max(6, (x.n / maxA) * 78)}%" data-tip="${esc(`${x.a}|${x.n} abertas · ${x.v} vencidas`)}">${i === 0 && x.v ? `${pct(x.n, abertos.length)} %` : ''}</span>${i === 0 && x.v ? '' : `<span class="v">${pct(x.n, abertos.length)} %</span>`}</span></div>`).join('')}</div>${porArea[0]?.v ? `<p class="small muted">Em vermelho: área com mais itens vencidos (${porArea[0].v}).</p>` : ''}` : '<div class="empty">Sem pendências no recorte.</div>', { chips: recorte ? [recorte] : chipsCtx, link: 'pendencias' });
+
+  // 3. Donut por órgão
+  const cores = ['var(--s1)', 'var(--s2)', 'var(--s3)', 'var(--s4)', 'var(--s5)'];
+  const outer = [...ORGAOS, 'Checklist'].map((o, i) => ({ name: o, v: abertos.filter((it) => orgaoDe(it) === o).length, color: cores[i] }));
+  const sits = [['vencido', 'Vencidas'], ['avencer', 'A vencer'], ['noprazo', 'No prazo'], ['encerrado', 'Com a ASCOIN / consolidação']];
+  const inner = sits.map(([k, n]) => ({ name: n, v: abertos.filter((it) => situacao(it).cls === k).length, color: SIT_COR[k] }));
+  const w3 = widget('Pendências por órgão', abertos.length ? `${donut(outer, inner, abertos.length)}<div class="legend-dots">${inner.map((s) => `<span><i style="background:${s.color}"></i>${s.name} ${s.v}</span>`).join('')}</div>` : '<div class="empty">Sem pendências no recorte.</div>', { chips: ['Anel externo: órgão', 'Anel interno: prazo'], link: 'demandas' });
+
+  // 4. Conformidade
+  const todas = APLICACOES.map((a) => ({ a, r: respostasAplicacao(a) }));
+  const ncPrevia = todas.filter((x) => x.a.momento === 'Prévia').reduce((s, x) => s + Object.values(x.r).filter((r) => r[0] === 'nao_conforme').length, 0);
+  const emPreench = APLICACOES.filter((a) => a.status !== 'assinado').length;
+  const cont = { conforme: 0, nao_conforme: 0, com_ressalva: 0, nao_se_aplica: 0, pendente: 0 };
+  todas.forEach((x) => { Object.values(x.r).forEach((r) => { cont[r[0]]++; }); cont.pendente += CK_ITENS.length - Object.keys(x.r).length; });
+  const totC = Object.values(cont).reduce((a, b) => a + b, 0);
+  const seg = (k, c) => (cont[k] ? `<i style="flex:${cont[k]};background:${c}" data-tip="${esc(`${{ conforme: 'Conforme', nao_conforme: 'Não conforme', com_ressalva: 'Com ressalva', nao_se_aplica: 'Não se aplica', pendente: 'Não avaliado' }[k]}|${cont[k]} de ${totC} itens`)}">${cont[k]}</i>` : '');
+  const w4 = widget('Conformidade', `
+    <div class="inner"><span class="eyebrow">Análise prévia</span><span>${ncPrevia ? `<span class="xmark">✕</span>${plural(ncPrevia, 'não conformidade', 'não conformidades')}` : '<span class="xmark okmark">✓</span>Sem não conformidades'}</span><span class="small muted">${plural(emPreench, 'aplicação em preenchimento', 'aplicações em preenchimento')}</span></div>
+    <div class="inner"><span class="eyebrow">Itens avaliados</span><div class="sbar">${seg('conforme', 'var(--ok-mark)')}${seg('nao_conforme', 'var(--crit-mark)')}${seg('com_ressalva', 'var(--warn-mark)')}${seg('nao_se_aplica', '#5b6472')}${seg('pendente', 'var(--surface-3)')}</div></div>
+    <div class="legend-dots"><span><i style="background:var(--ok-mark)"></i>Conforme</span><span><i style="background:var(--crit-mark)"></i>Não conforme</span><span><i style="background:var(--warn-mark)"></i>Com ressalva</span><span><i style="background:#5b6472"></i>Não se aplica</span><span><i style="background:var(--surface-3);outline:1px solid var(--line-strong)"></i>Não avaliado</span></div>`, { chips: ['Convênios · DGAF', 'Lote L-2026-04'], link: 'checklists' });
+
+  // 5. Mapa de calor
+  const tmItems = porArea.map((x) => { const its = abertos.filter((i) => i.area === x.a); const pior = its.some((i) => situacao(i).cls === 'vencido') ? 'vencido' : its.some((i) => situacao(i).cls === 'avencer') ? 'avencer' : its.some((i) => situacao(i).cls === 'noprazo') ? 'noprazo' : 'encerrado'; return { a: x.a, v: x.n, pior, nv: x.v }; }).sort((p, q) => q.v - p.v);
+  const TM_COR = { vencido: '#b8322a', avencer: '#a8721a', noprazo: '#1f7a3c', encerrado: '#24563a' };
+  const tm = treemapLayout(tmItems, 0, 0, 200, 100);
+  const w5 = widget('Mapa de calor das áreas', tmItems.length ? `<div class="treemap" role="img" aria-label="Mapa de calor: tamanho pelo número de pendências, cor pela pior situação de prazo">${tm.map((t) => `<a class="tm" href="#pendencias" style="left:${t.x / 2}%;top:${t.y}%;width:${t.w / 2}%;height:${t.h}%;background:${TM_COR[t.pior]}" data-tip="${esc(`${t.a}|${t.v} abertas · ${t.nv} vencidas`)}">${t.w > 20 && t.h > 16 ? `<span>${t.a}${t.w > 28 && t.h > 26 ? `<small>${plural(t.v, 'aberta', 'abertas')}</small>` : ''}</span>` : ''}</a>`).join('')}</div>
+    <div class="legend-dots"><span><i style="background:#b8322a"></i>Com vencidos</span><span><i style="background:#a8721a"></i>A vencer</span><span><i style="background:#1f7a3c"></i>No prazo</span><span><i style="background:#24563a"></i>Com a ASCOIN</span></div>` : '<div class="empty">Sem pendências no recorte.</div>', { chips: ['Tamanho: nº de pendências'], link: 'pendencias' });
+
+  // 6. Escada de prazos
+  const dias = [0, 1, 2, 3, 4, 5, 6].map((k) => addDias(iso(HOJE), k));
+  const comArea = abertos.filter((i) => COM_AREA.has(i.status));
+  const balde = (it) => { const n = diasAte(it.prazo); return n < 0 ? 'late' : n > 6 ? 'after' : `d${n}`; };
+  const cols = ['late', ...dias.map((_, k) => `d${k}`), 'after'];
+  const celulas = (its, lvl) => cols.map((c) => { const n = its.filter((i) => balde(i) === c).length; return `<td class="${c === 'd0' ? 'today' : ''} ${n === 0 ? 'z' : c === 'late' ? 'late' : ''}">${n}</td>`; }).join('');
+  const orgs = [...new Set(comArea.map(orgaoDe))];
+  const fechado = { has: (k) => !state.ladAberto.has(k) };
+  let linhas = '';
+  orgs.forEach((o) => {
+    const its = comArea.filter((i) => orgaoDe(i) === o); const k0 = `o:${o}`;
+    linhas += `<tr class="l0"><td><button class="tg" data-act="lad" data-key="${esc(k0)}" aria-label="Expandir ou recolher ${esc(o)}">${fechado.has(k0) ? '▸' : '▾'}</button>${esc(o)}</td>${celulas(its)}</tr>`;
+    if (fechado.has(k0)) return;
+    [...new Set(its.map((i) => i.ref))].forEach((r) => {
+      const ir = its.filter((i) => i.ref === r); const k1 = `d:${r}`;
+      const nome = r.startsWith('CHK') ? `CHK-2026-${r.slice(3)}` : `DEM-2026-${r}`;
+      linhas += `<tr class="l1"><td><button class="tg" data-act="lad" data-key="${k1}" aria-label="Expandir ou recolher ${nome}">${fechado.has(k1) ? '▸' : '▾'}</button><a href="#${r.startsWith('CHK') ? `aplicacao-${r.slice(3)}` : `demanda-${r}`}" class="mono">${nome}</a></td>${celulas(ir)}</tr>`;
+      if (!fechado.has(k1)) ir.forEach((i) => { linhas += `<tr class="l2"><td><a href="#${linkItem(i)}"><span class="mono">${i.area}</span> · /${String(i.seq).padStart(2, '0')}</a></td>${celulas([i])}</tr>`; });
+    });
+  });
+  const w6 = widget('Escada de prazos', `<div class="ladder-tools"><span class="wchip">Itens com a área</span><span class="wchip">Dias corridos</span><span class="small muted" style="margin-left:auto">Clique nos triângulos para expandir</span></div>
+    <div class="table-wrap"><table class="lad"><thead><tr><th>Referência</th><th>Vencidos</th>${dias.map((d, k) => `<th class="${k === 0 ? 'today' : ''}">${k === 0 ? 'Hoje ' : ''}${fmtCurta(d)}</th>`).join('')}<th>Após ${fmtCurta(dias[6])}</th></tr></thead><tbody>${linhas || '<tr><td colspan="10"><div class="empty">Nada com prazo correndo nas áreas.</div></td></tr>'}</tbody></table></div>`, { cls: 'w2', link: 'pendencias' });
+
+  // 7. Status das respostas
+  const catResp = (i) => (stIdx(i.status) >= 7 || isFinal(i) ? 'ok' : ['respondida_area', 'em_analise_ascoin'].includes(i.status) ? 'asc' : situacao(i).cls === 'vencido' ? 'venc' : i.status === 'devolvida' ? 'dev' : 'pend');
+  const CR = { pend: ['Aguardando área', '#5b6472'], venc: ['Vencido', 'var(--crit-mark)'], dev: ['Devolvido', 'var(--warn-mark)'], asc: ['Com a ASCOIN', 'var(--s1)'], ok: ['Concluído', 'var(--ok-mark)'] };
+  const blocos = [...new Set(base.map(orgaoDe))].map((o) => {
+    const its = base.filter((i) => orgaoDe(i) === o);
+    const c = Object.fromEntries(Object.keys(CR).map((k) => [k, its.filter((i) => catResp(i) === k).length]));
+    return `<div class="inner"><div style="display:flex;justify-content:space-between;gap:8px"><span class="eyebrow">${esc(o)}</span><span class="small muted">${ico('calendar')} hoje 07:00</span></div>${c.venc ? `<span class="small" style="color:var(--crit);font-weight:600">${plural(c.venc, 'item vencido', 'itens vencidos')}</span>` : ''}<div class="sbar">${Object.keys(CR).map((k) => (c[k] ? `<i style="flex:${c[k]};background:${CR[k][1]}" data-tip="${esc(`${o} · ${CR[k][0]}|${c[k]} itens`)}">${c[k]}</i>` : '')).join('')}</div></div>`;
+  }).join('');
+  const w7 = widget('Status das respostas', `${blocos || '<div class="empty">Sem itens no recorte.</div>'}<div class="legend-dots">${Object.values(CR).map(([n, c]) => `<span><i style="background:${c}"></i>${n}</span>`).join('')}</div>`, { chips: chipsCtx.slice(0, 1), link: 'pendencias' });
+
+  // 8. Comparativo por órgão (acumulado ilustrativo)
+  const comp = [{ label: 'TCE-RJ', v: [24, 19] }, { label: 'CGE-RJ', v: [17, 14] }, { label: 'MPRJ', v: [6, 5] }, { label: 'ALERJ', v: [5, 5] }];
+  const w8 = widget('Comparativo por órgão', `${gbars(comp, [{ name: 'Recebidas', color: 'var(--s1)' }, { name: 'Encerradas', color: 'var(--s5)' }])}<div class="legend-dots"><span><i style="background:var(--s1)"></i>Recebidas</span><span><i style="background:var(--s5)"></i>Encerradas</span><span class="muted">Acumulado 2026 · série ilustrativa</span></div>`, { chips: ['Exercício 2026'], link: 'relatorios' });
+
+  // 9. Gravidade
+  const gmax = Math.max(1, ...[4, 3, 2, 1].map((g) => abertos.filter((i) => i.grav === g).length));
+  const w9 = widget('Pendências por gravidade', `<div class="xbars">${[4, 3, 2, 1].map((g) => { const its = abertos.filter((i) => i.grav === g); const v = its.filter((i) => situacao(i).cls === 'vencido').length; const a = its.filter((i) => situacao(i).cls === 'avencer').length; const o = its.length - v - a; return `<div class="xbar" style="grid-template-columns:minmax(0,70px) minmax(0,1fr)"><span class="nm" style="font-family:var(--font-text)">${GRAV[g]}</span><span class="tr"><span class="sbar" style="height:15px;width:${Math.max(3, (its.length / gmax) * 85)}%;background:transparent">${v ? `<i style="flex:${v};background:var(--crit-mark)" data-tip="${esc(`${GRAV[g]}|${v} vencidas`)}"></i>` : ''}${a ? `<i style="flex:${a};background:var(--warn-mark)" data-tip="${esc(`${GRAV[g]}|${a} a vencer`)}"></i>` : ''}${o ? `<i style="flex:${o};background:var(--s1)" data-tip="${esc(`${GRAV[g]}|${o} demais`)}"></i>` : ''}</span><span class="v">${its.length}</span></span></div>`; }).join('')}</div>
+    <div class="legend-dots"><span><i style="background:var(--crit-mark)"></i>Vencidas</span><span><i style="background:var(--warn-mark)"></i>A vencer</span><span><i style="background:var(--s1)"></i>Demais</span></div>`, { cls: 'w2', chips: chipsCtx, link: 'pendencias' });
+
+  // 10. Situação do fluxo
+  const etapas = STATUS.filter((s) => !s.final);
+  const emax = Math.max(1, ...etapas.map((s) => abertos.filter((i) => i.status === s.cod).length));
+  const w10 = widget('Situação do fluxo', `<div class="flowlist">${etapas.map((s) => { const n = abertos.filter((i) => i.status === s.cod).length; return `<div class="flowrow"><span class="nm">${s.nome}</span><span class="tr"><i style="width:${(n / emax) * 100}%;background:${ST_COR[s.cls]}"></i></span><span class="n ${n ? '' : 'muted'}">${n}</span></div>`; }).join('')}</div>`, { cls: 'w2', chips: ['Itens abertos por status'], link: 'pendencias' });
+
+  // 11. Itens vencidos
+  const w11 = widget('Itens vencidos', tabelaItens(venc.sort((a, b) => a.prazo.localeCompare(b.prazo)), { vazio: 'Nenhum item vencido no recorte.' }), { cls: 'w4', link: 'pendencias' });
+
+  return `<h1 class="sr-only">Painel executivo</h1>
+  <div class="wgrid">${w1}${w2}${w3}${w4}${w5}${w6}${w7}${w8}${w9}${w10}${w11}
+  ${widget('Riscos altos', '<div class="inner"><span class="eyebrow">Fase 2</span><span class="small sec">Entra com o módulo de Riscos e controles. Risco residual alto ou extremo sem tratamento vira pendência.</span></div>', { link: 'riscos' })}</div>`;
+}
+
+function respostasAplicacao(a) {
+  if (a.respostas) return a.respostas;
+  return Object.fromEntries(CK_ITENS.map((q) => [q.n, a.n === '0011' ? [q.n === 7 || q.n === 11 ? 'nao_conforme' : q.n === 8 ? 'nao_se_aplica' : 'conforme', q.n === 7 ? 'CRF vencida na data da celebração.' : q.n === 11 ? 'Cronograma de desembolso ausente.' : q.n === 8 ? 'Parecer referencial da ASSJUR.' : '', `Doc. 8120${q.n}55`] : [q.n === 4 ? 'com_ressalva' : 'conforme', q.n === 4 ? 'Metas sem indicador de resultado.' : '', `Doc. 7931${q.n}08`]]));
 }
 
 function viewDemandas() {
@@ -1318,7 +1513,7 @@ function viewAplicacao(n) {
   if (!a) return semAcesso();
   const u = eu();
   const editavel = a.status === 'em_preenchimento' && ['ascoin', 'admin'].includes(u.papel);
-  const resp = a.respostas || Object.fromEntries(CK_ITENS.map((q) => [q.n, n === '0011' ? [q.n === 7 || q.n === 11 ? 'nao_conforme' : q.n === 8 ? 'nao_se_aplica' : 'conforme', q.n === 7 ? 'CRF vencida na data da celebração.' : q.n === 11 ? 'Cronograma de desembolso ausente.' : q.n === 8 ? 'Parecer referencial da ASSJUR.' : '', `Doc. 8120${q.n}55`] : [q.n === 4 ? 'com_ressalva' : 'conforme', q.n === 4 ? 'Metas sem indicador de resultado.' : '', `Doc. 7931${q.n}08`]]));
+  const resp = respostasAplicacao(a);
   const cont = { conforme: 0, nao_conforme: 0, nao_se_aplica: 0, com_ressalva: 0 };
   Object.values(resp).forEach((r) => { cont[r[0]]++; });
   const total = CK_ITENS.length;
@@ -1559,6 +1754,13 @@ const ACOES = {
   'ck-tab': (el) => { state.ckTab = el.dataset.tab; render(); },
   'adm-tab': (el) => { state.admTab = el.dataset.tab; render(); },
   'rel-tipo': (el) => { state.relTipo = el.dataset.tab; render(); },
+  lad: (el) => { const k = el.dataset.key; if (state.ladAberto.has(k)) state.ladAberto.delete(k); else state.ladAberto.add(k); render(); },
+  'add-widget': () => toast('Na versão real, cada usuário monta o próprio painel escolhendo os widgets.', 'info'),
+  'nova-visao': () => toast('Nova visão: um painel em branco para montar com widgets (simulação).', 'info'),
+  'w-refresh': () => toast('Widget atualizado.', 'refresh'),
+  'w-more': () => toast('Opções do widget: exportar, tela cheia, remover (simulação).', 'info'),
+  refresh: () => { render(); toast('Dados atualizados.', 'refresh'); },
+  ajuda: () => toast('Atalho: tecle / para buscar. Passe o mouse nos gráficos para ver os valores.', 'info'),
   'limpar-filtros': () => { state.filtros = { periodo: 'ano', orgao: '', area: '', origem: '', grav: '' }; render(); },
   'limpar-busca': () => { state.q = ''; render(); },
   exportar: (el) => toast(`${el.dataset.fmt} gerado com cabeçalho institucional e filtros aplicados (simulação).`, 'download'),
@@ -1743,8 +1945,8 @@ function render() {
   root.innerHTML = shell(html);
 }
 function rota() {
-  const h = (location.hash || '#inicio').slice(1);
-  state.route = h || 'inicio';
+  const h = (location.hash || '#painel').slice(1);
+  state.route = h || 'painel';
   fecharModal();
   render();
   window.scrollTo(0, 0);
@@ -1764,6 +1966,7 @@ document.addEventListener('click', (e) => {
   if (nav) document.getElementById('sidebar')?.classList.remove('open');
 });
 document.addEventListener('keydown', (e) => {
+  if (e.key === '/' && !e.target.matches('input,textarea,select')) { const q = document.getElementById('q'); if (q && q.offsetParent) { e.preventDefault(); q.focus(); } }
   if (e.key === 'Escape') { fecharModal(); document.getElementById('sidebar')?.classList.remove('open'); }
   if (e.key === 'Enter' && e.target.matches('tr[data-go]')) location.hash = e.target.dataset.go;
   if (e.key === 'Enter' && e.target.id === 'q') { state.q = e.target.value.trim(); if (state.route !== 'demandas') location.hash = 'pendencias'; else render(); }
