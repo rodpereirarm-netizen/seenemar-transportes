@@ -614,7 +614,7 @@ function viewPainel() {
   const pctAt = finais.length ? Math.round((finais.filter((i) => i.status === 'atendida').length / finais.length) * 100) : 0;
   const resp = base.filter((i) => (stIdx(i.status) >= 4 && i.status !== 'devolvida') || isFinal(i));
   const tmr = resp.length ? (resp.reduce((a, i) => a + diasResposta(i), 0) / resp.length).toFixed(1).replace('.', ',') : '—';
-  const demsVis = DEMANDAS.filter(podeVerDemanda);
+  const demsVis = DEMANDAS.filter((d) => podeVerDemanda(d));
   const reinc = demsVis.filter((d) => d.reinc).length;
   const chipsCtx = [f.orgao || 'Todos os órgãos', { ano: 'Exercício 2026', 90: 'Últimos 90 dias', 30: 'Últimos 30 dias' }[f.periodo]];
   const recorte = u.papel === 'ponto_focal' || (u.papel === 'gestor' && u.area !== 'CHEGAB') ? `Recorte: ${raizVisao(u)} e subáreas` : null;
@@ -725,7 +725,7 @@ function respostasAplicacao(a) {
 function viewDemandas() {
   const u = eu();
   const f = state.demFiltro;
-  let lista = DEMANDAS.filter(podeVerDemanda);
+  let lista = DEMANDAS.filter((d) => podeVerDemanda(d));
   if (f.org) lista = lista.filter((d) => d.org === f.org);
   if (f.sit === 'abertas') lista = lista.filter((d) => statusDemanda(d) !== 'encerrada');
   if (f.sit === 'encerradas') lista = lista.filter((d) => statusDemanda(d) === 'encerrada');

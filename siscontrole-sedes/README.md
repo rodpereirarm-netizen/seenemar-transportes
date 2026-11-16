@@ -13,6 +13,8 @@ Sistema de Controle Interno e Auditoria da Secretaria de Estado de Desenvolvimen
 | 8.1 — Modelo de dados, matriz RLS, telas e plano de 10 dias | Aprovado com as decisões abaixo |
 | Maquete v1 (tema escuro neutro) | `maquete/` e `SisControle_SEDES_maquete.html` |
 | Maquete v2 (azul institucional, relatórios com várias assinaturas, pool de checklists, trilha legível) | `maquete-v2/` e `SisControle_SEDES_maquete_v2.html` |
+| Maquete v3 (temas institucional, claro e escuro; faixa de notícias; Configurações; Manutenção; guia da assinatura) | `maquete-v3/` e `SisControle_SEDES_maquete_v3.html` |
+| Imagens do passo a passo da assinatura | `docs/assinatura/` |
 | Migrations, RLS, Edge Functions, PWA | Próxima etapa |
 
 ## Decisões do PO (13/11/2026)

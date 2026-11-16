@@ -1287,7 +1287,7 @@ function viewPainel() {
   const pctAt = finais.length ? Math.round((finais.filter((i) => i.status === 'atendida').length / finais.length) * 100) : 0;
   const resp = base.filter((i) => (stIdx(i.status) >= 4 && i.status !== 'devolvida') || isFinal(i));
   const tmr = resp.length ? (resp.reduce((a, i) => a + diasResposta(i), 0) / resp.length).toFixed(1).replace('.', ',') : '—';
-  const demsVis = DEMANDAS.filter(podeVerDemanda);
+  const demsVis = DEMANDAS.filter((d) => podeVerDemanda(d));
   const reinc = demsVis.filter((d) => d.reinc).length;
   const chipsCtx = [f.orgao || 'Todos os órgãos', { ano: 'Exercício 2026', 90: 'Últimos 90 dias', 30: 'Últimos 30 dias' }[f.periodo]];
   const recorte = u.papel === 'ponto_focal' || (u.papel === 'gestor' && u.area !== 'CHEGAB') ? `Recorte: ${raizVisao(u)} e subáreas` : null;
@@ -1405,7 +1405,7 @@ function respostasAplicacao(a) {
 function viewDemandas() {
   const u = eu();
   const f = state.demFiltro;
-  let lista = DEMANDAS.filter(podeVerDemanda);
+  let lista = DEMANDAS.filter((d) => podeVerDemanda(d));
   if (f.org) lista = lista.filter((d) => d.org === f.org);
   if (f.sit === 'abertas') lista = lista.filter((d) => statusDemanda(d) !== 'encerrada');
   if (f.sit === 'encerradas') lista = lista.filter((d) => statusDemanda(d) === 'encerrada');
@@ -1762,10 +1762,10 @@ const agoraTxt = () => { const d = new Date(); return `${iso(HOJE)} ${String(d.g
 function trilhar(tabela, reg, acao, resumo, antes, depois) { TRILHA.unshift({ em: `${agoraTxt()}:00`, user: eu().email.split('@')[0], tabela, reg, acao, resumo, antes, depois }); }
 function gerarRelatorio(a) {
   const c = contagem(a);
-  const sug = c.nao_conforme ? `Foram identificadas ${plural(c.nao_conforme, 'não conformidade', 'não conformidades')}${c.com_ressalva ? ` e ${plural(c.com_ressalva, 'ressalva', 'ressalvas')}` : ''}. Recomenda-se à ${a.area} sanear os itens apontados antes da celebração.` : 'O processo atende aos requisitos verificados.';
+  const sug = c.nao_conforme ? `Resultado: ${plural(c.nao_conforme, 'não conformidade', 'não conformidades')}${c.com_ressalva ? ` e ${plural(c.com_ressalva, 'ressalva', 'ressalvas')}` : ''}. Recomenda-se à ${a.area} sanear os itens apontados antes da celebração.` : 'O processo atende aos requisitos verificados.';
   modal({
     title: 'Gerar relatório do checklist', sub: `CHK-2026-${a.n} · ${esc(a.objeto)}`, ok: 'Gerar relatório', wide: true,
-    body: `<div class="note small"><b>Resultado:</b> ${c.conforme} conformes · ${c.nao_conforme} não conformes · ${c.com_ressalva} com ressalva · ${c.nao_se_aplica} não se aplica. ${c.nao_conforme ? `As não conformidades viram pendências para a ${a.area}.` : ''}</div>
+    body: `<div class="note small"><b>Resultado:</b> conforme ${c.conforme} · não conforme ${c.nao_conforme} · com ressalva ${c.com_ressalva} · não se aplica ${c.nao_se_aplica}. ${c.nao_conforme ? `As não conformidades viram pendências para a ${a.area}.` : ''}</div>
       <label class="field"><span>Conclusão do relatório</span><textarea id="gr-conc">${esc(sug)}</textarea></label>
       <div class="field"><span>Responsáveis pela assinatura</span><div id="gr-resps" class="resp-list">${linhaResp(eu().id, 'Elaborou')}${linhaResp('u2' === eu().id ? 'u4' : 'u2', 'Revisou')}</div>
         <button type="button" class="btn sm" data-act="rr-add" style="align-self:flex-start;margin-top:6px">${ico('plus')}Adicionar responsável</button>
