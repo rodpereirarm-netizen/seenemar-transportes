@@ -724,6 +724,89 @@ table.lad { width: 100%; border-collapse: collapse; font-size: .78rem; font-vari
 .sq-self { fill: var(--warn-soft); stroke: var(--warn-mark); }
 .rules { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; color: var(--fg-2); }
 
+/* ---------- Clique nos gráficos ---------- */
+[data-drill] { cursor: pointer; }
+.chart [data-drill]:hover, .donut-wrap [data-drill]:hover { opacity: .8; }
+.xbar[data-drill]:hover .b, .xbar[data-drill]:hover .sbar { filter: brightness(1.18); }
+.xbar[data-drill]:hover .nm { color: var(--fg); text-decoration: underline; }
+.sbar i[data-drill]:hover { filter: brightness(1.2); }
+.flowrow[data-drill]:hover .nm { color: var(--fg); text-decoration: underline; }
+.lad td.clic { cursor: pointer; font-weight: 700; color: var(--info); }
+.lad td[data-drill]:hover { background: var(--brand-soft); }
+[data-drill]:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+
+/* ---------- Catálogo de widgets ---------- */
+.wcat { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.wcat-i { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; padding: 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface-2); }
+.wcat-i > div { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+
+/* ---------- Perfis ---------- */
+.perfis { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; }
+.perfil-c { display: flex; flex-direction: column; gap: 6px; padding: 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface-2); }
+.perm-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 14px; }
+.perm { display: flex; gap: 8px; align-items: center; font-size: .84rem; font-weight: 500; color: var(--fg); }
+.perm input { width: 16px; height: 16px; }
+
+/* ---------- Agenda ---------- */
+.ag-tipos { display: flex; flex-wrap: wrap; gap: 6px; }
+.ag-tipo { display: inline-flex; align-items: center; gap: 6px; height: 30px; padding: 0 10px; border: 1px solid var(--line-strong); border-radius: 99px; background: var(--surface); color: var(--fg-3); cursor: pointer; font-size: .78rem; font-weight: 600; }
+.ag-tipo i { width: 9px; height: 9px; border-radius: 50%; opacity: .45; }
+.ag-tipo.on { color: var(--fg); background: var(--surface-2); border-color: var(--brand); }
+.ag-tipo.on i { opacity: 1; }
+.ag-nav { display: flex; align-items: center; gap: 6px; }
+.ag-mes { min-width: 170px; text-align: center; }
+.ag-mes::before { display: none !important; }
+.cal { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+.cal-h { padding: 6px 8px; font-size: .7rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--fg-3); background: var(--surface-2); border-bottom: 1px solid var(--line); }
+.cal-d { min-height: 108px; padding: 4px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); display: flex; flex-direction: column; gap: 3px; min-width: 0; cursor: pointer; }
+.cal-d:nth-child(7n) { border-right: 0; }
+.cal-d:hover { background: var(--surface-2); }
+.cal-d.out { background: color-mix(in srgb, var(--bg) 60%, var(--surface)); }
+.cal-d.out .cal-n { color: var(--fg-3); opacity: .6; }
+.cal-n { font-size: .78rem; font-weight: 700; padding: 1px 5px; align-self: flex-start; border-radius: 99px; font-variant-numeric: tabular-nums; }
+.cal-d.today .cal-n { background: var(--brand); color: #fff; }
+.cal-d.today { box-shadow: inset 0 0 0 2px var(--brand); }
+.cal-ev { display: block; width: 100%; text-align: left; border: 0; border-left: 3px solid var(--c); background: color-mix(in srgb, var(--c) 16%, transparent); color: var(--fg); font-size: .7rem; font-weight: 600; padding: 2px 5px; border-radius: 3px; cursor: pointer; min-width: 0; }
+.cal-ev span { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cal-ev.late { box-shadow: inset 0 0 0 1px var(--crit-mark); }
+.cal-ev:hover { background: color-mix(in srgb, var(--c) 30%, transparent); }
+.cal-mais { font-size: .68rem; color: var(--info); font-weight: 600; padding-left: 4px; }
+.cal-dots { display: none; gap: 3px; flex-wrap: wrap; padding: 0 4px; }
+.cal-dots i { width: 7px; height: 7px; border-radius: 50%; }
+.ag-list { display: flex; flex-direction: column; gap: 14px; }
+.ag-day { display: flex; flex-direction: column; gap: 4px; }
+.ag-dh { font-weight: 700; font-size: .82rem; color: var(--fg-2); text-transform: capitalize; padding-bottom: 4px; border-bottom: 1px solid var(--line); }
+.ag-day.today .ag-dh { color: var(--info); }
+.ag-row { display: grid; grid-template-columns: 52px 4px minmax(0, 1fr) auto; gap: 10px; align-items: center; text-align: left; width: 100%; border: 1px solid transparent; background: none; color: var(--fg); padding: 6px 8px; border-radius: 6px; cursor: pointer; }
+.ag-row:hover { background: var(--surface-2); border-color: var(--line); }
+.ag-row > i { width: 4px; height: 100%; min-height: 24px; border-radius: 2px; }
+.ag-row.compact { grid-template-columns: 42px 4px minmax(0, 1fr); padding: 4px 6px; }
+.ag-h { font-size: .74rem; color: var(--fg-3); font-variant-numeric: tabular-nums; font-weight: 600; }
+.ag-t { display: flex; flex-direction: column; min-width: 0; }
+.ag-t b { font-weight: 600; font-size: .84rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ag-t small { color: var(--fg-3); font-size: .74rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ag-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
+.ag-mini { display: flex; gap: 6px; align-items: center; font-size: .78rem; color: var(--fg); text-decoration: none; }
+.ag-mini i { width: 7px; height: 7px; border-radius: 50%; flex: none; }
+.ag-mini:hover { text-decoration: underline; }
+
+/* ---------- Resumo do usuário ---------- */
+button.avatar { cursor: pointer; padding: 0; font: inherit; font-weight: 700; font-size: .72rem; }
+button.avatar:hover, button.avatar[aria-expanded="true"] { background: color-mix(in srgb, var(--gold) 18%, transparent); }
+.perfil-pop { position: fixed; z-index: 95; width: min(360px, calc(100vw - 16px)); background: var(--surface); border: 1px solid var(--line-strong); border-radius: 10px; box-shadow: var(--shadow-lg); padding: 14px; display: flex; flex-direction: column; gap: 12px; }
+.pp-head { display: flex; gap: 12px; align-items: center; }
+.pp-av { width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center; border: 2px solid var(--gold); color: var(--gold); font-weight: 800; flex: none; }
+.pp-dl { margin: 0; display: flex; flex-direction: column; gap: 6px; padding: 10px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.pp-dl div { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 8px; font-size: .82rem; }
+.pp-dl dt { color: var(--fg-3); }
+.pp-dl dd { margin: 0; color: var(--fg); overflow-wrap: anywhere; }
+.pp-nums { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; }
+.pp-nums a { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 2px; padding: 8px 4px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface-2); color: var(--fg-2); text-decoration: none; font-size: .64rem; line-height: 1.2; }
+.pp-nums a:hover { border-color: var(--brand); text-decoration: none; }
+.pp-nums b { font-size: 1.15rem; color: var(--fg); font-variant-numeric: tabular-nums; }
+.pp-nums a.crit b { color: var(--crit); } .pp-nums a.warn b { color: var(--warn); }
+.pp-acts { display: flex; gap: 6px; flex-wrap: wrap; }
+
 /* ---------- Responsivo ---------- */
 @media (max-width: 1280px) {
   .wgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -760,6 +843,15 @@ table.lad { width: 100%; border-collapse: collapse; font-size: .78rem; font-vari
   .tab-right .upd, .refdate { display: none; }
 }
 @media (max-width: 700px) {
+  .cal-d { min-height: 58px; padding: 3px; }
+  .cal-ev, .cal-mais { display: none; }
+  .cal-dots { display: flex; }
+  .cal-h { padding: 4px; font-size: .62rem; text-align: center; }
+  .cal-n { align-self: center; }
+  .wcat, .perm-grid { grid-template-columns: minmax(0, 1fr); }
+  .ag-row { grid-template-columns: 44px 4px minmax(0, 1fr); }
+  .ag-row .chip { display: none; }
+  .ag-mes { min-width: 0; font-size: .7rem; }
   .wgrid { grid-template-columns: minmax(0, 1fr); }
   .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .ctx select { min-width: 0; width: 100%; }
@@ -1127,7 +1219,7 @@ let ASSINATURAS = [
 /* =========================================================================
    ESTADO E REGRAS DE VISIBILIDADE (espelham as políticas RLS propostas)
    ========================================================================= */
-const state = { userId: 'u2', route: 'painel', q: '', ladAberto: new Set(['o:TCE-RJ', 'o:CGE-RJ', 'o:MPRJ', 'o:ALERJ', 'o:Checklist']), filtros: { periodo: 'ano', orgao: '', area: '', origem: '', grav: '' }, pendTab: 'todas', ckTab: 'pool', cfgTab: 'usuarios', manTab: 'geral', tema: 'institucional', newsOn: true, newsIdx: 0, modoManut: false, pool: { q: '', st: '', mod: '', mom: '' }, trFiltro: { acao: '', user: '', tab: '' }, admTab: 'usuarios', relTipo: 'pendencias', demFiltro: { org: '', sit: '' } };
+const state = { userId: 'u2', route: 'painel', q: '', ladAberto: new Set(['o:TCE-RJ', 'o:CGE-RJ', 'o:MPRJ', 'o:ALERJ', 'o:Checklist']), filtros: { periodo: 'ano', orgao: '', area: '', origem: '', grav: '' }, pendTab: 'todas', ckTab: 'pool', extraW: [], ag: { mes: '2026-11', vista: 'mes', tipos: new Set(['item', 'orgao', 'monit', 'checklist', 'assin', 'prorrog', 'escal', 'receb']), org: '', area: '', sit: '', meus: false }, cfgTab: 'usuarios', manTab: 'geral', tema: 'institucional', newsOn: true, newsIdx: 0, modoManut: false, pool: { q: '', st: '', mod: '', mom: '' }, trFiltro: { acao: '', user: '', tab: '' }, admTab: 'usuarios', relTipo: 'pendencias', demFiltro: { org: '', sit: '' } };
 try { const u = localStorage.getItem('sisc_user'); if (u && USER[u]) state.userId = u; const t = localStorage.getItem('sisc_tema'); if (['institucional', 'claro', 'escuro'].includes(t)) state.tema = t; } catch (e) { /* armazenamento indisponível */ }
 document.documentElement.dataset.tema = state.tema;
 
@@ -1227,7 +1319,7 @@ function evidencias(it) {
 /* =========================================================================
    SHELL
    ========================================================================= */
-const TITULOS = { painel: 'Painel executivo', inicio: 'Minha fila', demandas: 'Demandas externas', demanda: 'Demanda', item: 'Item', pendencias: 'Pendências', prorrogacoes: 'Prorrogações', checklists: 'Checklists', aplicacao: 'Checklist', relatorio: 'Relatório de checklist', relatorios: 'Relatórios', notificacoes: 'Notificações', lixeira: 'Lixeira', trilha: 'Trilha de auditoria', configuracoes: 'Configurações', manutencao: 'Manutenção', assinatura: 'Como funciona a assinatura', auditoria: 'Auditoria interna', riscos: 'Riscos e controles' };
+const TITULOS = { painel: 'Painel executivo', inicio: 'Minha fila', demandas: 'Demandas externas', demanda: 'Demanda', item: 'Item', pendencias: 'Pendências', prorrogacoes: 'Prorrogações', checklists: 'Checklists', aplicacao: 'Checklist', relatorio: 'Relatório de checklist', relatorios: 'Relatórios', notificacoes: 'Notificações', lixeira: 'Lixeira', trilha: 'Trilha de auditoria', agenda: 'Agenda', configuracoes: 'Configurações', manutencao: 'Manutenção', assinatura: 'Como funciona a assinatura', auditoria: 'Auditoria interna', riscos: 'Riscos e controles' };
 function navLinks() {
   const u = eu();
   const vis = itensVisiveis();
@@ -1238,6 +1330,7 @@ function navLinks() {
   const items = [
     ['painel', 'Painel executivo', 'chart'],
     ['inicio', 'Minha fila', 'home'],
+    ['agenda', 'Agenda', 'calendar'],
     ['g'],
     ['demandas', 'Demandas externas', 'inbox'],
     ['pendencias', 'Pendências', 'list', venc ? `<span class="count alert" title="${venc} vencidas">${venc}</span>` : `<span class="count">${abertas}</span>`],
@@ -1300,14 +1393,14 @@ function shell(content) {
           <div class="theme-seg" role="group" aria-label="Tema">${[['institucional', 'landmark', 'Tema institucional'], ['claro', 'sun', 'Tema claro'], ['escuro', 'moon', 'Tema escuro']].map(([k, i, t]) => `<button class="icon-btn" data-act="tema" data-v="${k}" aria-pressed="${state.tema === k}" aria-label="${t}" title="${t}">${ico(i)}</button>`).join('')}</div>
           <a class="icon-btn" href="#notificacoes" aria-label="Notificações">${ico('bell')}${naoLidas ? `<span class="dot">${naoLidas}</span>` : ''}</a>
           <button class="icon-btn" data-act="ajuda" aria-label="Ajuda">${ico('help')}</button>
-          <div class="avatar" title="${esc(u.nome)} — ${esc(u.cargo)}">${iniciais(u.nome)}</div>
+          <button class="avatar" id="avatar-btn" data-act="perfil-pop" aria-haspopup="dialog" aria-expanded="false" aria-label="Meu perfil: ${esc(u.nome)}" title="${esc(u.nome)} — ${esc(u.cargo)}">${iniciais(u.nome)}</button>
         </div>
       </header>
       <div class="tabbar">
         <div class="vtabs">${abas}</div>
         <div class="tab-right">
           <span class="upd">Atualizado há <b>3 min</b></span>
-          <select class="view-sel" id="perfil" aria-label="Ver o sistema como">${SWITCH.map((id) => `<option value="${id}" ${id === state.userId ? 'selected' : ''}>Visão: ${USER[id].nome} · ${PAPEIS[USER[id].papel]}${USER[id].papel === 'ponto_focal' || USER[id].papel === 'gestor' ? ' ' + USER[id].area : ''}</option>`).join('')}</select>
+          <select class="view-sel" id="perfil" aria-label="Ver o sistema como">${SWITCH.map((id) => `<option value="${id}" ${id === state.userId ? 'selected' : ''}>Visão: ${USER[id].nome} · ${USER[id].perfilNome || PAPEIS[USER[id].papel]}${USER[id].papel === 'ponto_focal' || USER[id].papel === 'gestor' ? ' ' + USER[id].area : ''}</option>`).join('')}</select>
           <span class="refdate"><small>Data de referência</small>Hoje · 13/11/2026</span>
           <button class="icon-btn" data-act="refresh" aria-label="Atualizar">${ico('refresh')}</button>
         </div>
@@ -1394,8 +1487,8 @@ function filtrarPainel(lista) {
 }
 const orgaoDe = (it) => (it.origem === 'checklist' ? 'Checklist' : DEM[it.ref].org);
 const pct = (v, t) => (t ? ((v / t) * 100).toFixed(1).replace('.', ',') : '0,0');
-function widget(title, body, { cls = '', chips = [], link = '' } = {}) {
-  return `<section class="card widget ${cls}"><div class="card-head"><h2>${title}</h2><div class="wicons">${link ? `<a href="#${link}" aria-label="Abrir ${esc(title)}" title="Abrir">${ico('link')}</a>` : ''}<button data-act="w-refresh" aria-label="Atualizar widget" title="Atualizar">${ico('refresh')}</button><button data-act="w-more" aria-label="Mais opções" title="Mais opções">${ico('more')}</button></div></div><div class="wbody">${chips.length ? `<div class="wchips">${chips.map((c) => `<span class="wchip">${esc(c)}</span>`).join('')}</div>` : ''}${body}</div></section>`;
+function widget(title, body, { cls = '', chips = [], link = '', rem = '' } = {}) {
+  return `<section class="card widget ${cls}"><div class="card-head"><h2>${title}</h2><div class="wicons">${link ? `<a href="#${link}" aria-label="Abrir ${esc(title)}" title="Abrir">${ico('link')}</a>` : ''}<button data-act="w-refresh" aria-label="Atualizar widget" title="Atualizar">${ico('refresh')}</button>${rem ? `<button data-act="w-rem" data-k="${rem}" aria-label="Remover widget do painel" title="Remover do painel">${ico('x')}</button>` : `<button data-act="w-more" aria-label="Mais opções" title="Mais opções">${ico('more')}</button>`}</div></div><div class="wbody">${chips.length ? `<div class="wchips">${chips.map((c) => `<span class="wchip">${esc(c)}</span>`).join('')}</div>` : ''}${body}</div></section>`;
 }
 function arco(cx, cy, r0, r1, a0, a1) {
   const p = (r, a) => `${(cx + r * Math.sin(a)).toFixed(2)},${(cy - r * Math.cos(a)).toFixed(2)}`;
@@ -1411,7 +1504,7 @@ function donut(outer, inner, centro) {
   outer.forEach((s) => {
     if (!s.v) return;
     const da = (s.v / tot) * Math.PI * 2;
-    g += `<path d="${arco(cx, cy, 62, 92, a, a + da)}" fill="${s.color}" stroke="var(--surface)" stroke-width="2" data-tip="${esc(`${s.name}|${s.v} pendências · ${pct(s.v, tot)}%`)}"/>`;
+    g += `<path d="${arco(cx, cy, 62, 92, a, a + da)}" fill="${s.color}" stroke="var(--surface)" stroke-width="2" ${s.drill ? dr(s.drill) : ''} data-tip="${esc(`${s.name}|${s.v} pendências · ${pct(s.v, tot)}%`)}"/>`;
     const m = a + da / 2; const lx = cx + 104 * Math.sin(m); const ly = cy - 104 * Math.cos(m);
     g += `<text x="${lx.toFixed(1)}" y="${(ly + 3).toFixed(1)}" text-anchor="${Math.sin(m) >= 0 ? 'start' : 'end'}">${esc(s.name)}: ${pct(s.v, tot)}%</text>`;
     a += da;
@@ -1420,7 +1513,7 @@ function donut(outer, inner, centro) {
   inner.forEach((s) => {
     if (!s.v) return;
     const da = (s.v / totI) * Math.PI * 2;
-    g += `<path d="${arco(cx, cy, 36, 58, a, a + da)}" fill="${s.color}" stroke="var(--surface)" stroke-width="2" data-tip="${esc(`${s.name}|${s.v} pendências`)}"/>`;
+    g += `<path d="${arco(cx, cy, 36, 58, a, a + da)}" fill="${s.color}" stroke="var(--surface)" stroke-width="2" ${s.drill ? dr(s.drill) : ''} data-tip="${esc(`${s.name}|${s.v} pendências`)}"/>`;
     a += da;
   });
   g += `<text x="${cx}" y="${cy + 2}" text-anchor="middle" style="fill:var(--fg);font-size:17px;font-weight:700">${centro}</text><text x="${cx}" y="${cy + 15}" text-anchor="middle" style="font-size:8.5px">abertas</text>`;
@@ -1449,7 +1542,7 @@ function gbars(grupos, series) {
     const cx = pl + gw * i + gw / 2;
     g.v.forEach((v, k) => {
       const x = cx - bw - 1 + k * (bw + 2);
-      s += `<path d="M${x},${ys(0)}V${ys(v) + 3}a3,3 0 0 1 3,-3h${bw - 6}a3,3 0 0 1 3,3V${ys(0)}Z" fill="${series[k].color}" data-tip="${esc(`${g.label}|${series[k].name}: ${v}`)}"/>`;
+      s += `<path d="M${x},${ys(0)}V${ys(v) + 3}a3,3 0 0 1 3,-3h${bw - 6}a3,3 0 0 1 3,3V${ys(0)}Z" fill="${series[k].color}" ${g.drill ? dr(g.drill) : ''} data-tip="${esc(`${g.label}|${series[k].name}: ${v}`)}"/>`;
     });
     s += `<text x="${cx}" y="${H - 7}" text-anchor="middle">${esc(g.label)}</text>`;
   });
@@ -1476,25 +1569,25 @@ function viewPainel() {
 
   // 1. Indicadores-chave
   const tiles = [
-    [abertos.length, '', 'Pendências abertas', 'pendencias', ''],
-    [venc.length, '', 'Vencidas · escalonadas', 'pendencias', 'crit'],
-    [av.length, '', 'A vencer em até 5 dias', 'pendencias', 'warn'],
+    [abertos.length, '', 'Pendências abertas', 'pendencias', '', { t: 'Pendências abertas' }],
+    [venc.length, '', 'Vencidas · escalonadas', 'pendencias', 'crit', { t: 'Itens vencidos', sit: 'vencido' }],
+    [av.length, '', 'A vencer em até 5 dias', 'pendencias', 'warn', { t: 'Itens a vencer em até 5 dias', sit: 'avencer' }],
     [pctAt, '%', 'Recomendações atendidas', 'relatorios', ''],
     [tmr, 'dias', 'Tempo médio de resposta', 'relatorios', ''],
     [reinc, `de ${demsVis.length}`, 'Demandas reincidentes', 'demandas', ''],
   ];
-  const w1 = widget('Indicadores-chave', `<div class="tiles">${tiles.map(([v, sf, c, go, cl]) => `<a class="tile ${cl}" href="#${go}"><span class="big">${v}${sf ? `<small>${sf}</small>` : ''}</span><span class="cap">${c}</span></a>`).join('')}</div>`, { cls: 'w4' });
+  const w1 = widget('Indicadores-chave', `<div class="tiles">${tiles.map(([v, sf, c, go, cl, dd]) => `<a class="tile ${cl}" href="#${go}" ${dd ? dr(dd) : ''}><span class="big">${v}${sf ? `<small>${sf}</small>` : ''}</span><span class="cap">${c}</span></a>`).join('')}</div>`, { cls: 'w4' });
 
   // 2. Pendências por área
   const porArea = [...new Set(abertos.map((i) => i.area))].map((a) => { const its = abertos.filter((i) => i.area === a); return { a, n: its.length, v: its.filter((i) => situacao(i).cls === 'vencido').length }; }).sort((x, y) => y.v - x.v || y.n - x.n);
   const maxA = Math.max(1, ...porArea.map((x) => x.n));
-  const w2 = widget('Pendências por área', porArea.length ? `<div class="xbars">${porArea.slice(0, 9).map((x, i) => `<div class="xbar ${i === 0 && x.v ? 'hot' : ''}"><span class="nm" title="${esc(AREA[x.a]?.nome || x.a)}">${x.a}</span><span class="tr"><span class="b" style="width:${Math.max(6, (x.n / maxA) * 78)}%" data-tip="${esc(`${x.a}|${x.n} abertas · ${x.v} vencidas`)}">${i === 0 && x.v ? `${pct(x.n, abertos.length)} %` : ''}</span>${i === 0 && x.v ? '' : `<span class="v">${pct(x.n, abertos.length)} %</span>`}</span></div>`).join('')}</div>${porArea[0]?.v ? `<p class="small muted">Em vermelho: área com mais itens vencidos (${porArea[0].v}).</p>` : ''}` : '<div class="empty">Sem pendências no recorte.</div>', { chips: recorte ? [recorte] : chipsCtx, link: 'pendencias' });
+  const w2 = widget('Pendências por área', porArea.length ? `<div class="xbars">${porArea.slice(0, 9).map((x, i) => `<div class="xbar ${i === 0 && x.v ? 'hot' : ''}" ${dr({ t: `Pendências abertas da ${x.a}`, area: x.a })} tabindex="0" role="button"><span class="nm" title="${esc(AREA[x.a]?.nome || x.a)}">${x.a}</span><span class="tr"><span class="b" style="width:${Math.max(6, (x.n / maxA) * 78)}%" data-tip="${esc(`${x.a}|${x.n} abertas · ${x.v} vencidas`)}">${i === 0 && x.v ? `${pct(x.n, abertos.length)} %` : ''}</span>${i === 0 && x.v ? '' : `<span class="v">${pct(x.n, abertos.length)} %</span>`}</span></div>`).join('')}</div>${porArea[0]?.v ? `<p class="small muted">Em vermelho: área com mais itens vencidos (${porArea[0].v}).</p>` : ''}` : '<div class="empty">Sem pendências no recorte.</div>', { chips: recorte ? [recorte] : chipsCtx, link: 'pendencias' });
 
   // 3. Donut por órgão
   const cores = ['var(--s1)', 'var(--s2)', 'var(--s3)', 'var(--s4)', 'var(--s5)'];
-  const outer = [...ORGAOS, 'Checklist'].map((o, i) => ({ name: o, v: abertos.filter((it) => orgaoDe(it) === o).length, color: cores[i] }));
+  const outer = [...ORGAOS, 'Checklist'].map((o, i) => ({ name: o, v: abertos.filter((it) => orgaoDe(it) === o).length, color: cores[i], drill: { t: `Pendências abertas — ${o}`, org: o } }));
   const sits = [['vencido', 'Vencidas'], ['avencer', 'A vencer'], ['noprazo', 'No prazo'], ['encerrado', 'Com a ASCOIN / consolidação']];
-  const inner = sits.map(([k, n]) => ({ name: n, v: abertos.filter((it) => situacao(it).cls === k).length, color: SIT_COR[k] }));
+  const inner = sits.map(([k, n]) => ({ name: n, v: abertos.filter((it) => situacao(it).cls === k).length, color: SIT_COR[k], drill: { t: `Pendências — ${n}`, sit: k } }));
   const w3 = widget('Pendências por órgão', abertos.length ? `${donut(outer, inner, abertos.length)}<div class="legend-dots">${inner.map((s) => `<span><i style="background:${s.color}"></i>${s.name} ${s.v}</span>`).join('')}</div>` : '<div class="empty">Sem pendências no recorte.</div>', { chips: ['Anel externo: órgão', 'Anel interno: prazo'], link: 'demandas' });
 
   // 4. Conformidade
@@ -1504,7 +1597,7 @@ function viewPainel() {
   const cont = { conforme: 0, nao_conforme: 0, com_ressalva: 0, nao_se_aplica: 0, pendente: 0 };
   todas.forEach((x) => { Object.values(x.r).forEach((r) => { cont[r[0]]++; }); cont.pendente += CK_ITENS.length - Object.keys(x.r).length; });
   const totC = Object.values(cont).reduce((a, b) => a + b, 0);
-  const seg = (k, c) => (cont[k] ? `<i style="flex:${cont[k]};background:${c}" data-tip="${esc(`${{ conforme: 'Conforme', nao_conforme: 'Não conforme', com_ressalva: 'Com ressalva', nao_se_aplica: 'Não se aplica', pendente: 'Não avaliado' }[k]}|${cont[k]} de ${totC} itens`)}">${cont[k]}</i>` : '');
+  const seg = (k, c) => (cont[k] ? `<i style="flex:${cont[k]};background:${c}" ${dr({ ck: k })} data-tip="${esc(`${{ conforme: 'Conforme', nao_conforme: 'Não conforme', com_ressalva: 'Com ressalva', nao_se_aplica: 'Não se aplica', pendente: 'Não avaliado' }[k]}|${cont[k]} de ${totC} itens`)}">${cont[k]}</i>` : '');
   const w4 = widget('Conformidade', `
     <div class="inner"><span class="eyebrow">Análise prévia</span><span>${ncPrevia ? `<span class="xmark">✕</span>${plural(ncPrevia, 'não conformidade', 'não conformidades')}` : '<span class="xmark okmark">✓</span>Sem não conformidades'}</span><span class="small muted">${plural(emPreench, 'aplicação em preenchimento', 'aplicações em preenchimento')}</span></div>
     <div class="inner"><span class="eyebrow">Itens avaliados</span><div class="sbar">${seg('conforme', 'var(--ok-mark)')}${seg('nao_conforme', 'var(--crit-mark)')}${seg('com_ressalva', 'var(--warn-mark)')}${seg('nao_se_aplica', '#5a6b85')}${seg('pendente', 'var(--surface-3);color:var(--fg)')}</div></div>
@@ -1514,7 +1607,7 @@ function viewPainel() {
   const tmItems = porArea.map((x) => { const its = abertos.filter((i) => i.area === x.a); const pior = its.some((i) => situacao(i).cls === 'vencido') ? 'vencido' : its.some((i) => situacao(i).cls === 'avencer') ? 'avencer' : its.some((i) => situacao(i).cls === 'noprazo') ? 'noprazo' : 'encerrado'; return { a: x.a, v: x.n, pior, nv: x.v }; }).sort((p, q) => q.v - p.v);
   const TM_COR = { vencido: '#b8322a', avencer: '#a8721a', noprazo: '#1f7a3c', encerrado: '#24563a' };
   const tm = treemapLayout(tmItems, 0, 0, 200, 100);
-  const w5 = widget('Mapa de calor das áreas', tmItems.length ? `<div class="treemap" role="img" aria-label="Mapa de calor: tamanho pelo número de pendências, cor pela pior situação de prazo">${tm.map((t) => `<a class="tm" href="#pendencias" style="left:${t.x / 2}%;top:${t.y}%;width:${t.w / 2}%;height:${t.h}%;background:${TM_COR[t.pior]}" data-tip="${esc(`${t.a}|${t.v} abertas · ${t.nv} vencidas`)}">${t.w > 20 && t.h > 16 ? `<span>${t.a}${t.w > 28 && t.h > 26 ? `<small>${plural(t.v, 'aberta', 'abertas')}</small>` : ''}</span>` : ''}</a>`).join('')}</div>
+  const w5 = widget('Mapa de calor das áreas', tmItems.length ? `<div class="treemap" role="img" aria-label="Mapa de calor: tamanho pelo número de pendências, cor pela pior situação de prazo">${tm.map((t) => `<a class="tm" href="#pendencias" ${dr({ t: `Pendências abertas da ${t.a}`, area: t.a })} style="left:${t.x / 2}%;top:${t.y}%;width:${t.w / 2}%;height:${t.h}%;background:${TM_COR[t.pior]}" data-tip="${esc(`${t.a}|${t.v} abertas · ${t.nv} vencidas`)}">${t.w > 20 && t.h > 16 ? `<span>${t.a}${t.w > 28 && t.h > 26 ? `<small>${plural(t.v, 'aberta', 'abertas')}</small>` : ''}</span>` : ''}</a>`).join('')}</div>
     <div class="legend-dots"><span><i style="background:#b8322a"></i>Com vencidos</span><span><i style="background:#a8721a"></i>A vencer</span><span><i style="background:#1f7a3c"></i>No prazo</span><span><i style="background:#24563a"></i>Com a ASCOIN</span></div>` : '<div class="empty">Sem pendências no recorte.</div>', { chips: ['Tamanho: nº de pendências'], link: 'pendencias' });
 
   // 6. Escada de prazos
@@ -1522,19 +1615,20 @@ function viewPainel() {
   const comArea = abertos.filter((i) => COM_AREA.has(i.status));
   const balde = (it) => { const n = diasAte(it.prazo); return n < 0 ? 'late' : n > 6 ? 'after' : `d${n}`; };
   const cols = ['late', ...dias.map((_, k) => `d${k}`), 'after'];
-  const celulas = (its, lvl) => cols.map((c) => { const n = its.filter((i) => balde(i) === c).length; return `<td class="${c === 'd0' ? 'today' : ''} ${n === 0 ? 'z' : c === 'late' ? 'late' : ''}">${n}</td>`; }).join('');
+  const rot = (c) => (c === 'late' ? 'vencidos' : c === 'after' ? `após ${fmtCurta(dias[6])}` : `prazo em ${fmtCurta(dias[+c.slice(1)])}`);
+  const celulas = (its, sp = {}) => cols.map((c) => { const n = its.filter((i) => balde(i) === c).length; return `<td class="${c === 'd0' ? 'today' : ''} ${n === 0 ? 'z' : c === 'late' ? 'late' : 'clic'}" ${n ? dr({ ...sp, b: c, t: `${sp.nome} · ${rot(c)}` }) : ''}>${n}</td>`; }).join('');
   const orgs = [...new Set(comArea.map(orgaoDe))];
   const fechado = { has: (k) => !state.ladAberto.has(k) };
   let linhas = '';
   orgs.forEach((o) => {
     const its = comArea.filter((i) => orgaoDe(i) === o); const k0 = `o:${o}`;
-    linhas += `<tr class="l0"><td><button class="tg" data-act="lad" data-key="${esc(k0)}" aria-label="Expandir ou recolher ${esc(o)}">${fechado.has(k0) ? '▸' : '▾'}</button>${esc(o)}</td>${celulas(its)}</tr>`;
+    linhas += `<tr class="l0"><td><button class="tg" data-act="lad" data-key="${esc(k0)}" aria-label="Expandir ou recolher ${esc(o)}">${fechado.has(k0) ? '▸' : '▾'}</button>${esc(o)}</td>${celulas(its, { org: o, nome: o })}</tr>`;
     if (fechado.has(k0)) return;
     [...new Set(its.map((i) => i.ref))].forEach((r) => {
       const ir = its.filter((i) => i.ref === r); const k1 = `d:${r}`;
       const nome = r.startsWith('CHK') ? `CHK-2026-${r.slice(3)}` : `DEM-2026-${r}`;
-      linhas += `<tr class="l1"><td><button class="tg" data-act="lad" data-key="${k1}" aria-label="Expandir ou recolher ${nome}">${fechado.has(k1) ? '▸' : '▾'}</button><a href="#${r.startsWith('CHK') ? `aplicacao-${r.slice(3)}` : `demanda-${r}`}" class="mono">${nome}</a></td>${celulas(ir)}</tr>`;
-      if (!fechado.has(k1)) ir.forEach((i) => { linhas += `<tr class="l2"><td><a href="#${linkItem(i)}"><span class="mono">${i.area}</span> · /${String(i.seq).padStart(2, '0')}</a></td>${celulas([i])}</tr>`; });
+      linhas += `<tr class="l1"><td><button class="tg" data-act="lad" data-key="${k1}" aria-label="Expandir ou recolher ${nome}">${fechado.has(k1) ? '▸' : '▾'}</button><a href="#${r.startsWith('CHK') ? `aplicacao-${r.slice(3)}` : `demanda-${r}`}" class="mono">${nome}</a></td>${celulas(ir, { org: o, ref: r, nome })}</tr>`;
+      if (!fechado.has(k1)) ir.forEach((i) => { linhas += `<tr class="l2"><td><a href="#${linkItem(i)}"><span class="mono">${i.area}</span> · /${String(i.seq).padStart(2, '0')}</a></td>${celulas([i], { ref: i.ref, area: i.area, nome: i.numero })}</tr>`; });
     });
   });
   const w6 = widget('Escada de prazos', `<div class="ladder-tools"><span class="wchip">Itens com a área</span><span class="wchip">Dias corridos</span><span class="small muted" style="margin-left:auto">Clique nos triângulos para expandir</span></div>
@@ -1546,29 +1640,30 @@ function viewPainel() {
   const blocos = [...new Set(base.map(orgaoDe))].map((o) => {
     const its = base.filter((i) => orgaoDe(i) === o);
     const c = Object.fromEntries(Object.keys(CR).map((k) => [k, its.filter((i) => catResp(i) === k).length]));
-    return `<div class="inner"><div style="display:flex;justify-content:space-between;gap:8px"><span class="eyebrow">${esc(o)}</span><span class="small muted">${ico('calendar')} hoje 07:00</span></div>${c.venc ? `<span class="small" style="color:var(--crit);font-weight:600">${plural(c.venc, 'item vencido', 'itens vencidos')}</span>` : ''}<div class="sbar">${Object.keys(CR).map((k) => (c[k] ? `<i style="flex:${c[k]};background:${CR[k][1]}" data-tip="${esc(`${o} · ${CR[k][0]}|${c[k]} itens`)}">${c[k]}</i>` : '')).join('')}</div></div>`;
+    return `<div class="inner"><div style="display:flex;justify-content:space-between;gap:8px"><span class="eyebrow">${esc(o)}</span><span class="small muted">${ico('calendar')} hoje 07:00</span></div>${c.venc ? `<span class="small" style="color:var(--crit);font-weight:600">${plural(c.venc, 'item vencido', 'itens vencidos')}</span>` : ''}<div class="sbar">${Object.keys(CR).map((k) => (c[k] ? `<i style="flex:${c[k]};background:${CR[k][1]}" ${dr({ t: `${o} · ${CR[k][0]}`, org: o, cat: k })} data-tip="${esc(`${o} · ${CR[k][0]}|${c[k]} itens`)}">${c[k]}</i>` : '')).join('')}</div></div>`;
   }).join('');
   const w7 = widget('Status das respostas', `${blocos || '<div class="empty">Sem itens no recorte.</div>'}<div class="legend-dots">${Object.values(CR).map(([n, c]) => `<span><i style="background:${c}"></i>${n}</span>`).join('')}</div>`, { chips: chipsCtx.slice(0, 1), link: 'pendencias' });
 
   // 8. Comparativo por órgão (acumulado ilustrativo)
-  const comp = [{ label: 'TCE-RJ', v: [24, 19] }, { label: 'CGE-RJ', v: [17, 14] }, { label: 'MPRJ', v: [6, 5] }, { label: 'ALERJ', v: [5, 5] }];
+  const comp = [{ label: 'TCE-RJ', v: [24, 19] }, { label: 'CGE-RJ', v: [17, 14] }, { label: 'MPRJ', v: [6, 5] }, { label: 'ALERJ', v: [5, 5] }].map((g) => ({ ...g, drill: { t: `Demandas do ${g.label}`, demOrg: g.label } }));
   const w8 = widget('Comparativo por órgão', `${gbars(comp, [{ name: 'Recebidas', color: 'var(--s1)' }, { name: 'Encerradas', color: 'var(--s5)' }])}<div class="legend-dots"><span><i style="background:var(--s1)"></i>Recebidas</span><span><i style="background:var(--s5)"></i>Encerradas</span><span class="muted">Acumulado 2026 · série ilustrativa</span></div>`, { chips: ['Exercício 2026'], link: 'relatorios' });
 
   // 9. Gravidade
   const gmax = Math.max(1, ...[4, 3, 2, 1].map((g) => abertos.filter((i) => i.grav === g).length));
-  const w9 = widget('Pendências por gravidade', `<div class="xbars">${[4, 3, 2, 1].map((g) => { const its = abertos.filter((i) => i.grav === g); const v = its.filter((i) => situacao(i).cls === 'vencido').length; const a = its.filter((i) => situacao(i).cls === 'avencer').length; const o = its.length - v - a; return `<div class="xbar" style="grid-template-columns:minmax(0,70px) minmax(0,1fr)"><span class="nm" style="font-family:var(--font-text)">${GRAV[g]}</span><span class="tr"><span class="sbar" style="height:15px;width:${Math.max(3, (its.length / gmax) * 85)}%;background:transparent">${v ? `<i style="flex:${v};background:var(--crit-mark)" data-tip="${esc(`${GRAV[g]}|${v} vencidas`)}"></i>` : ''}${a ? `<i style="flex:${a};background:var(--warn-mark)" data-tip="${esc(`${GRAV[g]}|${a} a vencer`)}"></i>` : ''}${o ? `<i style="flex:${o};background:var(--s1)" data-tip="${esc(`${GRAV[g]}|${o} demais`)}"></i>` : ''}</span><span class="v">${its.length}</span></span></div>`; }).join('')}</div>
+  const w9 = widget('Pendências por gravidade', `<div class="xbars">${[4, 3, 2, 1].map((g) => { const its = abertos.filter((i) => i.grav === g); const v = its.filter((i) => situacao(i).cls === 'vencido').length; const a = its.filter((i) => situacao(i).cls === 'avencer').length; const o = its.length - v - a; return `<div class="xbar" style="grid-template-columns:minmax(0,70px) minmax(0,1fr)"><span class="nm" style="font-family:var(--font-text)">${GRAV[g]}</span><span class="tr"><span class="sbar" style="height:15px;width:${Math.max(3, (its.length / gmax) * 85)}%;background:transparent">${v ? `<i style="flex:${v};background:var(--crit-mark)" ${dr({ t: `Gravidade ${GRAV[g].toLowerCase()} · vencidas`, grav: g, sit: 'vencido' })} data-tip="${esc(`${GRAV[g]}|${v} vencidas`)}"></i>` : ''}${a ? `<i style="flex:${a};background:var(--warn-mark)" ${dr({ t: `Gravidade ${GRAV[g].toLowerCase()} · a vencer`, grav: g, sit: 'avencer' })} data-tip="${esc(`${GRAV[g]}|${a} a vencer`)}"></i>` : ''}${o ? `<i style="flex:${o};background:var(--s1)" ${dr({ t: `Gravidade ${GRAV[g].toLowerCase()} · demais`, grav: g, sit: 'demais' })} data-tip="${esc(`${GRAV[g]}|${o} demais`)}"></i>` : ''}</span><span class="v">${its.length}</span></span></div>`; }).join('')}</div>
     <div class="legend-dots"><span><i style="background:var(--crit-mark)"></i>Vencidas</span><span><i style="background:var(--warn-mark)"></i>A vencer</span><span><i style="background:var(--s1)"></i>Demais</span></div>`, { cls: 'w2', chips: chipsCtx, link: 'pendencias' });
 
   // 10. Situação do fluxo
   const etapas = STATUS.filter((s) => !s.final);
   const emax = Math.max(1, ...etapas.map((s) => abertos.filter((i) => i.status === s.cod).length));
-  const w10 = widget('Situação do fluxo', `<div class="flowlist">${etapas.map((s) => { const n = abertos.filter((i) => i.status === s.cod).length; return `<div class="flowrow"><span class="nm">${s.nome}</span><span class="tr"><i style="width:${(n / emax) * 100}%;background:${ST_COR[s.cls]}"></i></span><span class="n ${n ? '' : 'muted'}">${n}</span></div>`; }).join('')}</div>`, { cls: 'w2', chips: ['Itens abertos por status'], link: 'pendencias' });
+  const w10 = widget('Situação do fluxo', `<div class="flowlist">${etapas.map((s) => { const n = abertos.filter((i) => i.status === s.cod).length; return `<div class="flowrow" ${n ? `${dr({ t: `Itens em “${s.nome}”`, status: s.cod })} tabindex="0" role="button"` : ''}><span class="nm">${s.nome}</span><span class="tr"><i style="width:${(n / emax) * 100}%;background:${ST_COR[s.cls]}"></i></span><span class="n ${n ? '' : 'muted'}">${n}</span></div>`; }).join('')}</div>`, { cls: 'w2', chips: ['Itens abertos por status'], link: 'pendencias' });
 
   // 11. Itens vencidos
   const w11 = widget('Itens vencidos', tabelaItens(venc.sort((a, b) => a.prazo.localeCompare(b.prazo)), { vazio: 'Nenhum item vencido no recorte.' }), { cls: 'w4', link: 'pendencias' });
 
   return `<h1 class="sr-only">Painel executivo</h1>
-  <div class="wgrid">${w1}${w2}${w3}${w4}${w5}${w6}${w7}${w8}${w9}${w10}${w11}
+  <p class="small muted" style="margin:-4px 0 0">Dica: clique em qualquer barra, fatia ou bloco dos gráficos para ver os itens.</p>
+  <div class="wgrid">${w1}${w2}${w3}${w4}${w5}${w6}${w7}${w8}${w9}${w10}${state.extraW.map(widgetExtra).join('')}${w11}
   ${widget('Riscos altos', '<div class="inner"><span class="eyebrow">Fase 2</span><span class="small sec">Entra com o módulo de Riscos e controles. Risco residual alto ou extremo sem tratamento vira pendência.</span></div>', { link: 'riscos' })}</div>`;
 }
 
@@ -2050,8 +2145,8 @@ function viewLixeira() {
 }
 
 /* ---------- Trilha de auditoria em linguagem simples ---------- */
-const CAMPOS = { status: 'Status', data_resposta: 'Data da resposta', deleted_at: 'Excluído em', delete_reason: 'Motivo', devolucoes: 'Devoluções', novo_prazo: 'Novo prazo', dias: 'Dias pedidos', item: 'Item', orgao: 'Órgão', prazo: 'Prazo', processo_sei: 'Processo SEI', papel: 'Perfil', area: 'Área', deve_trocar_senha: 'Trocar senha no 1º acesso', papel_assinatura: 'Assinou como', assinaturas: 'Assinaturas', responsaveis: 'Responsáveis', codigo: 'Código', comentario: 'Registro', modo_manutencao: 'Modo manutenção', tipo: 'Tipo', objeto: 'Objeto', modelo: 'Modelo', momento: 'Momento', responsavel: 'Responsável', prazo_analise: 'Prazo da análise', ativo: 'Ativa' };
-const TABELAS = { itens_acompanhamento: 'Item de acompanhamento', prorrogacoes: 'Prorrogação', demandas: 'Demanda', evidencias: 'Evidência', perfis: 'Usuário', relatorios: 'Relatório de checklist', lixeira: 'Lixeira', parametros: 'Parâmetros', processos: 'Processo', checklist_aplicacoes: 'Checklist', regras_abertura: 'Regra de abertura' };
+const CAMPOS = { status: 'Status', data_resposta: 'Data da resposta', deleted_at: 'Excluído em', delete_reason: 'Motivo', devolucoes: 'Devoluções', novo_prazo: 'Novo prazo', dias: 'Dias pedidos', item: 'Item', orgao: 'Órgão', prazo: 'Prazo', processo_sei: 'Processo SEI', papel: 'Perfil', area: 'Área', deve_trocar_senha: 'Trocar senha no 1º acesso', papel_assinatura: 'Assinou como', assinaturas: 'Assinaturas', responsaveis: 'Responsáveis', codigo: 'Código', comentario: 'Registro', modo_manutencao: 'Modo manutenção', perfil_base: 'Perfil-base', permissoes: 'Permissões', tipo: 'Tipo', objeto: 'Objeto', modelo: 'Modelo', momento: 'Momento', responsavel: 'Responsável', prazo_analise: 'Prazo da análise', ativo: 'Ativa' };
+const TABELAS = { itens_acompanhamento: 'Item de acompanhamento', prorrogacoes: 'Prorrogação', demandas: 'Demanda', evidencias: 'Evidência', perfis: 'Usuário', relatorios: 'Relatório de checklist', lixeira: 'Lixeira', parametros: 'Parâmetros', perfis_acesso: 'Perfil de acesso', processos: 'Processo', checklist_aplicacoes: 'Checklist', regras_abertura: 'Regra de abertura' };
 const ACOES_TR = { INSERT: ['Inclusão', 'c-ok', 'plus'], UPDATE: ['Alteração', 'c-info', 'pen'], SOFT_DELETE: ['Exclusão', 'c-crit', 'trash'], RESTORE: ['Restauração', 'c-info', 'undo'], SIGN: ['Assinatura', 'c-violet', 'stamp'] };
 const STATUS_PR = { pendente: 'Pendente', aprovada: 'Aprovada', negada: 'Negada' };
 function valorTr(k, v) {
@@ -2108,6 +2203,251 @@ function arvore(pai) {
   return `<ul>${filhos.map((a) => `<li><span class="node"><span class="sig">${a.sigla}</span>${esc(a.nome)} <span class="tp">${a.tipo}</span></span>${arvore(a.sigla)}</li>`).join('')}</ul>`;
 }
 /* =========================================================================
+   DETALHAMENTO AO CLICAR NOS GRÁFICOS
+   ========================================================================= */
+const catRespG = (i) => (stIdx(i.status) >= 7 || isFinal(i) ? 'ok' : ['respondida_area', 'em_analise_ascoin'].includes(i.status) ? 'asc' : situacao(i).cls === 'vencido' ? 'venc' : i.status === 'devolvida' ? 'dev' : 'pend');
+const baldeG = (it) => { const n = diasAte(it.prazo); return n < 0 ? 'late' : n > 6 ? 'after' : `d${n}`; };
+const dr = (o) => `data-drill="${esc(JSON.stringify(o))}"`;
+function resumoItens(l) {
+  const c = (k) => l.filter((i) => situacao(i).cls === k).length;
+  const areas = [...new Set(l.map((i) => i.area))];
+  return `<div class="wchips">${c('vencido') ? `<span class="chip c-crit">${c('vencido')} vencidos</span>` : ''}${c('avencer') ? `<span class="chip c-warn">${c('avencer')} a vencer</span>` : ''}${c('noprazo') ? `<span class="chip c-ok">${c('noprazo')} no prazo</span>` : ''}${areas.length ? `<span class="wchip">Áreas: ${areas.join(', ')}</span>` : ''}</div>`;
+}
+function abrirDrill(sp) {
+  if (sp.ck) return drillCk(sp);
+  if (sp.demOrg) {
+    const ds = DEMANDAS.filter((d) => d.org === sp.demOrg && podeVerDemanda(d));
+    return modal({ title: sp.t, sub: `${plural(ds.length, 'demanda registrada', 'demandas registradas')} no sistema. O gráfico usa a série histórica ilustrativa.`, ok: '', wide: true, body: `<div class="table-wrap"><table class="t"><thead><tr><th>Demanda</th><th>Recebida</th><th>Situação</th></tr></thead><tbody>${ds.map((d) => `<tr class="link" data-go="demanda-${d.n}" tabindex="0"><td class="title-cell"><b>${esc(d.assunto)}</b><small class="mono">DEM-2026-${d.n}</small></td><td class="num">${fmt(d.receb)}</td><td>${chipStatus(statusDemanda(d))}</td></tr>`).join('') || '<tr><td colspan="3"><div class="empty">Nenhuma demanda.</div></td></tr>'}</tbody></table></div>` });
+  }
+  let l = filtrarPainel(itensVisiveis());
+  if (sp.cat !== 'ok') l = l.filter((i) => !isFinal(i));
+  if (sp.area) l = l.filter((i) => i.area === sp.area);
+  if (sp.org) l = l.filter((i) => orgaoDe(i) === sp.org);
+  if (sp.ref) l = l.filter((i) => i.ref === sp.ref);
+  if (sp.sit === 'demais') l = l.filter((i) => !['vencido', 'avencer'].includes(situacao(i).cls));
+  else if (sp.sit) l = l.filter((i) => situacao(i).cls === sp.sit);
+  if (sp.grav) l = l.filter((i) => i.grav === sp.grav);
+  if (sp.status) l = l.filter((i) => i.status === sp.status);
+  if (sp.cat) l = l.filter((i) => catRespG(i) === sp.cat);
+  if (sp.b) l = l.filter((i) => COM_AREA.has(i.status) && baldeG(i) === sp.b);
+  l.sort((a, b) => a.prazo.localeCompare(b.prazo));
+  modal({ title: sp.t, sub: `${plural(l.length, 'item', 'itens')} · com os filtros do painel aplicados. Clique em uma linha para abrir.`, ok: '', wide: true, body: `${resumoItens(l)}${tabelaItens(l, { vazio: 'Nenhum item neste recorte.' })}<div class="actions"><a class="btn sm" href="#pendencias">${ico('list')}Abrir em Pendências</a></div>` });
+}
+function drillCk(sp) {
+  const NOME = { conforme: 'Conforme', nao_conforme: 'Não conforme', com_ressalva: 'Com ressalva', nao_se_aplica: 'Não se aplica', pendente: 'Não avaliado' };
+  let linhas = [];
+  APLICACOES.forEach((a) => {
+    const r = respostasAplicacao(a);
+    if (sp.ck === 'pendente') { const f = CK_ITENS.length - Object.keys(r).length; if (f) linhas.push(`<tr class="link" data-go="aplicacao-${a.n}" tabindex="0"><td class="title-cell"><b>${esc(a.objeto)}</b><small class="mono">CHK-2026-${a.n}</small></td><td colspan="2">${plural(f, 'item sem resposta', 'itens sem resposta')}</td></tr>`); return; }
+    CK_ITENS.filter((q) => r[q.n] && r[q.n][0] === sp.ck).forEach((q) => linhas.push(`<tr class="link" data-go="aplicacao-${a.n}" tabindex="0"><td class="title-cell"><b>${esc(a.objeto)}</b><small class="mono">CHK-2026-${a.n} · item ${q.n}</small></td><td class="small">${esc(q.q)}</td><td class="small sec">${esc(r[q.n][1] || '—')}</td></tr>`));
+  });
+  modal({ title: `Itens “${NOME[sp.ck]}” nos checklists`, sub: `${linhas.length} ${sp.ck === 'pendente' ? 'checklists com itens pendentes' : 'respostas'}. Clique para abrir o checklist.`, ok: '', wide: true, body: `<div class="table-wrap"><table class="t"><thead><tr><th>Checklist</th><th>${sp.ck === 'pendente' ? 'Pendência' : 'Pergunta'}</th>${sp.ck === 'pendente' ? '' : '<th>Justificativa</th>'}</tr></thead><tbody>${linhas.join('') || '<tr><td colspan="3"><div class="empty">Nenhum registro.</div></td></tr>'}</tbody></table></div>` });
+}
+
+/* =========================================================================
+   CATÁLOGO DE WIDGETS
+   ========================================================================= */
+const CATALOGO = [
+  { k: 'assin', nome: 'Assinaturas pendentes', desc: 'Relatórios aguardando assinatura e quem ainda falta assinar.', vis: 'Lista', fonte: 'Relatórios de checklist', ok: true },
+  { k: 'prazos-org', nome: 'Próximos prazos dos órgãos', desc: 'Os prazos finais do TCE-RJ, CGE-RJ e demais órgãos, em contagem regressiva.', vis: 'Blocos de contagem', fonte: 'Demandas externas', ok: true },
+  { k: 'top-atraso', nome: 'Maiores atrasos', desc: 'Os 5 itens com mais dias de atraso, com área e órgão.', vis: 'Ranking', fonte: 'Itens de acompanhamento', ok: true },
+  { k: 'carga', nome: 'Carga por ponto focal', desc: 'Quantos itens abertos cada ponto focal tem, separando vencidos.', vis: 'Barras', fonte: 'Itens e perfis', ok: true },
+  { k: 'prorrog', nome: 'Prorrogações', desc: 'Pedidos por situação: pendentes, aprovados e negados.', vis: 'Barras', fonte: 'Prorrogações', ok: true },
+  { k: 'agenda7', nome: 'Agenda dos próximos 7 dias', desc: 'Prazos, análises de checklist, assinaturas e escalonamentos da semana.', vis: 'Lista por dia', fonte: 'Agenda', ok: true },
+  { k: 'tmr-area', nome: 'Tempo de resposta por área', desc: 'Média de dias entre a distribuição e a resposta, mês a mês.', vis: 'Linhas', fonte: 'Interações', ok: false },
+  { k: 'sla', nome: 'Tempo de análise da ASCOIN', desc: 'Dias entre a resposta da área e o aceite ou a devolução.', vis: 'Número + tendência', fonte: 'Interações', ok: false },
+  { k: 'reinc-tema', nome: 'Reincidência por tema', desc: 'Temas que voltam nas demandas dos órgãos de controle.', vis: 'Barras', fonte: 'Demandas', ok: false },
+  { k: 'assin-mes', nome: 'Documentos assinados no mês', desc: 'Relatórios concluídos e tempo médio até a última assinatura.', vis: 'Número + barras', fonte: 'Assinaturas', ok: false },
+  { k: 'riscos', nome: 'Mapa de riscos', desc: 'Probabilidade × impacto dos riscos residuais.', vis: 'Mapa de calor', fonte: 'Riscos (Fase 2)', ok: false },
+  { k: 'plano', nome: 'Execução do plano anual de auditoria', desc: 'Trabalhos previstos, em andamento e concluídos.', vis: 'Progresso', fonte: 'Auditoria (Fase 2)', ok: false },
+];
+function widgetExtra(k) {
+  const vis = itensVisiveis(); const ab = vis.filter((i) => !isFinal(i));
+  const o = { cls: '', rem: k };
+  if (k === 'assin') {
+    const rs = RELATORIOS.filter((r) => situacaoRel(r) === 'aguardando');
+    return widget('Assinaturas pendentes', rs.length ? `<div class="flowlist">${rs.map((r) => `<a class="inner" href="#relatorio-${r.id}" style="text-decoration:none;color:inherit"><div style="display:flex;justify-content:space-between;gap:8px"><b class="mono">${r.id}</b><span class="chip c-warn">${sigsFeitas(r)} de ${r.sigs.length}</span></div><div class="small muted">Faltam: ${r.sigs.filter((s) => !s.em).map((s) => `${USER[s.u].nome} (${s.papel})`).join(', ')}</div></a>`).join('')}</div>` : '<div class="empty">Nenhuma assinatura pendente.</div>', { ...o, link: 'checklists' });
+  }
+  if (k === 'prazos-org') {
+    const ds = DEMANDAS.filter((d) => podeVerDemanda(d) && statusDemanda(d) !== 'encerrada' && diasAte(d.prazo) >= -5).sort((a, b) => a.prazo.localeCompare(b.prazo)).slice(0, 4);
+    return widget('Próximos prazos dos órgãos', `<div class="tiles" style="grid-template-columns:repeat(2,minmax(0,1fr))">${ds.map((d) => { const n = diasAte(d.prazo); return `<a class="tile ${n < 0 ? 'crit' : n <= 5 ? 'warn' : ''}" href="#demanda-${d.n}"><span class="big">${fmtCurta(d.prazo)}</span><span class="cap">${d.org} · DEM-${d.n}<br>${n < 0 ? `${-n} dias atrás` : n === 0 ? 'hoje' : `em ${n} dias`}</span></a>`; }).join('')}</div>`, { ...o, link: 'demandas' });
+  }
+  if (k === 'top-atraso') {
+    const v = ab.filter((i) => situacao(i).cls === 'vencido').sort((a, b) => a.prazo.localeCompare(b.prazo)).slice(0, 5);
+    return widget('Maiores atrasos', v.length ? `<div class="flowlist">${v.map((i, n) => `<a class="flowrow" href="#${linkItem(i)}" style="grid-template-columns:22px minmax(0,1fr) auto;text-decoration:none;color:inherit"><span class="n" style="text-align:left">${n + 1}º</span><span class="nm"><b class="mono">${i.area}</b> · ${esc(i.titulo)}</span><span class="chip c-crit">${-diasAte(i.prazo)} d</span></a>`).join('')}</div>` : '<div class="empty">Nenhum item em atraso.</div>', { ...o, link: 'pendencias' });
+  }
+  if (k === 'carga') {
+    const pfs = Object.entries(PONTO_FOCAL).map(([a, n]) => ({ a, n, t: ab.filter((i) => i.area === a && COM_AREA.has(i.status)).length, v: ab.filter((i) => i.area === a && situacao(i).cls === 'vencido').length })).filter((x) => x.t).sort((x, y) => y.t - x.t);
+    const mx = Math.max(1, ...pfs.map((x) => x.t));
+    return widget('Carga por ponto focal', `<div class="xbars">${pfs.map((x) => `<div class="xbar" style="grid-template-columns:minmax(0,130px) minmax(0,1fr)" ${dr({ t: `Itens com ${x.n} (${x.a})`, area: x.a })} tabindex="0" role="button"><span class="nm" style="font-family:var(--font-text)" title="${x.a}">${esc(x.n)}</span><span class="tr"><span class="sbar" style="height:15px;width:${Math.max(4, (x.t / mx) * 80)}%;background:transparent">${x.v ? `<i style="flex:${x.v};background:var(--crit-mark)"></i>` : ''}${x.t - x.v ? `<i style="flex:${x.t - x.v};background:var(--s1)"></i>` : ''}</span><span class="v">${x.t}</span></span></div>`).join('')}</div><div class="legend-dots"><span><i style="background:var(--crit-mark)"></i>Vencidos</span><span><i style="background:var(--s1)"></i>Demais com a área</span></div>`, o);
+  }
+  if (k === 'prorrog') {
+    const st = [['pendente', 'Pendentes', 'var(--warn-mark)'], ['aprovada', 'Aprovadas', 'var(--ok-mark)'], ['negada', 'Negadas', 'var(--crit-mark)']];
+    const mx = Math.max(1, ...st.map(([s]) => PRORROGACOES.filter((p) => p.status === s).length));
+    return widget('Prorrogações', `<div class="flowlist">${st.map(([s, n, c]) => { const q = PRORROGACOES.filter((p) => p.status === s).length; return `<div class="flowrow"><span class="nm">${n}</span><span class="tr"><i style="width:${(q / mx) * 100}%;background:${c}"></i></span><span class="n">${q}</span></div>`; }).join('')}</div><p class="small muted">Regra atual: até 50% do prazo original, 1 pedido por item.</p>`, { ...o, link: 'prorrogacoes' });
+  }
+  if (k === 'agenda7') {
+    const evs = eventosAgenda(iso(HOJE), addDias(iso(HOJE), 6)).filter((e) => e.tipo !== 'rotina' && e.tipo !== 'alerta');
+    const dias = [...new Set(evs.map((e) => e.d))].sort();
+    return widget('Agenda dos próximos 7 dias', dias.length ? `<div class="flowlist">${dias.map((d) => `<div class="inner"><span class="eyebrow">${toDate(d).toLocaleDateString('pt-BR', { weekday: 'short', day: '2-digit', month: '2-digit' })}</span>${evs.filter((e) => e.d === d).map((e) => `<a class="ag-mini" href="#${e.link}"><i style="background:${TIPOS_EV[e.tipo][1]}"></i>${esc(e.titulo)}</a>`).join('')}</div>`).join('')}</div>` : '<div class="empty">Nada na agenda da semana.</div>', { ...o, link: 'agenda' });
+  }
+  return '';
+}
+function catalogoWidgets() {
+  modal({
+    title: 'Adicionar widget', sub: 'Escolha um bloco para o seu painel. Os marcados “Exemplo” mostram outros widgets possíveis na versão real.', ok: '', wide: true,
+    body: `<div class="wcat">${CATALOGO.map((w) => { const tem = state.extraW.includes(w.k); return `<div class="wcat-i"><div><b>${w.nome}</b><p class="small sec">${w.desc}</p><div class="wchips"><span class="wchip">${w.vis}</span><span class="wchip">Dados: ${w.fonte}</span></div></div>${w.ok ? `<button type="button" class="btn sm ${tem ? '' : 'primary'}" data-act="w-add" data-k="${w.k}" ${tem ? 'disabled' : ''}>${tem ? 'No painel' : `${ico('plus')}Adicionar`}</button>` : '<span class="chip c-neutral plain">Exemplo</span>'}</div>`; }).join('')}</div>`,
+  });
+}
+
+/* =========================================================================
+   AGENDA / CALENDÁRIO
+   ========================================================================= */
+const TIPOS_EV = {
+  item: ['Prazo de item da área', 'var(--s1)'], orgao: ['Prazo do órgão', 'var(--s2)'], monit: ['Monitoramento', 'var(--violet)'], checklist: ['Análise de checklist', 'var(--s3)'],
+  assin: ['Assinatura pendente', 'var(--s4)'], prorrog: ['Prorrogação', 'var(--s5)'], escal: ['Escalonamento', 'var(--crit-mark)'], receb: ['Demanda recebida', '#6a7c96'],
+  alerta: ['Alertas D-5 e D-2', '#8a96a8'], rotina: ['Rotinas do sistema', '#5a6b85'],
+};
+function eventosAgenda(ini, fim) {
+  const u = eu(); const ev = [];
+  const dentro = (d) => d >= ini && d <= fim;
+  itensVisiveis().filter((i) => !isFinal(i) && COM_AREA.has(i.status)).forEach((i) => {
+    const s = situacao(i);
+    const base = { org: orgaoDe(i), area: i.area, link: linkItem(i), resp: PONTO_FOCAL[i.area], sit: s.cls };
+    ev.push({ ...base, d: i.prazo, hora: '23:59', tipo: i.status === 'em_monitoramento' ? 'monit' : 'item', titulo: `${i.area} · ${i.titulo}`, sub: `${i.numero} · ${s.txt}` });
+    if (s.cls === 'vencido') ev.push({ ...base, d: addDias(i.prazo, 1), hora: '07:05', tipo: 'escal', titulo: `Escalonamento: ${i.area} · ${i.numero}`, sub: 'Aviso ao superior da área e à CHEGAB' });
+    [5, 2].forEach((k) => ev.push({ ...base, d: addDias(i.prazo, -k), hora: '07:00', tipo: 'alerta', titulo: `D-${k}: ${i.area} · ${i.numero}`, sub: 'Alerta automático à área', sit: 'ok' }));
+  });
+  DEMANDAS.filter((d) => podeVerDemanda(d)).forEach((d) => {
+    const st = statusDemanda(d); const n = diasAte(d.prazo);
+    if (st !== 'encerrada') ev.push({ d: d.prazo, hora: '23:59', tipo: 'orgao', titulo: `${d.org} · prazo final da DEM-2026-${d.n}`, sub: d.assunto, org: d.org, link: `demanda-${d.n}`, sit: n < 0 ? 'vencido' : n <= 5 ? 'avencer' : 'noprazo' });
+    ev.push({ d: d.receb, hora: '09:00', tipo: 'receb', titulo: `Recebida: ${d.org} · DEM-2026-${d.n}`, sub: d.assunto, org: d.org, link: `demanda-${d.n}`, sit: 'ok' });
+  });
+  APLICACOES.filter((a) => situacaoApl(a) === 'em_preenchimento').forEach((a) => { const n = diasAte(a.prazoAnalise); ev.push({ d: a.prazoAnalise, hora: '18:00', tipo: 'checklist', titulo: `Concluir CHK-2026-${a.n}`, sub: `${a.objeto} · responsável: ${a.resp}`, org: 'Checklist', area: a.area, link: `aplicacao-${a.n}`, resp: a.resp, sit: n < 0 ? 'vencido' : n <= 5 ? 'avencer' : 'noprazo' }); });
+  RELATORIOS.filter((r) => situacaoRel(r) === 'aguardando').forEach((r) => r.sigs.filter((s) => !s.em).forEach((s) => ev.push({ d: addDias(r.criadoEm.slice(0, 10), 2), hora: '08:00', tipo: 'assin', titulo: `Assinar ${r.id}: ${USER[s.u].nome}`, sub: `${s.papel} · lembrete automático`, org: 'Checklist', link: `relatorio-${r.id}`, uid: s.u, sit: 'avencer' })));
+  PRORROGACOES.forEach((p) => { const it = ITEM[p.item]; if (!it || !podeVerItem(it)) return; ev.push({ d: p.em, hora: '10:00', tipo: 'prorrog', titulo: `${p.id}: ${p.status === 'pendente' ? 'aguarda decisão' : p.status} (+${p.dias} dias)`, sub: `${it.numero} · ${it.area}`, org: orgaoDe(it), area: it.area, link: 'prorrogacoes', sit: p.status === 'pendente' ? 'avencer' : 'ok' }); });
+  if (state.ag.tipos.has('rotina')) for (let d = ini; d <= fim; d = addDias(d, 1)) [['03:00', 'Backup diário'], ['03:00', 'Limpeza da lixeira'], ['07:00', 'Geração de alertas de prazo'], ['07:05', 'Escalonamento de atrasos']].forEach(([h, t]) => ev.push({ d, hora: h, tipo: 'rotina', titulo: t, sub: 'Rotina automática do banco', link: u.papel === 'admin' ? 'manutencao' : 'agenda', sit: d < iso(HOJE) ? 'ok' : 'noprazo' }));
+  const f = state.ag;
+  return ev.filter((e) => dentro(e.d) && f.tipos.has(e.tipo)
+    && (!f.org || e.org === f.org) && (!f.area || (e.area && descendentes(f.area).has(e.area))) && (!f.sit || e.sit === f.sit)
+    && (!f.meus || meuEvento(e, u))).sort((a, b) => (a.d + a.hora).localeCompare(b.d + b.hora));
+}
+function meuEvento(e, u) {
+  if (e.uid) return e.uid === u.id;
+  if (e.resp && e.resp === u.nome) return true;
+  if (u.papel === 'ponto_focal') return !!e.area && descendentes(u.area).has(e.area);
+  if (u.papel === 'ascoin') return ['prorrog', 'orgao', 'escal'].includes(e.tipo);
+  if (u.papel === 'gestor') return ['orgao', 'escal'].includes(e.tipo);
+  return false;
+}
+const SIT_EV = { vencido: ['Vencido', 'c-crit'], avencer: ['Próximo', 'c-warn'], noprazo: ['No prazo', 'c-info'], ok: ['Registrado', 'c-neutral'] };
+function viewAgenda() {
+  const f = state.ag;
+  const [ano, mes] = f.mes.split('-').map(Number);
+  const ini = `${f.mes}-01`; const ultimo = new Date(ano, mes, 0).getDate(); const fim = `${f.mes}-${String(ultimo).padStart(2, '0')}`;
+  const evs = eventosAgenda(ini, fim);
+  state._evs = evs;
+  const nomeMes = new Date(ano, mes - 1, 1).toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+  const hoje = iso(HOJE);
+  const topAreas = AREAS.filter((a) => ['SUBEXE', 'DGAF', 'GABSEC', 'SUBICS', 'SUBINOV', 'SUBEEM', 'CODIN', 'AGERIO'].includes(a.sigla));
+  const filtros = `<div class="card"><div class="card-body" style="display:flex;flex-direction:column;gap:10px">
+    <div class="ag-tipos" role="group" aria-label="Tipos de evento">${Object.entries(TIPOS_EV).map(([k, [n, c]]) => `<button class="ag-tipo ${f.tipos.has(k) ? 'on' : ''}" data-act="ag-tipo" data-k="${k}" aria-pressed="${f.tipos.has(k)}"><i style="background:${c}"></i>${n}</button>`).join('')}</div>
+    <div class="filters">
+      <label class="field"><span>Órgão</span><select id="ag-org" data-ag="org"><option value="">Todos</option>${[...ORGAOS, 'Checklist'].map((o) => `<option ${f.org === o ? 'selected' : ''}>${o}</option>`).join('')}</select></label>
+      <label class="field"><span>Área (com subáreas)</span><select id="ag-area" data-ag="area"><option value="">Todas</option>${topAreas.map((a) => `<option ${f.area === a.sigla ? 'selected' : ''}>${a.sigla}</option>`).join('')}</select></label>
+      <label class="field"><span>Situação</span><select id="ag-sit" data-ag="sit"><option value="">Todas</option>${Object.entries(SIT_EV).map(([k, [n]]) => `<option value="${k}" ${f.sit === k ? 'selected' : ''}>${n}</option>`).join('')}</select></label>
+      <label class="field" style="flex-direction:row;align-items:center;gap:8px;align-self:end;height:36px"><input type="checkbox" id="ag-meus" data-ag-meus ${f.meus ? 'checked' : ''} style="height:auto"><span>Só o que é comigo</span></label>
+      <button class="btn ghost sm" data-act="ag-limpar" style="align-self:end">Limpar filtros</button>
+    </div></div></div>`;
+  let corpo = '';
+  if (f.vista === 'mes') {
+    const d0 = new Date(ano, mes - 1, 1); const inicio = addDias(ini, -d0.getDay());
+    const semanas = Math.ceil((d0.getDay() + ultimo) / 7);
+    let cel = '';
+    for (let k = 0; k < semanas * 7; k++) {
+      const d = addDias(inicio, k); const fora = d.slice(0, 7) !== f.mes; const es = evs.filter((e) => e.d === d);
+      cel += `<div class="cal-d ${fora ? 'out' : ''} ${d === hoje ? 'today' : ''}" data-dia="${d}" tabindex="0" role="button" aria-label="${fmt(d)}: ${plural(es.length, 'evento', 'eventos')}"><span class="cal-n">${Number(d.slice(8))}</span>${es.slice(0, 3).map((e) => `<button class="cal-ev ${e.sit === 'vencido' ? 'late' : ''}" data-evi="${evs.indexOf(e)}" style="--c:${TIPOS_EV[e.tipo][1]}" title="${esc(e.titulo)}"><span>${esc(e.titulo)}</span></button>`).join('')}${es.length > 3 ? `<span class="cal-mais">+${es.length - 3} mais</span>` : ''}${es.length ? `<span class="cal-dots">${es.slice(0, 5).map((e) => `<i style="background:${TIPOS_EV[e.tipo][1]}"></i>`).join('')}</span>` : ''}</div>`;
+    }
+    corpo = `<div class="cal" role="grid" aria-label="Calendário de ${nomeMes}">${['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'].map((d) => `<div class="cal-h">${d}</div>`).join('')}${cel}</div>`;
+  } else {
+    const dias = [...new Set(evs.map((e) => e.d))];
+    corpo = dias.length ? `<div class="ag-list">${dias.map((d) => `<div class="ag-day ${d === hoje ? 'today' : ''}"><div class="ag-dh">${toDate(d).toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' })}${d === hoje ? ' · hoje' : ''}</div>${evs.filter((e) => e.d === d).map((e) => `<button class="ag-row" data-evi="${evs.indexOf(e)}"><span class="ag-h">${e.hora === '23:59' ? 'Prazo' : e.hora}</span><i style="background:${TIPOS_EV[e.tipo][1]}"></i><span class="ag-t"><b>${esc(e.titulo)}</b><small>${esc(e.sub || '')}</small></span><span class="chip ${SIT_EV[e.sit][1]}">${SIT_EV[e.sit][0]}</span></button>`).join('')}</div>`).join('')}</div>` : '<div class="empty">Nenhum evento com esses filtros neste mês.</div>';
+  }
+  const prox = eventosAgenda(hoje, addDias(hoje, 6)).filter((e) => !['rotina', 'alerta', 'receb'].includes(e.tipo)).slice(0, 8);
+  state._prox = prox;
+  const porTipo = Object.keys(TIPOS_EV).map((k) => [k, evs.filter((e) => e.tipo === k).length]).filter(([, n]) => n);
+  return `${pageHead('Agenda', 'Prazos, alertas, análises, assinaturas e rotinas que o sistema controla, num só calendário. Clique em um evento para ver os detalhes.', `<button class="btn" data-act="exportar" data-fmt="Calendário (.ics)">${ico('download')}Exportar para o Outlook</button>`)}
+  ${filtros}
+  <div class="grid g-main">
+    <section class="card" style="min-width:0"><div class="card-head"><div class="ag-nav"><button class="btn sm" data-act="ag-mes" data-d="-1" aria-label="Mês anterior">‹</button><h2 class="ag-mes">${nomeMes}</h2><button class="btn sm" data-act="ag-mes" data-d="1" aria-label="Próximo mês">›</button><button class="btn sm" data-act="ag-hoje">Hoje</button></div><div class="seg" role="group" aria-label="Visualização"><button data-act="ag-vista" data-v="mes" aria-pressed="${f.vista === 'mes'}">Mês</button><button data-act="ag-vista" data-v="lista" aria-pressed="${f.vista === 'lista'}">Lista</button></div></div><div class="card-body">${corpo}</div></section>
+    <div class="grid" style="align-content:start">
+      <section class="card"><div class="card-head"><h2>Próximos 7 dias</h2></div><div class="card-body">${prox.length ? `<div class="flowlist">${prox.map((e, i) => `<button class="ag-row compact" data-evp="${i}"><span class="ag-h">${fmtCurta(e.d)}</span><i style="background:${TIPOS_EV[e.tipo][1]}"></i><span class="ag-t"><b>${esc(e.titulo)}</b></span></button>`).join('')}</div>` : '<div class="empty">Nada nos próximos 7 dias.</div>'}</div></section>
+      <section class="card"><div class="card-head"><h2>Resumo do mês</h2><span class="hint">${plural(evs.length, 'evento', 'eventos')}</span></div><div class="card-body"><div class="flowlist">${porTipo.map(([k, n]) => `<div class="flowrow" style="grid-template-columns:minmax(0,1fr) 32px"><span class="nm"><i class="ag-dot" style="background:${TIPOS_EV[k][1]}"></i>${TIPOS_EV[k][0]}</span><span class="n">${n}</span></div>`).join('') || '<span class="small muted">Sem eventos.</span>'}</div></div></section>
+    </div>
+  </div>`;
+}
+function abrirEvento(e) {
+  modal({ title: e.titulo, sub: `${TIPOS_EV[e.tipo][0]} · ${toDate(e.d).toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}${e.hora === '23:59' ? '' : ` às ${e.hora}`}`, ok: '',
+    body: `<dl class="dl"><div><dt>Situação</dt><dd><span class="chip ${SIT_EV[e.sit][1]}">${SIT_EV[e.sit][0]}</span></dd></div><div><dt>Tipo</dt><dd><i class="ag-dot" style="background:${TIPOS_EV[e.tipo][1]}"></i>${TIPOS_EV[e.tipo][0]}</dd></div>${e.org ? `<div><dt>Origem</dt><dd>${esc(e.org)}</dd></div>` : ''}${e.area ? `<div><dt>Área</dt><dd class="mono"><b>${e.area}</b></dd></div>` : ''}${e.resp ? `<div><dt>Responsável</dt><dd>${esc(e.resp)}</dd></div>` : ''}<div style="grid-column:1/-1"><dt>Detalhe</dt><dd>${esc(e.sub || '—')}</dd></div></dl>
+      <div class="actions"><a class="btn primary" href="#${e.link}">${ico('arrow')}Abrir</a><button type="button" class="btn" data-act="exportar" data-fmt="Evento (.ics)">${ico('calendar')}Adicionar ao meu calendário</button></div>` });
+}
+function abrirDia(d) {
+  const es = state._evs.filter((e) => e.d === d);
+  modal({ title: toDate(d).toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' }), sub: plural(es.length, 'evento', 'eventos'), ok: '',
+    body: es.length ? `<div class="ag-list">${es.map((e) => `<button type="button" class="ag-row" data-evi="${state._evs.indexOf(e)}"><span class="ag-h">${e.hora === '23:59' ? 'Prazo' : e.hora}</span><i style="background:${TIPOS_EV[e.tipo][1]}"></i><span class="ag-t"><b>${esc(e.titulo)}</b><small>${esc(e.sub || '')}</small></span><span class="chip ${SIT_EV[e.sit][1]}">${SIT_EV[e.sit][0]}</span></button>`).join('')}</div>` : '<div class="empty">Nenhum evento neste dia com os filtros atuais.</div>' });
+}
+
+/* =========================================================================
+   RESUMO DO USUÁRIO (clique no avatar)
+   ========================================================================= */
+const ULTIMO_ACESSO = { u1: '13/11/2026 às 07:48', u2: '13/11/2026 às 08:12', u3: '12/11/2026 às 17:40', u4: '12/11/2026 às 16:05', u5: '13/11/2026 às 09:02', u6: '11/11/2026 às 14:20', u7: '13/11/2026 às 08:55', u8: '12/11/2026 às 18:31' };
+function fecharPerfil() { document.getElementById('perfil-pop')?.remove(); document.getElementById('avatar-btn')?.setAttribute('aria-expanded', 'false'); }
+function abrirPerfil() {
+  if (document.getElementById('perfil-pop')) { fecharPerfil(); return; }
+  const u = eu();
+  const vis = itensVisiveis().filter((i) => !isFinal(i));
+  const daArea = vis.filter((i) => COM_AREA.has(i.status) && descendentes(raizVisao(u)).has(i.area));
+  const comigo = u.papel === 'ascoin' ? vis.filter((i) => ['respondida_area', 'em_analise_ascoin'].includes(i.status)).length : u.papel === 'ponto_focal' ? daArea.length : u.papel === 'gestor' ? vis.filter((i) => situacao(i).cls === 'vencido').length : vis.length;
+  const rotComigo = { ascoin: 'Para analisar', ponto_focal: 'Com a minha área', gestor: 'Vencidos na hierarquia', admin: 'Pendências abertas', auditoria: 'Pendências visíveis' }[u.papel];
+  const venc = (u.papel === 'ponto_focal' ? daArea : vis).filter((i) => situacao(i).cls === 'vencido').length;
+  const ass = pendentesDeAssinatura(u.id).length;
+  const ck = APLICACOES.filter((a) => a.resp === u.nome && situacaoApl(a) === 'em_preenchimento').length;
+  const nl = minhasNotifs().filter((n) => !n.lida).length;
+  const perfil = u.perfilNome || PAPEIS[u.papel];
+  const escopo = u.papel === 'gestor' && u.area === 'CHEGAB' ? 'Toda a SEDES' : ESCOPO_BASE[u.papel];
+  const el = document.createElement('div');
+  el.id = 'perfil-pop'; el.className = 'perfil-pop'; el.setAttribute('role', 'dialog'); el.setAttribute('aria-label', 'Resumo do meu perfil');
+  el.innerHTML = `<div class="pp-head"><span class="pp-av">${iniciais(u.nome)}</span><div style="min-width:0"><b>${esc(u.nome)}</b><div class="small muted">${esc(u.cargo)}</div><div class="small muted mono">${u.email}</div></div></div>
+    <dl class="pp-dl"><div><dt>Perfil</dt><dd>${esc(perfil)}</dd></div><div><dt>Área</dt><dd><b class="mono">${u.area}</b> · ${esc(AREA[u.area]?.nome || '')}</dd></div><div><dt>Enxerga</dt><dd>${escopo}${u.restrito ? ' · inclui restritos' : ''}</dd></div><div><dt>Último acesso</dt><dd>${ULTIMO_ACESSO[u.id] || 'Primeiro acesso pendente'}</dd></div><div><dt>Senha</dt><dd>${u.troca ? '<span class="chip c-warn">Troca obrigatória pendente</span>' : 'Alterada em 02/09/2026 · expira em 01/03/2027'}</dd></div></dl>
+    <div class="pp-nums">
+      <a href="#${u.papel === 'admin' ? 'pendencias' : 'inicio'}"><b>${comigo}</b><span>${rotComigo}</span></a>
+      <a href="#pendencias" class="${venc ? 'crit' : ''}"><b>${venc}</b><span>Vencidos</span></a>
+      <a href="${ass ? `#relatorio-${pendentesDeAssinatura(u.id)[0].id}` : '#checklists'}" class="${ass ? 'warn' : ''}"><b>${ass}</b><span>Para eu assinar</span></a>
+      <a href="#checklists"><b>${ck}</b><span>Checklists comigo</span></a>
+      <a href="#notificacoes"><b>${nl}</b><span>Avisos não lidos</span></a>
+    </div>
+    <div class="pp-acts"><button class="btn sm" data-act="trocar-senha">${ico('lock')}Trocar senha</button><a class="btn sm" href="#notificacoes">${ico('bell')}Notificações</a><a class="btn sm ghost" href="#login">${ico('logout')}Sair</a></div>`;
+  document.body.appendChild(el);
+  const r = document.getElementById('avatar-btn').getBoundingClientRect();
+  el.style.top = `${r.bottom + 8}px`; el.style.right = `${Math.max(8, window.innerWidth - r.right)}px`;
+  document.getElementById('avatar-btn').setAttribute('aria-expanded', 'true');
+  el.querySelector('a,button')?.focus();
+}
+
+/* =========================================================================
+   PERFIS DE ACESSO
+   ========================================================================= */
+const PERMS = ['Ver painel executivo', 'Registrar demandas', 'Distribuir itens', 'Responder itens da própria área', 'Analisar, devolver e consolidar', 'Dar ciência (CHEGAB)', 'Preencher checklists', 'Gerar relatórios', 'Assinar quando indicado', 'Ver trilha de auditoria', 'Editar configurações', 'Acessar manutenção'];
+const BASE_PERMS = { admin: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], ascoin: [0, 1, 2, 4, 6, 7, 8, 9], auditoria: [0, 8, 9], ponto_focal: [0, 3, 8], gestor: [0, 5, 8] };
+const ESCOPOS = ['Toda a SEDES', 'Própria área e subáreas', 'Própria hierarquia', 'Somente itens designados'];
+const ESCOPO_BASE = { admin: 'Toda a SEDES', ascoin: 'Toda a SEDES', auditoria: 'Toda a SEDES', ponto_focal: 'Própria área e subáreas', gestor: 'Própria hierarquia' };
+let PERFIS_CUSTOM = [];
+function cardsPerfis() {
+  const base = Object.entries(PAPEIS).map(([k, n]) => ({ nome: n, base: k, escopo: ESCOPO_BASE[k], perms: BASE_PERMS[k], custom: false }));
+  return [...base, ...PERFIS_CUSTOM].map((p) => { const nu = USERS.filter((x) => (p.custom ? x.perfilNome === p.nome : x.papel === p.base && !x.perfilNome)).length; return `<article class="perfil-c"><div style="display:flex;justify-content:space-between;gap:8px;align-items:center"><b>${esc(p.nome)}</b>${p.custom ? '<span class="chip c-violet plain">Personalizado</span>' : '<span class="chip c-neutral plain">Padrão</span>'}</div><span class="small muted">${p.custom ? `Baseado em ${PAPEIS[p.base]} · ` : ''}${esc(p.escopo)} · ${plural(nu, 'usuário', 'usuários')}</span><div class="wchips">${p.perms.map((i) => `<span class="wchip">${PERMS[i]}</span>`).join('')}</div></article>`; }).join('');
+}
+
+/* =========================================================================
    CONFIGURAÇÕES (regras de negócio e cadastros) e MANUTENÇÃO (operação técnica)
    ========================================================================= */
 const sw = (id, on, dis = false, label = '') => `<label class="switch ${dis ? 'dis' : ''}"><input type="checkbox" id="${id}" ${on ? 'checked' : ''} ${dis ? 'disabled' : ''} data-act="toggle"><span class="sl" aria-hidden="true"></span>${label ? `<span class="swl">${label}</span>` : ''}</label>`;
@@ -2123,14 +2463,12 @@ function viewConfig() {
   const tabs = [['usuarios', 'Usuários e perfis'], ['areas', 'Áreas'], ['orgaos', 'Órgãos de controle'], ['status', 'Status e fluxo'], ['prazos', 'Prazos e alertas'], ['checklists', 'Abertura de checklists'], ['assinatura', 'Assinatura eletrônica'], ['notificacoes', 'Notificações'], ['aparencia', 'Aparência'], ['seguranca', 'Segurança']];
   let corpo = '';
   if (t === 'usuarios') {
-    corpo = `<div class="card-head"><h2>Usuários</h2>${admin ? `<button class="btn sm primary" data-act="novo-usuario">${ico('plus')}Novo usuário</button>` : ''}</div><div class="table-wrap"><table class="t"><thead><tr><th>Nome</th><th>Perfil</th><th>Área</th><th>Situação</th><th></th></tr></thead><tbody>${USERS.map((x) => `<tr><td><div style="display:flex;gap:10px;align-items:center"><span class="av sm">${iniciais(x.nome)}</span><div><b>${esc(x.nome)}</b><div class="small muted">${x.email}</div></div></div></td><td>${PAPEIS[x.papel]}${x.restrito ? ' <span class="lock">' + ico('lock') + 'vê restritos</span>' : ''}</td><td class="mono"><b>${x.area}</b></td><td>${x.troca ? '<span class="chip c-warn">Troca de senha pendente</span>' : '<span class="chip c-ok">Ativo</span>'}</td><td>${admin ? `<button class="btn sm" data-act="editar-usuario">${ico('pen')}Editar</button>` : ''}</td></tr>`).join('')}</tbody></table></div>
-    <div class="card-body"><h3 style="margin-bottom:8px">O que cada perfil pode fazer</h3><div class="table-wrap"><table class="t"><thead><tr><th>Perfil</th><th>Vê</th><th>Pode</th></tr></thead><tbody>
-      <tr><td><b>Administrador</b></td><td>Tudo, exceto trabalhos de auditoria restritos</td><td>Cadastros, parâmetros, manutenção</td></tr>
-      <tr><td><b>Controle Interno (ASCOIN)</b></td><td>Tudo, exceto auditoria restrita</td><td>Registrar, distribuir, analisar, devolver, consolidar, encerrar, gerar relatórios</td></tr>
-      <tr><td><b>Auditoria Interna</b></td><td>Itens não restritos e os próprios trabalhos</td><td>Plano anual, trabalhos, achados (Fase 2)</td></tr>
-      <tr><td><b>Ponto focal</b></td><td>Só a sua área e subáreas</td><td>Confirmar recebimento, responder, anexar, pedir prorrogação, assinar quando indicado</td></tr>
-      <tr><td><b>Gestor</b></td><td>A sua hierarquia (CHEGAB e Secretário: tudo)</td><td>Ler o painel, dar ciência (CHEGAB), assinar quando indicado</td></tr>
-    </tbody></table></div></div>`;
+    const bloq = admin ? '' : 'disabled title="Somente o administrador cria usuários e perfis"';
+    corpo = `<div class="card-head"><h2>Usuários</h2><div class="actions"><button class="btn sm" data-act="novo-perfil" ${bloq}>${ico('shield')}Novo perfil</button><button class="btn sm primary" data-act="novo-usuario" ${bloq}>${ico('plus')}Novo usuário</button></div></div>
+    ${admin ? '' : `<div class="card-body" style="padding-bottom:0"><p class="small muted">${ico('lock')} Para criar usuários e perfis, troque a Visão para <b>Marcelo Teixeira (Administrador)</b>.</p></div>`}
+    <div class="table-wrap"><table class="t"><thead><tr><th>Nome</th><th>Perfil</th><th>Área</th><th>Situação</th><th></th></tr></thead><tbody>${USERS.map((x) => `<tr><td><div style="display:flex;gap:10px;align-items:center"><span class="av sm">${iniciais(x.nome)}</span><div><b>${esc(x.nome)}</b><div class="small muted">${x.email}</div></div></div></td><td>${esc(x.perfilNome || PAPEIS[x.papel])}${x.restrito ? ' <span class="lock">' + ico('lock') + 'vê restritos</span>' : ''}</td><td class="mono"><b>${x.area}</b></td><td>${x.troca ? '<span class="chip c-warn">Troca de senha pendente</span>' : '<span class="chip c-ok">Ativo</span>'}</td><td>${admin ? `<button class="btn sm" data-act="editar-usuario">${ico('pen')}Editar</button>` : ''}</td></tr>`).join('')}</tbody></table></div>
+    <div class="card-head" style="border-top:1px solid var(--line)"><h2>Perfis de acesso</h2><span class="hint">${Object.keys(PAPEIS).length + PERFIS_CUSTOM.length} perfis</span></div>
+    <div class="card-body"><div class="perfis">${cardsPerfis()}</div></div>`;
   } else if (t === 'areas') {
     corpo = `<div class="card-head"><h2>Organograma</h2>${admin ? `<button class="btn sm" data-act="cfg-salvo">${ico('plus')}Nova área</button>` : ''}</div><div class="card-body"><p class="small muted" style="margin-bottom:12px">Estrutura do Art. 2º do Regimento Interno (seed editável em <span class="kbd">seed_areas.sql</span>). Um gestor enxerga a sua unidade e todas as que estão abaixo dela.</p><div class="tree"><span class="node"><span class="sig">SEDES</span>${AREA.SEDES.nome} <span class="tp">secretaria</span></span>${arvore('SEDES')}</div></div>`;
   } else if (t === 'orgaos') {
@@ -2258,7 +2596,7 @@ function insights() {
   const venc = ab.filter((i) => situacao(i).cls === 'vencido').sort((a, b) => a.prazo.localeCompare(b.prazo));
   if (venc.length) out.push({ sev: 'crit', cat: 'Prazos', txt: `${plural(venc.length, 'item vencido', 'itens vencidos')}. ${venc[0].area} está há ${situacao(venc[0]).txt.replace(' em atraso', '')} sem responder: ${venc[0].titulo}`, link: linkItem(venc[0]) });
   const av = ab.filter((i) => situacao(i).cls === 'avencer').sort((a, b) => a.prazo.localeCompare(b.prazo));
-  if (av.length) out.push({ sev: 'warn', cat: 'Prazos', txt: `${av[0].area}: “${av[0].titulo}” ${situacao(av[0]).txt} (${fmt(av[0].prazo)})${av.length > 1 ? `. Outros ${av.length - 1} itens vencem nos próximos 5 dias` : ''}`, link: linkItem(av[0]) });
+  if (av.length) out.push({ sev: 'warn', cat: 'Prazos', txt: `${av[0].area}: “${av[0].titulo}” ${situacao(av[0]).txt} (${fmt(av[0].prazo)})${av.length > 2 ? `. Outros ${av.length - 1} itens vencem nos próximos 5 dias` : av.length === 2 ? '. Outro item vence nos próximos 5 dias' : ''}`, link: linkItem(av[0]) });
   RELATORIOS.filter((r) => situacaoRel(r) === 'aguardando' && !minhas.includes(r)).forEach((r) => out.push({ sev: 'warn', cat: 'Assinaturas', txt: `${r.id} aguarda ${r.sigs.length - sigsFeitas(r)} de ${r.sigs.length} assinaturas (${r.sigs.filter((s) => !s.em).map((s) => USER[s.u].nome).join(', ')})`, link: `relatorio-${r.id}` }));
   const ciencia = DEMANDAS.filter((d) => podeVerDemanda(d) && itensDaDemanda(d.n).filter((i) => !isFinal(i)).length && itensDaDemanda(d.n).filter((i) => !isFinal(i)).every((i) => i.status === 'consolidada'));
   if (ciencia.length) out.push({ sev: 'warn', cat: 'CHEGAB', txt: `${ciencia.map((d) => `DEM-2026-${d.n}`).join(', ')} ${ciencia.length > 1 ? 'aguardam' : 'aguarda'} a ciência da Chefia de Gabinete`, link: `demanda-${ciencia[0].n}` });
@@ -2470,12 +2808,32 @@ const ACOES = {
   'adm-tab': (el) => { state.admTab = el.dataset.tab; render(); },
   'rel-tipo': (el) => { state.relTipo = el.dataset.tab; render(); },
   lad: (el) => { const k = el.dataset.key; if (state.ladAberto.has(k)) state.ladAberto.delete(k); else state.ladAberto.add(k); render(); },
-  'add-widget': () => toast('Na versão real, cada usuário monta o próprio painel escolhendo os widgets.', 'info'),
+  'add-widget': () => catalogoWidgets(),
+  'w-add': (el) => { const w = CATALOGO.find((x) => x.k === el.dataset.k); state.extraW.push(w.k); fecharModal(); render(); toast(`Widget “${w.nome}” adicionado ao painel.`, 'plus'); },
+  'w-rem': (el) => { state.extraW = state.extraW.filter((k) => k !== el.dataset.k); render(); toast('Widget removido do painel.', 'x'); },
+  'ag-tipo': (el) => { const k = el.dataset.k; if (state.ag.tipos.has(k)) state.ag.tipos.delete(k); else state.ag.tipos.add(k); render(); },
+  'ag-mes': (el) => { const [a, m] = state.ag.mes.split('-').map(Number); const d = new Date(a, m - 1 + +el.dataset.d, 1); state.ag.mes = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`; render(); },
+  'ag-hoje': () => { state.ag.mes = iso(HOJE).slice(0, 7); render(); },
+  'ag-vista': (el) => { state.ag.vista = el.dataset.v; render(); },
+  'ag-limpar': () => { Object.assign(state.ag, { tipos: new Set(['item', 'orgao', 'monit', 'checklist', 'assin', 'prorrog', 'escal', 'receb']), org: '', area: '', sit: '', meus: false }); render(); },
+  'novo-perfil': () => {
+    const marcar = (b) => PERMS.map((p, i) => `<label class="perm"><input type="checkbox" id="np-p-${i}" ${BASE_PERMS[b].includes(i) ? 'checked' : ''}><span>${p}</span></label>`).join('');
+    modal({ title: 'Novo perfil de acesso', sub: 'Parte de um perfil-base e ajusta o que a pessoa pode fazer.', ok: 'Criar perfil', wide: true,
+      body: `<div class="form-grid"><label class="field"><span>Nome do perfil</span><input id="np-n" placeholder="Ex.: Apoio da ASCOIN" required></label><label class="field"><span>Baseado em</span><select id="np-b">${Object.entries(PAPEIS).map(([k, v]) => `<option value="${k}" ${k === 'ascoin' ? 'selected' : ''}>${v}</option>`).join('')}</select></label>
+        <label class="field"><span>O que a pessoa enxerga</span><select id="np-e">${ESCOPOS.map((x) => `<option>${x}</option>`).join('')}</select></label><label class="field" style="flex-direction:row;align-items:center;gap:8px;align-self:end"><input type="checkbox" id="np-r" style="height:auto"><span>Pode ver itens restritos</span></label>
+        <label class="field full"><span>Descrição</span><input id="np-d" placeholder="Para que serve este perfil"></label></div>
+        <div class="field"><span>Permissões</span><div class="perm-grid" id="np-perms">${marcar('ascoin')}</div></div>
+        <div class="callout info">${ico('info')}<p>No banco, o perfil novo segue as regras de acesso (RLS) do perfil-base. As permissões marcadas aqui só podem restringir ou somar ações já previstas pelo sistema.</p></div>`,
+      onOk: (f) => { const n = f.querySelector('#np-n').value.trim(); if (!n) return erroCampo(f, '#np-n', 'Dê um nome ao perfil.'); if ([...Object.values(PAPEIS), ...PERFIS_CUSTOM.map((x) => x.nome)].includes(n)) return erroCampo(f, '#np-n', 'Já existe um perfil com esse nome.'); const b = f.querySelector('#np-b').value; const perms = PERMS.map((_, i) => i).filter((i) => f.querySelector(`#np-p-${i}`).checked); PERFIS_CUSTOM.push({ nome: n, base: b, escopo: f.querySelector('#np-e').value, perms, custom: true, restrito: f.querySelector('#np-r').checked }); trilhar('perfis_acesso', n, 'INSERT', 'Criou um perfil de acesso', null, { perfil_base: PAPEIS[b], permissoes: `${perms.length} de ${PERMS.length}` }); render(); toast(`Perfil “${n}” criado.`, 'users'); } });
+    document.getElementById('np-b').addEventListener('change', (e) => { document.getElementById('np-perms').innerHTML = marcar(e.target.value); const sel = document.getElementById('np-e'); sel.value = ESCOPO_BASE[e.target.value]; });
+  },
   'nova-visao': () => toast('Nova visão: um painel em branco para montar com widgets (simulação).', 'info'),
   'w-refresh': () => toast('Widget atualizado.', 'refresh'),
   'w-more': () => toast('Opções do widget: exportar, tela cheia, remover (simulação).', 'info'),
   refresh: () => { render(); toast('Dados atualizados.', 'refresh'); },
   ajuda: () => toast('Atalho: tecle / para buscar. Passe o mouse nos gráficos para ver os valores.', 'info'),
+  'perfil-pop': () => abrirPerfil(),
+  'trocar-senha': () => { fecharPerfil(); modal({ title: 'Trocar senha', ok: 'Salvar nova senha', body: '<label class="field"><span>Senha atual</span><input id="ts-a" type="password" autocomplete="current-password"></label><label class="field"><span>Nova senha</span><input id="ts-n" type="password" autocomplete="new-password"><span class="help">Mínimo de 10 caracteres, com letras e números.</span></label><label class="field"><span>Repita a nova senha</span><input id="ts-r" type="password" autocomplete="new-password"></label>', onOk: (f) => { const n = f.querySelector('#ts-n').value; if (!f.querySelector('#ts-a').value) return erroCampo(f, '#ts-a', 'Digite a senha atual.'); if (n.length < 10 || !/\d/.test(n) || !/[a-z]/i.test(n)) return erroCampo(f, '#ts-n', 'Mínimo de 10 caracteres, com letras e números.'); if (n !== f.querySelector('#ts-r').value) return erroCampo(f, '#ts-r', 'As senhas não são iguais.'); eu().troca = false; trilhar('perfis', eu().nome, 'UPDATE', 'Trocou a própria senha', null, { deve_trocar_senha: false }); toast('Senha alterada.', 'lock'); } }); },
   'cfg-tab': (el) => { state.cfgTab = el.dataset.tab; render(); },
   'man-tab': (el) => { state.manTab = el.dataset.tab; render(); },
   tema: (el) => { state.tema = el.dataset.v; document.documentElement.dataset.tema = state.tema; try { localStorage.setItem('sisc_tema', state.tema); } catch (e) { /* sem armazenamento */ } render(); toast(`Tema ${{ institucional: 'institucional', claro: 'claro', escuro: 'escuro' }[state.tema]} aplicado.`, { institucional: 'landmark', claro: 'sun', escuro: 'moon' }[state.tema]); },
@@ -2486,7 +2844,25 @@ const ACOES = {
     toast('Alteração salva e registrada na trilha.', 'check');
   },
   'cfg-salvo': () => toast('Alteração salva e registrada na trilha (simulação).', 'check'),
-  'novo-usuario': () => modal({ title: 'Novo usuário', sub: 'O usuário recebe uma senha provisória e troca no primeiro acesso.', ok: 'Criar usuário', body: `<div class="form-grid"><label class="field full"><span>Nome completo</span><input id="nu-n" required></label><label class="field full"><span>E-mail institucional</span><input id="nu-e" type="email" placeholder="nome@sedes.rj.gov.br" required></label><label class="field"><span>Perfil</span><select id="nu-p">${Object.entries(PAPEIS).map(([k, v]) => `<option value="${k}">${v}</option>`).join('')}</select></label><label class="field"><span>Área</span><select id="nu-a">${AREAS.map((a) => `<option>${a.sigla}</option>`).join('')}</select></label></div>`, onOk: (f) => { if (!f.querySelector('#nu-n').value.trim()) return erroCampo(f, '#nu-n', 'Informe o nome.'); if (!/@/.test(f.querySelector('#nu-e').value)) return erroCampo(f, '#nu-e', 'Informe um e-mail institucional.'); toast('Usuário criado com troca de senha obrigatória (simulação).', 'users'); } }),
+  'novo-usuario': () => modal({ title: 'Novo usuário', sub: 'O usuário recebe uma senha provisória e é obrigado a trocá-la no primeiro acesso.', ok: 'Criar usuário', wide: true,
+    body: `<div class="form-grid"><label class="field full"><span>Nome completo</span><input id="nu-n" required></label><label class="field"><span>E-mail institucional</span><input id="nu-e" type="email" placeholder="nome@sedes.rj.gov.br" required></label><label class="field"><span>Cargo</span><input id="nu-c" placeholder="Ex.: Analista de Controle Interno"></label>
+      <label class="field"><span>Perfil de acesso</span><select id="nu-p">${Object.entries(PAPEIS).map(([k, v]) => `<option value="${k}">${v}</option>`).join('')}${PERFIS_CUSTOM.map((p, i) => `<option value="c:${i}">${esc(p.nome)} (personalizado)</option>`).join('')}</select></label><label class="field"><span>Área</span><select id="nu-a">${AREAS.map((a) => `<option>${a.sigla}</option>`).join('')}</select></label>
+      <label class="field full" style="flex-direction:row;align-items:center;gap:8px"><input type="checkbox" id="nu-r" style="height:auto"><span>Pode ver itens restritos</span></label></div>`,
+    onOk: (f) => {
+      const nome = f.querySelector('#nu-n').value.trim(); const email = f.querySelector('#nu-e').value.trim().toLowerCase();
+      if (!nome) return erroCampo(f, '#nu-n', 'Informe o nome.');
+      if (!/^[^@\s]+@[^@\s]+\.[a-z.]+$/.test(email)) return erroCampo(f, '#nu-e', 'Informe um e-mail válido.');
+      if (USERS.some((x) => x.email === email)) return erroCampo(f, '#nu-e', 'Já existe um usuário com este e-mail.');
+      const pv = f.querySelector('#nu-p').value; const custom = pv.startsWith('c:') ? PERFIS_CUSTOM[+pv.slice(2)] : null;
+      const id = `u${100 + USERS.length}`;
+      const nu = { id, nome, papel: custom ? custom.base : pv, perfilNome: custom ? custom.nome : undefined, area: f.querySelector('#nu-a').value, cargo: f.querySelector('#nu-c').value.trim() || (custom ? custom.nome : PAPEIS[pv]), email, ativo: true, troca: true, restrito: f.querySelector('#nu-r').checked };
+      USERS.push(nu); USER[id] = nu; SWITCH.push(id);
+      trilhar('perfis', nome, 'INSERT', 'Criou o usuário com troca de senha obrigatória', null, { papel: nu.papel, area: nu.area, deve_trocar_senha: true });
+      const alfa = 'ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789'; const senha = Array.from({ length: 12 }, () => alfa[Math.floor(Math.random() * alfa.length)]).join('');
+      render();
+      setTimeout(() => modal({ title: 'Usuário criado', sub: `${nome} · ${custom ? custom.nome : PAPEIS[pv]} · ${nu.area}`, ok: '', body: `<div class="note"><div class="eyebrow">Senha provisória</div><div class="code-big" id="nu-senha">${senha}</div><p class="small muted" style="margin-top:6px">Entregue a senha por canal seguro. No primeiro acesso, o sistema obriga a troca. Ela não fica visível de novo.</p></div><div class="actions"><button type="button" class="btn" data-act="copiar-senha">${ico('file')}Copiar senha</button></div><p class="small muted">Para ver o sistema como essa pessoa, escolha o nome em “Visão”, no alto.</p>` }), 0);
+    } }),
+  'copiar-senha': () => { const t = document.getElementById('nu-senha')?.textContent || ''; navigator.clipboard?.writeText(t).then(() => toast('Senha copiada.', 'check')).catch(() => { const r = document.createRange(); r.selectNodeContents(document.getElementById('nu-senha')); getSelection().removeAllRanges(); getSelection().addRange(r); toast('Senha selecionada. Use Ctrl+C para copiar.', 'info'); }); },
   rodar: (el) => { const r = ROTINAS.find((x) => x.id === el.dataset.id); r.ult = `13/11 ${agoraTxt().slice(11)}`; r.res = 'ok'; r.obs = ''; r.dur = '0,9 s'; render(); toast(`Rotina “${r.nome}” executada.`, 'refresh'); },
   'restaurar-bk': (el) => modal({ title: 'Restaurar backup', sub: `Backup de ${el.dataset.d} às 03:00.`, ok: 'Restaurar', okClass: 'danger', body: `<div class="callout crit">${ico('alert')}<p>Tudo o que foi gravado depois deste backup será substituído. Recomenda-se ativar o modo manutenção antes.</p></div><label class="field"><span>Digite RESTAURAR para confirmar</span><input id="rb-c"></label>`, onOk: (f) => { if (f.querySelector('#rb-c').value.trim().toUpperCase() !== 'RESTAURAR') return erroCampo(f, '#rb-c', 'Digite RESTAURAR para confirmar.'); toast('Restauração agendada (simulação).', 'undo'); } }),
   'backup-agora': () => toast('Backup manual iniciado. Leva cerca de 2 minutos (simulação).', 'refresh'),
@@ -2706,7 +3082,7 @@ function render() {
   const arg = resto.join('-');
   let html;
   if (PERMISSAO[nome] && !PERMISSAO[nome].includes(eu().papel)) html = semAcesso();
-  else html = ({ inicio: viewInicio, painel: viewPainel, demandas: viewDemandas, pendencias: viewPendencias, prorrogacoes: viewProrrogacoes, checklists: viewChecklists, relatorios: viewRelatorios, notificacoes: viewNotificacoes, lixeira: viewLixeira, trilha: viewTrilha, configuracoes: viewConfig, manutencao: viewManut, assinatura: viewComoAssina, auditoria: viewAuditoria, riscos: viewRiscos, demanda: () => viewDemanda(arg), item: () => viewItem(arg), aplicacao: () => viewAplicacao(arg), relatorio: () => viewRelatorioCk(arg) }[nome] || viewInicio)();
+  else html = ({ inicio: viewInicio, painel: viewPainel, demandas: viewDemandas, pendencias: viewPendencias, prorrogacoes: viewProrrogacoes, checklists: viewChecklists, relatorios: viewRelatorios, notificacoes: viewNotificacoes, lixeira: viewLixeira, trilha: viewTrilha, configuracoes: viewConfig, agenda: viewAgenda, manutencao: viewManut, assinatura: viewComoAssina, auditoria: viewAuditoria, riscos: viewRiscos, demanda: () => viewDemanda(arg), item: () => viewItem(arg), aplicacao: () => viewAplicacao(arg), relatorio: () => viewRelatorioCk(arg) }[nome] || viewInicio)();
   root.innerHTML = shell(html);
   desenharQRs();
 }
@@ -2717,9 +3093,15 @@ function rota() {
   render();
   window.scrollTo(0, 0);
 }
-window.addEventListener('hashchange', rota);
+window.addEventListener('hashchange', () => { fecharPerfil(); rota(); });
 
 document.addEventListener('click', (e) => {
+  if (document.getElementById('perfil-pop') && !e.target.closest('#perfil-pop') && !e.target.closest('#avatar-btn')) fecharPerfil();
+  if (e.target.closest('#perfil-pop a')) fecharPerfil();
+  const dd = e.target.closest('[data-drill]'); if (dd) { e.preventDefault(); abrirDrill(JSON.parse(dd.dataset.drill)); return; }
+  const evi = e.target.closest('[data-evi]'); if (evi) { e.preventDefault(); abrirEvento(state._evs[+evi.dataset.evi]); return; }
+  const evp = e.target.closest('[data-evp]'); if (evp) { e.preventDefault(); abrirEvento(state._prox[+evp.dataset.evp]); return; }
+  const dia = e.target.closest('[data-dia]'); if (dia) { abrirDia(dia.dataset.dia); return; }
   const go = e.target.closest('[data-go]');
   if (go && !e.target.closest('a,button:not([data-go])')) { if (go.dataset.tab) state.manTab = go.dataset.tab; location.hash = go.dataset.go; return; }
   if (go && go.tagName === 'BUTTON') { if (go.dataset.tab) state.manTab = go.dataset.tab; location.hash = go.dataset.go; return; }
@@ -2732,8 +3114,9 @@ document.addEventListener('click', (e) => {
   if (nav) document.getElementById('sidebar')?.classList.remove('open');
 });
 document.addEventListener('keydown', (e) => {
+  if ((e.key === 'Enter' || e.key === ' ') && e.target.matches?.('[data-drill],[data-dia]')) { e.preventDefault(); if (e.target.dataset.drill) abrirDrill(JSON.parse(e.target.dataset.drill)); else abrirDia(e.target.dataset.dia); return; }
   if (e.key === '/' && !e.target.matches('input,textarea,select')) { const q = document.getElementById('q'); if (q && q.offsetParent) { e.preventDefault(); q.focus(); } }
-  if (e.key === 'Escape') { fecharModal(); document.getElementById('sidebar')?.classList.remove('open'); }
+  if (e.key === 'Escape') { if (document.getElementById('perfil-pop')) { fecharPerfil(); document.getElementById('avatar-btn')?.focus(); return; } fecharModal(); document.getElementById('sidebar')?.classList.remove('open'); }
   if (e.key === 'Enter' && e.target.matches('tr[data-go]')) location.hash = e.target.dataset.go;
   if (e.key === 'Enter' && e.target.id === 'q') { state.q = e.target.value.trim(); if (state.route !== 'demandas') location.hash = 'pendencias'; else render(); }
 });
@@ -2741,6 +3124,8 @@ document.addEventListener('change', (e) => {
   const t = e.target;
   if (t.id === 'perfil') { state.userId = t.value; try { localStorage.setItem('sisc_user', t.value); } catch (err) { /* sem armazenamento */ } render(); toast(`Agora você vê o sistema como ${USER[t.value].nome} (${PAPEIS[USER[t.value].papel]}).`, 'users'); return; }
   if (t.dataset.filtro) { state.filtros[t.dataset.filtro] = t.value; render(); return; }
+  if (t.dataset.ag) { state.ag[t.dataset.ag] = t.value; render(); return; }
+  if (t.matches('[data-ag-meus]')) { state.ag.meus = t.checked; render(); return; }
   if (t.dataset.regra) { const r = TIPOS_PROC[+t.dataset.regra]; const ant = USER[r.resp].nome; r.resp = t.value; trilhar('regras_abertura', r.nome, 'UPDATE', 'Alterou o responsável padrão da abertura automática', { responsavel: ant }, { responsavel: USER[r.resp].nome }); toast(`Responsável padrão de ${r.nome}: ${USER[r.resp].nome}.`, 'users'); return; }
   if (t.dataset.pool) { state.pool[t.dataset.pool] = t.value; render(); return; }
   if (t.dataset.tr) { state.trFiltro[t.dataset.tr] = t.value; render(); return; }
@@ -2776,7 +3161,7 @@ const tip = document.getElementById('tip');
 document.addEventListener('mousemove', (e) => {
   const t = e.target.closest?.('[data-tip]');
   if (!t) { tip.hidden = true; return; }
-  tip.innerHTML = t.dataset.tip.split('|').map((s, i) => (i === 0 ? `<b>${esc(s)}</b>` : esc(s))).join('<br>');
+  tip.innerHTML = t.dataset.tip.split('|').map((s, i) => (i === 0 ? `<b>${esc(s)}</b>` : esc(s))).join('<br>') + (t.closest('[data-drill]') ? '<br><i>Clique para ver os itens</i>' : '');
   tip.hidden = false;
   const x = Math.min(e.clientX + 14, window.innerWidth - tip.offsetWidth - 10);
   tip.style.left = `${x}px`; tip.style.top = `${e.clientY + 14}px`;
