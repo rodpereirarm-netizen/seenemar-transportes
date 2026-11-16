@@ -3092,7 +3092,7 @@ const ACOES = {
     body: `<div class="form-grid">
       <label class="field full"><span>Título do item</span><input id="ai-tit" required placeholder="Ex.: Rec. 1 — ..."></label>
       <label class="field"><span>Área responsável</span><select id="ai-area">${AREAS.filter((a) => !['SEDES', 'GABSEC', 'ASCOIN'].includes(a.sigla)).map((a) => `<option value="${a.sigla}">${a.sigla} — ${esc(a.nome)}</option>`).join('')}</select></label>
-      <label class="field"><span>Prazo da área</span><input id="ai-prazo" type="date" value="${addDias(iso(HOJE), 10)}"><span class="help">Sugestão: 5 dias antes do prazo do órgão.</span></label>
+      <label class="field"><span>Prazo da área</span><input id="ai-prazo" type="date" value="${(() => { const sg = addDias(DEM[el.dataset.dem].prazo, -5); return sg > iso(HOJE) ? sg : addDias(iso(HOJE), 1); })()}"><span class="help">Prazo do órgão: ${fmt(DEM[el.dataset.dem].prazo)}. Sugestão: 5 dias antes, para a ASCOIN analisar e consolidar.</span></label>
       <label class="field"><span>Gravidade</span><select id="ai-grav"><option value="2">Média</option><option value="3">Alta</option><option value="4">Crítica</option><option value="1">Baixa</option></select></label>
       <label class="field" style="flex-direction:row;align-items:center;gap:8px;align-self:end"><input type="checkbox" id="ai-rest" style="height:auto"><span>Item restrito</span></label>
       <label class="field full"><span>Resumo</span><textarea id="ai-res"></textarea></label>
