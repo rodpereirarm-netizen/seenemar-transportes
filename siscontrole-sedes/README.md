@@ -58,3 +58,14 @@ de assinatura e prévias da Fase 2 (auditoria e riscos).
 | Checklists com parecer e assinatura sequencial | Temas claro e escuro (fica o institucional) |
 | Trilha de auditoria, lixeira, exclusão lógica | Manutenção completa (no MVP: backups e rotinas) |
 | Importação da planilha base | Faixa de notícias |
+
+## Distribuição (passo 2) — decisões de 16/11/2026
+
+1. Cada demanda tem um **analista da ASCOIN**. A fila de cada analista mostra só as demandas dele; a Assessora vê também toda a ASCOIN.
+2. **Só a ASCOIN distribui** (Regimento, Art. 10, VII). CHEGAB e subsecretarias entram apenas com a ciência.
+3. O ponto focal pode **encaminhar o item para uma subárea**. O prazo não muda, a ASCOIN é avisada e a área de origem continua responsável.
+4. Ao confirmar o recebimento, o ponto focal indica o **responsável na área** (opcional também na distribuição).
+5. **Lembrete de ciência**: 2 dias sem confirmação, aviso ao ponto focal; 3 dias, aviso à chefia da área. Ajustável.
+6. **Itens conjuntos ficam fora do MVP**: um item por área.
+
+Também: área sem pré-seleção na distribuição, prazo sugerido = prazo do órgão menos 5 dias, e distribuição de vários itens de uma vez.

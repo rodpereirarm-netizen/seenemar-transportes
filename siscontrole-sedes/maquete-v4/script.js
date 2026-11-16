@@ -130,7 +130,8 @@ const USERS = [
   { id: 'u8', nome: 'Luciana Barros', papel: 'gestor', area: 'SUBEXE', cargo: 'Subsecretária Executiva', email: 'lbarros@sedes.rj.gov.br', ativo: true, troca: false },
 ];
 const USER = Object.fromEntries(USERS.map((u) => [u.id, u]));
-const SWITCH = ['u2', 'u5', 'u6', 'u7', 'u8', 'u4', 'u1'];
+const SWITCH = ['u2', 'u3', 'u5', 'u6', 'u7', 'u8', 'u4', 'u1'];
+const ASSESSORA = 'u2'; // Assessora de Controle Interno: vê e redistribui toda a ASCOIN
 const PONTO_FOCAL = {
   DGAF: 'Fernanda Lopes', COCON: 'Bruno Carvalho', COFIN: 'Patrícia Gomes', COLIC: 'Rafael Moura', ASPO: 'Carla Mendes',
   ATI: 'André Siqueira', SGP: 'Helena Rocha', SUBICS: 'Gustavo Lima', CODIN: 'Marina Castro', OUVID: 'Sérgio Pinto',
@@ -174,6 +175,15 @@ const DEMANDAS = [
   { n: '0028', org: 'ALERJ', tipo: 'Requerimento de informação', doc: 'Requerimento de Informação nº 312/2026', sei: 'SEI-220006/001640/2026', procOrg: '—', canal: 'SEI', receb: '2026-04-28', prazo: '2026-05-28', grav: 1, assunto: 'Investimentos previstos no setor de óleo e gás', resumo: 'Relação de investimentos anunciados e acompanhados pela Secretaria.', obs: '' },
 ];
 const DEM = Object.fromEntries(DEMANDAS.map((d) => [d.n, d]));
+// 1. Analista da ASCOIN responsável por cada demanda
+const ANALISTA_DEM = { '0044': 'u3', '0041': 'u3', '0042': 'u2', '0040': 'u3', '0039': 'u2', '0038': 'u2', '0037': 'u3', '0035': 'u2', '0033': 'u3', '0030': 'u3', '0028': 'u2' };
+DEMANDAS.forEach((d) => { d.analista = ANALISTA_DEM[d.n]; });
+const analistasAscoin = () => USERS.filter((x) => x.papel === 'ascoin');
+// 4. Pessoas de cada área (o ponto focal e colegas que podem cuidar do item)
+const COLEGAS = { DGAF: ['Ricardo Pires'], COCON: ['Aline Torres', 'Vitor Assis'], COFIN: ['Daniel Fontes'], ASPO: ['Sônia Reis'], ATI: ['Luana Brito'], SGP: ['Márcio Lemos'], SUBINOV: ['Paula Neves'], SUBEEM: ['Igor Matos'], AGE: ['Rita Campos'] };
+const pessoasArea = (a) => [PONTO_FOCAL[a], ...(COLEGAS[a] || [])].filter(Boolean);
+// 5. Lembrete de ciência (dias corridos sem confirmação do recebimento)
+const CIENCIA_CFG = { lembrete: 2, chefia: 3 };
 // Temas: classificação de cada demanda. A reincidência passa a ser calculada pelo tema (24 meses).
 const TEMAS = ['Convênios', 'Contratações', 'Tecnologia da informação', 'Diárias e passagens', 'Incentivos fiscais', 'Fomento e crédito', 'Transparência', 'Inovação', 'Economia do mar', 'Investimentos', 'Pessoal'];
 const TEMA_DEM = { '0044': 'Contratações', '0041': 'Convênios', '0042': 'Tecnologia da informação', '0040': 'Diárias e passagens', '0039': 'Incentivos fiscais', '0038': 'Fomento e crédito', '0037': 'Transparência', '0035': 'Inovação', '0033': 'Economia do mar', '0030': 'Convênios', '0028': 'Investimentos' };
@@ -378,6 +388,23 @@ function situacao(it) {
   if (n <= 5) return { cls: 'avencer', txt: n === 1 ? 'vence amanhã' : `vence em ${n} dias`, n };
   return { cls: 'noprazo', txt: `${n} dias`, n };
 }
+const dataDistrib = (it) => it.distrib || (it.origem === 'checklist' ? '2026-11-06' : addDias(it.receb, 1));
+const diasSemCiencia = (it) => (it.status === 'distribuida' ? Math.max(0, -diasAte(dataDistrib(it))) : 0);
+const chefiaDe = (a) => { const pai = AREA[a]?.pai; return pai && pai !== 'SEDES' ? pai : `titular da ${a}`; };
+function criarItem(ref, o) {
+  const seq = itensDaDemanda(ref).length + 1;
+  const it = { id: `${ref}-${String(seq).padStart(2, '0')}`, ref, seq, area: o.area, status: 'distribuida', prazoOrig: o.prazo, prazo: o.prazo, grav: o.grav, restrito: o.restrito, titulo: o.titulo, resumo: o.resumo, obs: '', devol: 0, origem: 'demanda_externa', numero: `DEM-2026-${ref}/${String(seq).padStart(2, '0')}`, receb: DEM[ref].receb, distrib: iso(HOJE), respNome: o.respNome || '', extra: [] };
+  ITENS.push(it); ITEM[it.id] = it;
+  it.extra.push({ when: iso(HOJE), who: `${eu().nome} · ASCOIN`, t: 'Distribuição', txt: `Item distribuído para ${it.area}${it.respNome ? ` (responsável: ${it.respNome})` : ''}. Prazo: ${fmt(it.prazo)}.`, c: 'c-info', i: 'send' });
+  trilhar('itens_acompanhamento', it.numero, 'INSERT', 'Distribuiu o item para a área', null, { area: it.area, prazo: it.prazo });
+  NOTIFS.unshift({ id: Date.now() + Math.random(), para: ['ponto_focal'], tipo: 'distribuicao', quando: agoraTxt(), txt: `Novo item distribuído: ${it.numero} (${it.area}).`, item: it.id, lida: false });
+  return it;
+}
+function loteParse(txt) {
+  const linhas = txt.split('\n').map((l) => l.trim()).filter(Boolean).map((l) => { const [t, a] = l.split('|').map((x) => (x || '').trim()); return { t, a: (a || '').toUpperCase() }; });
+  const erros = linhas.map((x, k) => (!x.t || !AREA[x.a] ? k + 1 : 0)).filter(Boolean);
+  return { linhas, erros, ok: linhas.filter((x) => x.t && AREA[x.a]) };
+}
 const diasResposta = (it) => 4 + ((it.seq * 5 + parseInt(it.ref.replace(/\D/g, ''), 10)) % 11);
 
 /* ---------- Componentes de texto ---------- */
@@ -406,12 +433,12 @@ function linkItem(it) { return `item-${it.id}`; }
    ========================================================================= */
 function interacoes(it) {
   const ev = [];
-  const base = it.origem === 'checklist' ? '2026-11-06' : addDias(it.receb, 1);
+  const base = dataDistrib(it);
   const pf = PONTO_FOCAL[it.area] || 'Ponto focal';
   const cap = (s) => (toDate(s) > HOJE ? iso(HOJE) : s);
   const i = stIdx(it.status);
   const fin = isFinal(it);
-  ev.push({ t: 'Distribuição', who: it.origem === 'checklist' ? 'Sistema (checklist)' : 'Juliana Prado · ASCOIN', when: base, txt: `Item distribuído para ${it.area}. Prazo: ${fmt(it.prazoOrig)}.`, c: 'c-info', i: 'send' });
+  if (!it.distrib) ev.push({ t: 'Distribuição', who: it.origem === 'checklist' ? 'Sistema (checklist)' : 'Juliana Prado · ASCOIN', when: base, txt: `Item distribuído para ${it.area}. Prazo: ${fmt(it.prazoOrig)}.`, c: 'c-info', i: 'send' });
   if (i > 2 || fin) ev.push({ t: 'Ciência do recebimento', who: `${pf} · ${it.area}`, when: cap(addDias(base, 1)), c: 'c-ok', i: 'checkc' });
   const dr = diasResposta(it);
   if (it.devol > 0) {
@@ -580,6 +607,14 @@ function viewInicio() {
   let fila = [];
   let filaTitulo = '';
   if (u.papel === 'ascoin') {
+    const doAnalista = (i) => (i.origem === 'checklist' ? APLICACOES.find((a) => `CHK${a.n}` === i.ref)?.resp === u.nome : DEM[i.ref]?.analista === u.id);
+    const todas = u.id === ASSESSORA && state.filaTodas;
+    const so = (l) => (todas ? l : l.filter(doAnalista));
+    const semCi = abertos.filter((i) => diasSemCiencia(i) >= CIENCIA_CFG.lembrete);
+    analise.splice(0, analise.length, ...so(analise)); venc.splice(0, venc.length, ...so(venc)); aVencer.splice(0, aVencer.length, ...so(aVencer));
+    cards = [[analise.length, 'Aguardando sua análise', todas ? 'Toda a ASCOIN' : 'Das suas demandas', 'pendencias', ''], [venc.length, 'Itens vencidos', 'Prazo com a área', 'pendencias', 'crit'], [so(semCi).length, 'Sem ciência da área', `Há ${CIENCIA_CFG.lembrete} dias ou mais`, 'pendencias', 'warn'], [pend.length, 'Prorrogações a decidir', 'Pedidos das áreas', 'prorrogacoes', '']];
+    fila = [...analise, ...venc, ...so(semCi), ...aVencer]; filaTitulo = todas ? 'Fila de trabalho de toda a ASCOIN' : 'Fila das suas demandas';
+  } else if (false) {
     cards = [[analise.length, 'Aguardando sua análise', 'Respostas das áreas', 'pendencias', ''], [venc.length, 'Itens vencidos', 'Prazo com a área', 'pendencias', 'crit'], [aVencer.length, 'Vencem em até 5 dias', 'Alertas D-5 e D-2 enviados', 'pendencias', 'warn'], [pend.length, 'Prorrogações a decidir', 'Pedidos das áreas', 'prorrogacoes', '']];
     fila = [...analise, ...venc, ...aVencer]; filaTitulo = 'Fila de trabalho da ASCOIN';
   } else if (u.papel === 'ponto_focal') {
@@ -601,7 +636,7 @@ function viewInicio() {
   fila = [...new Map(fila.map((i) => [i.id, i])).values()].slice(0, 8);
   const agenda = abertos.filter((i) => COM_AREA.has(i.status) && diasAte(i.prazo) >= -3 && diasAte(i.prazo) <= 10).sort((a, b) => a.prazo.localeCompare(b.prazo)).slice(0, 7);
   const hoje = HOJE.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-  return `${pageHead(`Bom dia, ${esc(u.nome.split(' ')[0])}`, `${hoje.charAt(0).toUpperCase() + hoje.slice(1)} · ${esc(u.cargo)}`, u.papel === 'ascoin' ? `<button class="btn primary" data-act="nova-demanda">${ico('plus')}Nova demanda</button>` : '')}
+  return `${pageHead(`Bom dia, ${esc(u.nome.split(' ')[0])}`, `${hoje.charAt(0).toUpperCase() + hoje.slice(1)} · ${esc(u.cargo)}`, u.papel === 'ascoin' ? `${u.id === ASSESSORA ? `<div class="seg" role="group" aria-label="Alcance da fila"><button data-act="fila-todas" data-v="0" aria-pressed="${!state.filaTodas}">Minhas demandas</button><button data-act="fila-todas" data-v="1" aria-pressed="${!!state.filaTodas}">Toda a ASCOIN</button></div>` : ''}<button class="btn primary" data-act="nova-demanda">${ico('plus')}Nova demanda</button>` : '')}
   ${pendentesDeAssinatura().length ? `<div class="callout warn">${ico('pen')}<p><b>${plural(pendentesDeAssinatura().length, 'parecer aguarda', 'pareceres aguardam')} a sua assinatura:</b> ${pendentesDeAssinatura().map((r) => `<a href="#relatorio-${r.id}">${r.id}</a>`).join(', ')}.</p></div>` : ''}
   ${prontasCiencia.length && u.area === 'CHEGAB' ? `<div class="callout info">${ico('stamp')}<p><b>${plural(prontasCiencia.length, 'demanda aguarda', 'demandas aguardam')} sua ciência:</b> ${prontasCiencia.map((d) => `<a href="#demanda-${d.n}">DEM-2026-${d.n}</a>`).join(', ')}.</p></div>` : ''}
   <div class="todo">${cards.map(([n, t, s, go, c]) => `<a href="#${go}" class="${c}"><span class="n">${n}</span><span class="t">${t}</span><span class="s">${s}</span></a>`).join('')}</div>
@@ -844,7 +879,7 @@ function viewDemandas() {
       const venc = st !== 'encerrada' && its.some((i) => situacao(i).cls === 'vencido');
       return `<tr class="link ${venc ? 'row-crit' : ''}" data-go="demanda-${d.n}" tabindex="0">
         <td class="title-cell"><b>${esc(d.assunto)}</b><small class="mono">DEM-2026-${d.n}</small> ${lockTag(d.restrito)} <span class="wchip">${esc(d.tema)}</span> ${d.reinc ? `<span class="chip plain c-serious" title="Mesmo tema em: ${esc(d.reinc)}">Reincidente</span>` : ''}</td>
-        <td>${orgTag(d.org)}<div class="small muted">${esc(d.tipo)}</div></td>
+        <td>${orgTag(d.org)}<div class="small muted">${esc(d.tipo)}</div><div class="small muted">Analista: ${d.analista ? esc(USER[d.analista].nome.split(' ')[0]) : '—'}</div></td>
         <td><div class="small">${esc(d.doc)}</div><div class="mono small muted">${d.sei}</div></td>
         <td>${its.length ? `<div class="mini-progress"><div class="progress"><i style="width:${(done / its.length) * 100}%;background:var(--brand)"></i></div><span class="small num">${done}/${its.length}</span></div>` : '<span class="small muted">a distribuir</span>'}</td>
         <td><span class="prazo ${st === 'encerrada' ? 'encerrado' : n < 0 ? 'vencido' : n <= 5 ? 'avencer' : 'noprazo'}"><b>${fmt(d.prazo)}</b><span>${st === 'encerrada' ? 'encerrada' : n < 0 ? `${-n} dias atrás` : n === 0 ? 'hoje' : `em ${n} dias`}</span></span></td>
@@ -894,6 +929,7 @@ function viewDemanda(n) {
         <div><dt>Recebida em</dt><dd>${fmt(d.receb)} · ${esc(d.canal)}</dd></div>
         <div><dt>Prazo do órgão</dt><dd><b>${fmt(d.prazo)}</b></dd></div>
         <div><dt>Gravidade</dt><dd>${sev(d.grav)}</dd></div>
+        <div><dt>Analista da ASCOIN</dt><dd>${d.analista ? esc(USER[d.analista].nome) : '<span class="chip c-warn">Sem analista</span>'}${u.id === ASSESSORA || u.papel === 'admin' ? ` <button class="btn ghost sm" data-act="trocar-analista" data-dem="${d.n}">${ico('users')}Trocar</button>` : ''}</dd></div>
         <div><dt>Tema</dt><dd>${esc(d.tema)}</dd></div><div><dt>Reincidência</dt><dd>${d.reinc ? `Sim, mesmo tema em <span class="mono">${d.reinc}</span>` : 'Não'}</dd></div>
       </dl>
       <div style="margin-top:16px;display:flex;flex-direction:column;gap:10px">
@@ -910,6 +946,8 @@ function acoesItem(it) {
   const b = [];
   if (minha) {
     if (it.status === 'distribuida') b.push(`<button class="btn primary" data-act="ciencia-area" data-id="${it.id}">${ico('checkc')}Confirmar recebimento</button>`);
+    const subs = [...descendentes(it.area)].filter((a) => a !== it.area && descendentes(u.area).has(a));
+    if (subs.length && ['distribuida', 'em_atendimento', 'devolvida'].includes(it.status)) b.push(`<button class="btn" data-act="encaminhar" data-id="${it.id}">${ico('arrow')}Encaminhar para subárea</button>`);
     if (['em_atendimento', 'devolvida'].includes(it.status)) {
       b.push(`<button class="btn primary" data-act="responder" data-id="${it.id}">${ico('send')}Responder</button>`);
       if (!PRORROGACOES.some((p) => p.item === it.id && p.status === 'pendente')) b.push(`<button class="btn" data-act="prorrogar" data-id="${it.id}">${ico('clock')}Pedir prorrogação</button>`);
@@ -939,6 +977,7 @@ function viewItem(id) {
   return `${pageHead(esc(it.titulo), '', acoesItem(it), crumbs)}
   ${s.cls === 'vencido' ? `<div class="callout crit">${ico('alert')}<p><b>${s.txt}.</b> O superior hierárquico da ${it.area} e a CHEGAB foram avisados (escalonamento).</p></div>` : ''}
   ${pr.some((p) => p.status === 'pendente') ? `<div class="callout warn">${ico('clock')}<p>Pedido de prorrogação de ${pr.find((p) => p.status === 'pendente').dias} dias aguardando decisão da ASCOIN.</p></div>` : ''}
+  ${diasSemCiencia(it) >= CIENCIA_CFG.lembrete ? `<div class="callout warn">${ico('bell')}<p><b>Sem ciência da área há ${diasSemCiencia(it)} dias.</b> Lembrete enviado ao ponto focal em ${fmt(addDias(dataDistrib(it), CIENCIA_CFG.lembrete))}${diasSemCiencia(it) >= CIENCIA_CFG.chefia ? ` e aviso à chefia (${chefiaDe(it.area)}) em ${fmt(addDias(dataDistrib(it), CIENCIA_CFG.chefia))}` : ''}.</p></div>` : ''}
   ${it.status === 'distribuida' && minha ? `<div class="callout info">${ico('info')}<p>Confirme o recebimento para registrar a ciência da sua área. O prazo já está correndo desde a distribuição.</p></div>` : ''}
   ${u.papel === 'auditoria' || (u.papel === 'gestor') ? `<div class="callout info">${ico('eye')}<p>Seu perfil tem acesso de leitura a este item.</p></div>` : ''}
   <div class="grid g-main">
@@ -955,6 +994,9 @@ function viewItem(id) {
       <section class="card"><div class="card-head"><h2>Situação</h2>${chipStatus(it.status)}</div><div class="card-body"><dl class="dl">
         <div><dt>Área responsável</dt><dd><b class="mono">${it.area}</b><div class="small muted">${esc(AREA[it.area]?.nome || '')}</div></dd></div>
         <div><dt>Ponto focal</dt><dd>${esc(PONTO_FOCAL[it.area] || '—')}</dd></div>
+        <div><dt>Responsável na área</dt><dd>${it.respNome ? esc(it.respNome) : '<span class="small muted">Não indicado</span>'}</dd></div>
+        ${it.areaOrigem ? `<div><dt>Encaminhado por</dt><dd><b class="mono">${it.areaOrigem}</b><div class="small muted">Continua responsável perante a ASCOIN</div></dd></div>` : ''}
+        ${dem ? `<div><dt>Analista da ASCOIN</dt><dd>${dem.analista ? esc(USER[dem.analista].nome) : '—'}</dd></div>` : ''}
         <div><dt>Prazo vigente</dt><dd>${prazoCell(it)}</dd></div>
         <div><dt>Prazo original</dt><dd>${fmt(it.prazoOrig)}${it.prazo !== it.prazoOrig ? ' <span class="chip plain c-info">prorrogado</span>' : ''}</dd></div>
         <div><dt>Gravidade</dt><dd>${sev(it.grav)}</dd></div>
@@ -980,6 +1022,7 @@ function viewPendencias() {
     ['avencer', 'A vencer', abertos.filter((i) => situacao(i).cls === 'avencer')],
     ['analise', 'Com a ASCOIN', abertos.filter((i) => ['respondida_area', 'em_analise_ascoin'].includes(i.status))],
     ['devolvidas', 'Devolvidas', abertos.filter((i) => i.status === 'devolvida')],
+    ['semciencia', 'Sem ciência', abertos.filter((i) => diasSemCiencia(i) >= CIENCIA_CFG.lembrete)],
     ['encerradas', 'Encerradas', lista.filter(isFinal)],
   ];
   const atual = tabs.find((t) => t[0] === state.pendTab) || tabs[0];
@@ -1311,7 +1354,7 @@ function viewLixeira() {
 }
 
 /* ---------- Trilha de auditoria em linguagem simples ---------- */
-const CAMPOS = { status: 'Status', data_resposta: 'Data da resposta', deleted_at: 'Excluído em', delete_reason: 'Motivo', devolucoes: 'Devoluções', novo_prazo: 'Novo prazo', dias: 'Dias pedidos', item: 'Item', orgao: 'Órgão', prazo: 'Prazo', processo_sei: 'Processo SEI', papel: 'Perfil', area: 'Área', deve_trocar_senha: 'Trocar senha no 1º acesso', papel_assinatura: 'Assinou como', assinaturas: 'Assinaturas', responsaveis: 'Responsáveis', codigo: 'Código', comentario: 'Registro', modo_manutencao: 'Modo manutenção', alcance: 'Alcance', motivo: 'Motivo', substitui: 'Substitui', prazo_assinatura: 'Prazo para assinar', ordem_assinatura: 'Ordem das assinaturas', inicio: 'Início', perfil_base: 'Perfil-base', permissoes: 'Permissões', tipo: 'Tipo', objeto: 'Objeto', modelo: 'Modelo', momento: 'Momento', responsavel: 'Responsável', prazo_analise: 'Prazo da análise', ativo: 'Ativa' };
+const CAMPOS = { status: 'Status', data_resposta: 'Data da resposta', deleted_at: 'Excluído em', delete_reason: 'Motivo', devolucoes: 'Devoluções', novo_prazo: 'Novo prazo', dias: 'Dias pedidos', item: 'Item', orgao: 'Órgão', prazo: 'Prazo', processo_sei: 'Processo SEI', papel: 'Perfil', area: 'Área', deve_trocar_senha: 'Trocar senha no 1º acesso', papel_assinatura: 'Assinou como', assinaturas: 'Assinaturas', responsaveis: 'Responsáveis', codigo: 'Código', comentario: 'Registro', modo_manutencao: 'Modo manutenção', analista: 'Analista', alcance: 'Alcance', motivo: 'Motivo', substitui: 'Substitui', prazo_assinatura: 'Prazo para assinar', ordem_assinatura: 'Ordem das assinaturas', inicio: 'Início', perfil_base: 'Perfil-base', permissoes: 'Permissões', tipo: 'Tipo', objeto: 'Objeto', modelo: 'Modelo', momento: 'Momento', responsavel: 'Responsável', prazo_analise: 'Prazo da análise', ativo: 'Ativa' };
 const TABELAS = { itens_acompanhamento: 'Item de acompanhamento', prorrogacoes: 'Prorrogação', demandas: 'Demanda', evidencias: 'Evidência', perfis: 'Usuário', relatorios: 'Parecer de checklist', lixeira: 'Lixeira', parametros: 'Parâmetros', perfis_acesso: 'Perfil de acesso', processos: 'Processo', checklist_aplicacoes: 'Checklist', regras_abertura: 'Regra de abertura' };
 const ACOES_TR = { INSERT: ['Inclusão', 'c-ok', 'plus'], UPDATE: ['Alteração', 'c-info', 'pen'], SOFT_DELETE: ['Exclusão', 'c-crit', 'trash'], RESTORE: ['Restauração', 'c-info', 'undo'], SIGN: ['Assinatura', 'c-violet', 'stamp'] };
 const STATUS_PR = { pendente: 'Pendente', aprovada: 'Aprovada', negada: 'Negada' };
@@ -1676,7 +1719,10 @@ function viewConfig() {
       ${linhaCfg('Alertas antes do vencimento', 'Dias corridos. 0 = no dia do vencimento.', `<input id="c-alerta" value="5, 2, 0" ${dis} style="width:120px">`)}
       ${linhaCfg('Alerta de atraso', 'Repetido todo dia até a resposta.', sw('c-atraso', true, ro))}
       ${linhaCfg('Escalonamento', 'Em atraso, avisa o superior hierárquico da área e a CHEGAB.', sw('c-esc', true, ro))}
-      ${linhaCfg('Ciência do recebimento', 'A área confirma que recebeu o item distribuído.', sw('c-cien', true, ro))}
+      ${linhaCfg('Ciência do recebimento', 'A área confirma que recebeu o item distribuído e indica quem vai cuidar.', sw('c-cien', true, ro))}
+      ${linhaCfg('Lembrar a área sem ciência', 'Dias corridos sem confirmação até o lembrete ao ponto focal.', `<input id="c-lemb" type="number" value="${CIENCIA_CFG.lembrete}" data-cienc="lembrete" ${dis} style="width:80px">`)}
+      ${linhaCfg('Avisar a chefia da área', 'Dias corridos sem confirmação até o aviso à chefia (unidade acima).', `<input id="c-chef" type="number" value="${CIENCIA_CFG.chefia}" data-cienc="chefia" ${dis} style="width:80px">`)}
+      ${linhaCfg('Encaminhamento interno', 'O ponto focal pode passar o item para uma subárea. O prazo não muda e a ASCOIN é avisada.', '<span class="chip c-ok plain">Permitido</span>')}
       ${linhaCfg('Sugestão de prazo da área', 'Dias antes do prazo do órgão.', `<input id="c-sug" type="number" value="5" ${dis} style="width:80px">`)}
     </div><div class="card-body"><h3 style="margin-bottom:8px">Regras de prorrogação</h3><div class="table-wrap"><table class="t"><thead><tr><th>Prazo original</th><th>Prorrogação máxima</th><th>Pedidos por item</th><th>Quem aprova</th></tr></thead><tbody>${[['Até 15 dias', '50%'], ['16 a 30 dias', '50%'], ['Acima de 30 dias', '50%']].map(([f, m], i) => `<tr><td>${f}</td><td><input id="pr-m-${i}" value="${m}" ${dis} style="width:70px"></td><td><input id="pr-q-${i}" type="number" value="1" ${dis} style="width:60px"></td><td>ASCOIN</td></tr>`).join('')}</tbody></table></div>
       ${ro ? '' : `<div class="actions" style="margin-top:12px"><button class="btn primary" data-act="cfg-salvo">Salvar alterações</button></div>`}</div>`;
@@ -1811,6 +1857,8 @@ function insights() {
   RELATORIOS.filter((r) => situacaoRel(r) === 'aguardando' && !r.substituidoPor).forEach((r) => out.push({ sev: diasAte(prazoSig(r)) < 0 ? 'crit' : 'warn', cat: 'Assinaturas', txt: `${r.id} aguarda ${r.sigs.length - sigsFeitas(r)} de ${r.sigs.length} assinaturas. Vez de ${USER[proximaSig(r).u].nome}, até ${fmt(prazoSig(r))}`, link: `relatorio-${r.id}` }));
   const ciencia = DEMANDAS.filter((d) => podeVerDemanda(d) && itensDaDemanda(d.n).filter((i) => !isFinal(i)).length && itensDaDemanda(d.n).filter((i) => !isFinal(i)).every((i) => i.status === 'consolidada'));
   if (ciencia.length) out.push({ sev: 'warn', cat: 'CHEGAB', txt: `${ciencia.map((d) => `DEM-2026-${d.n}`).join(', ')} ${ciencia.length > 1 ? 'aguardam' : 'aguarda'} a ciência da Chefia de Gabinete`, link: `demanda-${ciencia[0].n}` });
+  const sc = ab.filter((i) => diasSemCiencia(i) >= CIENCIA_CFG.chefia);
+  if (sc.length) out.push({ sev: 'warn', cat: 'Ciência', txt: `${plural(sc.length, 'item segue', 'itens seguem')} sem ciência da área há ${CIENCIA_CFG.chefia} dias ou mais (${sc.map((i) => i.area).join(', ')}). Chefia avisada`, link: linkItem(sc[0]) });
   const pr = PRORROGACOES.filter((p) => p.status === 'pendente');
   if (pr.length && ['ascoin', 'admin'].includes(u.papel)) out.push({ sev: 'warn', cat: 'Prorrogação', txt: `${plural(pr.length, 'pedido de prorrogação aguarda', 'pedidos de prorrogação aguardam')} decisão da ASCOIN`, link: 'prorrogacoes' });
   const nova = DEMANDAS.filter((d) => podeVerDemanda(d)).sort((a, b) => b.receb.localeCompare(a.receb))[0];
@@ -2122,6 +2170,7 @@ const ACOES = {
       <label class="field"><span>Recebida em</span><input id="nd-receb" type="date" value="2026-11-13" required></label>
       <label class="field"><span>Prazo do órgão</span><input id="nd-prazo" type="date" value="2026-12-03" required><span class="help">Dias corridos.</span></label>
       <label class="field"><span>Gravidade</span><select id="nd-grav"><option value="2">Média</option><option value="3">Alta</option><option value="4">Crítica</option><option value="1">Baixa</option></select></label>
+      <label class="field"><span>Analista da ASCOIN</span><select id="nd-an">${analistasAscoin().map((x) => `<option value="${x.id}" ${x.id === eu().id ? 'selected' : ''}>${esc(x.nome)}</option>`).join('')}</select><span class="help">Dono da demanda dentro da ASCOIN.</span></label>
       <label class="field"><span>Tema</span><select id="nd-tema">${TEMAS.map((t) => `<option>${t}</option>`).join('')}</select><span class="help" id="nd-tema-av">A reincidência é calculada pelo tema.</span></label>
       <label class="field full"><span>Assunto</span><input id="nd-assunto" required></label>
       <label class="field full"><span>Resumo</span><textarea id="nd-resumo"></textarea></label>
@@ -2130,32 +2179,57 @@ const ACOES = {
     onOk: (f) => {
       for (const [id, msg] of [['#nd-doc', 'Informe o documento de origem.'], ['#nd-sei', 'Informe o processo SEI.'], ['#nd-assunto', 'Informe o assunto.']]) if (!f.querySelector(id).value.trim()) return erroCampo(f, id, msg);
       const n = String(45 + DEMANDAS.filter((d) => d.novo).length).padStart(4, '0');
-      const d = { n, novo: true, org: f.querySelector('#nd-org').value, tipo: f.querySelector('#nd-tipo').value, doc: f.querySelector('#nd-doc').value, sei: f.querySelector('#nd-sei').value, procOrg: f.querySelector('#nd-proc').value || '—', canal: f.querySelector('#nd-canal').value, receb: f.querySelector('#nd-receb').value, prazo: f.querySelector('#nd-prazo').value, grav: +f.querySelector('#nd-grav').value, assunto: f.querySelector('#nd-assunto').value, resumo: f.querySelector('#nd-resumo').value || '—', obs: '', restrito: f.querySelector('#nd-rest').checked, tema: f.querySelector('#nd-tema').value };
+      const d = { n, novo: true, org: f.querySelector('#nd-org').value, tipo: f.querySelector('#nd-tipo').value, doc: f.querySelector('#nd-doc').value, sei: f.querySelector('#nd-sei').value, procOrg: f.querySelector('#nd-proc').value || '—', canal: f.querySelector('#nd-canal').value, receb: f.querySelector('#nd-receb').value, prazo: f.querySelector('#nd-prazo').value, grav: +f.querySelector('#nd-grav').value, assunto: f.querySelector('#nd-assunto').value, resumo: f.querySelector('#nd-resumo').value || '—', obs: '', restrito: f.querySelector('#nd-rest').checked, tema: f.querySelector('#nd-tema').value, analista: f.querySelector('#nd-an').value };
       DEMANDAS.unshift(d); DEM[n] = d; recalcReinc();
       toast(`Demanda DEM-2026-${n} registrada. Agora distribua os itens.`);
       location.hash = `demanda-${n}`;
     },
   }),
-  'add-item': (el) => modal({
-    title: 'Distribuir item', sub: 'O item vai para a área responsável com prazo próprio. A área recebe alerta e deve confirmar o recebimento.', wide: true, ok: 'Distribuir',
+  'add-item': (el) => { const d = DEM[el.dataset.dem]; const sug = (() => { const sg = addDias(d.prazo, -5); return sg > iso(HOJE) ? sg : addDias(iso(HOJE), 1); })(); modal({
+    title: 'Distribuir item', sub: `${'DEM-2026-' + d.n} · ${esc(d.org)} · prazo do órgão ${fmt(d.prazo)}. Só a ASCOIN distribui (Regimento, Art. 10, VII).`, wide: true, ok: 'Distribuir',
     body: `<div class="form-grid">
-      <label class="field full"><span>Título do item</span><input id="ai-tit" required placeholder="Ex.: Rec. 1 — ..."></label>
-      <label class="field"><span>Área responsável</span><select id="ai-area">${AREAS.filter((a) => !['SEDES', 'GABSEC', 'ASCOIN'].includes(a.sigla)).map((a) => `<option value="${a.sigla}">${a.sigla} — ${esc(a.nome)}</option>`).join('')}</select></label>
-      <label class="field"><span>Prazo da área</span><input id="ai-prazo" type="date" value="${(() => { const sg = addDias(DEM[el.dataset.dem].prazo, -5); return sg > iso(HOJE) ? sg : addDias(iso(HOJE), 1); })()}"><span class="help">Prazo do órgão: ${fmt(DEM[el.dataset.dem].prazo)}. Sugestão: 5 dias antes, para a ASCOIN analisar e consolidar.</span></label>
-      <label class="field"><span>Gravidade</span><select id="ai-grav"><option value="2">Média</option><option value="3">Alta</option><option value="4">Crítica</option><option value="1">Baixa</option></select></label>
-      <label class="field" style="flex-direction:row;align-items:center;gap:8px;align-self:end"><input type="checkbox" id="ai-rest" style="height:auto"><span>Item restrito</span></label>
-      <label class="field full"><span>Resumo</span><textarea id="ai-res"></textarea></label>
-    </div>`,
+      <label class="field full"><span>Título do item</span><input id="ai-tit" required placeholder="Ex.: Estudos técnicos preliminares da consultoria"></label>
+      <label class="field"><span>Área responsável</span><select id="ai-area" required><option value="">Escolha a área…</option>${AREAS.filter((a) => !['SEDES', 'GABSEC', 'ASCOIN'].includes(a.sigla)).map((a) => `<option value="${a.sigla}">${a.sigla} — ${esc(a.nome)}</option>`).join('')}</select><span class="help">Um item por área. Para resposta conjunta, crie um item para cada área.</span></label>
+      <label class="field"><span>Responsável na área (opcional)</span><select id="ai-resp" disabled><option value="">Escolha a área primeiro</option></select><span class="help">Se ficar em branco, o ponto focal indica ao confirmar o recebimento.</span></label>
+      <label class="field"><span>Prazo da área</span><input id="ai-prazo" type="date" value="${sug}"><span class="help">Sugestão: 5 dias antes do prazo do órgão (${fmt(d.prazo)}), para a ASCOIN analisar e consolidar.</span></label>
+      <label class="field"><span>Gravidade</span><select id="ai-grav"><option value="2">Média</option><option value="3" ${d.grav >= 3 ? 'selected' : ''}>Alta</option><option value="4">Crítica</option><option value="1">Baixa</option></select></label>
+      <label class="field full" style="flex-direction:row;align-items:center;gap:8px"><input type="checkbox" id="ai-rest" style="height:auto"><span>Item restrito</span></label>
+      <label class="field full"><span>Resumo do que se pede</span><textarea id="ai-res" placeholder="Cite o item do ofício e o que a área deve entregar."></textarea></label>
+    </div>
+    <div class="actions"><button type="button" class="btn ghost sm" data-act="lote-itens" data-dem="${d.n}">${ico('list')}Distribuir vários itens de uma vez</button></div>`,
     onOk: (f) => {
       if (!f.querySelector('#ai-tit').value.trim()) return erroCampo(f, '#ai-tit', 'Informe o título do item.');
-      const ref = el.dataset.dem; const seq = itensDaDemanda(ref).length + 1;
-      const pr = f.querySelector('#ai-prazo').value;
-      const it = { id: `${ref}-${String(seq).padStart(2, '0')}`, ref, seq, area: f.querySelector('#ai-area').value, status: 'distribuida', prazoOrig: pr, prazo: pr, grav: +f.querySelector('#ai-grav').value, restrito: f.querySelector('#ai-rest').checked, titulo: f.querySelector('#ai-tit').value, resumo: f.querySelector('#ai-res').value, obs: '', devol: 0, origem: 'demanda_externa', numero: `DEM-2026-${ref}/${String(seq).padStart(2, '0')}`, receb: iso(HOJE), extra: [] };
-      ITENS.push(it); ITEM[it.id] = it;
-      toast(`Item ${it.numero} distribuído para ${it.area}. Alerta enviado.`, 'send'); render();
+      if (!f.querySelector('#ai-area').value) return erroCampo(f, '#ai-area', 'Escolha a área responsável.');
+      const it = criarItem(d.n, { titulo: f.querySelector('#ai-tit').value.trim(), area: f.querySelector('#ai-area').value, prazo: f.querySelector('#ai-prazo').value || sug, grav: +f.querySelector('#ai-grav').value, restrito: f.querySelector('#ai-rest').checked, resumo: f.querySelector('#ai-res').value, respNome: f.querySelector('#ai-resp').value });
+      toast(`Item ${it.numero} distribuído para ${it.area}. O ponto focal foi avisado.`, 'send'); render();
     },
-  }),
-  'ciencia-area': (el) => { const it = ITEM[el.dataset.id]; registrar(it, { t: 'Ciência do recebimento', c: 'c-ok', i: 'checkc' }, 'em_atendimento'); toast('Recebimento confirmado. O item está em atendimento.'); render(); },
+  });
+  document.getElementById('ai-area').addEventListener('change', (e) => { const r = document.getElementById('ai-resp'); const ps = pessoasArea(e.target.value); r.disabled = !e.target.value; r.innerHTML = `<option value="">${e.target.value ? 'Deixar para o ponto focal' : 'Escolha a área primeiro'}</option>${ps.map((n) => `<option>${esc(n)}</option>`).join('')}`; }); },
+  'lote-itens': (el) => { const d = DEM[el.dataset.dem]; const sug = (() => { const sg = addDias(d.prazo, -5); return sg > iso(HOJE) ? sg : addDias(iso(HOJE), 1); })(); modal({
+    title: 'Distribuir vários itens', sub: `${'DEM-2026-' + d.n}. Uma linha por item, no formato: título | SIGLA DA ÁREA. Útil para relatórios com muitas recomendações.`, wide: true, ok: 'Distribuir todos',
+    body: `<label class="field"><span>Itens</span><textarea id="lt-txt" style="min-height:150px" placeholder="Processo de contratação da consultoria | COLIC&#10;Estudos técnicos preliminares | AGE&#10;Justificativa de preço | DGAF"></textarea></label>
+      <div class="form-grid"><label class="field"><span>Prazo da área (para todos)</span><input id="lt-prazo" type="date" value="${sug}"></label><label class="field"><span>Gravidade (para todos)</span><select id="lt-grav"><option value="2">Média</option><option value="3" ${d.grav >= 3 ? 'selected' : ''}>Alta</option><option value="4">Crítica</option><option value="1">Baixa</option></select></label></div>
+      <div id="lt-prev" class="small muted">A pré-visualização aparece enquanto você digita.</div>`,
+    onOk: (f) => {
+      const l = loteParse(f.querySelector('#lt-txt').value);
+      if (!l.ok.length) return erroCampo(f, '#lt-txt', 'Escreva ao menos uma linha no formato: título | SIGLA.');
+      if (l.erros.length) return erroCampo(f, '#lt-txt', `Corrija as linhas ${l.erros.join(', ')}: sigla de área não encontrada.`);
+      l.ok.forEach((x) => criarItem(d.n, { titulo: x.t, area: x.a, prazo: f.querySelector('#lt-prazo').value || sug, grav: +f.querySelector('#lt-grav').value, restrito: false, resumo: '', respNome: '' }));
+      toast(`${plural(l.ok.length, 'item distribuído', 'itens distribuídos')}. Os pontos focais foram avisados.`, 'send'); render();
+    },
+  });
+  document.getElementById('lt-txt').addEventListener('input', (e) => { const l = loteParse(e.target.value); document.getElementById('lt-prev').innerHTML = l.linhas.length ? `<table class="t"><thead><tr><th>#</th><th>Título</th><th>Área</th></tr></thead><tbody>${l.linhas.map((x, k) => `<tr><td class="num">${k + 1}</td><td>${esc(x.t || '—')}</td><td>${AREA[x.a] ? `<b class="mono">${x.a}</b>` : `<span style="color:var(--crit)">${esc(x.a || 'sem sigla')} (não encontrada)</span>`}</td></tr>`).join('')}</tbody></table>` : 'A pré-visualização aparece enquanto você digita.'; }); },
+  'trocar-analista': (el) => { const d = DEM[el.dataset.dem]; modal({ title: 'Trocar analista da demanda', sub: `DEM-2026-${d.n}. O novo analista passa a ver a demanda na fila dele.`, ok: 'Trocar', body: `<label class="field"><span>Analista da ASCOIN</span><select id="ta-u">${analistasAscoin().map((x) => `<option value="${x.id}" ${x.id === d.analista ? 'selected' : ''}>${esc(x.nome)}</option>`).join('')}</select></label>`, onOk: (f) => { const ant = d.analista; d.analista = f.querySelector('#ta-u').value; trilhar('demandas', `DEM-2026-${d.n}`, 'UPDATE', 'Trocou o analista da ASCOIN', { analista: ant ? USER[ant].nome : null }, { analista: USER[d.analista].nome }); NOTIFS.unshift({ id: Date.now(), user: d.analista, para: [], tipo: 'distribuicao', quando: agoraTxt(), txt: `Você é o analista da DEM-2026-${d.n}.`, dem: d.n, lida: false }); render(); toast(`${USER[d.analista].nome} é agora o analista da demanda.`, 'users'); } }); },
+  'fila-todas': (el) => { state.filaTodas = el.dataset.v === '1'; render(); },
+  encaminhar: (el) => { const it = ITEM[el.dataset.id]; const u = eu(); const subs = [...descendentes(it.area)].filter((a) => a !== it.area && descendentes(u.area).has(a)); modal({
+    title: 'Encaminhar para subárea', sub: `${it.numero}. O prazo continua ${fmt(it.prazo)} e a ${it.area} continua responsável perante a ASCOIN.`, ok: 'Encaminhar',
+    body: `<label class="field"><span>Subárea</span><select id="en-a">${subs.map((a) => `<option value="${a}">${a} — ${esc(AREA[a].nome)}</option>`).join('')}</select></label><label class="field"><span>Responsável na subárea (opcional)</span><select id="en-r"><option value="">Deixar para o ponto focal</option>${pessoasArea(subs[0]).map((n) => `<option>${esc(n)}</option>`).join('')}</select></label><label class="field"><span>Orientação para a subárea</span><textarea id="en-o"></textarea></label>`,
+    onOk: (f) => { const de = it.area; const para = f.querySelector('#en-a').value; it.areaOrigem = it.areaOrigem || de; it.area = para; it.respNome = f.querySelector('#en-r').value || it.respNome; registrar(it, { t: `Encaminhado internamente: ${de} → ${para}`, txt: f.querySelector('#en-o').value || 'Sem orientação adicional.', c: 'c-info', i: 'arrow' }); const an = it.origem === 'demanda_externa' ? DEM[it.ref].analista : null; if (an) NOTIFS.unshift({ id: Date.now(), user: an, para: [], tipo: 'distribuicao', quando: agoraTxt(), txt: `${de} encaminhou ${it.numero} para ${para}. O prazo não mudou.`, item: it.id, lida: false }); toast(`Item encaminhado para ${para}. A ASCOIN foi avisada.`, 'arrow'); render(); },
+  });
+  document.getElementById('en-a').addEventListener('change', (e) => { document.getElementById('en-r').innerHTML = `<option value="">Deixar para o ponto focal</option>${pessoasArea(e.target.value).map((n) => `<option>${esc(n)}</option>`).join('')}`; }); },
+  'ciencia-area': (el) => { const it = ITEM[el.dataset.id]; modal({ title: 'Confirmar recebimento', sub: `${it.numero} · prazo ${fmt(it.prazo)}. A confirmação registra a ciência da área.`, ok: 'Confirmar recebimento',
+    body: `<label class="field"><span>Quem vai cuidar do item</span><select id="ci-r">${pessoasArea(it.area).map((n) => `<option ${n === (it.respNome || eu().nome) ? 'selected' : ''}>${esc(n)}</option>`).join('')}</select><span class="help">Pode ser você ou um colega da área. A pessoa aparece como responsável no item.</span></label>`,
+    onOk: (f) => { it.respNome = f.querySelector('#ci-r').value; registrar(it, { t: 'Ciência do recebimento', txt: `Responsável na área: ${it.respNome}.`, c: 'c-ok', i: 'checkc' }, 'em_atendimento'); toast('Recebimento confirmado. O item está em atendimento.'); render(); } }); },
   responder: (el) => { const it = ITEM[el.dataset.id]; modal({
     title: 'Responder item', sub: `${it.numero} · prazo ${fmt(it.prazo)}`, ok: 'Enviar resposta à ASCOIN', wide: true,
     body: `<label class="field"><span>Resposta da área</span><textarea id="r-txt" required placeholder="Descreva o que foi feito e cite os documentos anexos."></textarea></label>
@@ -2363,6 +2437,7 @@ document.addEventListener('change', (e) => {
   if (t.dataset.an !== undefined) { TIPOS_PROC[+t.dataset.an].analisar = t.value; toast(`${TIPOS_PROC[+t.dataset.an].nome}: analisar ${t.value === 'Todos' ? 'todos os processos' : 'por amostra (sorteio)'}.`, 'refresh'); return; }
   const mj = t.id.match(/^([js])-(\d{4})-(\d+)$/); if (mj) { const a = APLICACOES.find((x) => x.n === mj[2]); if (a && a.respostas && a.respostas[mj[3]]) { a.respostas[mj[3]][mj[1] === 'j' ? 1 : 2] = t.value; autoSalvo(a); } return; }
   if (t.dataset.anexo) { const a = APLICACOES.find((x) => x.n === t.dataset.n); a.anexos = a.anexos || {}; a.anexos[t.dataset.anexo] = (a.anexos[t.dataset.anexo] || []).concat([...t.files].map((f) => f.name)); autoSalvo(a); render(); toast('Anexo incluído no item.', 'paperclip'); return; }
+  if (t.dataset.cienc) { CIENCIA_CFG[t.dataset.cienc] = Math.max(1, +t.value || 1); toast('Regra de ciência atualizada.', 'bell'); return; }
   if (t.dataset.assin) { ASSIN_CFG[t.dataset.assin] = t.dataset.assin === 'prazo' ? Math.max(1, +t.value || 1) : t.value; trilhar('parametros', 'assinatura', 'UPDATE', 'Alterou a regra de assinatura', null, { [t.dataset.assin === 'prazo' ? 'prazo_assinatura' : 'ordem_assinatura']: t.value }); toast('Regra de assinatura atualizada.', 'pen'); return; }
   if (t.dataset.regra) { const r = TIPOS_PROC[+t.dataset.regra]; const ant = USER[r.resp].nome; r.resp = t.value; trilhar('regras_abertura', r.nome, 'UPDATE', 'Alterou o responsável padrão da abertura automática', { responsavel: ant }, { responsavel: USER[r.resp].nome }); toast(`Responsável padrão de ${r.nome}: ${USER[r.resp].nome}.`, 'users'); return; }
   if (t.dataset.pool) { state.pool[t.dataset.pool] = t.value; render(); return; }
