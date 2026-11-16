@@ -69,3 +69,14 @@ de assinatura e prévias da Fase 2 (auditoria e riscos).
 6. **Itens conjuntos ficam fora do MVP**: um item por área.
 
 Também: área sem pré-seleção na distribuição, prazo sugerido = prazo do órgão menos 5 dias, e distribuição de vários itens de uma vez.
+
+## Atendimento pela área (passo 3) — decisões de 16/11/2026
+
+1. **Colaborador da área**: perfil derivado do ponto focal que vê e responde só os itens em que foi designado.
+2. **Rascunho automático** da resposta (texto e anexos); só segue ao clicar em "Enviar".
+3. **Validação da chefia** opcional, ligada por botão área por área (Configurações › Validação da chefia). Vale para as subáreas. A chefia aprova ou devolve à equipe; o prazo continua correndo.
+4. **Evidência obrigatória**, com exceção justificada ("Não há documento a anexar").
+5. **Dúvida à ASCOIN** no próprio item, sem parar o prazo; o analista responde no histórico.
+6. **Resposta parcial fora do MVP**: entregas em partes viram mais itens na distribuição.
+
+Agenda: ao passar o mouse sobre um dia, uma caixa lista os eventos daquele dia.

@@ -846,6 +846,10 @@ button.avatar:hover, button.avatar[aria-expanded="true"] { background: color-mix
 .ck-anexos .wchip { display: inline-flex; align-items: center; gap: 4px; }
 .ck-anexos .ico { width: 13px; height: 13px; }
 
+.tooltip.dia { max-width: 360px; font-size: .8rem; line-height: 1.55; }
+.resp-card { border-color: var(--brand); }
+.resp-card .card-head { background: color-mix(in srgb, var(--brand) 10%, transparent); }
+
 /* ---------- Responsivo ---------- */
 @media (max-width: 1280px) {
   .wgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }

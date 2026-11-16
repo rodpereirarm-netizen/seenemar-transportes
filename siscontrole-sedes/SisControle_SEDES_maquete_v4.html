@@ -859,6 +859,10 @@ button.avatar:hover, button.avatar[aria-expanded="true"] { background: color-mix
 .ck-anexos .wchip { display: inline-flex; align-items: center; gap: 4px; }
 .ck-anexos .ico { width: 13px; height: 13px; }
 
+.tooltip.dia { max-width: 360px; font-size: .8rem; line-height: 1.55; }
+.resp-card { border-color: var(--brand); }
+.resp-card .card-head { background: color-mix(in srgb, var(--brand) 10%, transparent); }
+
 /* ---------- Responsivo ---------- */
 @media (max-width: 1280px) {
   .wgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -1077,11 +1081,12 @@ const USERS = [
   { id: 'u6', nome: 'André Siqueira', papel: 'ponto_focal', area: 'ATI', cargo: 'Ponto focal da ATI', email: 'asiqueira@sedes.rj.gov.br', ativo: true, troca: true },
   { id: 'u9', nome: 'Carla Mendes', papel: 'ponto_focal', area: 'ASPO', cargo: 'Ponto focal da ASPO', email: 'cmendes@sedes.rj.gov.br', ativo: true, troca: false },
   { id: 'u10', nome: 'Tiago Nunes', papel: 'ponto_focal', area: 'SUBINOV', cargo: 'Ponto focal da SUBINOV', email: 'tnunes@sedes.rj.gov.br', ativo: true, troca: true },
+  { id: 'u11', nome: 'Aline Torres', papel: 'ponto_focal', perfilNome: 'Colaborador da área', designados: true, area: 'COCON', cargo: 'Analista da Coordenadoria de Convênios', email: 'atorres@sedes.rj.gov.br', ativo: true, troca: false },
   { id: 'u7', nome: 'Paulo Henrique Costa', papel: 'gestor', area: 'CHEGAB', cargo: 'Chefe de Gabinete', email: 'phcosta@sedes.rj.gov.br', ativo: true, troca: false, restrito: true },
   { id: 'u8', nome: 'Luciana Barros', papel: 'gestor', area: 'SUBEXE', cargo: 'Subsecretária Executiva', email: 'lbarros@sedes.rj.gov.br', ativo: true, troca: false },
 ];
 const USER = Object.fromEntries(USERS.map((u) => [u.id, u]));
-const SWITCH = ['u2', 'u3', 'u5', 'u6', 'u7', 'u8', 'u4', 'u1'];
+const SWITCH = ['u2', 'u3', 'u5', 'u11', 'u6', 'u7', 'u8', 'u4', 'u1'];
 const ASSESSORA = 'u2'; // Assessora de Controle Interno: vê e redistribui toda a ASCOIN
 const PONTO_FOCAL = {
   DGAF: 'Fernanda Lopes', COCON: 'Bruno Carvalho', COFIN: 'Patrícia Gomes', COLIC: 'Rafael Moura', ASPO: 'Carla Mendes',
@@ -1181,6 +1186,8 @@ const ITENS = [
   };
 });
 const ITEM = Object.fromEntries(ITENS.map((i) => [i.id, i]));
+ITEM['0041-01'].respNome = 'Aline Torres';
+ITEM['0041-01'].rascunho = { txt: 'Seguem os relatórios de cumprimento do objeto dos convênios 008 e 011/2025. O 014/2025 depende do convenente; anexo a notificação enviada.', arqs: ['Relatorio_cumprimento_008-2025.pdf'], salvo: '2026-11-13 09:40' };
 
 let PRORROGACOES = [
   { id: 'P-0019', item: '0042-01', em: '2026-11-08', por: 'André Siqueira', dias: 15, just: 'O plano depende da contratação do serviço de backup em nuvem, com processo em fase de pesquisa de preços.', status: 'pendente' },
@@ -1314,8 +1321,15 @@ function podeVerItem(it, u = eu()) {
   if (u.papel === 'admin' || u.papel === 'ascoin') return true;
   if (it.restrito && !(u.papel === 'gestor' && u.restrito)) return false;
   if (u.papel === 'auditoria') return true;
+  if (u.designados) return it.respNome === u.nome;
   return descendentes(raizVisao(u)).has(it.area);
 }
+// Quem age pela área: o ponto focal (da área ou de cima) ou o colaborador designado no item
+const ehMinha = (it, u = eu()) => u.papel === 'ponto_focal' && descendentes(u.area).has(it.area) && (!u.designados || it.respNome === u.nome);
+// Validação da chefia: ligada por botão, área por área (desligada por padrão)
+const VALIDA_CHEFIA = new Set();
+const precisaValidar = (area) => [...descendentes('SEDES')].some((a) => VALIDA_CHEFIA.has(a) && descendentes(a).has(area));
+const chipItem = (it) => (it.validacao === 'pendente' ? '<span class="chip c-warn">Aguardando validação da chefia</span>' : chipStatus(it.status));
 const itensVisiveis = () => ITENS.filter((it) => podeVerItem(it));
 const itensDaDemanda = (n) => ITENS.filter((i) => i.ref === n);
 function podeVerDemanda(d, u = eu()) {
@@ -1468,7 +1482,7 @@ function navLinks() {
   }).join('');
 }
 const MAN_TABS = [['geral', 'Visão geral e saúde'], ['rotinas', 'Rotinas agendadas'], ['backups', 'Backups'], ['armazenamento', 'Armazenamento'], ['importacao', 'Importação de dados'], ['logs', 'Registros do sistema'], ['versoes', 'Versões e migrations'], ['janela', 'Modo manutenção']];
-const CFG_TABS = [['usuarios', 'Usuários e perfis'], ['areas', 'Áreas'], ['orgaos', 'Órgãos de controle'], ['status', 'Status e fluxo'], ['prazos', 'Prazos e alertas'], ['checklists', 'Abertura de checklists'], ['assinatura', 'Assinatura eletrônica'], ['notificacoes', 'Notificações'], ['aparencia', 'Aparência'], ['seguranca', 'Segurança']];
+const CFG_TABS = [['usuarios', 'Usuários e perfis'], ['areas', 'Áreas'], ['orgaos', 'Órgãos de controle'], ['status', 'Status e fluxo'], ['prazos', 'Prazos e alertas'], ['validacao', 'Validação da chefia'], ['checklists', 'Abertura de checklists'], ['assinatura', 'Assinatura eletrônica'], ['notificacoes', 'Notificações'], ['aparencia', 'Aparência'], ['seguranca', 'Segurança']];
 function rotaBase() {
   const b = state.route.split('-')[0];
   return { demanda: 'demandas', item: 'pendencias', aplicacao: 'checklists', relatorio: 'checklists', assinatura: 'configuracoes' }[b] || b;
@@ -1541,7 +1555,7 @@ function tabelaItens(lista, { demanda = true, vazio = 'Nenhum item encontrado.' 
   ${lista.map((it) => { const s = situacao(it); return `<tr class="link ${s.cls === 'vencido' ? 'row-crit' : s.cls === 'avencer' ? 'row-warn' : ''}" data-go="${linkItem(it)}" tabindex="0">
     <td class="title-cell"><b>${esc(it.titulo)}</b><small class="mono">${it.numero}</small> ${lockTag(it.restrito)}</td>
     ${demanda ? `<td>${chipOrigem(it.origem)}${it.origem === 'demanda_externa' ? ` <span class="tag-org">${DEM[it.ref].org}</span>` : ''}</td>` : ''}
-    <td><b class="mono">${it.area}</b></td><td>${chipStatus(it.status)}</td><td>${prazoCell(it)}</td><td>${prazoOrgao(it)}</td><td>${sev(it.grav)}</td></tr>`; }).join('')}
+    <td><b class="mono">${it.area}</b></td><td>${chipItem(it)}</td><td>${prazoCell(it)}</td><td>${prazoOrgao(it)}</td><td>${sev(it.grav)}</td></tr>`; }).join('')}
   </tbody></table></div>`;
 }
 
@@ -1570,12 +1584,14 @@ function viewInicio() {
     fila = [...analise, ...venc, ...aVencer]; filaTitulo = 'Fila de trabalho da ASCOIN';
   } else if (u.papel === 'ponto_focal') {
     const conf = abertos.filter((i) => i.status === 'distribuida');
-    const resp = abertos.filter((i) => ['em_atendimento', 'devolvida'].includes(i.status));
+    const resp = abertos.filter((i) => ['em_atendimento', 'devolvida'].includes(i.status) && i.validacao !== 'pendente');
     cards = [[conf.length, 'Confirmar recebimento', 'Itens novos da sua área', 'pendencias', ''], [resp.length, 'Para responder', 'Em atendimento ou devolvidos', 'pendencias', ''], [venc.length, 'Vencidos', 'Escalonados ao superior', 'pendencias', 'crit'], [aVencer.length, 'Vencem em até 5 dias', '', 'pendencias', 'warn']];
     fila = [...conf, ...resp.sort((a, b) => a.prazo.localeCompare(b.prazo))]; filaTitulo = `O que a ${u.area} precisa fazer`;
   } else if (u.papel === 'gestor') {
+    const validar = abertos.filter((i) => i.validacao === 'pendente');
+    if (validar.length) { cards = [[validar.length, 'Respostas para validar', 'Antes de seguir para a ASCOIN', 'pendencias', 'warn'], [venc.length, 'Vencidos na sua hierarquia', '', 'pendencias', 'crit'], [aVencer.length, 'Vencem em até 5 dias', '', 'pendencias', 'warn'], [abertos.length, 'Pendências abertas', `Visão: ${raizVisao(u)} e unidades abaixo`, 'pendencias', '']]; fila = [...validar, ...venc]; filaTitulo = 'Para validar e pontos de atenção'; } else {
     cards = [[u.area === 'CHEGAB' ? prontasCiencia.length : 0, 'Ciência pendente', u.area === 'CHEGAB' ? 'Respostas consolidadas' : 'Somente CHEGAB', 'demandas', ''], [venc.length, 'Vencidos na sua hierarquia', '', 'pendencias', 'crit'], [aVencer.length, 'Vencem em até 5 dias', '', 'pendencias', 'warn'], [abertos.length, 'Pendências abertas', `Visão: ${raizVisao(u)} e unidades abaixo`, 'pendencias', '']];
-    fila = [...venc, ...aVencer]; filaTitulo = 'Pontos de atenção';
+    fila = [...venc, ...aVencer]; filaTitulo = 'Pontos de atenção'; }
   } else if (u.papel === 'admin') {
     cards = [[USERS.filter((x) => x.ativo).length, 'Usuários ativos', `${USERS.filter((x) => x.troca).length} com troca de senha pendente`, 'configuracoes', ''], [LIXEIRA.length, 'Registros na lixeira', 'Restauráveis por 30 dias', 'lixeira', ''], [TRILHA.length, 'Eventos na trilha (semana)', 'Somente inclusão', 'trilha', ''], [venc.length, 'Itens vencidos', 'Visão geral', 'pendencias', 'crit']];
     fila = [...venc, ...aVencer]; filaTitulo = 'Prazos críticos';
@@ -1891,20 +1907,40 @@ function viewDemanda(n) {
   </div>`;
 }
 
+function chefiaValida(area) { const a = [...descendentes('SEDES')].find((x) => VALIDA_CHEFIA.has(x) && descendentes(x).has(area)); const g = USERS.find((x) => x.papel === 'gestor' && x.area === a); return g ? `${g.nome}, ${a}` : `chefia da ${a}`; }
+function cardResposta(it) {
+  const r = it.rascunho || (it.rascunho = { txt: '', arqs: [], salvo: null });
+  const valida = precisaValidar(it.area);
+  return `<section class="card resp-card" id="resp-${it.id}"><div class="card-head"><h2>Resposta da área</h2><span class="hint" id="rs-salvo">${r.salvo ? `Rascunho salvo às ${r.salvo.slice(11)}` : 'Rascunho salvo automaticamente'}</span></div><div class="card-body" style="display:flex;flex-direction:column;gap:12px">
+    ${it.status === 'devolvida' ? `<div class="callout warn">${ico('undo')}<p>A ASCOIN devolveu para complementação: ${esc(it.obs.replace('Devolvida: ', '') || 'veja o histórico.')}</p></div>` : ''}
+    <label class="field"><span>Texto da resposta</span><textarea id="rs-txt" data-rasc="${it.id}" style="min-height:120px" placeholder="Descreva o que foi feito e cite os documentos anexos.">${esc(r.txt)}</textarea></label>
+    <div class="field"><span>Evidências (obrigatórias)</span><div class="ck-anexos">${r.arqs.map((f, k) => `<span class="wchip">${ico('paperclip')}${esc(f)} <button type="button" class="btn ghost sm" data-act="rasc-rm" data-id="${it.id}" data-k="${k}" aria-label="Remover ${esc(f)}" style="height:20px;padding:0 4px">${ico('x')}</button></span>`).join('')}<label class="btn sm" for="rs-arq">${ico('paperclip')}Anexar arquivos<input type="file" id="rs-arq" data-rasc-arq="${it.id}" multiple hidden></label></div></div>
+    <label class="field" style="flex-direction:row;align-items:center;gap:8px"><input type="checkbox" id="rs-sem" data-rasc-sem="${it.id}" ${r.sem ? 'checked' : ''} style="height:auto"><span>Não há documento a anexar</span></label>
+    <label class="field" id="rs-sem-box" ${r.sem ? '' : 'hidden'}><span>Explique por que não há documento</span><input id="rs-sem-j" data-rasc-semj="${it.id}" value="${esc(r.semJ || '')}"></label>
+    <p class="small muted">Precisa entregar em partes? Peça à ASCOIN para dividir o pedido em mais itens. ${valida ? `<b>Esta área exige validação da chefia</b> (${chefiaValida(it.area)}) antes do envio à ASCOIN.` : ''}</p>
+    <div class="actions"><button class="btn primary" data-act="enviar-resp" data-id="${it.id}">${ico('send')}${valida ? 'Enviar para validação da chefia' : 'Enviar à ASCOIN'}</button></div>
+  </div></section>`;
+}
 function acoesItem(it) {
   const u = eu();
-  const minha = u.papel === 'ponto_focal' && descendentes(u.area).has(it.area);
+  const minha = ehMinha(it, u);
   const b = [];
   if (minha) {
-    if (it.status === 'distribuida') b.push(`<button class="btn primary" data-act="ciencia-area" data-id="${it.id}">${ico('checkc')}Confirmar recebimento</button>`);
+    if (it.status === 'distribuida' && !u.designados) b.push(`<button class="btn primary" data-act="ciencia-area" data-id="${it.id}">${ico('checkc')}Confirmar recebimento</button>`);
     const subs = [...descendentes(it.area)].filter((a) => a !== it.area && descendentes(u.area).has(a));
-    if (subs.length && ['distribuida', 'em_atendimento', 'devolvida'].includes(it.status)) b.push(`<button class="btn" data-act="encaminhar" data-id="${it.id}">${ico('arrow')}Encaminhar para subárea</button>`);
-    if (['em_atendimento', 'devolvida'].includes(it.status)) {
-      b.push(`<button class="btn primary" data-act="responder" data-id="${it.id}">${ico('send')}Responder</button>`);
-      if (!PRORROGACOES.some((p) => p.item === it.id && p.status === 'pendente')) b.push(`<button class="btn" data-act="prorrogar" data-id="${it.id}">${ico('clock')}Pedir prorrogação</button>`);
+    if (!u.designados && subs.length && ['distribuida', 'em_atendimento', 'devolvida'].includes(it.status)) b.push(`<button class="btn" data-act="encaminhar" data-id="${it.id}">${ico('arrow')}Encaminhar para subárea</button>`);
+    if (['em_atendimento', 'devolvida'].includes(it.status) && it.validacao !== 'pendente') {
+      b.push(`<a class="btn primary" href="#resp-${it.id}" data-act="ir-resposta" data-id="${it.id}">${ico('send')}Responder</a>`);
+      b.push(`<button class="btn" data-act="duvida" data-id="${it.id}">${ico('msg')}Enviar dúvida à ASCOIN</button>`);
+      if (u.designados) {} else if (!PRORROGACOES.some((p) => p.item === it.id && p.status === 'pendente')) b.push(`<button class="btn" data-act="prorrogar" data-id="${it.id}">${ico('clock')}Pedir prorrogação</button>`);
     }
     if (it.status === 'em_monitoramento') b.push(`<button class="btn primary" data-act="andamento" data-id="${it.id}">${ico('msg')}Informar andamento</button>`);
   }
+  if (u.papel === 'gestor' && it.validacao === 'pendente' && descendentes(raizVisao(u)).has(it.area)) {
+    b.push(`<button class="btn primary" data-act="validar-ok" data-id="${it.id}">${ico('check')}Aprovar e enviar à ASCOIN</button>`);
+    b.push(`<button class="btn" data-act="validar-dev" data-id="${it.id}">${ico('undo')}Devolver à equipe</button>`);
+  }
+  if (u.papel === 'ascoin' && it.duvida) b.push(`<button class="btn primary" data-act="resp-duvida" data-id="${it.id}">${ico('msg')}Responder dúvida da área</button>`);
   if (u.papel === 'ascoin') {
     if (it.status === 'respondida_area') b.push(`<button class="btn primary" data-act="iniciar-analise" data-id="${it.id}">${ico('eye')}Iniciar análise</button>`);
     if (it.status === 'em_analise_ascoin') { b.push(`<button class="btn primary" data-act="aceitar" data-id="${it.id}">${ico('check')}Aceitar resposta</button>`); b.push(`<button class="btn" data-act="devolver" data-id="${it.id}">${ico('undo')}Devolver</button>`); }
@@ -1923,14 +1959,17 @@ function viewItem(id) {
   const files = evidencias(it);
   const pr = PRORROGACOES.filter((p) => p.item === it.id);
   const dem = it.origem === 'demanda_externa' ? DEM[it.ref] : null;
-  const minha = u.papel === 'ponto_focal' && descendentes(u.area).has(it.area);
+  const minha = ehMinha(it, u);
   const crumbs = dem ? `<a href="#demandas">Demandas externas</a> / <a href="#demanda-${dem.n}" class="mono">DEM-2026-${dem.n}</a> / <span class="mono">${it.numero}</span>` : `<a href="#checklists">Checklists</a> / <a href="#aplicacao-${it.ref.slice(3)}" class="mono">CHK-2026-${it.ref.slice(3)}</a> / <span class="mono">${it.numero}</span>`;
   return `${pageHead(esc(it.titulo), '', acoesItem(it), crumbs)}
   ${s.cls === 'vencido' ? `<div class="callout crit">${ico('alert')}<p><b>${s.txt}.</b> O superior hierárquico da ${it.area} e a CHEGAB foram avisados (escalonamento).</p></div>` : ''}
   ${pr.some((p) => p.status === 'pendente') ? `<div class="callout warn">${ico('clock')}<p>Pedido de prorrogação de ${pr.find((p) => p.status === 'pendente').dias} dias aguardando decisão da ASCOIN.</p></div>` : ''}
   ${diasSemCiencia(it) >= CIENCIA_CFG.lembrete ? `<div class="callout warn">${ico('bell')}<p><b>Sem ciência da área há ${diasSemCiencia(it)} dias.</b> Lembrete enviado ao ponto focal em ${fmt(addDias(dataDistrib(it), CIENCIA_CFG.lembrete))}${diasSemCiencia(it) >= CIENCIA_CFG.chefia ? ` e aviso à chefia (${chefiaDe(it.area)}) em ${fmt(addDias(dataDistrib(it), CIENCIA_CFG.chefia))}` : ''}.</p></div>` : ''}
   ${it.status === 'distribuida' && minha ? `<div class="callout info">${ico('info')}<p>Confirme o recebimento para registrar a ciência da sua área. O prazo já está correndo desde a distribuição.</p></div>` : ''}
-  ${u.papel === 'auditoria' || (u.papel === 'gestor') ? `<div class="callout info">${ico('eye')}<p>Seu perfil tem acesso de leitura a este item.</p></div>` : ''}
+  ${it.validacao === 'pendente' ? `<div class="callout warn">${ico('clock')}<p><b>Resposta aguardando validação da chefia</b> (${chefiaValida(it.area)}). O prazo da área continua correndo.</p></div>` : ''}
+  ${it.duvida ? `<div class="callout info">${ico('msg')}<p><b>Dúvida da área aguardando a ASCOIN:</b> “${esc(it.duvida)}”. O prazo não para.</p></div>` : ''}
+  ${u.papel === 'auditoria' || (u.papel === 'gestor' && it.validacao !== 'pendente') ? `<div class="callout info">${ico('eye')}<p>Seu perfil tem acesso de leitura a este item.</p></div>` : ''}
+  ${minha && ['em_atendimento', 'devolvida'].includes(it.status) && it.validacao !== 'pendente' ? cardResposta(it) : ''}
   <div class="grid g-main">
     <div class="grid" style="align-content:start">
       <section class="card"><div class="card-head"><h2>Resumo e observações</h2>${lockTag(it.restrito)}</div><div class="card-body" style="display:flex;flex-direction:column;gap:12px">
@@ -1942,7 +1981,7 @@ function viewItem(id) {
       </div></div></section>
     </div>
     <div class="grid" style="align-content:start">
-      <section class="card"><div class="card-head"><h2>Situação</h2>${chipStatus(it.status)}</div><div class="card-body"><dl class="dl">
+      <section class="card"><div class="card-head"><h2>Situação</h2>${chipItem(it)}</div><div class="card-body"><dl class="dl">
         <div><dt>Área responsável</dt><dd><b class="mono">${it.area}</b><div class="small muted">${esc(AREA[it.area]?.nome || '')}</div></dd></div>
         <div><dt>Ponto focal</dt><dd>${esc(PONTO_FOCAL[it.area] || '—')}</dd></div>
         <div><dt>Responsável na área</dt><dd>${it.respNome ? esc(it.respNome) : '<span class="small muted">Não indicado</span>'}</dd></div>
@@ -2532,7 +2571,8 @@ function viewAgenda() {
     let cel = '';
     for (let k = 0; k < semanas * 7; k++) {
       const d = addDias(inicio, k); const fora = d.slice(0, 7) !== f.mes; const es = evs.filter((e) => e.d === d);
-      cel += `<div class="cal-d ${fora ? 'out' : ''} ${d === hoje ? 'today' : ''}" data-dia="${d}" tabindex="0" role="button" aria-label="${fmt(d)}: ${plural(es.length, 'evento', 'eventos')}"><span class="cal-n">${Number(d.slice(8))}</span>${es.slice(0, 3).map((e) => `<button class="cal-ev ${e.sit === 'vencido' ? 'late' : ''}" data-evi="${evs.indexOf(e)}" style="--c:${TIPOS_EV[e.tipo][1]}" title="${esc(e.titulo)}"><span>${esc(e.titulo)}</span></button>`).join('')}${es.length > 3 ? `<span class="cal-mais">+${es.length - 3} mais</span>` : ''}${es.length ? `<span class="cal-dots">${es.slice(0, 5).map((e) => `<i style="background:${TIPOS_EV[e.tipo][1]}"></i>`).join('')}</span>` : ''}</div>`;
+      const dica = es.length ? esc(`${toDate(d).toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' })} · ${plural(es.length, 'evento', 'eventos')}|${es.slice(0, 10).map((e) => `${e.hora === '23:59' ? 'Prazo' : e.hora} · ${e.titulo}`).join('|')}${es.length > 10 ? `|+${es.length - 10} outros` : ''}`) : '';
+      cel += `<div class="cal-d ${fora ? 'out' : ''} ${d === hoje ? 'today' : ''}" data-dia="${d}" ${dica ? `data-tip="${dica}"` : ''} tabindex="0" role="button" aria-label="${fmt(d)}: ${plural(es.length, 'evento', 'eventos')}"><span class="cal-n">${Number(d.slice(8))}</span>${es.slice(0, 3).map((e) => `<button class="cal-ev ${e.sit === 'vencido' ? 'late' : ''}" data-evi="${evs.indexOf(e)}" style="--c:${TIPOS_EV[e.tipo][1]}"><span>${esc(e.titulo)}</span></button>`).join('')}${es.length > 3 ? `<span class="cal-mais">+${es.length - 3} mais</span>` : ''}${es.length ? `<span class="cal-dots">${es.slice(0, 5).map((e) => `<i style="background:${TIPOS_EV[e.tipo][1]}"></i>`).join('')}</span>` : ''}</div>`;
     }
     corpo = `<div class="cal" role="grid" aria-label="Calendário de ${nomeMes}">${['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'].map((d) => `<div class="cal-h">${d}</div>`).join('')}${cel}</div>`;
   } else {
@@ -2630,7 +2670,7 @@ const PERMS = ['Ver painel executivo', 'Registrar demandas', 'Distribuir itens',
 const BASE_PERMS = { admin: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], ascoin: [0, 1, 2, 4, 6, 7, 8, 9], auditoria: [0, 8, 9], ponto_focal: [0, 3, 8], gestor: [0, 5, 8] };
 const ESCOPOS = ['Toda a SEDES', 'Própria área e subáreas', 'Própria hierarquia', 'Somente itens designados'];
 const ESCOPO_BASE = { admin: 'Toda a SEDES', ascoin: 'Toda a SEDES', auditoria: 'Toda a SEDES', ponto_focal: 'Própria área e subáreas', gestor: 'Própria hierarquia' };
-let PERFIS_CUSTOM = [];
+let PERFIS_CUSTOM = [{ nome: 'Colaborador da área', base: 'ponto_focal', escopo: 'Somente itens designados', perms: [0, 3, 8], custom: true }];
 function cardsPerfis() {
   const base = Object.entries(PAPEIS).map(([k, n]) => ({ nome: n, base: k, escopo: ESCOPO_BASE[k], perms: BASE_PERMS[k], custom: false }));
   return [...base, ...PERFIS_CUSTOM].map((p) => { const nu = USERS.filter((x) => (p.custom ? x.perfilNome === p.nome : x.papel === p.base && !x.perfilNome)).length; return `<article class="perfil-c"><div style="display:flex;justify-content:space-between;gap:8px;align-items:center"><b>${esc(p.nome)}</b>${p.custom ? '<span class="chip c-violet plain">Personalizado</span>' : '<span class="chip c-neutral plain">Padrão</span>'}</div><span class="small muted">${p.custom ? `Baseado em ${PAPEIS[p.base]} · ` : ''}${esc(p.escopo)} · ${plural(nu, 'usuário', 'usuários')}</span><div class="wchips">${p.perms.map((i) => `<span class="wchip">${PERMS[i]}</span>`).join('')}</div></article>`; }).join('');
@@ -2646,10 +2686,10 @@ function viewConfig() {
   const u = eu();
   const t = state.cfgTab;
   const admin = u.papel === 'admin';
-  const podeAscoin = ['prazos', 'checklists', 'assinatura', 'aparencia'];
+  const podeAscoin = ['prazos', 'validacao', 'checklists', 'assinatura', 'aparencia'];
   const ro = !admin && !podeAscoin.includes(t);
   const dis = ro ? 'disabled' : '';
-  const tabs = [['usuarios', 'Usuários e perfis'], ['areas', 'Áreas'], ['orgaos', 'Órgãos de controle'], ['status', 'Status e fluxo'], ['prazos', 'Prazos e alertas'], ['checklists', 'Abertura de checklists'], ['assinatura', 'Assinatura eletrônica'], ['notificacoes', 'Notificações'], ['aparencia', 'Aparência'], ['seguranca', 'Segurança']];
+  const tabs = [['usuarios', 'Usuários e perfis'], ['areas', 'Áreas'], ['orgaos', 'Órgãos de controle'], ['status', 'Status e fluxo'], ['prazos', 'Prazos e alertas'], ['validacao', 'Validação da chefia'], ['checklists', 'Abertura de checklists'], ['assinatura', 'Assinatura eletrônica'], ['notificacoes', 'Notificações'], ['aparencia', 'Aparência'], ['seguranca', 'Segurança']];
   let corpo = '';
   if (t === 'usuarios') {
     const bloq = admin ? '' : 'disabled title="Somente o administrador cria usuários e perfis"';
@@ -2677,6 +2717,10 @@ function viewConfig() {
       ${linhaCfg('Sugestão de prazo da área', 'Dias antes do prazo do órgão.', `<input id="c-sug" type="number" value="5" ${dis} style="width:80px">`)}
     </div><div class="card-body"><h3 style="margin-bottom:8px">Regras de prorrogação</h3><div class="table-wrap"><table class="t"><thead><tr><th>Prazo original</th><th>Prorrogação máxima</th><th>Pedidos por item</th><th>Quem aprova</th></tr></thead><tbody>${[['Até 15 dias', '50%'], ['16 a 30 dias', '50%'], ['Acima de 30 dias', '50%']].map(([f, m], i) => `<tr><td>${f}</td><td><input id="pr-m-${i}" value="${m}" ${dis} style="width:70px"></td><td><input id="pr-q-${i}" type="number" value="1" ${dis} style="width:60px"></td><td>ASCOIN</td></tr>`).join('')}</tbody></table></div>
       ${ro ? '' : `<div class="actions" style="margin-top:12px"><button class="btn primary" data-act="cfg-salvo">Salvar alterações</button></div>`}</div>`;
+  } else if (t === 'validacao') {
+    const areas = AREAS.filter((a) => !['SEDES', 'GABSEC', 'ASCOIN', 'AUDIN', 'FUNDOS'].includes(a.sigla));
+    corpo = `<div class="card-head"><h2>Validação da chefia</h2><span class="hint">${VALIDA_CHEFIA.size} ${VALIDA_CHEFIA.size === 1 ? 'área exige' : 'áreas exigem'}</span></div><div class="card-body"><p class="small sec">Ligue só para as áreas que precisam. Com a validação ligada, a resposta da área passa pela chefia antes de ir para a ASCOIN; a chefia aprova ou devolve à equipe. Vale também para as subáreas. O prazo da área continua correndo.</p></div>
+      <div class="table-wrap"><table class="t"><thead><tr><th>Área</th><th>Quem valida</th><th>Validação</th></tr></thead><tbody>${areas.map((a) => { const herd = !VALIDA_CHEFIA.has(a.sigla) && precisaValidar(a.sigla); return `<tr><td><b class="mono">${a.sigla}</b> <span class="small muted">${esc(a.nome)}</span></td><td class="small">${VALIDA_CHEFIA.has(a.sigla) || herd ? esc(chefiaValida(a.sigla)) : '—'}</td><td>${herd ? '<span class="chip c-info plain">Herdada da unidade acima</span>' : `<button class="btn sm ${VALIDA_CHEFIA.has(a.sigla) ? 'primary' : ''}" data-act="valida-area" data-a="${a.sigla}" aria-pressed="${VALIDA_CHEFIA.has(a.sigla)}" ${ro ? 'disabled' : ''}>${VALIDA_CHEFIA.has(a.sigla) ? `${ico('check')}Exige validação` : 'Habilitar validação'}</button>`}</td></tr>`; }).join('')}</tbody></table></div>`;
   } else if (t === 'checklists') {
     corpo = `<div class="card-head"><h2>Abertura automática de checklists</h2></div><div class="card-body"><p class="small sec">Quando alguém cadastra um processo, o sistema olha o tipo, pega a versão publicada mais recente do modelo e abre o checklist para o responsável, já com prazo. Sem regra ativa, o processo é só cadastrado.</p></div>
       <div class="table-wrap"><table class="t"><thead><tr><th>Tipo de processo</th><th>Modelo (versão vigente)</th><th>Momento</th><th>Analisar</th><th>Responsável padrão</th><th>Prazo</th><th>Ativa</th></tr></thead><tbody>${TIPOS_PROC.map((r, i) => { const m = versaoVigente(r.modelo); return `<tr><td><b>${r.nome}</b></td><td>${m ? `<span class="mono small">${m.cod} v${m.versao}</span>` : `<span class="small" style="color:var(--warn)">${r.modelo}: sem versão publicada</span>`}</td><td>${r.momento}</td><td><select id="ra-an-${i}" data-an="${i}" ${dis}><option ${r.analisar === 'Todos' ? 'selected' : ''}>Todos</option><option ${r.analisar === 'Amostra' ? 'selected' : ''}>Amostra</option></select></td><td><select id="ra-r-${i}" ${dis} data-regra="${i}">${USERS.filter((x) => ['ascoin', 'admin'].includes(x.papel)).map((x) => `<option value="${x.id}" ${x.id === r.resp ? 'selected' : ''}>${esc(x.nome)}</option>`).join('')}</select></td><td><input id="ra-p-${i}" type="number" value="${r.prazo}" ${dis} style="width:64px"> dias</td><td>${sw(`ra-on-${i}`, r.ativo && !!m, ro || !m)}</td></tr>`; }).join('')}</tbody></table></div>
@@ -3171,6 +3215,7 @@ const ACOES = {
   });
   document.getElementById('lt-txt').addEventListener('input', (e) => { const l = loteParse(e.target.value); document.getElementById('lt-prev').innerHTML = l.linhas.length ? `<table class="t"><thead><tr><th>#</th><th>Título</th><th>Área</th></tr></thead><tbody>${l.linhas.map((x, k) => `<tr><td class="num">${k + 1}</td><td>${esc(x.t || '—')}</td><td>${AREA[x.a] ? `<b class="mono">${x.a}</b>` : `<span style="color:var(--crit)">${esc(x.a || 'sem sigla')} (não encontrada)</span>`}</td></tr>`).join('')}</tbody></table>` : 'A pré-visualização aparece enquanto você digita.'; }); },
   'trocar-analista': (el) => { const d = DEM[el.dataset.dem]; modal({ title: 'Trocar analista da demanda', sub: `DEM-2026-${d.n}. O novo analista passa a ver a demanda na fila dele.`, ok: 'Trocar', body: `<label class="field"><span>Analista da ASCOIN</span><select id="ta-u">${analistasAscoin().map((x) => `<option value="${x.id}" ${x.id === d.analista ? 'selected' : ''}>${esc(x.nome)}</option>`).join('')}</select></label>`, onOk: (f) => { const ant = d.analista; d.analista = f.querySelector('#ta-u').value; trilhar('demandas', `DEM-2026-${d.n}`, 'UPDATE', 'Trocou o analista da ASCOIN', { analista: ant ? USER[ant].nome : null }, { analista: USER[d.analista].nome }); NOTIFS.unshift({ id: Date.now(), user: d.analista, para: [], tipo: 'distribuicao', quando: agoraTxt(), txt: `Você é o analista da DEM-2026-${d.n}.`, dem: d.n, lida: false }); render(); toast(`${USER[d.analista].nome} é agora o analista da demanda.`, 'users'); } }); },
+  'valida-area': (el) => { const a = el.dataset.a; const on = !VALIDA_CHEFIA.has(a); if (on) VALIDA_CHEFIA.add(a); else VALIDA_CHEFIA.delete(a); trilhar('parametros', `validacao_chefia ${a}`, 'UPDATE', `${on ? 'Habilitou' : 'Desabilitou'} a validação da chefia para ${a}`, { ativo: !on }, { ativo: on }); render(); toast(on ? `A partir de agora, as respostas da ${a} passam pela chefia.` : `Validação da chefia desligada para ${a}.`, 'check'); },
   'fila-todas': (el) => { state.filaTodas = el.dataset.v === '1'; render(); },
   encaminhar: (el) => { const it = ITEM[el.dataset.id]; const u = eu(); const subs = [...descendentes(it.area)].filter((a) => a !== it.area && descendentes(u.area).has(a)); modal({
     title: 'Encaminhar para subárea', sub: `${it.numero}. O prazo continua ${fmt(it.prazo)} e a ${it.area} continua responsável perante a ASCOIN.`, ok: 'Encaminhar',
@@ -3178,6 +3223,22 @@ const ACOES = {
     onOk: (f) => { const de = it.area; const para = f.querySelector('#en-a').value; it.areaOrigem = it.areaOrigem || de; it.area = para; it.respNome = f.querySelector('#en-r').value || it.respNome; registrar(it, { t: `Encaminhado internamente: ${de} → ${para}`, txt: f.querySelector('#en-o').value || 'Sem orientação adicional.', c: 'c-info', i: 'arrow' }); const an = it.origem === 'demanda_externa' ? DEM[it.ref].analista : null; if (an) NOTIFS.unshift({ id: Date.now(), user: an, para: [], tipo: 'distribuicao', quando: agoraTxt(), txt: `${de} encaminhou ${it.numero} para ${para}. O prazo não mudou.`, item: it.id, lida: false }); toast(`Item encaminhado para ${para}. A ASCOIN foi avisada.`, 'arrow'); render(); },
   });
   document.getElementById('en-a').addEventListener('change', (e) => { document.getElementById('en-r').innerHTML = `<option value="">Deixar para o ponto focal</option>${pessoasArea(e.target.value).map((n) => `<option>${esc(n)}</option>`).join('')}`; }); },
+  'ir-resposta': (el, e) => { e.preventDefault(); document.getElementById(`resp-${el.dataset.id}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' }); document.getElementById('rs-txt')?.focus({ preventScroll: true }); },
+  'rasc-rm': (el) => { const it = ITEM[el.dataset.id]; it.rascunho.arqs.splice(+el.dataset.k, 1); salvarRasc(it); render(); },
+  'enviar-resp': (el) => {
+    const it = ITEM[el.dataset.id]; const r = it.rascunho;
+    if (!r.txt.trim()) { toast('Escreva o texto da resposta antes de enviar.', 'alert'); document.getElementById('rs-txt')?.focus(); return; }
+    if (!r.arqs.length && !(r.sem && (r.semJ || '').trim())) { toast('Anexe ao menos uma evidência ou marque “Não há documento a anexar” e explique.', 'alert'); return; }
+    it.evExtra = (it.evExtra || []).concat(r.arqs.map((n) => ({ nome: n, ext: (n.split('.').pop() || '').toUpperCase().slice(0, 4), tam: '—', por: eu().nome, em: fmt(iso(HOJE)) })));
+    const txt = r.txt + (r.sem ? ` (Sem documento: ${r.semJ})` : '');
+    if (precisaValidar(it.area)) { it.validacao = 'pendente'; it.respPendente = txt; registrar(it, { t: 'Resposta enviada para validação da chefia', txt, c: 'c-warn', i: 'clock' }); toast('Resposta enviada para validação da chefia.', 'send'); }
+    else { registrar(it, { t: 'Resposta da área', txt, c: 'c-info', i: 'msg' }, 'respondida_area'); const an = it.origem === 'demanda_externa' ? DEM[it.ref].analista : null; if (an) NOTIFS.unshift({ id: Date.now(), user: an, para: [], tipo: 'resposta', quando: agoraTxt(), txt: `A ${it.area} respondeu o item ${it.numero}.`, item: it.id, lida: false }); toast('Resposta enviada. O analista da ASCOIN foi avisado.', 'send'); }
+    it.rascunho = { txt: '', arqs: [], salvo: null }; render();
+  },
+  'validar-ok': (el) => { const it = ITEM[el.dataset.id]; it.validacao = 'aprovada'; registrar(it, { t: 'Resposta validada pela chefia', txt: it.respPendente, c: 'c-ok', i: 'check' }, 'respondida_area'); const an = it.origem === 'demanda_externa' ? DEM[it.ref].analista : null; if (an) NOTIFS.unshift({ id: Date.now(), user: an, para: [], tipo: 'resposta', quando: agoraTxt(), txt: `A ${it.area} respondeu o item ${it.numero} (validado pela chefia).`, item: it.id, lida: false }); toast('Resposta aprovada e enviada à ASCOIN.', 'check'); render(); },
+  'validar-dev': (el) => { const it = ITEM[el.dataset.id]; modal({ title: 'Devolver à equipe', sub: `${it.numero}. A resposta volta para a área ajustar.`, ok: 'Devolver', okClass: 'danger', body: '<label class="field"><span>O que precisa mudar</span><textarea id="vd-m"></textarea></label>', onOk: (f) => { const m = f.querySelector('#vd-m').value.trim(); if (!m) return erroCampo(f, '#vd-m', 'Explique o que a equipe precisa ajustar.'); it.validacao = null; it.rascunho = { txt: it.respPendente || '', arqs: [], salvo: agoraTxt() }; registrar(it, { t: 'Chefia devolveu a resposta à equipe', txt: m, c: 'c-warn', i: 'undo' }); toast('Resposta devolvida à equipe da área.', 'undo'); render(); } }); },
+  duvida: (el) => { const it = ITEM[el.dataset.id]; modal({ title: 'Enviar dúvida à ASCOIN', sub: `${it.numero}. O prazo não para. Para mais tempo, peça prorrogação.`, ok: 'Enviar dúvida', body: '<label class="field"><span>Sua dúvida</span><textarea id="dv-t"></textarea></label>', onOk: (f) => { const t = f.querySelector('#dv-t').value.trim(); if (!t) return erroCampo(f, '#dv-t', 'Escreva a dúvida.'); it.duvida = t; registrar(it, { t: 'Dúvida da área', txt: t, c: 'c-info', i: 'msg' }); const an = it.origem === 'demanda_externa' ? DEM[it.ref].analista : null; NOTIFS.unshift({ id: Date.now(), user: an || 'u2', para: [], tipo: 'resposta', quando: agoraTxt(), txt: `Dúvida da ${it.area} no item ${it.numero}.`, item: it.id, lida: false }); toast('Dúvida enviada ao analista da ASCOIN.', 'msg'); render(); } }); },
+  'resp-duvida': (el) => { const it = ITEM[el.dataset.id]; modal({ title: 'Responder dúvida da área', sub: `“${esc(it.duvida)}”`, ok: 'Responder', body: '<label class="field"><span>Resposta da ASCOIN</span><textarea id="rd-t"></textarea></label>', onOk: (f) => { const t = f.querySelector('#rd-t').value.trim(); if (!t) return erroCampo(f, '#rd-t', 'Escreva a resposta.'); it.duvida = null; registrar(it, { t: 'ASCOIN respondeu a dúvida', txt: t, c: 'c-violet', i: 'msg' }); toast('Resposta registrada no histórico do item.', 'msg'); render(); } }); },
   'ciencia-area': (el) => { const it = ITEM[el.dataset.id]; modal({ title: 'Confirmar recebimento', sub: `${it.numero} · prazo ${fmt(it.prazo)}. A confirmação registra a ciência da área.`, ok: 'Confirmar recebimento',
     body: `<label class="field"><span>Quem vai cuidar do item</span><select id="ci-r">${pessoasArea(it.area).map((n) => `<option ${n === (it.respNome || eu().nome) ? 'selected' : ''}>${esc(n)}</option>`).join('')}</select><span class="help">Pode ser você ou um colega da área. A pessoa aparece como responsável no item.</span></label>`,
     onOk: (f) => { it.respNome = f.querySelector('#ci-r').value; registrar(it, { t: 'Ciência do recebimento', txt: `Responsável na área: ${it.respNome}.`, c: 'c-ok', i: 'checkc' }, 'em_atendimento'); toast('Recebimento confirmado. O item está em atendimento.'); render(); } }); },
@@ -3420,6 +3481,19 @@ document.addEventListener('input', (e) => {
   }
 });
 
+/* Rascunho automático da resposta da área */
+function salvarRasc(it) { it.rascunho.salvo = agoraTxt(); const el = document.getElementById('rs-salvo'); if (el) el.textContent = `Rascunho salvo às ${it.rascunho.salvo.slice(11)}`; }
+document.addEventListener('input', (e) => {
+  const t = e.target;
+  if (t.dataset?.rasc) { const it = ITEM[t.dataset.rasc]; it.rascunho.txt = t.value; salvarRasc(it); }
+  if (t.dataset?.rascSemj) { const it = ITEM[t.dataset.rascSemj]; it.rascunho.semJ = t.value; salvarRasc(it); }
+});
+document.addEventListener('change', (e) => {
+  const t = e.target;
+  if (t.dataset?.rascArq) { const it = ITEM[t.dataset.rascArq]; it.rascunho.arqs.push(...[...t.files].map((f) => f.name)); salvarRasc(it); render(); toast('Arquivo anexado ao rascunho.', 'paperclip'); }
+  if (t.dataset?.rascSem) { const it = ITEM[t.dataset.rascSem]; it.rascunho.sem = t.checked; document.getElementById('rs-sem-box').hidden = !t.checked; salvarRasc(it); }
+});
+
 /* Submenu flutuante: alinha ao item do menu */
 function posSub(e) {
   const w = e.target.closest?.('.nav-sub-wrap'); if (!w || document.querySelector('.app.exp') || document.querySelector('.sidebar.open')) return;
@@ -3434,7 +3508,8 @@ const tip = document.getElementById('tip');
 document.addEventListener('mousemove', (e) => {
   const t = e.target.closest?.('[data-tip]');
   if (!t) { tip.hidden = true; return; }
-  tip.innerHTML = t.dataset.tip.split('|').map((s, i) => (i === 0 ? `<b>${esc(s)}</b>` : esc(s))).join('<br>') + (t.closest('[data-drill]') ? '<br><i>Clique para ver os itens</i>' : '');
+  tip.innerHTML = t.dataset.tip.split('|').map((s, i) => (i === 0 ? `<b>${esc(s)}</b>` : esc(s))).join('<br>') + (t.closest('[data-drill]') ? '<br><i>Clique para ver os itens</i>' : t.matches('.cal-d') ? '<br><i>Clique para abrir o dia</i>' : '');
+  tip.classList.toggle('dia', t.matches('.cal-d'));
   tip.hidden = false;
   const x = Math.min(e.clientX + 14, window.innerWidth - tip.offsetWidth - 10);
   tip.style.left = `${x}px`; tip.style.top = `${e.clientY + 14}px`;
