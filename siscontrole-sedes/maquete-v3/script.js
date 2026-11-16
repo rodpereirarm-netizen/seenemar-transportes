@@ -282,7 +282,19 @@ let APLICACOES = [
   { n: '0006', modelo: 'CONV-CEL v2', objeto: 'Convênio nº 011/2026 — Consórcio Intermunicipal Serra Verde (fictício)', sei: 'SEI-220006/002401/2026', area: 'COCON', momento: 'Prévia', resp: 'Juliana Prado', inicio: '2026-08-18', lote: '—' },
   { n: '0005', modelo: 'CONV-PC v1', objeto: 'Prestação de contas — Convênio nº 019/2024', sei: 'SEI-220006/001930/2026', area: 'COCON', momento: 'Posterior', resp: 'Renata Duarte', inicio: '2026-07-07', lote: '—' },
 ];
+// Regras de abertura automática: ao cadastrar um processo deste tipo, o checklist já nasce aberto
+let TIPOS_PROC = [
+  { id: 'conv-cel', nome: 'Convênio — celebração', modelo: 'CONV-CEL', momento: 'Prévia', area: 'COCON', resp: 'u3', prazo: 10, ativo: true, analisar: 'Todos' },
+  { id: 'conv-pc', nome: 'Convênio — prestação de contas', modelo: 'CONV-PC', momento: 'Posterior', area: 'COCON', resp: 'u3', prazo: 20, ativo: true, analisar: 'Todos' },
+  { id: 'cont-fisc', nome: 'Contrato — fiscalização', modelo: 'CONT-FISC', momento: 'Posterior', area: 'COLIC', resp: 'u2', prazo: 15, ativo: false, analisar: 'Amostra' },
+];
+const versaoVigente = (cod) => MODELOS.filter((m) => m.cod === cod && m.status === 'publicado').sort((a, b) => b.versao - a.versao)[0];
+// Processos cadastrados sem checklist (tipo sem regra ativa ou sem modelo publicado)
+let PROCESSOS_SEM = [
+  { sei: 'SEI-220006/004402/2026', tipo: 'Contrato — fiscalização', objeto: 'Contrato nº 027/2025 — Suporte de TI', area: 'COLIC', entrada: '2026-11-11', motivo: 'Regra desativada: modelo CONT-FISC ainda em rascunho' },
+];
 const LOTES = { 'L-2026-04': { nome: 'Convênios celebrados — 2º semestre/2026', pop: 48, amostra: 12, metodo: 'Aleatória simples, semente 20261103' } };
+APLICACOES.forEach((a) => { a.origem = ['0012', '0011', '0010'].includes(a.n) ? 'auto' : 'manual'; a.tipoProc = a.modelo.startsWith('CONV-PC') ? 'Convênio — prestação de contas' : 'Convênio — celebração'; a.prazoAnalise = addDias(a.inicio, a.modelo.startsWith('CONV-PC') ? 20 : 10); });
 const PAPEIS_ASSINATURA = ['Elaborou', 'Revisou', 'Aprovou', 'Ciência da área'];
 // Relatórios (pareceres) gerados a partir dos checklists. Cada um pode ter vários responsáveis.
 let RELATORIOS = [
@@ -481,6 +493,7 @@ function shell(content) {
       <div class="sidebar-foot"><span class="env-tag">SEDES · MAQUETE v3</span><a class="icon-btn" href="#login" aria-label="Sair" title="Sair">${ico('logout')}</a></div>
     </aside>
     <div class="main">
+      ${faixaNoticias()}
       <header class="topbar">
         <button class="icon-btn menu-btn" data-act="menu" aria-label="Abrir menu">${ico('menu')}</button>
         <div class="search">${ico('search')}<input id="q" type="search" placeholder="Buscar ou ir para… (nº, SEI, assunto, área)" aria-label="Buscar" value="${esc(state.q)}"><span class="kbd">/</span></div>
@@ -556,7 +569,6 @@ function viewInicio() {
   const agenda = abertos.filter((i) => COM_AREA.has(i.status) && diasAte(i.prazo) >= -3 && diasAte(i.prazo) <= 10).sort((a, b) => a.prazo.localeCompare(b.prazo)).slice(0, 7);
   const hoje = HOJE.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
   return `${pageHead(`Bom dia, ${esc(u.nome.split(' ')[0])}`, `${hoje.charAt(0).toUpperCase() + hoje.slice(1)} · ${esc(u.cargo)}`, u.papel === 'ascoin' ? `<button class="btn primary" data-act="nova-demanda">${ico('plus')}Nova demanda</button>` : '')}
-  ${faixaNoticias()}
   ${pendentesDeAssinatura().length ? `<div class="callout warn">${ico('pen')}<p><b>${plural(pendentesDeAssinatura().length, 'relatório aguarda', 'relatórios aguardam')} a sua assinatura:</b> ${pendentesDeAssinatura().map((r) => `<a href="#relatorio-${r.id}">${r.id}</a>`).join(', ')}.</p></div>` : ''}
   ${prontasCiencia.length && u.area === 'CHEGAB' ? `<div class="callout info">${ico('stamp')}<p><b>${plural(prontasCiencia.length, 'demanda aguarda', 'demandas aguardam')} sua ciência:</b> ${prontasCiencia.map((d) => `<a href="#demanda-${d.n}">DEM-2026-${d.n}</a>`).join(', ')}.</p></div>` : ''}
   <div class="todo">${cards.map(([n, t, s, go, c]) => `<a href="#${go}" class="${c}"><span class="n">${n}</span><span class="t">${t}</span><span class="s">${s}</span></a>`).join('')}</div>
@@ -756,7 +768,7 @@ function viewPainel() {
   // 11. Itens vencidos
   const w11 = widget('Itens vencidos', tabelaItens(venc.sort((a, b) => a.prazo.localeCompare(b.prazo)), { vazio: 'Nenhum item vencido no recorte.' }), { cls: 'w4', link: 'pendencias' });
 
-  return `<h1 class="sr-only">Painel executivo</h1>${faixaNoticias()}
+  return `<h1 class="sr-only">Painel executivo</h1>
   <div class="wgrid">${w1}${w2}${w3}${w4}${w5}${w6}${w7}${w8}${w9}${w10}${w11}
   ${widget('Riscos altos', '<div class="inner"><span class="eyebrow">Fase 2</span><span class="small sec">Entra com o módulo de Riscos e controles. Risco residual alto ou extremo sem tratamento vira pendência.</span></div>', { link: 'riscos' })}</div>`;
 }
@@ -984,7 +996,7 @@ function viewChecklists() {
   const u = eu();
   const t = state.ckTab;
   const podeEditar = ['ascoin', 'admin'].includes(u.papel);
-  const tabs = `<div class="tabs" role="tablist"><button role="tab" aria-selected="${t === 'pool'}" data-act="ck-tab" data-tab="pool">Registros e relatórios<span class="n">${APLICACOES.length}</span></button><button role="tab" aria-selected="${t === 'modelos'}" data-act="ck-tab" data-tab="modelos">Modelos<span class="n">${MODELOS.length}</span></button><button role="tab" aria-selected="${t === 'lotes'}" data-act="ck-tab" data-tab="lotes">Amostragem<span class="n">1</span></button></div>`;
+  const tabs = `<div class="tabs" role="tablist"><button role="tab" aria-selected="${t === 'pool'}" data-act="ck-tab" data-tab="pool">Registros e relatórios<span class="n">${APLICACOES.length}</span></button><button role="tab" aria-selected="${t === 'processos'}" data-act="ck-tab" data-tab="processos">Processos<span class="n">${APLICACOES.length + PROCESSOS_SEM.length}</span></button><button role="tab" aria-selected="${t === 'modelos'}" data-act="ck-tab" data-tab="modelos">Modelos<span class="n">${MODELOS.length}</span></button><button role="tab" aria-selected="${t === 'lotes'}" data-act="ck-tab" data-tab="lotes">Amostragem<span class="n">1</span></button></div>`;
   let corpo = '';
   if (t === 'pool') {
     const p = state.pool;
@@ -1010,7 +1022,7 @@ function viewChecklists() {
       </div></div>
       <div class="table-wrap"><table class="t" id="pool-tab"><thead><tr><th>Checklist</th><th>Modelo · área</th><th>Resultado</th><th>Relatório</th><th>Responsáveis</th><th>Assinaturas</th><th></th></tr></thead><tbody>
       ${lista.map((a) => { const r = relDeApl(a.n); const s = situacaoApl(a); return `<tr class="link" data-go="aplicacao-${a.n}" tabindex="0" data-txt="${esc(`${a.n} chk-2026-${a.n} ${a.objeto} ${a.sei} ${r ? r.id + ' ' + r.codigo : ''}`.toLowerCase())}">
-        <td class="title-cell"><b>${esc(a.objeto)}</b><small class="mono">CHK-2026-${a.n} · ${a.sei}</small><small> · ${a.momento} · início ${fmt(a.inicio)}</small></td>
+        <td class="title-cell"><b>${esc(a.objeto)}</b>${a.origem === 'auto' ? `<span class="chip c-violet plain" style="margin:2px 0">${ico('refresh')}Aberto automaticamente</span>` : ''}<small class="mono">CHK-2026-${a.n} · ${a.sei}</small><small> · ${a.momento} · início ${fmt(a.inicio)}</small></td>
         <td><span class="mono small">${a.modelo}</span><div class="mono"><b>${a.area}</b></div></td>
         <td>${miniResultado(a)}</td>
         <td>${r ? `<a href="#relatorio-${r.id}" class="mono">${r.id}</a><div class="mono small muted" style="white-space:nowrap">${r.codigo}</div>` : '<span class="small muted">não gerado</span>'}</td>
@@ -1018,6 +1030,10 @@ function viewChecklists() {
         <td>${chipApl(s)}${r ? `<div class="small muted num" style="margin-top:2px">${sigsFeitas(r)} de ${r.sigs.length}</div>` : ''}</td>
         <td>${r ? `<a class="btn sm" href="#relatorio-${r.id}">${ico('file')}Relatório</a>` : `<a class="btn sm" href="#aplicacao-${a.n}">${ico('pen')}Preencher</a>`}</td></tr>`; }).join('') || '<tr><td colspan="7"><div class="empty">Nenhum registro com esses filtros.</div></td></tr>'}
       </tbody></table></div>`;
+  } else if (t === 'processos') {
+    const linhas = [...APLICACOES.map((a) => ({ sei: a.sei, tipo: a.tipoProc, objeto: a.objeto, area: a.area, entrada: a.inicio, a })), ...PROCESSOS_SEM].sort((x, y) => y.entrada.localeCompare(x.entrada));
+    corpo = `<div class="card-body"><div class="callout info">${ico('info')}<p>Ao cadastrar um processo, o sistema abre o checklist sozinho, conforme a regra do tipo de processo (Configurações › Abertura de checklists).</p></div></div>
+      <div class="table-wrap"><table class="t"><thead><tr><th>Processo</th><th>Tipo</th><th>Área</th><th>Entrada</th><th>Checklist</th><th>Abertura</th></tr></thead><tbody>${linhas.map((l) => `<tr ${l.a ? `class="link" data-go="aplicacao-${l.a.n}" tabindex="0"` : ''}><td class="title-cell"><b>${esc(l.objeto)}</b><small class="mono">${l.sei}</small></td><td class="small">${esc(l.tipo)}</td><td class="mono"><b>${l.area}</b></td><td class="num">${fmt(l.entrada)}</td><td>${l.a ? `<a class="mono" href="#aplicacao-${l.a.n}">CHK-2026-${l.a.n}</a><div>${chipApl(situacaoApl(l.a))}</div>` : `<span class="small muted">${esc(l.motivo)}</span>`}</td><td>${l.a ? (l.a.origem === 'auto' ? `<span class="chip c-violet plain">${ico('refresh')}Automática</span>` : '<span class="chip c-neutral plain">Manual</span>') : '<span class="chip c-warn plain">Sem checklist</span>'}</td></tr>`).join('')}</tbody></table></div>`;
   } else if (t === 'modelos') {
     corpo = `<div class="card-body"><div class="models">${MODELOS.map((m) => `<article class="card model"><div style="display:flex;justify-content:space-between;gap:8px;align-items:center"><span class="ver">${m.cod} · v${m.versao}</span>${m.status === 'publicado' ? '<span class="chip c-ok">Publicado</span>' : '<span class="chip c-neutral">Rascunho</span>'}</div><h3>${esc(m.nome)}</h3><p class="small sec">Área dona: <b class="mono">${m.area}</b> · ${m.itens} itens</p><p class="small muted">${m.status === 'publicado' ? `Publicado em ${fmt(m.em)}. Versão travada; mudanças geram nova versão. ${m.uso} aplicações.` : 'Em edição. Ao publicar, a versão anterior fica obsoleta e as aplicações antigas mantêm a versão usada.'}</p><div class="actions" style="margin-top:auto">${m.status === 'publicado' ? `<button class="btn sm" data-act="ver-modelo">${ico('eye')}Ver itens</button>${podeEditar ? `<button class="btn sm" data-act="nova-versao">${ico('plus')}Nova versão</button>` : ''}` : podeEditar ? `<button class="btn sm" data-act="editar-modelo">${ico('pen')}Editar</button><button class="btn primary sm" data-act="publicar-modelo">Publicar</button>` : ''}</div></article>`).join('')}</div></div>`;
   } else {
@@ -1027,7 +1043,7 @@ function viewChecklists() {
     <div><div class="small sec" style="margin-bottom:6px">Analisados: <b>${an}</b> de ${l.amostra}</div><div class="progress" style="height:8px"><i style="width:${(an / l.amostra) * 100}%;background:var(--brand)"></i></div></div>
     <p class="small muted">A semente fica registrada para que a seleção possa ser reproduzida em auditoria.</p></div>`;
   }
-  return `${pageHead('Checklists de conformidade', 'Todos os checklists registrados e os relatórios gerados a partir deles. Cada relatório pode ter mais de um responsável, e cada um assina eletronicamente.', podeEditar ? `<button class="btn primary" data-act="nova-aplicacao">${ico('plus')}Nova aplicação</button>` : '')}
+  return `${pageHead('Checklists de conformidade', 'Todos os checklists registrados e os relatórios gerados a partir deles. Cada relatório pode ter mais de um responsável, e cada um assina eletronicamente.', podeEditar ? `<button class="btn" data-act="nova-aplicacao">${ico('plus')}Aplicação manual</button><button class="btn primary" data-act="cadastrar-processo">${ico('plus')}Cadastrar processo</button>` : '')}
   <section class="card">${tabs}${corpo}</section>`;
 }
 
@@ -1045,13 +1061,14 @@ function viewAplicacao(n) {
   const secoes = [...new Set(CK_ITENS.map((q) => q.secao))];
   const opts = [['conforme', 'Conforme'], ['nao_conforme', 'Não conforme'], ['com_ressalva', 'Com ressalva'], ['nao_se_aplica', 'Não se aplica']];
   const corpo = secoes.map((s) => { const qs = CK_ITENS.filter((q) => q.secao === s); return `<div class="ck-sec"><span>${s}</span><span class="small muted num">${qs.filter((q) => resp[q.n]).length}/${qs.length}</span></div>${qs.map((q) => { const rr = resp[q.n]; const v = rr ? rr[0] : ''; const idp = `CHK${n}-${String(q.n).padStart(2, '0')}`; return `<div class="ck-item"><span class="q-n">${String(q.n).padStart(2, '0')}</span><div style="min-width:0"><div class="q">${esc(q.q)}</div><div class="law">${esc(q.lei)}</div>
-    <div class="ans"><div class="seg answers" role="group" aria-label="Resposta do item ${q.n}">${opts.map(([k, t]) => `<button type="button" data-v="${k}" aria-pressed="${v === k}" ${editavel ? `data-act="responder-ck" data-q="${q.n}"` : 'disabled'}>${t}</button>`).join('')}</div></div>
+    <div class="ans"><div class="seg answers" role="group" aria-label="Resposta do item ${q.n}">${opts.map(([k, t]) => `<button type="button" data-v="${k}" aria-pressed="${v === k}" ${editavel ? `data-act="responder-ck" data-n="${n}" data-q="${q.n}"` : 'disabled'}>${t}</button>`).join('')}</div></div>
     ${(v && v !== 'conforme') || editavel ? `<div class="just"><label class="field"><span>Justificativa${v && v !== 'conforme' ? ' (obrigatória)' : ''}</span><input id="j-${n}-${q.n}" value="${esc(rr ? rr[1] : '')}" ${editavel ? '' : 'readonly'} placeholder="${v === 'conforme' ? 'Opcional' : 'Descreva a situação encontrada'}"></label><label class="field"><span>Referência SEI</span><input id="s-${n}-${q.n}" class="mono" value="${esc(rr ? rr[2] : '')}" ${editavel ? '' : 'readonly'} placeholder="Doc. nº"></label></div>` : ''}
     ${v === 'nao_conforme' ? `<div class="gen chip plain c-crit">${r ? (ITEM[idp] ? `Gerou a pendência <a href="#item-${idp}" class="mono">CHK-2026-${n}/${String(q.n).padStart(2, '0')}</a> para ${a.area}` : `Gerou a pendência CHK-2026-${n}/${String(q.n).padStart(2, '0')} (encerrada)`) : `Vai gerar pendência para ${a.area} ao gerar o relatório`}</div>` : ''}
   </div></div>`; }).join('')}`; }).join('');
   const segBar = (k, c) => (cont[k] ? `<i style="width:${(cont[k] / total) * 100}%;background:${c}" data-tip="${esc(`${k.replace(/_/g, ' ')}: ${cont[k]}`)}"></i>` : '');
   const acoes = editavel ? `<button class="btn" data-act="salvar-ck">Salvar rascunho</button><button class="btn primary" data-act="finalizar-ck" data-n="${n}">${ico('file')}Gerar relatório para assinatura</button>` : r ? `<a class="btn primary" href="#relatorio-${r.id}">${ico('file')}Abrir relatório ${r.id}</a>` : '';
   return `${pageHead(esc(a.objeto), `Modelo ${a.modelo} · ${a.momento} · responsável: ${esc(a.resp)}`, acoes, `<a href="#checklists">Checklists</a> / <span class="mono">CHK-2026-${n}</span>`)}
+  ${a.origem === 'auto' ? `<div class="callout info">${ico('refresh')}<p><b>Aberto automaticamente</b> em ${fmt(a.inicio)}, ao cadastrar o processo ${a.sei} (regra: ${esc(a.tipoProc)}). Prazo da análise: <b>${fmt(a.prazoAnalise)}</b>.</p></div>` : ''}
   ${editavel ? `<div class="callout info">${ico('info')}<p>Ao concluir, gere o relatório. Você escolhe quem assina (um ou mais responsáveis) e cada um assina com a própria senha.</p></div>` : ''}
   <div class="grid g-main">
     <section class="card"><div class="card-head"><h2>Itens do checklist</h2><span class="hint num">${feitos}/${total} respondidos</span></div>${corpo}</section>
@@ -1062,7 +1079,7 @@ function viewAplicacao(n) {
       </div></section>
       <section class="card"><div class="card-head"><h2>Dados da aplicação</h2>${chipApl(sit)}</div><div class="card-body"><dl class="dl">
         <div><dt>Processo SEI</dt><dd class="mono small">${a.sei}</dd></div><div><dt>Área analisada</dt><dd class="mono"><b>${a.area}</b></dd></div>
-        <div><dt>Início</dt><dd>${fmt(a.inicio)}</dd></div><div><dt>Amostragem</dt><dd>${a.lote !== '—' ? `<span class="mono">${a.lote}</span> · 12 de 48` : 'Não'}</dd></div>
+        <div><dt>Início</dt><dd>${fmt(a.inicio)}</dd></div><div><dt>Prazo da análise</dt><dd>${fmt(a.prazoAnalise)}</dd></div><div><dt>Abertura</dt><dd>${a.origem === 'auto' ? 'Automática' : 'Manual'}</dd></div><div><dt>Amostragem</dt><dd>${a.lote !== '—' ? `<span class="mono">${a.lote}</span> · 12 de 48` : 'Não'}</dd></div>
         ${r ? `<div><dt>Relatório</dt><dd><a class="mono" href="#relatorio-${r.id}">${r.id}</a></dd></div><div><dt>Assinaturas</dt><dd>${avatares(r)}</dd></div>` : ''}
       </dl></div></section>
     </div>
@@ -1222,7 +1239,7 @@ function viewNotificacoes() {
   const ns = minhasNotifs();
   const icone = { atraso: ['alert', 'c-crit'], escalonamento: ['up', 'c-crit'], d2: ['clock', 'c-warn'], vencimento: ['calendar', 'c-warn'], resposta: ['msg', 'c-info'], ciencia: ['stamp', 'c-violet'], prorrogacao: ['clock', 'c-info'], distribuicao: ['send', 'c-info'], sistema: ['gear', 'c-neutral'], assinatura: ['pen', 'c-warn'] };
   return `${pageHead('Notificações', 'Alertas no sistema. Os mesmos avisos seguem por e-mail quando o envio estiver configurado (por enquanto, apenas no sistema).', `<button class="btn" data-act="ler-todas">${ico('check')}Marcar todas como lidas</button>`)}
-  <section class="card">${ns.length ? ns.map((n) => { const [i, c] = icone[n.tipo]; const link = n.item ? `#item-${n.item}` : n.dem ? `#demanda-${n.dem}` : n.rel ? `#relatorio-${n.rel}` : ''; return `<div class="notif ${n.lida ? '' : 'unread'}"><div class="ev" style="padding:0"><div class="dotc ${c}">${ico(i)}</div></div><div style="min-width:0"><div style="font-weight:${n.lida ? 500 : 650}">${esc(n.txt)}</div><div class="small muted">${n.quando.split(' ')[0].split('-').reverse().join('/')} às ${n.quando.split(' ')[1]}</div></div>${link ? `<a class="btn sm" href="${link}">Abrir</a>` : ''}</div>`; }).join('') : '<div class="empty">Nenhuma notificação.</div>'}</section>
+  <section class="card">${ns.length ? ns.map((n) => { const [i, c] = icone[n.tipo]; const link = n.item ? `#item-${n.item}` : n.dem ? `#demanda-${n.dem}` : n.rel ? `#relatorio-${n.rel}` : n.apl ? `#aplicacao-${n.apl}` : ''; return `<div class="notif ${n.lida ? '' : 'unread'}"><div class="ev" style="padding:0"><div class="dotc ${c}">${ico(i)}</div></div><div style="min-width:0"><div style="font-weight:${n.lida ? 500 : 650}">${esc(n.txt)}</div><div class="small muted">${n.quando.split(' ')[0].split('-').reverse().join('/')} às ${n.quando.split(' ')[1]}</div></div>${link ? `<a class="btn sm" href="${link}">Abrir</a>` : ''}</div>`; }).join('') : '<div class="empty">Nenhuma notificação.</div>'}</section>
   <div class="callout info">${ico('info')}<p>Regras de alerta: na distribuição (com ciência do recebimento), em D-5, D-2, no vencimento e em atraso. Em atraso, o superior hierárquico da área e a CHEGAB recebem o escalonamento.</p></div>`;
 }
 
@@ -1234,8 +1251,8 @@ function viewLixeira() {
 }
 
 /* ---------- Trilha de auditoria em linguagem simples ---------- */
-const CAMPOS = { status: 'Status', data_resposta: 'Data da resposta', deleted_at: 'Excluído em', delete_reason: 'Motivo', devolucoes: 'Devoluções', novo_prazo: 'Novo prazo', dias: 'Dias pedidos', item: 'Item', orgao: 'Órgão', prazo: 'Prazo', processo_sei: 'Processo SEI', papel: 'Perfil', area: 'Área', deve_trocar_senha: 'Trocar senha no 1º acesso', papel_assinatura: 'Assinou como', assinaturas: 'Assinaturas', responsaveis: 'Responsáveis', codigo: 'Código', comentario: 'Registro', modo_manutencao: 'Modo manutenção' };
-const TABELAS = { itens_acompanhamento: 'Item de acompanhamento', prorrogacoes: 'Prorrogação', demandas: 'Demanda', evidencias: 'Evidência', perfis: 'Usuário', relatorios: 'Relatório de checklist', lixeira: 'Lixeira', parametros: 'Parâmetros' };
+const CAMPOS = { status: 'Status', data_resposta: 'Data da resposta', deleted_at: 'Excluído em', delete_reason: 'Motivo', devolucoes: 'Devoluções', novo_prazo: 'Novo prazo', dias: 'Dias pedidos', item: 'Item', orgao: 'Órgão', prazo: 'Prazo', processo_sei: 'Processo SEI', papel: 'Perfil', area: 'Área', deve_trocar_senha: 'Trocar senha no 1º acesso', papel_assinatura: 'Assinou como', assinaturas: 'Assinaturas', responsaveis: 'Responsáveis', codigo: 'Código', comentario: 'Registro', modo_manutencao: 'Modo manutenção', tipo: 'Tipo', objeto: 'Objeto', modelo: 'Modelo', momento: 'Momento', responsavel: 'Responsável', prazo_analise: 'Prazo da análise', ativo: 'Ativa' };
+const TABELAS = { itens_acompanhamento: 'Item de acompanhamento', prorrogacoes: 'Prorrogação', demandas: 'Demanda', evidencias: 'Evidência', perfis: 'Usuário', relatorios: 'Relatório de checklist', lixeira: 'Lixeira', parametros: 'Parâmetros', processos: 'Processo', checklist_aplicacoes: 'Checklist', regras_abertura: 'Regra de abertura' };
 const ACOES_TR = { INSERT: ['Inclusão', 'c-ok', 'plus'], UPDATE: ['Alteração', 'c-info', 'pen'], SOFT_DELETE: ['Exclusão', 'c-crit', 'trash'], RESTORE: ['Restauração', 'c-info', 'undo'], SIGN: ['Assinatura', 'c-violet', 'stamp'] };
 const STATUS_PR = { pendente: 'Pendente', aprovada: 'Aprovada', negada: 'Negada' };
 function valorTr(k, v) {
@@ -1301,10 +1318,10 @@ function viewConfig() {
   const u = eu();
   const t = state.cfgTab;
   const admin = u.papel === 'admin';
-  const podeAscoin = ['prazos', 'assinatura', 'aparencia'];
+  const podeAscoin = ['prazos', 'checklists', 'assinatura', 'aparencia'];
   const ro = !admin && !podeAscoin.includes(t);
   const dis = ro ? 'disabled' : '';
-  const tabs = [['usuarios', 'Usuários e perfis'], ['areas', 'Áreas'], ['orgaos', 'Órgãos de controle'], ['status', 'Status e fluxo'], ['prazos', 'Prazos e alertas'], ['assinatura', 'Assinatura eletrônica'], ['notificacoes', 'Notificações'], ['aparencia', 'Aparência'], ['seguranca', 'Segurança']];
+  const tabs = [['usuarios', 'Usuários e perfis'], ['areas', 'Áreas'], ['orgaos', 'Órgãos de controle'], ['status', 'Status e fluxo'], ['prazos', 'Prazos e alertas'], ['checklists', 'Abertura de checklists'], ['assinatura', 'Assinatura eletrônica'], ['notificacoes', 'Notificações'], ['aparencia', 'Aparência'], ['seguranca', 'Segurança']];
   let corpo = '';
   if (t === 'usuarios') {
     corpo = `<div class="card-head"><h2>Usuários</h2>${admin ? `<button class="btn sm primary" data-act="novo-usuario">${ico('plus')}Novo usuário</button>` : ''}</div><div class="table-wrap"><table class="t"><thead><tr><th>Nome</th><th>Perfil</th><th>Área</th><th>Situação</th><th></th></tr></thead><tbody>${USERS.map((x) => `<tr><td><div style="display:flex;gap:10px;align-items:center"><span class="av sm">${iniciais(x.nome)}</span><div><b>${esc(x.nome)}</b><div class="small muted">${x.email}</div></div></div></td><td>${PAPEIS[x.papel]}${x.restrito ? ' <span class="lock">' + ico('lock') + 'vê restritos</span>' : ''}</td><td class="mono"><b>${x.area}</b></td><td>${x.troca ? '<span class="chip c-warn">Troca de senha pendente</span>' : '<span class="chip c-ok">Ativo</span>'}</td><td>${admin ? `<button class="btn sm" data-act="editar-usuario">${ico('pen')}Editar</button>` : ''}</td></tr>`).join('')}</tbody></table></div>
@@ -1331,6 +1348,14 @@ function viewConfig() {
       ${linhaCfg('Sugestão de prazo da área', 'Dias antes do prazo do órgão.', `<input id="c-sug" type="number" value="5" ${dis} style="width:80px">`)}
     </div><div class="card-body"><h3 style="margin-bottom:8px">Regras de prorrogação</h3><div class="table-wrap"><table class="t"><thead><tr><th>Prazo original</th><th>Prorrogação máxima</th><th>Pedidos por item</th><th>Quem aprova</th></tr></thead><tbody>${[['Até 15 dias', '50%'], ['16 a 30 dias', '50%'], ['Acima de 30 dias', '50%']].map(([f, m], i) => `<tr><td>${f}</td><td><input id="pr-m-${i}" value="${m}" ${dis} style="width:70px"></td><td><input id="pr-q-${i}" type="number" value="1" ${dis} style="width:60px"></td><td>ASCOIN</td></tr>`).join('')}</tbody></table></div>
       ${ro ? '' : `<div class="actions" style="margin-top:12px"><button class="btn primary" data-act="cfg-salvo">Salvar alterações</button></div>`}</div>`;
+  } else if (t === 'checklists') {
+    corpo = `<div class="card-head"><h2>Abertura automática de checklists</h2></div><div class="card-body"><p class="small sec">Quando alguém cadastra um processo, o sistema olha o tipo, pega a versão publicada mais recente do modelo e abre o checklist para o responsável, já com prazo. Sem regra ativa, o processo é só cadastrado.</p></div>
+      <div class="table-wrap"><table class="t"><thead><tr><th>Tipo de processo</th><th>Modelo (versão vigente)</th><th>Momento</th><th>Analisar</th><th>Responsável padrão</th><th>Prazo</th><th>Ativa</th></tr></thead><tbody>${TIPOS_PROC.map((r, i) => { const m = versaoVigente(r.modelo); return `<tr><td><b>${r.nome}</b></td><td>${m ? `<span class="mono small">${m.cod} v${m.versao}</span>` : `<span class="small" style="color:var(--warn)">${r.modelo}: sem versão publicada</span>`}</td><td>${r.momento}</td><td><select id="ra-an-${i}" ${dis}><option ${r.analisar === 'Todos' ? 'selected' : ''}>Todos</option><option ${r.analisar === 'Amostra' ? 'selected' : ''}>Amostra</option></select></td><td><select id="ra-r-${i}" ${dis} data-regra="${i}">${USERS.filter((x) => ['ascoin', 'admin'].includes(x.papel)).map((x) => `<option value="${x.id}" ${x.id === r.resp ? 'selected' : ''}>${esc(x.nome)}</option>`).join('')}</select></td><td><input id="ra-p-${i}" type="number" value="${r.prazo}" ${dis} style="width:64px"> dias</td><td>${sw(`ra-on-${i}`, r.ativo && !!m, ro || !m)}</td></tr>`; }).join('')}</tbody></table></div>
+      <div class="card-body cfg-list">
+        ${linhaCfg('Avisar o responsável', 'Notificação no sino quando o checklist é aberto.', sw('ra-aviso', true, ro))}
+        ${linhaCfg('Sem versão publicada', 'O processo é cadastrado e fica marcado “Sem checklist” até o modelo ser publicado.', '<span class="chip c-info plain">Só cadastra</span>')}
+        ${linhaCfg('Amostragem', 'Com “Amostra”, o processo entra no sorteio do lote ativo e o checklist só abre se for sorteado.', '<span class="chip c-info plain">Lote L-2026-04</span>')}
+      </div>`;
   } else if (t === 'assinatura') {
     corpo = `<div class="card-head"><h2>Assinatura eletrônica</h2><a class="btn sm" href="#assinatura">${ico('info')}Como funciona</a></div><div class="card-body cfg-list">
       ${linhaCfg('Tipo de assinatura', 'Assinatura eletrônica simples (Lei 14.063/2020). gov.br e ICP-Brasil ficam fora do escopo.', '<span class="chip c-info plain">Simples</span>')}
@@ -1656,6 +1681,7 @@ const ACOES = {
   'man-tab': (el) => { state.manTab = el.dataset.tab; render(); },
   tema: (el) => { state.tema = el.dataset.v; document.documentElement.dataset.tema = state.tema; try { localStorage.setItem('sisc_tema', state.tema); } catch (e) { /* sem armazenamento */ } render(); toast(`Tema ${{ institucional: 'institucional', claro: 'claro', escuro: 'escuro' }[state.tema]} aplicado.`, { institucional: 'landmark', claro: 'sun', escuro: 'moon' }[state.tema]); },
   toggle: (el) => {
+    if (el.id.startsWith('ra-on-')) { const r = TIPOS_PROC[+el.id.slice(6)]; r.ativo = el.checked; trilhar('regras_abertura', r.nome, 'UPDATE', `${el.checked ? 'Ativou' : 'Desativou'} a abertura automática de checklists`, { ativo: !el.checked }, { ativo: el.checked }); toast(`Abertura automática ${el.checked ? 'ativada' : 'desativada'} para ${r.nome}.`, 'refresh'); return; }
     if (el.id === 'a-news') { state.newsOn = el.checked; toast(el.checked ? 'Faixa de notícias ativada no painel.' : 'Faixa de notícias oculta.', 'info'); return; }
     if (el.id === 'm-modo') { if (el.checked) { el.checked = false; modal({ title: 'Ativar modo manutenção', sub: 'Todos os usuários verão um aviso e as gravações ficam bloqueadas.', ok: 'Ativar', okClass: 'danger', body: '<label class="field"><span>Mensagem para os usuários</span><textarea id="mm-msg">Sistema em manutenção programada. Consultas liberadas; gravações bloqueadas até o fim da janela.</textarea></label><label class="field"><span>Previsão de término</span><input id="mm-fim" type="time" value="20:00"></label>', onOk: () => { state.modoManut = true; trilhar('parametros', 'modo_manutencao', 'UPDATE', 'Ativou o modo manutenção', { modo_manutencao: false }, { modo_manutencao: true }); render(); toast('Modo manutenção ativado.', 'wrench'); } }); } else { state.modoManut = false; trilhar('parametros', 'modo_manutencao', 'UPDATE', 'Desativou o modo manutenção', { modo_manutencao: true }, { modo_manutencao: false }); render(); toast('Modo manutenção desativado.', 'wrench'); } return; }
     toast('Alteração salva e registrada na trilha.', 'check');
@@ -1763,11 +1789,44 @@ const ACOES = {
   'ciencia-chegab': (el) => { const its = itensDaDemanda(el.dataset.dem).filter((i) => i.status === 'consolidada'); its.forEach((i) => registrar(i, { t: 'Ciência da CHEGAB', c: 'c-violet', i: 'stamp' }, 'ciencia_chegab')); toast('Ciência registrada. A ASCOIN pode enviar a resposta ao órgão.', 'stamp'); render(); },
   'enviar-orgao': (el) => modal({ title: 'Registrar envio ao órgão', ok: 'Registrar envio', body: '<label class="field"><span>Ofício de resposta</span><input id="eo-of" placeholder="Ofício SEDES/ASCOIN nº 000/2026" required></label><label class="field"><span>Data do envio</span><input id="eo-dt" type="date" value="2026-11-13"></label>', onOk: (f) => { const of = f.querySelector('#eo-of').value.trim(); if (!of) return erroCampo(f, '#eo-of', 'Informe o ofício de resposta.'); itensDaDemanda(el.dataset.dem).filter((i) => i.status === 'ciencia_chegab').forEach((i) => registrar(i, { t: 'Enviada ao órgão', txt: of, c: 'c-violet', i: 'send' }, 'enviada_orgao')); toast('Envio registrado.', 'send'); render(); } }),
   monitorar: (el) => { itensDaDemanda(el.dataset.dem).filter((i) => i.status === 'enviada_orgao').forEach((i) => registrar(i, { t: 'Monitoramento iniciado', c: 'c-violet', i: 'clock' }, 'em_monitoramento')); toast('Itens em monitoramento.'); render(); },
-  'nova-aplicacao': () => modal({ title: 'Nova aplicação de checklist', ok: 'Criar', body: `<label class="field"><span>Modelo (somente versões publicadas)</span><select id="na-mod"><option>CONV-CEL v3 — Convênios — Celebração</option><option>CONV-PC v2 — Convênios — Prestação de contas</option></select></label><label class="field"><span>Objeto</span><input id="na-obj" placeholder="Convênio nº 000/2026 — ..."></label><label class="field"><span>Processo SEI</span><input id="na-sei" class="mono"></label><label class="field"><span>Lote de amostragem</span><select id="na-lote"><option>L-2026-04 — Convênios 2º sem/2026</option><option>Sem amostragem (análise integral)</option></select></label>`, onOk: () => { toast('Aplicação criada (simulação). Abrindo exemplo em preenchimento.', 'info'); location.hash = 'aplicacao-0012'; } }),
-  'responder-ck': (el) => { const a = APLICACOES.find((x) => x.n === '0012'); const q = +el.dataset.q; const prev = a.respostas[q] || ['', '', '']; a.respostas[q] = [el.dataset.v, document.getElementById(`j-0012-${q}`)?.value || prev[1], document.getElementById(`s-0012-${q}`)?.value || prev[2]]; const y = window.scrollY; render(); window.scrollTo(0, y); },
-  'finalizar-ck': () => {
-    const a = APLICACOES.find((x) => x.n === '0012');
-    CK_ITENS.forEach((q) => { const j = document.getElementById(`j-0012-${q.n}`); const s = document.getElementById(`s-0012-${q.n}`); if (a.respostas[q.n]) { a.respostas[q.n][1] = j?.value || ''; a.respostas[q.n][2] = s?.value || ''; } });
+  'nova-aplicacao': () => modal({ title: 'Nova aplicação de checklist', ok: 'Criar', body: `<label class="field"><span>Modelo (somente versões publicadas)</span><select id="na-mod"><option>CONV-CEL v3 — Convênios — Celebração</option><option>CONV-PC v2 — Convênios — Prestação de contas</option></select></label><label class="field"><span>Objeto</span><input id="na-obj" placeholder="Convênio nº 000/2026 — ..."></label><label class="field"><span>Processo SEI</span><input id="na-sei" class="mono"></label><label class="field"><span>Lote de amostragem</span><select id="na-lote"><option>L-2026-04 — Convênios 2º sem/2026</option><option>Sem amostragem (análise integral)</option></select></label>`, onOk: () => { toast('Aplicação manual criada (simulação). Abrindo exemplo em preenchimento.', 'info'); location.hash = 'aplicacao-0012'; } }),
+  'cadastrar-processo': () => {
+    const previa = (tp) => { const r = TIPOS_PROC.find((x) => x.id === tp); const m = versaoVigente(r.modelo); if (!r.ativo || !m) return `<div class="callout warn">${ico('alert')}<p>Este tipo de processo <b>não abre checklist automaticamente</b>${!m ? ' (o modelo ainda não tem versão publicada)' : ' (regra desativada)'}. O processo será só cadastrado.</p></div>`; return `<div class="callout ok">${ico('refresh')}<p>Ao salvar, o sistema abre o checklist <b>${m.cod} v${m.versao}</b> (${m.nome}), análise <b>${r.momento.toLowerCase()}</b>, para <b>${USER[r.resp].nome}</b>, com prazo de ${r.prazo} dias (até <b>${fmt(addDias(iso(HOJE), r.prazo))}</b>). A pessoa recebe um aviso.</p></div>`; };
+    modal({
+      title: 'Cadastrar processo', sub: 'Processo que chega à ASCOIN para análise de conformidade.', ok: 'Cadastrar processo', wide: true,
+      body: `<div class="form-grid">
+        <label class="field"><span>Tipo de processo</span><select id="cp-tipo">${TIPOS_PROC.map((r) => `<option value="${r.id}">${r.nome}${r.ativo ? '' : ' (sem abertura automática)'}</option>`).join('')}</select></label>
+        <label class="field"><span>Processo SEI</span><input id="cp-sei" class="mono" placeholder="SEI-220006/000000/2026" required></label>
+        <label class="field full"><span>Objeto</span><input id="cp-obj" placeholder="Convênio nº 020/2026 — Município de ..." required></label>
+        <label class="field"><span>Área responsável</span><select id="cp-area">${AREAS.filter((a) => !['SEDES', 'GABSEC'].includes(a.sigla)).map((a) => `<option ${a.sigla === 'COCON' ? 'selected' : ''}>${a.sigla}</option>`).join('')}</select></label>
+        <label class="field"><span>Data de entrada</span><input id="cp-ent" type="date" value="${iso(HOJE)}"></label>
+        <label class="field"><span>Valor (R$)</span><input id="cp-val" inputmode="decimal" placeholder="Opcional"></label>
+        <label class="field"><span>Interessado / convenente</span><input id="cp-int" placeholder="Opcional"></label>
+      </div><div id="cp-prev">${previa('conv-cel')}</div>`,
+      onOk: (f) => {
+        const sei = f.querySelector('#cp-sei').value.trim(); const obj = f.querySelector('#cp-obj').value.trim();
+        if (!sei) return erroCampo(f, '#cp-sei', 'Informe o número do processo SEI.');
+        if (!obj) return erroCampo(f, '#cp-obj', 'Informe o objeto do processo.');
+        if ([...APLICACOES, ...PROCESSOS_SEM].some((x) => x.sei === sei)) return erroCampo(f, '#cp-sei', 'Este processo já está cadastrado.');
+        const r = TIPOS_PROC.find((x) => x.id === f.querySelector('#cp-tipo').value); const m = versaoVigente(r.modelo);
+        const area = f.querySelector('#cp-area').value; const ent = f.querySelector('#cp-ent').value || iso(HOJE);
+        trilhar('processos', sei, 'INSERT', 'Cadastrou o processo', null, { tipo: r.nome, objeto: obj, area });
+        if (!r.ativo || !m) { PROCESSOS_SEM.unshift({ sei, tipo: r.nome, objeto: obj, area, entrada: ent, motivo: !m ? 'Sem modelo publicado' : 'Regra de abertura desativada' }); state.ckTab = 'processos'; location.hash = 'checklists'; render(); toast('Processo cadastrado. Este tipo não abre checklist automaticamente.', 'info'); return; }
+        const n = String(Math.max(...APLICACOES.map((a) => +a.n)) + 1).padStart(4, '0');
+        const a = { n, modelo: `${m.cod} v${m.versao}`, objeto: obj, sei, area, momento: r.momento, resp: USER[r.resp].nome, inicio: ent, lote: '—', respostas: {}, origem: 'auto', tipoProc: r.nome, prazoAnalise: addDias(ent, r.prazo) };
+        APLICACOES.unshift(a);
+        trilhar('checklist_aplicacoes', `CHK-2026-${n}`, 'INSERT', `Abriu o checklist automaticamente (regra: ${r.nome})`, null, { modelo: a.modelo, momento: r.momento, responsavel: a.resp, prazo_analise: a.prazoAnalise });
+        NOTIFS.unshift({ id: Date.now(), user: r.resp, para: [], tipo: 'distribuicao', quando: agoraTxt(), txt: `Checklist CHK-2026-${n} aberto automaticamente para o processo ${sei}. Prazo da análise: ${fmt(a.prazoAnalise)}.`, apl: n, lida: false });
+        location.hash = `aplicacao-${n}`;
+        toast(`Processo cadastrado e checklist CHK-2026-${n} aberto automaticamente.`, 'refresh');
+      },
+    });
+    document.getElementById('cp-tipo').addEventListener('change', (e) => { document.getElementById('cp-prev').innerHTML = previa(e.target.value); });
+  },
+  'responder-ck': (el) => { const nn = el.dataset.n; const a = APLICACOES.find((x) => x.n === nn); const q = +el.dataset.q; const prev = a.respostas[q] || ['', '', '']; a.respostas[q] = [el.dataset.v, document.getElementById(`j-${nn}-${q}`)?.value || prev[1], document.getElementById(`s-${nn}-${q}`)?.value || prev[2]]; const y = window.scrollY; render(); window.scrollTo(0, y); },
+  'finalizar-ck': (el) => {
+    const nn = el.dataset.n; const a = APLICACOES.find((x) => x.n === nn);
+    CK_ITENS.forEach((q) => { const j = document.getElementById(`j-${nn}-${q.n}`); const s = document.getElementById(`s-${nn}-${q.n}`); if (a.respostas[q.n]) { a.respostas[q.n][1] = j?.value || ''; a.respostas[q.n][2] = s?.value || ''; } });
     const faltam = CK_ITENS.filter((q) => !a.respostas[q.n]).map((q) => q.n);
     if (faltam.length) { toast(`Responda todos os itens antes de gerar o relatório. Faltam: ${faltam.join(', ')}.`, 'alert'); return; }
     const semJust = CK_ITENS.filter((q) => a.respostas[q.n][0] !== 'conforme' && !a.respostas[q.n][1].trim()).map((q) => q.n);
@@ -1883,6 +1942,7 @@ document.addEventListener('change', (e) => {
   const t = e.target;
   if (t.id === 'perfil') { state.userId = t.value; try { localStorage.setItem('sisc_user', t.value); } catch (err) { /* sem armazenamento */ } render(); toast(`Agora você vê o sistema como ${USER[t.value].nome} (${PAPEIS[USER[t.value].papel]}).`, 'users'); return; }
   if (t.dataset.filtro) { state.filtros[t.dataset.filtro] = t.value; render(); return; }
+  if (t.dataset.regra) { const r = TIPOS_PROC[+t.dataset.regra]; const ant = USER[r.resp].nome; r.resp = t.value; trilhar('regras_abertura', r.nome, 'UPDATE', 'Alterou o responsável padrão da abertura automática', { responsavel: ant }, { responsavel: USER[r.resp].nome }); toast(`Responsável padrão de ${r.nome}: ${USER[r.resp].nome}.`, 'users'); return; }
   if (t.dataset.pool) { state.pool[t.dataset.pool] = t.value; render(); return; }
   if (t.dataset.tr) { state.trFiltro[t.dataset.tr] = t.value; render(); return; }
   if (t.dataset.demf) { state.demFiltro[t.dataset.demf] = t.value; render(); return; }

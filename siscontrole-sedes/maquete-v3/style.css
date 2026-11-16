@@ -673,6 +673,12 @@ table.lad { width: 100%; border-collapse: collapse; font-size: .78rem; font-vari
   .news-track { animation: none; } .news-viewport { overflow-x: auto; } .news-run[aria-hidden="true"] { display: none; } .news-live i { animation: none; }
 }
 
+/* Faixa no topo da página: ocupa a largura toda, sem cantos */
+.main > .news { border-radius: 0; box-shadow: none; border-bottom: 1px solid #000; }
+.main > .news .news-top { min-height: 48px; }
+.main > .news .news-title { -webkit-line-clamp: 1; font-size: .98rem; }
+.main > .news .news-flag { padding: 0 16px; font-size: .86rem; }
+
 /* ---------- Página: como funciona a assinatura ---------- */
 .steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px; counter-reset: s; }
 .step { position: relative; display: flex; flex-direction: column; gap: 6px; padding: 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface-2); min-width: 0; }
@@ -750,7 +756,7 @@ table.lad { width: 100%; border-collapse: collapse; font-size: .78rem; font-vari
   .news-top { grid-template-columns: auto minmax(0, 1fr); }
   .news-side { grid-column: 1 / -1; justify-content: flex-end; border-left: 0; border-top: 1px solid #ddd; padding: 4px 8px; }
   .news-flag { padding: 0 10px; font-size: .78rem; }
-  .news-title { font-size: .9rem; -webkit-line-clamp: 3; }
+  .news-title, .main > .news .news-title { font-size: .88rem; -webkit-line-clamp: 3; }
   .news-brand { display: none; }
   .steps { grid-template-columns: minmax(0, 1fr); }
   .step::after { display: none; }
