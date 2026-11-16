@@ -14,6 +14,7 @@ Sistema de Controle Interno e Auditoria da Secretaria de Estado de Desenvolvimen
 | Maquete v1 (tema escuro neutro) | `maquete/` e `SisControle_SEDES_maquete.html` |
 | Maquete v2 (azul institucional, relatórios com várias assinaturas, pool de checklists, trilha legível) | `maquete-v2/` e `SisControle_SEDES_maquete_v2.html` |
 | Maquete v3 (temas institucional, claro e escuro; faixa de notícias no topo; Configurações; Manutenção; guia da assinatura; cadastro de processo com abertura automática do checklist) | `maquete-v3/` e `SisControle_SEDES_maquete_v3.html` |
+| Maquete v4 (melhorias da análise: faixa só no painel, status simples para áreas, prazo do órgão em coluna, pareceres, busca global, assinatura sequencial com recusa e substituto, reincidência por tema, resumo diário para o SEI, checklist com anexos e salvamento automático, menu com Configurações e Manutenção em subitens) | `maquete-v4/` e `SisControle_SEDES_maquete_v4.html` |
 | Imagens do passo a passo da assinatura | `docs/assinatura/` |
 | Migrations, RLS, Edge Functions, PWA | Próxima etapa |
 
@@ -46,3 +47,14 @@ de assinatura e prévias da Fase 2 (auditoria e riscos).
 - Validação do conjunto de status
 - Brasão/logo e manual de identidade visual do Governo do RJ
 - Volume de demandas (por ano e abertas hoje)
+
+## Escopo proposto (análise de melhorias)
+
+| Entra no MVP (10 dias) | Fica para a fase 1.5 |
+|---|---|
+| Demandas, itens, fluxo até a ciência da CHEGAB | Agenda/calendário |
+| Alertas no sistema e resumo diário para o SEI | Catálogo de widgets e painel personalizável |
+| Painel executivo fixo (por perfil) | Perfis personalizados |
+| Checklists com parecer e assinatura sequencial | Temas claro e escuro (fica o institucional) |
+| Trilha de auditoria, lixeira, exclusão lógica | Manutenção completa (no MVP: backups e rotinas) |
+| Importação da planilha base | Faixa de notícias |
