@@ -189,6 +189,7 @@ C.push(B('A ASCOIN entrega a planilha base e a tabela de checklists em uso antes
 C.push(B('O projeto Supabase será contratado no plano Pro, com backup diário.'));
 C.push(B('Cerca de 10 usuários iniciais, criados pelo administrador.'));
 C.push(B('A Assessora de Controle Interno participa da reunião semanal e da homologação.'));
+C.push(B('O cronograma considera dias úteis e feriados (20/11/2026, Dia da Consciência Negra, é feriado nacional). O controle detalhado está na planilha SisControle_SEDES_Controle_do_Projeto.xlsx.'));
 C.push(H2('4.4 Restrições'));
 C.push(B('Prazo de 10 dias úteis para o MVP.'));
 C.push(B('Stack definida: HTML, CSS e JavaScript puros; Supabase (Postgres, Auth, Storage, Edge Functions, pg_cron); Vercel; PWA.'));
@@ -524,7 +525,7 @@ C.push(...tab(['#', 'Pendência', 'Responsável', 'Prazo sugerido'], [
   ['P02', 'Validar os passos 4 a 9 do fluxo', 'ASCOIN e AGE', '24/11/2026'],
   ['P03', 'Validar o conjunto final de status', 'ASCOIN', '24/11/2026'],
   ['P04', 'Enviar a lista completa de vinculadas e as siglas das coordenadorias da DGAF', 'ASCOIN', '25/11/2026'],
-  ['P05', 'Confirmar a página pública de verificação', 'ASCOIN e CHEGAB', '20/11/2026'],
+  ['P05', 'Confirmar a página pública de verificação', 'ASCOIN e CHEGAB', '19/11/2026'],
   ['P06', 'Fornecer brasão oficial e manual de identidade visual', 'AGE', '25/11/2026'],
   ['P07', 'Levantar volume de demandas por ano e abertas hoje', 'ASCOIN', '25/11/2026'],
   ['P08', 'Contratar o plano Pro do Supabase e criar os projetos (produção e homologação)', 'AGE', '23/11/2026'],
@@ -576,7 +577,7 @@ C.push(...tab(['Dia', 'Data', 'Entrega', 'Critério de pronto'], [
 ], [0.06, 0.09, 0.53, 0.32]));
 C.push(H2('Marcos'));
 C.push(...tab(['Marco', 'Data prevista', 'Critério'], [
-  ['M1 · Aprovação do documento de projeto', '20/11/2026', 'Assinaturas da seção de aprovações'],
+  ['M1 · Aprovação do documento de projeto', '19/11/2026', 'Assinaturas da seção de aprovações'],
   ['M2 · Ambiente contratado (Supabase Pro e Vercel)', '23/11/2026', 'Projetos de homologação e produção criados'],
   ['M3 · Planilha base recebida', '25/11/2026', 'Arquivo entregue e colunas mapeadas'],
   ['M4 · Homologação', '03 a 04/12/2026', 'Checklist de homologação aprovado pela ASCOIN'],
@@ -663,9 +664,9 @@ C.push(...tab(['Tema', 'Plano'], [
 // 22 PRÓXIMAS ETAPAS
 C.push(H1('22. Próximas etapas'));
 C.push(...tab(['#', 'Ação', 'Responsável', 'Prazo'], [
-  ['1', 'Aprovar este documento de projeto (marco M1)', 'Patrocinadores, ASCOIN, AGE', '20/11/2026'],
+  ['1', 'Aprovar este documento de projeto (marco M1)', 'Patrocinadores, ASCOIN, AGE', '19/11/2026'],
   ['2', 'Validar o passo 4 (análise da ASCOIN) e, em seguida, os passos 5 a 9', 'ASCOIN e AGE', '24/11/2026'],
-  ['3', 'Confirmar a página pública de verificação e o conjunto de status', 'ASCOIN', '20/11/2026'],
+  ['3', 'Confirmar a página pública de verificação e o conjunto de status', 'ASCOIN', '19/11/2026'],
   ['4', 'Entregar planilha base, tabela de checklists e lista de vinculadas', 'ASCOIN', '25/11/2026'],
   ['5', 'Contratar o Supabase Pro e criar os ambientes', 'AGE', '23/11/2026'],
   ['6', 'Iniciar a construção do MVP (dia 1)', 'Equipe técnica', '23/11/2026'],
