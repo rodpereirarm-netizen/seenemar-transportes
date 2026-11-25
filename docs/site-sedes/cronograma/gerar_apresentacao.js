@@ -333,13 +333,40 @@ frentes.forEach(([nome, itens], i) => {
 });
 s.addNotes('Verde: já produzido pela SEDES. Laranja: parcial. Cinza: a produzir ou condicional. A frente de identidade e design e a de conteúdo já têm a base pronta.');
 
+// ---------- fluxo obrigatório com o PRODERJ ----------
+s = pres.addSlide({ masterName: 'CONTEUDO', sectionTitle: 'Encaminhamento' });
+s.addText('Fluxo do projeto com o PRODERJ', { placeholder: 'title' });
+tb(s, 'O rebranding do site institucional da SEDES é realizado obrigatoriamente em conjunto com o PRODERJ.', { x: 0.6, y: 1.15, w: 12.1, h: 0.4, fontSize: 15, color: MUTED });
+[
+  ['D0 a D3', 'SEI de abertura', 'Pontos focais da SEDES', 'Solicitação de melhoria do site institucional com fundamentação técnica e documentação técnica.', C.accent1, 'Anexos prontos: Maquete 2, levantamento técnico e fundamentação legal'],
+  ['D4 a D9', 'Levantamento de requisitos', 'Equipe técnica PRODERJ + pontos focais', 'Requisitos de páginas, integrações, padrão Portal Único e LGPD.', C.text2, 'Já feito internamente: a SEDES apresenta e o PRODERJ valida'],
+  ['D10 a D15', 'TAP e proposta técnica', 'PRODERJ', 'Elaboração do Termo de Abertura do Projeto (TAP) e da proposta técnica.', C.accent2, 'Aqui o esforço e o cronograma da execução são definidos'],
+  ['Após D15', 'Contratos PRODERJ', 'PRODERJ → SEDES', 'Envio da proposta comercial e da minuta para análise e assinatura.', C.accent2, 'Tramitação no SEI-RJ'],
+].forEach(([q, t, quem, d, col, obs], i) => {
+  const x = 0.6 + i * 3.08, y = 1.7;
+  card(s, x, y, 2.88, 3.85, C.background2, 'passo-fluxo-' + i);
+  circleNum(s, x + 0.25, y + 0.25, i + 1, col);
+  tb(s, q, { x: x + 0.9, y: y + 0.3, w: 1.85, h: 0.4, fontSize: 16, bold: true, color: col, valign: 'middle' });
+  tb(s, t, { x: x + 0.25, y: y + 0.95, w: 2.45, h: 0.7, fontSize: 17, bold: true, color: C.text2 });
+  tb(s, quem, { x: x + 0.25, y: y + 1.62, w: 2.45, h: 0.45, fontSize: 12, bold: true, color: C.accent1 });
+  tb(s, d, { x: x + 0.25, y: y + 2.08, w: 2.45, h: 0.95, fontSize: 12 });
+  s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: x + 0.15, y: y + 3.05, w: 2.58, h: 0.66, rectRadius: 0.06, fill: { color: C.background1 }, line: { color: i < 2 ? C.accent5 : 'D6E1EF', width: 1 } });
+  tb(s, obs, { x: x + 0.25, y: y + 3.08, w: 2.4, h: 0.6, fontSize: 10, bold: i < 2, color: i < 2 ? '1F7A3A' : MUTED, valign: 'middle' });
+  if (i < 3) s.addShape(pres.shapes.RIGHT_TRIANGLE, { x: x + 2.92, y: y + 1.75, w: 0.12, h: 0.24, fill: { color: 'C9D6E8' }, line: { color: 'C9D6E8' } });
+});
+const fx0 = 0.6, fx1 = 0.6 + 2 * 3.08 + 2.88;
+s.addShape(pres.shapes.LINE, { x: fx0, y: 5.85, w: fx1 - fx0, h: 0, line: { color: C.accent4, width: 2, beginArrowType: 'arrow', endArrowType: 'arrow' } });
+tb(s, 'Até a proposta técnica: 15 dias corridos a partir da abertura do SEI', { x: fx0, y: 5.97, w: fx1 - fx0, h: 0.4, fontSize: 16, bold: true, color: C.accent4, align: 'center' });
+tb(s, 'D0 = data de abertura do SEI. Prazos das etapas 1 a 3 distribuídos dentro dos 15 dias.', { x: 0.6, y: 6.5, w: 12.1, h: 0.3, fontSize: 10, italic: true, color: MUTED });
+s.addNotes('Fluxo obrigatório informado pela SEDES: SEI de abertura (pontos focais), levantamento de requisitos (equipe técnica do PRODERJ e pontos focais), TAP e proposta técnica (PRODERJ) e Contratos PRODERJ (proposta comercial e minuta). Até a proposta técnica: 15 dias corridos. Como o levantamento técnico já foi feito internamente, a etapa 2 vira comunicação e validação.');
+
 // ---------- 11 · próximos passos ----------
 s = pres.addSlide({ masterName: 'FINAL', sectionTitle: 'Encaminhamento' });
 s.addText('Próximos passos com o PRODERJ', { placeholder: 'title' });
 [
   ['Abrir o SEI', 'Solicitação de melhoria com fundamentação técnica e os anexos: Maquete 2, levantamento técnico e documentação.'],
   ['Comunicar o levantamento técnico', 'Apresentar ao PRODERJ o levantamento já feito internamente, para validação, e não para descoberta.'],
-  ['Receber o TAP e a proposta técnica', 'Em até 15 dias corridos. O esforço e o cronograma da execução vêm dessa proposta.'],
+  ['Receber o TAP e a proposta técnica', 'Em até 15 dias corridos da abertura do SEI. O esforço e o cronograma da execução vêm dessa proposta.'],
   ['Contratos PRODERJ', 'Proposta comercial e minuta para análise e assinatura da SEDES.'],
 ].forEach(([t, d], i) => {
   const y = 1.55 + i * 1.3;
