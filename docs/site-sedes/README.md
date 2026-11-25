@@ -48,3 +48,19 @@ Um teste automatizado no Playwright clica em cada elemento em 1334 px, 820 px e 
 - Contraste: o laranja e o verde dos eixos não atingem o WCAG AA em texto pequeno; usar tons mais escuros em textos.
 - Trocar as fotos, que parecem geradas por IA, por fotos reais do banco de imagens do Governo, em alta resolução.
 - Versões em inglês e espanhol da jornada "Quero investir no RJ".
+
+## Maquete 2 (`maquete2.html`)
+
+Mesma identidade visual da versão 1 (`index.html`, mantida sem alterações), com as melhorias pedidas:
+
+| Alteração | Como ficou |
+|---|---|
+| Retirar "Explore oportunidades" | Botão removido do hero; fica só "Conheça a SEDES". |
+| Menu | "Áreas de atuação" virou **Subsecretarias** (com "Todas as subsecretarias" + os 3 eixos); o item "Oportunidades" saiu do menu. O rótulo da seção dos eixos passou a "Nossas subsecretarias". |
+| "Quero investir no RJ" | Passa a ser **Sou investidor**, e a página traz o **Desenvolve RJ** (destacado como "Novo"). |
+| Régua de perfis | Ganhou um 5º espaço: **Desenvolve RJ**, portal incorporado ao site. |
+| Sou cidadão | Inclui **Jovens do Mar** e **Empregos Azuis**; a "busca por município" foi retirada. |
+| Cards dos três eixos | As 3 tags de cada card foram para dentro de **Saiba mais**; cada foto ganhou um botão **play** para vídeos de até 1min30. |
+| Redes sociais | Nova faixa no fim da página: Instagram, Facebook, LinkedIn, YouTube, X e TikTok. |
+
+Os links das redes sociais e as descrições de Jovens do Mar, Empregos Azuis e Desenvolve RJ estão como "a definir" e precisam de conteúdo oficial.
